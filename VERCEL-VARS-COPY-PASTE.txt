@@ -1,0 +1,34 @@
+🚀 VARIABLES VERCEL - COPIER DIRECT :
+
+DATABASE_URL
+postgresql://postgres:temp123@db.temp.supabase.co:5432/postgres
+
+JWT_SECRET
+vhd-church-app-production-secret-2024-chris-ngozulu-kasongo-32chars
+
+NEXTAUTH_SECRET
+nextauth-vhd-production-secret-kalibanhall-2024-ultra-secure-key
+
+NEXTAUTH_URL
+https://vhd-church-app.vercel.app
+
+NEXT_PUBLIC_BASE_URL
+https://vhd-church-app.vercel.app
+
+NEXT_PUBLIC_UPLOAD_URL
+https://vhd-church-app.vercel.app
+
+NEXT_PUBLIC_MAX_FILE_SIZE
+10485760
+
+NODE_ENV
+production
+
+⚠️ REMPLACEZ "vhd-church-app" PAR VOTRE VRAI NOM DE PROJET VERCEL !
+
+📋 UTILISATION :
+- Name : Ligne du haut (ex: DATABASE_URL)
+- Value : Ligne du bas (ex: postgresql://postgres...)
+- Environment : Production pour toutes
+
+👉 Configurez maintenant dans Vercel ! 🎯
