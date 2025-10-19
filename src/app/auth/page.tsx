@@ -313,25 +313,7 @@ export default function AuthPage() {
             </button>
           </div>
 
-          {isLogin && (
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-              <h4 className="font-semibold text-blue-900 mb-3 text-center">Comptes de démonstration</h4>
-              <div className="text-sm text-blue-700 space-y-2">
-                <div className="bg-white rounded-lg p-3 border border-blue-100">
-                  <p className="font-medium">Pasteur :</p>
-                  <p className="text-xs">pastor@mychurch.com / password123</p>
-                </div>
-                <div className="bg-white rounded-lg p-3 border border-blue-100">
-                  <p className="font-medium">Admin :</p>
-                  <p className="text-xs">admin@mychurch.com / password123</p>
-                </div>
-                <div className="bg-white rounded-lg p-3 border border-blue-100">
-                  <p className="font-medium">Membre :</p>
-                  <p className="text-xs">pierre.moreau@email.com / password123</p>
-                </div>
-              </div>
-            </div>
-          )}
+
 
           <footer className="text-center text-sm text-gray-500 pt-8 border-t border-gray-200">
             <p className="mb-1"> 2025 Ministères Vaillants Hommes de David</p>
