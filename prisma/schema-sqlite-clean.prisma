@@ -1,0 +1,329 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Modèle principal pour les utilisateurs/membres de l'église
+model User {
+  id                      String    @id @default(cuid())
+  firstName               String    @map("first_name")
+  lastName                String    @map("last_name")
+  email                   String    @unique
+  phone                   String?
+  passwordHash            String    @map("password_hash")
+  role                    String    @default("MEMBER") // MEMBER, DEACON, PASTOR, ADMIN
+  status                  String    @default("ACTIVE") // ACTIVE, INACTIVE, PENDING, SUSPENDED
+  birthDate               DateTime? @map("birth_date")
+  address                 String?
+  profileImageUrl         String?   @map("profile_image_url")
+  membershipDate          DateTime  @map("membership_date")
+  membershipNumber        String?   @unique @map("membership_number")
+  emergencyContactName    String?   @map("emergency_contact_name")
+  emergencyContactPhone   String?   @map("emergency_contact_phone")
+  baptismDate             DateTime? @map("baptism_date")
+  maritalStatus           String?   @map("marital_status") // SINGLE, MARRIED, DIVORCED, WIDOWED
+  profession              String?
+  createdAt               DateTime  @default(now()) @map("created_at")
+  updatedAt               DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  donations               Donation[]
+  createdEvents           Event[]          @relation("EventCreator")
+  eventAttendances        EventAttendance[]
+  sermons                 Sermon[]
+  appointments            Appointment[]    @relation("UserAppointments")
+  pastorAppointments      Appointment[]    @relation("PastorAppointments")
+  prayers                 Prayer[]
+  prayerSupports          PrayerSupport[]
+  testimonies             Testimony[]
+  messages                Message[]
+  notifications           Notification[]
+  channelMemberships      ChannelMember[]
+  messageReactions        MessageReaction[]
+
+  @@map("users")
+}
+
+// Modèle pour les dons
+model Donation {
+  id               String    @id @default(cuid())
+  userId           String    @map("user_id")
+  amount           Float     // Utiliser Float au lieu de Decimal pour SQLite
+  donationType     String    @map("donation_type") // OFFERING, TITHE, FREEWILL, PROJECT, BUILDING, OTHER
+  paymentMethod    String    @map("payment_method") // CASH, CARD, MOBILE_MONEY, BANK_TRANSFER, CHECK
+  paymentReference String?   @map("payment_reference")
+  donationDate     DateTime  @map("donation_date")
+  status           String    @default("COMPLETED") // PENDING, COMPLETED, FAILED, REFUNDED
+  projectId        String?   @map("project_id")
+  notes            String?
+  receiptNumber    String?   @unique @map("receipt_number")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  user             User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project          DonationProject? @relation(fields: [projectId], references: [id])
+
+  @@map("donations")
+}
+
+// Modèle pour les projets de donation
+model DonationProject {
+  id              String    @id @default(cuid())
+  projectName     String    @map("project_name")
+  description     String?
+  targetAmount    Float     @map("target_amount")
+  currentAmount   Float     @default(0) @map("current_amount")
+  startDate       DateTime? @map("start_date")
+  endDate         DateTime? @map("end_date")
+  status          String    @default("ACTIVE") // ACTIVE, COMPLETED, PAUSED, CANCELLED
+  projectImageUrl String?   @map("project_image_url")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_date")
+
+  // Relations
+  donations       Donation[]
+
+  @@map("donation_projects")
+}
+
+// Modèle pour les événements
+model Event {
+  id                String    @id @default(cuid())
+  title             String
+  description       String?
+  eventDate         DateTime  @map("event_date")
+  startTime         DateTime  @map("start_time")
+  endTime           DateTime? @map("end_time")
+  eventType         String    @map("event_type") // WORSHIP_SERVICE, PRAYER_MEETING, BIBLE_STUDY, etc.
+  location          String?
+  maxAttendees      Int?      @map("max_attendees")
+  currentAttendees  Int       @default(0) @map("current_attendees")
+  isRecurring       Boolean   @default(false) @map("is_recurring")
+  recurringPattern  String?   @map("recurring_pattern")
+  status            String    @default("SCHEDULED") // SCHEDULED, IN_PROGRESS, COMPLETED, CANCELLED, POSTPONED
+  createdBy         String    @map("created_by")
+  eventImageUrl     String?   @map("event_image_url")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  creator           User              @relation("EventCreator", fields: [createdBy], references: [id])
+  attendances       EventAttendance[]
+  sermons           Sermon[]
+
+  @@map("events")
+}
+
+// Modèle pour les sermons
+model Sermon {
+  id              String    @id @default(cuid())
+  title           String
+  pastorId        String    @map("pastor_id")
+  eventId         String?   @map("event_id")
+  sermonDate      DateTime  @map("sermon_date")
+  sermonType      String    @map("sermon_type") // AUDIO, VIDEO, TEXT, LIVE_STREAM
+  durationMinutes Int?      @map("duration_minutes")
+  audioUrl        String?   @map("audio_url")
+  videoUrl        String?   @map("video_url")
+  thumbnailUrl    String?   @map("thumbnail_url")
+  description     String?
+  bibleVerses     String?   @map("bible_verses")
+  sermonNotes     String?   @map("sermon_notes")
+  isPublished     Boolean   @default(false) @map("is_published")
+  viewCount       Int       @default(0) @map("view_count")
+  downloadCount   Int       @default(0) @map("download_count")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  pastor          User      @relation(fields: [pastorId], references: [id])
+  event           Event?    @relation(fields: [eventId], references: [id])
+
+  @@map("sermons")
+}
+
+// Modèle pour les rendez-vous
+model Appointment {
+  id              String    @id @default(cuid())
+  userId          String    @map("user_id")
+  pastorId        String    @map("pastor_id")
+  appointmentDate DateTime  @map("appointment_date")
+  startTime       DateTime  @map("start_time")
+  endTime         DateTime  @map("end_time")
+  reason          String
+  status          String    @default("SCHEDULED") // SCHEDULED, CONFIRMED, COMPLETED, CANCELLED, RESCHEDULED
+  notes           String?
+  location        String?
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  user            User      @relation("UserAppointments", fields: [userId], references: [id], onDelete: Cascade)
+  pastor          User      @relation("PastorAppointments", fields: [pastorId], references: [id])
+
+  @@map("appointments")
+}
+
+// Modèle pour les demandes de prière
+model Prayer {
+  id            String    @id @default(cuid())
+  userId        String    @map("user_id")
+  title         String
+  content       String
+  category      String    @default("GENERAL") // HEALING, FAMILY, FINANCES, CAREER, etc.
+  isPublic      Boolean   @default(true) @map("is_public")
+  isAnswered    Boolean   @default(false) @map("is_answered")
+  answeredDate  DateTime? @map("answered_date")
+  prayerCount   Int       @default(0) @map("prayer_count")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  supporters    PrayerSupport[]
+
+  @@map("prayers")
+}
+
+// Modèle pour le support aux prières
+model PrayerSupport {
+  id        String   @id @default(cuid())
+  prayerId  String   @map("prayer_id")
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  prayer    Prayer   @relation(fields: [prayerId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([prayerId, userId])
+  @@map("prayer_supports")
+}
+
+// Modèle pour les témoignages
+model Testimony {
+  id            String    @id @default(cuid())
+  userId        String    @map("user_id")
+  title         String
+  content       String
+  isApproved    Boolean   @default(false) @map("is_approved")
+  approvedBy    String?   @map("approved_by")
+  approvedAt    DateTime? @map("approved_at")
+  isPublished   Boolean   @default(false) @map("is_published")
+  publishedAt   DateTime? @map("published_at")
+  category      String    @default("HEALING") // HEALING, SALVATION, BREAKTHROUGH, etc.
+  imageUrl      String?   @map("image_url")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("testimonies")
+}
+
+// Modèle pour les messages du chat
+model Message {
+  id           String    @id @default(cuid())
+  channelId    String    @map("channel_id")
+  senderId     String    @map("sender_id")
+  content      String
+  isEdited     Boolean   @default(false) @map("is_edited")
+  messageType  String    @default("TEXT") @map("message_type") // TEXT, IMAGE, FILE, VOICE
+  fileUrl      String?   @map("file_url")
+  fileName     String?   @map("file_name")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  channel      Channel   @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  sender       User      @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  reactions    MessageReaction[]
+
+  @@map("messages")
+}
+
+// Autres modèles...
+model EventAttendance {
+  id             String    @id @default(cuid())
+  userId         String    @map("user_id")
+  eventId        String    @map("event_id")
+  attendanceDate DateTime  @map("attendance_date")
+  checkInTime    DateTime? @map("check_in_time")
+  checkOutTime   DateTime? @map("check_out_time")
+  status         String    @default("PRESENT") // PRESENT, ABSENT, LATE, EXCUSED
+  notes          String?
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event          Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId, attendanceDate])
+  @@map("event_attendances")
+}
+
+model Notification {
+  id             String   @id @default(cuid())
+  userId         String   @map("user_id")
+  title          String
+  message        String
+  type           String   @default("GENERAL") // GENERAL, EVENT_REMINDER, etc.
+  isRead         Boolean  @default(false) @map("is_read")
+  actionUrl      String?  @map("action_url")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+model Channel {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  type        String    @default("PUBLIC") // PUBLIC, PRIVATE, ANNOUNCEMENT, PRAYER
+  isActive    Boolean   @default(true) @map("is_active")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  messages    Message[]
+  members     ChannelMember[]
+
+  @@map("channels")
+}
+
+model ChannelMember {
+  id        String   @id @default(cuid())
+  channelId String   @map("channel_id")
+  userId    String   @map("user_id")
+  role      String   @default("MEMBER") // MEMBER, MODERATOR, ADMIN
+  joinedAt  DateTime @default(now()) @map("joined_at")
+
+  channel   Channel  @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([channelId, userId])
+  @@map("channel_members")
+}
+
+model MessageReaction {
+  id        String   @id @default(cuid())
+  messageId String   @map("message_id")
+  userId    String   @map("user_id")
+  emoji     String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  message   Message  @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([messageId, userId, emoji])
+  @@map("message_reactions")
+}

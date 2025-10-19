@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Sidebar Pasteur</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-case { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { background-color: #d4edda; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; border-color: #f5c6cb; }
+        button { padding: 10px 15px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Sidebar Pasteur</h1>
+    
+    <div class="test-case">
+        <h3>📋 Instructions de Test</h3>
+        <p><strong>Compte Pasteur :</strong></p>
+        <ul>
+            <li>Email: <code>pasteur.martin@vhd.com</code></li>
+            <li>Mot de passe: <code>pasteur123</code></li>
+        </ul>
+        
+        <p><strong>Étapes à tester :</strong></p>
+        <ol>
+            <li>Se connecter avec le compte pasteur</li>
+            <li>Aller dans "Gestion des Rendez-vous"</li>
+            <li>Plier la sidebar (clic sur menu hamburger)</li>
+            <li>Déplier la sidebar</li>
+            <li>Vérifier que les éléments de menu sont toujours visibles</li>
+            <li>Répéter le pliage/dépliage plusieurs fois</li>
+        </ol>
+    </div>
+
+    <div class="test-case">
+        <h3>✅ Comportement Attendu</h3>
+        <ul>
+            <li><strong>Mode Normal :</strong> Affiche le menu utilisateur standard (Accueil, Prédications, etc.)</li>
+            <li><strong>Mode Gestion Rendez-vous :</strong> Affiche uniquement le tableau de bord spécialisé pasteur</li>
+            <li><strong>Sidebar Toggle :</strong> Fonctionne dans les deux modes</li>
+            <li><strong>Responsive :</strong> Se plie/déplie correctement sur mobile et desktop</li>
+        </ul>
+    </div>
+
+    <div class="test-case">
+        <h3>🐛 Problèmes à Vérifier</h3>
+        <ul>
+            <li>La sidebar reste vide après pliage/dépliage</li>
+            <li>Les éléments de menu disparaissent</li>
+            <li>Le toggle ne fonctionne plus</li>
+            <li>L'affichage est cassé sur mobile</li>
+        </ul>
+    </div>
+
+    <div class="test-case">
+        <h3>🔗 Actions Rapides</h3>
+        <button onclick="window.open('/', '_blank')">🏠 Accueil Application</button>
+        <button onclick="testLogin()">🔑 Test Connexion Pasteur</button>
+        <button onclick="openDevTools()">🔧 Ouvrir DevTools</button>
+    </div>
+
+    <script>
+        function testLogin() {
+            // Ouvre la page d'accueil pour tester la connexion
+            const newWindow = window.open('/', '_blank');
+            setTimeout(() => {
+                alert('Connectez-vous avec:\n\nEmail: pasteur.martin@vhd.com\nMot de passe: pasteur123\n\nPuis testez la sidebar dans "Gestion des Rendez-vous"');
+            }, 1000);
+        }
+
+        function openDevTools() {
+            alert('Utilisez F12 ou Ctrl+Shift+I pour ouvrir les DevTools et surveiller les erreurs console');
+        }
+
+        // Auto-test de base
+        window.onload = function() {
+            console.log('🧪 Page de test chargée');
+            console.log('📊 Vérifiez que le serveur fonctionne sur http://localhost:3000');
+        }
+    </script>
+</body>
+</html>

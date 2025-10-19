@@ -1,0 +1,559 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                      String    @id @default(cuid())
+  firstName               String    @map("first_name") @db.VarChar(100)
+  lastName                String    @map("last_name") @db.VarChar(100)
+  email                   String    @unique @db.VarChar(255)
+  phone                   String?   @db.VarChar(20)
+  passwordHash            String    @map("password_hash") @db.VarChar(255)
+  role                    Role      @default(MEMBER)
+  status                  Status    @default(ACTIVE)
+  birthDate               DateTime? @map("birth_date") @db.Date
+  address                 String?   @db.Text
+  profileImageUrl         String?   @map("profile_image_url") @db.VarChar(500)
+  membershipDate          DateTime  @map("membership_date") @db.Date
+  membershipNumber        String?   @unique @map("membership_number") @db.VarChar(50)
+  emergencyContactName    String?   @map("emergency_contact_name") @db.VarChar(100)
+  emergencyContactPhone   String?   @map("emergency_contact_phone") @db.VarChar(20)
+  baptismDate            DateTime? @map("baptism_date") @db.Date
+  maritalStatus          MaritalStatus? @map("marital_status")
+  profession             String?   @db.VarChar(100)
+  createdAt              DateTime  @default(now()) @map("created_at")
+  updatedAt              DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  donations              Donation[]
+  appointments           Appointment[] @relation("UserAppointments")
+  pastorAppointments     Appointment[] @relation("PastorAppointments")
+  prayers                Prayer[]
+  testimonies            Testimony[]
+  attendances            Attendance[]
+  sermons                Sermon[]
+  eventsCreated          Event[] @relation("EventCreator")
+  eventsPastored         Event[] @relation("EventPastor")
+  notifications          Notification[]
+  prayerSupports         PrayerSupporter[]
+  testimonyComments      TestimonyComment[]
+  testimonyLikes         TestimonyLike[]
+  facialRecognitionData  FacialRecognitionData[]
+  sentMessages           ChatMessage[] @relation("MessageSender")
+  channelMemberships     ChatChannelMember[]
+
+  @@index([email])
+  @@map("users")
+}
+
+enum Role {
+  MEMBER
+  DEACON
+  PASTOR
+  ADMIN
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+  PENDING
+  SUSPENDED
+}
+
+enum MaritalStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
+}
+
+model Donation {
+  id                String         @id @default(cuid())
+  userId           String          @map("user_id")
+  amount           Decimal         @db.Decimal(10, 2)
+  donationType     DonationType    @map("donation_type")
+  paymentMethod    PaymentMethod   @map("payment_method")
+  paymentReference String?         @map("payment_reference") @db.VarChar(100)
+  donationDate     DateTime        @map("donation_date") @db.Date
+  status           DonationStatus  @default(COMPLETED)
+  projectId        String?         @map("project_id")
+  notes            String?         @db.Text
+  receiptNumber    String?         @unique @map("receipt_number") @db.VarChar(50)
+  isAnonymous      Boolean         @default(false) @map("is_anonymous")
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @updatedAt @map("updated_at")
+
+  // Relations
+  user             User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  project          DonationProject? @relation(fields: [projectId], references: [id])
+
+  @@index([userId])
+  @@index([donationDate])
+  @@map("donations")
+}
+
+model DonationProject {
+  id              String               @id @default(cuid())
+  projectName     String               @map("project_name") @db.VarChar(200)
+  description     String?              @db.Text
+  targetAmount    Decimal              @map("target_amount") @db.Decimal(15, 2)
+  currentAmount   Decimal              @default(0) @map("current_amount") @db.Decimal(15, 2)
+  startDate       DateTime?            @map("start_date") @db.Date
+  endDate         DateTime?            @map("end_date") @db.Date
+  status          ProjectStatus        @default(ACTIVE)
+  projectImageUrl String?              @map("project_image_url") @db.VarChar(500)
+  createdAt       DateTime             @default(now()) @map("created_at")
+  updatedAt       DateTime             @updatedAt @map("updated_at")
+
+  // Relations
+  donations       Donation[]
+
+  @@map("donation_projects")
+}
+
+model Event {
+  id                String            @id @default(cuid())
+  title             String            @db.VarChar(200)
+  description       String?           @db.Text
+  eventDate         DateTime          @map("event_date") @db.Date
+  startTime         DateTime          @map("start_time") @db.Time
+  endTime           DateTime?         @map("end_time") @db.Time
+  eventType         EventType         @map("event_type")
+  location          String?           @db.VarChar(200)
+  maxAttendees      Int?              @map("max_attendees")
+  currentAttendees  Int               @default(0) @map("current_attendees")
+  isRecurring       Boolean           @default(false) @map("is_recurring")
+  recurringPattern  String?           @map("recurring_pattern") @db.VarChar(100)
+  pastorId          String?           @map("pastor_id")
+  createdBy         String            @map("created_by")
+  eventImageUrl     String?           @map("event_image_url") @db.VarChar(500)
+  requiresRegistration Boolean        @default(false) @map("requires_registration")
+  status            EventStatus       @default(SCHEDULED)
+  createdAt         DateTime          @default(now()) @map("created_at")
+  updatedAt         DateTime          @updatedAt @map("updated_at")
+
+  // Relations
+  pastor            User?             @relation("EventPastor", fields: [pastorId], references: [id])
+  creator           User              @relation("EventCreator", fields: [createdBy], references: [id])
+  attendances       Attendance[]
+  sermons           Sermon[]
+
+  @@index([eventDate])
+  @@index([pastorId])
+  @@map("events")
+}
+
+model Sermon {
+  id              String            @id @default(cuid())
+  title           String            @db.VarChar(200)
+  preacherId      String            @map("preacher_id")
+  eventId         String?           @map("event_id")
+  sermonDate      DateTime          @map("sermon_date") @db.Date
+  sermonType      SermonType        @map("sermon_type")
+  durationMinutes Int?              @map("duration_minutes")
+  audioUrl        String?           @map("audio_url") @db.VarChar(500)
+  videoUrl        String?           @map("video_url") @db.VarChar(500)
+  thumbnailUrl    String?           @map("thumbnail_url") @db.VarChar(500)
+  description     String?           @db.Text
+  bibleVerses     String?           @map("bible_verses") @db.Text
+  sermonNotes     String?           @map("sermon_notes") @db.Text
+  downloadCount   Int               @default(0) @map("download_count")
+  viewCount       Int               @default(0) @map("view_count")
+  isPublished     Boolean           @default(true) @map("is_published")
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+
+  // Relations
+  preacher        User              @relation(fields: [preacherId], references: [id])
+  event           Event?            @relation(fields: [eventId], references: [id])
+
+  @@index([preacherId])
+  @@index([sermonDate])
+  @@map("sermons")
+}
+
+model Appointment {
+  id            String              @id @default(cuid())
+  userId        String              @map("user_id")
+  pastorId      String              @map("pastor_id")
+  appointmentDate DateTime          @map("appointment_date") @db.Date
+  startTime     DateTime            @map("start_time") @db.Time
+  endTime       DateTime            @map("end_time") @db.Time
+  reason        String              @db.Text
+  status        AppointmentStatus   @default(SCHEDULED)
+  notes         String?             @db.Text
+  location      String?             @db.VarChar(200)
+  isUrgent      Boolean             @default(false) @map("is_urgent")
+  reminderSent  Boolean             @default(false) @map("reminder_sent")
+  createdAt     DateTime            @default(now()) @map("created_at")
+  updatedAt     DateTime            @updatedAt @map("updated_at")
+
+  // Relations
+  user          User                @relation("UserAppointments", fields: [userId], references: [id], onDelete: Cascade)
+  pastor        User                @relation("PastorAppointments", fields: [pastorId], references: [id])
+
+  @@index([userId])
+  @@index([pastorId])
+  @@index([appointmentDate])
+  @@map("appointments")
+}
+
+model Prayer {
+  id            String         @id @default(cuid())
+  userId        String         @map("user_id")
+  title         String         @db.VarChar(200)
+  content       String         @db.Text
+  isPublic      Boolean        @default(true) @map("is_public")
+  isUrgent      Boolean        @default(false) @map("is_urgent")
+  isAnswered    Boolean        @default(false) @map("is_answered")
+  answeredDate  DateTime?      @map("answered_date") @db.Date
+  category      PrayerCategory @default(GENERAL)
+  supportCount  Int            @default(0) @map("support_count")
+  createdAt     DateTime       @default(now()) @map("created_at")
+  updatedAt     DateTime       @updatedAt @map("updated_at")
+
+  // Relations
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  supporters    PrayerSupporter[]
+
+  @@index([userId])
+  @@index([isPublic])
+  @@map("prayers")
+}
+
+model PrayerSupporter {
+  id        String   @id @default(cuid())
+  prayerId  String   @map("prayer_id")
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  prayer    Prayer   @relation(fields: [prayerId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([prayerId, userId])
+  @@map("prayer_supporters")
+}
+
+model Testimony {
+  id            String             @id @default(cuid())
+  userId        String             @map("user_id")
+  title         String             @db.VarChar(200)
+  content       String             @db.Text
+  isAnonymous   Boolean            @default(false) @map("is_anonymous")
+  isApproved    Boolean            @default(false) @map("is_approved")
+  approvedBy    String?            @map("approved_by")
+  approvedAt    DateTime?          @map("approved_at")
+  isPublic      Boolean            @default(true) @map("is_public")
+  likesCount    Int                @default(0) @map("likes_count")
+  commentsCount Int                @default(0) @map("comments_count")
+  category      TestimonyCategory  @default(HEALING)
+  imageUrl      String?            @map("image_url") @db.VarChar(500)
+  createdAt     DateTime           @default(now()) @map("created_at")
+  updatedAt     DateTime           @updatedAt @map("updated_at")
+
+  // Relations
+  user          User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments      TestimonyComment[]
+  likes         TestimonyLike[]
+
+  @@index([userId])
+  @@index([isApproved, isPublic])
+  @@map("testimonies")
+}
+
+model TestimonyComment {
+  id          String    @id @default(cuid())
+  testimonyId String    @map("testimony_id")
+  userId      String    @map("user_id")
+  content     String    @db.Text
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  testimony   Testimony @relation(fields: [testimonyId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([testimonyId])
+  @@map("testimony_comments")
+}
+
+model TestimonyLike {
+  id          String    @id @default(cuid())
+  testimonyId String    @map("testimony_id")
+  userId      String    @map("user_id")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  // Relations
+  testimony   Testimony @relation(fields: [testimonyId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([testimonyId, userId])
+  @@map("testimony_likes")
+}
+
+model Attendance {
+  id              String           @id @default(cuid())
+  userId          String           @map("user_id")
+  eventId         String           @map("event_id")
+  attendanceDate  DateTime         @map("attendance_date") @db.Date
+  checkInTime     DateTime?        @map("check_in_time") @db.Timestamptz(3)
+  checkOutTime    DateTime?        @map("check_out_time") @db.Timestamptz(3)
+  status          AttendanceStatus @default(PRESENT)
+  notes           String?          @db.Text
+  createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
+
+  // Relations
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event           Event            @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId, attendanceDate])
+  @@index([userId])
+  @@index([eventId])
+  @@map("attendances")
+}
+
+model Notification {
+  id          String             @id @default(cuid())
+  userId      String             @map("user_id")
+  title       String             @db.VarChar(200)
+  message     String             @db.Text
+  type        NotificationType   @default(GENERAL)
+  isRead      Boolean            @default(false) @map("is_read")
+  actionUrl   String?            @map("action_url") @db.VarChar(500)
+  createdAt   DateTime           @default(now()) @map("created_at")
+  readAt      DateTime?          @map("read_at")
+
+  // Relations
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+  @@map("notifications")
+}
+
+model FacialRecognitionData {
+  id          String   @id @default(cuid())
+  userId      String   @map("user_id")
+  faceData    String   @map("face_data") @db.Text
+  confidence  Decimal  @db.Decimal(5, 4)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("facial_recognition_data")
+}
+
+model ChatChannel {
+  id           String    @id @default(cuid())
+  name         String    @db.VarChar(100)
+  description  String?   @db.Text
+  type         ChannelType @default(PUBLIC)
+  createdBy    String    @map("created_by")
+  isArchived   Boolean   @default(false) @map("is_archived")
+  allowMessages Boolean  @default(true) @map("allow_messages")
+  allowFiles   Boolean   @default(true) @map("allow_files")
+  allowImages  Boolean   @default(true) @map("allow_images")
+  moderatorOnly Boolean  @default(false) @map("moderator_only")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  // Relations
+  messages     ChatMessage[]
+  members      ChatChannelMember[]
+
+  @@map("chat_channels")
+}
+
+model ChatChannelMember {
+  id        String   @id @default(cuid())
+  channelId String   @map("channel_id")
+  userId    String   @map("user_id")
+  joinedAt  DateTime @default(now()) @map("joined_at")
+  role      ChannelRole @default(MEMBER)
+
+  // Relations
+  channel   ChatChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([channelId, userId])
+  @@map("chat_channel_members")
+}
+
+model ChatMessage {
+  id           String      @id @default(cuid())
+  channelId    String      @map("channel_id")
+  senderId     String      @map("sender_id")
+  content      String      @db.Text
+  messageType  MessageType @default(TEXT) @map("message_type")
+  fileUrl      String?     @map("file_url") @db.VarChar(500)
+  fileName     String?     @map("file_name") @db.VarChar(255)
+  replyToId    String?     @map("reply_to_id")
+  isEdited     Boolean     @default(false) @map("is_edited")
+  editedAt     DateTime?   @map("edited_at")
+  isDeleted    Boolean     @default(false) @map("is_deleted")
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt @map("updated_at")
+
+  // Relations
+  channel      ChatChannel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  sender       User        @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  reactions    ChatReaction[]
+
+  @@index([channelId])
+  @@index([senderId])
+  @@map("chat_messages")
+}
+
+model ChatReaction {
+  id        String   @id @default(cuid())
+  messageId String   @map("message_id")
+  userId    String   @map("user_id")
+  emoji     String   @db.VarChar(10)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relations
+  message   ChatMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@unique([messageId, userId, emoji])
+  @@map("chat_reactions")
+}
+
+// Enums
+enum DonationType {
+  OFFERING
+  TITHE
+  FREEWILL
+  PROJECT
+  BUILDING
+  OTHER
+}
+
+enum PaymentMethod {
+  CASH
+  CARD
+  MOBILE_MONEY
+  BANK_TRANSFER
+  CHECK
+}
+
+enum DonationStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum ProjectStatus {
+  ACTIVE
+  COMPLETED
+  PAUSED
+  CANCELLED
+}
+
+enum EventType {
+  WORSHIP_SERVICE
+  PRAYER_MEETING
+  BIBLE_STUDY
+  YOUTH_MEETING
+  CONFERENCE
+  BAPTISM
+  WEDDING
+  FUNERAL
+  OUTREACH
+  OTHER
+}
+
+enum EventStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  POSTPONED
+}
+
+enum SermonType {
+  AUDIO
+  VIDEO
+  TEXT
+  LIVE_STREAM
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  RESCHEDULED
+}
+
+enum PrayerCategory {
+  HEALING
+  FAMILY
+  FINANCES
+  CAREER
+  RELATIONSHIPS
+  SPIRITUAL_GROWTH
+  GENERAL
+  URGENT
+}
+
+enum TestimonyCategory {
+  HEALING
+  SALVATION
+  BREAKTHROUGH
+  ANSWERED_PRAYER
+  SPIRITUAL_GROWTH
+  FAMILY_RESTORATION
+  FINANCIAL_BLESSING
+  OTHER
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
+}
+
+enum NotificationType {
+  GENERAL
+  EVENT_REMINDER
+  APPOINTMENT_REMINDER
+  PRAYER_REQUEST
+  TESTIMONY_APPROVED
+  DONATION_RECEIPT
+  SYSTEM_UPDATE
+}
+
+enum ChannelType {
+  PUBLIC
+  PRIVATE
+  ANNOUNCEMENT
+  PRAYER
+}
+
+enum ChannelRole {
+  MEMBER
+  MODERATOR
+  ADMIN
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  FILE
+  VOICE
+}
