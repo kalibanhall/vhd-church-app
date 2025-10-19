@@ -1,0 +1,59 @@
+╔══════════════════════════════════════════════════════════════════╗
+║                    🚀 VERCEL - VARIABLES D'ENVIRONNEMENT        ║
+║                  CHRIS NGOZULU KASONGO (KalibanHall)            ║
+╚══════════════════════════════════════════════════════════════════╝
+
+📋 ÉTAPES DANS VERCEL:
+1. Dashboard > Votre Projet > Settings > Environment Variables
+2. Cliquer "Add New" pour chaque variable ci-dessous
+3. Environment: "Production" pour toutes
+
+╔══════════════════════════════════════════════════════════════════╗
+║                           VARIABLES À COPIER                    ║
+╚══════════════════════════════════════════════════════════════════╝
+
+🗄️ Name: DATABASE_URL
+   Value: postgresql://postgres:temp123@db.temp.supabase.co:5432/postgres
+
+🔐 Name: JWT_SECRET  
+   Value: vhd-church-app-production-secret-2024-chris-ngozulu-kasongo-32chars
+
+🔑 Name: NEXTAUTH_SECRET
+   Value: nextauth-vhd-production-secret-kalibanhall-2024-ultra-secure-key
+
+🌐 Name: NEXTAUTH_URL
+   Value: https://vhd-church-app.vercel.app
+
+📱 Name: NEXT_PUBLIC_BASE_URL
+   Value: https://vhd-church-app.vercel.app
+
+📁 Name: NEXT_PUBLIC_UPLOAD_URL
+   Value: https://vhd-church-app.vercel.app
+
+📊 Name: NEXT_PUBLIC_MAX_FILE_SIZE
+   Value: 10485760
+
+🏭 Name: NODE_ENV
+   Value: production
+
+╔══════════════════════════════════════════════════════════════════╗
+║                        ⚠️ IMPORTANT                             ║
+╚══════════════════════════════════════════════════════════════════╝
+
+⚡ DATABASE_URL est temporaire - sera mise à jour avec Supabase
+⚡ NEXTAUTH_URL sera votre vraie URL Vercel après déploiement
+⚡ Après configuration: Cliquer "Deploy" dans Vercel
+
+╔══════════════════════════════════════════════════════════════════╗
+║                      🎯 APRÈS DÉPLOIEMENT                       ║
+╚══════════════════════════════════════════════════════════════════╝
+
+✅ Tester l'URL temporaire Vercel
+🔄 Configurer Supabase PostgreSQL  
+🔄 Mettre à jour DATABASE_URL
+🔄 Acheter www.vhd.app si tout fonctionne
+
+═══════════════════════════════════════════════════════════════════
+Support: CHRIS NGOZULU KASONGO (KalibanHall)
+GitHub: https://github.com/kalibanhall/vhd-church-app
+═══════════════════════════════════════════════════════════════════
