@@ -5,9 +5,11 @@
   "scripts": {
     "dev": "next dev",
     "dev:network": "next dev -H 0.0.0.0",
-    "build": "next build",
+    "build": "prisma generate && next build",
+    "build:vercel": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
+    "postinstall": "prisma generate",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:pull": "prisma db pull",

@@ -1,0 +1,30 @@
+# 🎯 NOMS VERCEL SUGGESTIONS AVEC VARIABLES MISES À JOUR
+
+## OPTION 1: vhd-church-app (RECOMMANDÉE)
+NEXTAUTH_URL=https://vhd-church-app.vercel.app
+NEXT_PUBLIC_BASE_URL=https://vhd-church-app.vercel.app
+NEXT_PUBLIC_UPLOAD_URL=https://vhd-church-app.vercel.app
+
+## OPTION 2: vhd-church-management  
+NEXTAUTH_URL=https://vhd-church-management.vercel.app
+NEXT_PUBLIC_BASE_URL=https://vhd-church-management.vercel.app
+NEXT_PUBLIC_UPLOAD_URL=https://vhd-church-management.vercel.app
+
+## OPTION 3: vhd-church
+NEXTAUTH_URL=https://vhd-church.vercel.app
+NEXT_PUBLIC_BASE_URL=https://vhd-church.vercel.app
+NEXT_PUBLIC_UPLOAD_URL=https://vhd-church.vercel.app
+
+## OPTION 4: kalibanhall-vhd-church
+NEXTAUTH_URL=https://kalibanhall-vhd-church.vercel.app
+NEXT_PUBLIC_BASE_URL=https://kalibanhall-vhd-church.vercel.app
+NEXT_PUBLIC_UPLOAD_URL=https://kalibanhall-vhd-church.vercel.app
+
+## OPTION 5: vhd-church-2024
+NEXTAUTH_URL=https://vhd-church-2024.vercel.app
+NEXT_PUBLIC_BASE_URL=https://vhd-church-2024.vercel.app
+NEXT_PUBLIC_UPLOAD_URL=https://vhd-church-2024.vercel.app
+
+═══════════════════════════════════════════════════
+✨ CONSEIL: Utilisez "vhd-church-app" pour la cohérence !
+═══════════════════════════════════════════════════

@@ -23,12 +23,15 @@
 
 🌐 Name: NEXTAUTH_URL
    Value: https://vhd-church-app.vercel.app
+   (⚠️ ATTENTION: Remplacer "vhd-church-app" par votre nom Vercel choisi)
 
 📱 Name: NEXT_PUBLIC_BASE_URL
    Value: https://vhd-church-app.vercel.app
+   (⚠️ ATTENTION: Remplacer "vhd-church-app" par votre nom Vercel choisi)
 
 📁 Name: NEXT_PUBLIC_UPLOAD_URL
    Value: https://vhd-church-app.vercel.app
+   (⚠️ ATTENTION: Remplacer "vhd-church-app" par votre nom Vercel choisi)
 
 📊 Name: NEXT_PUBLIC_MAX_FILE_SIZE
    Value: 10485760

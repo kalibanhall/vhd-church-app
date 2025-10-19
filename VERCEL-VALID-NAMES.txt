@@ -1,0 +1,57 @@
+# 🔧 NOMS VERCEL VALIDES - VARIABLES CORRIGÉES
+# 🎯 CHRIS NGOZULU KASONGO (KalibanHall)
+
+## ⚠️ RÈGLES VERCEL:
+- ❌ PAS de tirets (-)
+- ✅ Lettres, chiffres, underscores (_) seulement
+- ❌ PAS commencer par un chiffre
+
+╔══════════════════════════════════════════════════════════════════╗
+║                    OPTION 1: vhd_church_app (RECOMMANDÉE)       ║
+╚══════════════════════════════════════════════════════════════════╝
+
+NEXTAUTH_URL=https://vhd-church-app.vercel.app
+NEXT_PUBLIC_BASE_URL=https://vhd-church-app.vercel.app
+NEXT_PUBLIC_UPLOAD_URL=https://vhd-church-app.vercel.app
+
+╔══════════════════════════════════════════════════════════════════╗
+║                    OPTION 2: vhdchurchapp                       ║
+╚══════════════════════════════════════════════════════════════════╝
+
+NEXTAUTH_URL=https://vhdchurchapp.vercel.app
+NEXT_PUBLIC_BASE_URL=https://vhdchurchapp.vercel.app
+NEXT_PUBLIC_UPLOAD_URL=https://vhdchurchapp.vercel.app
+
+╔══════════════════════════════════════════════════════════════════╗
+║                    OPTION 3: kalibanhall_vhd_church             ║
+╚══════════════════════════════════════════════════════════════════╝
+
+NEXTAUTH_URL=https://kalibanhall-vhd-church.vercel.app
+NEXT_PUBLIC_BASE_URL=https://kalibanhall-vhd-church.vercel.app
+NEXT_PUBLIC_UPLOAD_URL=https://kalibanhall-vhd-church.vercel.app
+
+╔══════════════════════════════════════════════════════════════════╗
+║                    OPTION 4: vhdchurch                          ║
+╚══════════════════════════════════════════════════════════════════╝
+
+NEXTAUTH_URL=https://vhdchurch.vercel.app
+NEXT_PUBLIC_BASE_URL=https://vhdchurch.vercel.app
+NEXT_PUBLIC_UPLOAD_URL=https://vhdchurch.vercel.app
+
+╔══════════════════════════════════════════════════════════════════╗
+║                    OPTION 5: vhd_church_2024                    ║
+╚══════════════════════════════════════════════════════════════════╝
+
+NEXTAUTH_URL=https://vhd-church-2024.vercel.app
+NEXT_PUBLIC_BASE_URL=https://vhd-church-2024.vercel.app
+NEXT_PUBLIC_UPLOAD_URL=https://vhd-church-2024.vercel.app
+
+═══════════════════════════════════════════════════════════════════
+🎯 CONSEIL: Choisissez "vhd_church_app" ou "vhdchurchapp"
+═══════════════════════════════════════════════════════════════════
+
+📋 ÉTAPES:
+1. Choisir un nom ci-dessus
+2. Dans Vercel, utiliser ce nom pour "Project Name"
+3. Copier les 3 variables URL correspondantes
+4. Configurer toutes les autres variables normalement
