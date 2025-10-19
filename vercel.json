@@ -1,0 +1,19 @@
+{
+  "name": "vhd-church-app",
+  "version": 3,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "regions": ["fra1"],
+  "functions": {
+    "src/app/api/**": {
+      "maxDuration": 30
+    }
+  }
+}
