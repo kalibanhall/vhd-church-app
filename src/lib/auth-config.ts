@@ -4,12 +4,12 @@ export const AUTH_CONFIG = {
     name: 'auth-token',
     options: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production' || process.env.SECURE_COOKIES === 'true',
+      secure: false, // Désactivé pour le développement local
       sameSite: 'lax' as const,
       maxAge: 7 * 24 * 60 * 60, // 7 jours
       path: '/',
       // Pour la production sur domaine personnalisé
-      domain: process.env.NODE_ENV === 'production' ? undefined : undefined
+      domain: undefined
     }
   },
   jwt: {

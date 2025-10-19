@@ -37,6 +37,10 @@ export async function POST(request: NextRequest) {
     // Hasher le mot de passe
     const passwordHash = await bcrypt.hash(password, 10)
 
+    // Vérifier s'il y a déjà des utilisateurs dans la base
+    const userCount = await prisma.user.count()
+    const isFirstUser = userCount === 0
+
     // Créer l'utilisateur
     const user = await prisma.user.create({
       data: {
@@ -45,10 +49,12 @@ export async function POST(request: NextRequest) {
         firstName,
         lastName,
         phone: phone || null,
-        role: 'MEMBER', // Par défaut, les nouveaux utilisateurs sont des membres
-        status: 'PENDING', // En attente d'approbation par un admin
+        role: isFirstUser ? 'ADMIN' : 'MEMBER', // Le premier utilisateur est automatiquement admin
+        status: isFirstUser ? 'ACTIVE' : 'PENDING', // Premier utilisateur actif, autres en attente
         membershipDate: new Date(),
-        membershipNumber: `MEM${Date.now().toString().slice(-6)}` // Numéro unique
+        membershipNumber: isFirstUser 
+          ? `ADM${Date.now().toString().slice(-6)}` 
+          : `MEM${Date.now().toString().slice(-6)}`
       }
     })
 
@@ -72,10 +78,14 @@ export async function POST(request: NextRequest) {
       message: 'Compte créé avec succès. En attente d\'approbation par un administrateur.'
     })
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Erreur d\'inscription:', error)
     return NextResponse.json(
-      { error: 'Erreur interne du serveur' },
+      { 
+        error: 'Erreur interne du serveur',
+        details: error.message || 'Erreur inconnue',
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      },
       { status: 500 }
     )
   }
