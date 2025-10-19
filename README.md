@@ -2,7 +2,9 @@
 
 > Une solution complète pour la gestion moderne du Ministère des Vaillants Hommes de David
 
-Développée par **Chris Ngozulu Kasongo** ([@kalibanhall](https://github.com/kalibanhall))
+**🌐 Application en ligne :** [www.vhd.app](https://www.vhd.app)  
+**👨‍💻 Développée par :** Chris Ngozulu Kasongo ([@kalibanhall](https://github.com/kalibanhall))  
+**🔗 Code source :** [GitHub Repository](https://github.com/kalibanhall/vhd-church-app)
 
 ---
 
@@ -15,6 +17,8 @@ En tant que développeur passionné par l'innovation technologique au service de
 - Digitaliser le suivi des membres et de leurs besoins spirituels  
 - Faciliter la communication interne et le partage de témoignages
 - Moderniser la gestion des dons et contributions
+
+**📱 Accessible partout :** L'application est déployée sur [www.vhd.app](https://www.vhd.app) et fonctionne sur tous les appareils.
 
 ## 🔨 Ce que j'ai construit
 
@@ -40,18 +44,38 @@ En tant que développeur passionné par l'innovation technologique au service de
 - Analytics et rapports
 - Système de notifications
 
-## � Stack Technique & Choix d'Architecture
+## 🚀 Architecture & Infrastructure
 
-J'ai opté pour des technologies modernes et éprouvées :
+### Stack Technique
+```
+Frontend       │ Next.js 15 + React + TypeScript
+Styling        │ Tailwind CSS (design system custom)
+Backend        │ API Routes Next.js + Prisma ORM  
+Base de données│ SQLite (dev) → PostgreSQL (production)
+Hébergement    │ Vercel (www.vhd.app)
+Auth           │ JWT avec middleware custom
+UI             │ Composants maison + Lucide React
+```
 
-```
-Frontend     │ Next.js 15 + React + TypeScript
-Styling      │ Tailwind CSS (design system custom)
-Backend      │ API Routes Next.js + Prisma ORM  
-Base de données │ SQLite (développement) → PostgreSQL (production)
-Auth         │ JWT avec middleware custom
-UI           │ Composants maison + Lucide React
-```
+### Gestion Multi-Environnements
+L'application s'adapte automatiquement à son environnement :
+
+**🛠️ Développement (Local)**
+- Base de données SQLite locale
+- Hot reload avec Next.js dev server
+- Logs détaillés pour le debugging
+
+**🚀 Production (www.vhd.app)**  
+- Base de données PostgreSQL (Supabase)
+- Déploiement automatique via GitHub → Vercel
+- Optimisations de performance activées
+- Monitoring et analytics intégrés
+
+### Migration Automatique
+Le script `setup-environment.js` détecte automatiquement l'environnement et :
+- Applique le bon schéma de base de données
+- Valide les variables d'environnement  
+- Configure les optimisations appropriées
 
 **Pourquoi ces choix ?**
 - **Next.js 15** : Performance, SEO, et déploiement simplifié
@@ -59,7 +83,15 @@ UI           │ Composants maison + Lucide React
 - **Prisma** : ORM moderne avec excellent DevX
 - **Tailwind** : Rapidité de développement avec design cohérent
 
-## ⚡ Démarrage Rapide
+## ⚡ Démarrage
+
+### 🌐 Version Production (Recommandée)
+L'application est déjà en ligne et prête à utiliser :  
+**👉 [www.vhd.app](https://www.vhd.app)**
+
+### 🛠️ Développement Local
+
+Pour contribuer au projet ou personnaliser l'application :
 
 ```bash
 # Cloner le projet
@@ -68,6 +100,9 @@ cd vhd-church-app
 
 # Installer les dépendances
 npm install
+
+# Configuration automatique de l'environnement
+node setup-environment.js
 
 # Configuration de la base de données
 npx prisma generate
@@ -79,15 +114,33 @@ npm run dev
 
 L'application sera accessible sur `http://localhost:3000`
 
+### � Migration vers Production
+
+Pour déployer votre propre instance :
+
+1. **Fork le repository** sur GitHub
+2. **Créer un projet Supabase** pour la base PostgreSQL
+3. **Déployer sur Vercel** avec les variables d'environnement
+4. **Configurer le domaine** personnalisé
+
 ## 🔐 Variables d'Environnement
 
-Créer un fichier `.env.local` :
-
+### Développement Local (.env.local)
 ```bash
 DATABASE_URL="file:./database.db"
-JWT_SECRET="votre-secret-jwt-securise"
+JWT_SECRET="votre-secret-jwt-securise-local"
 NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="votre-secret-nextauth"
+NEXTAUTH_SECRET="votre-secret-nextauth-local"
+```
+
+### Production (Vercel/Supabase)
+```bash
+DATABASE_URL="postgresql://user:password@host:5432/database"
+JWT_SECRET="votre-secret-jwt-production-32-chars-minimum"
+NEXTAUTH_URL="https://www.vhd.app"
+NEXTAUTH_SECRET="votre-secret-nextauth-production"
+SUPABASE_URL="https://your-project.supabase.co"
+SUPABASE_ANON_KEY="your-anon-key"
 ```
 
 3. **Configuration de la base de données**

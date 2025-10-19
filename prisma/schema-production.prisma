@@ -1,0 +1,452 @@
+/**
+ * =============================================================================
+ * SCHEMA PRISMA PRODUCTION - POSTGRESQL
+ * =============================================================================
+ * 
+ * Auteur: CHRIS NGOZULU KASONGO (KalibanHall)
+ * GitHub: https://github.com/KalibanHall
+ * 
+ * Description: Schema optimisé pour la production avec PostgreSQL/Supabase
+ * Utilisé automatiquement quand DATABASE_URL pointe vers PostgreSQL
+ * 
+ * =============================================================================
+ */
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums natifs PostgreSQL pour de meilleures performances
+enum UserRole {
+  FIDELE
+  OUVRIER
+  PASTEUR
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  PENDING
+  SUSPENDED
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  RESCHEDULED
+}
+
+enum DonationType {
+  DIME
+  OFFERING
+  SPECIAL
+  BUILDING
+  MISSION
+}
+
+enum NotificationType {
+  APPOINTMENT
+  PRAYER
+  TESTIMONY
+  EVENT
+  DONATION
+  SERMON
+  GENERAL
+  EVENT_REMINDER
+}
+
+// Modèle principal pour les utilisateurs/membres de l'église
+model User {
+  id                      String    @id @default(cuid())
+  firstName               String    @map("first_name")
+  lastName                String    @map("last_name")
+  email                   String    @unique
+  phone                   String?
+  passwordHash            String    @map("password_hash")
+  role                    UserRole  @default(FIDELE)
+  status                  UserStatus @default(ACTIVE)
+  birthDate               DateTime? @map("birth_date")
+  address                 String?
+  profileImageUrl         String?   @map("profile_image_url")
+  membershipDate          DateTime  @map("membership_date")
+  membershipNumber        String?   @unique @map("membership_number")
+  emergencyContactName    String?   @map("emergency_contact_name")
+  emergencyContactPhone   String?   @map("emergency_contact_phone")
+  baptismDate             DateTime? @map("baptism_date")
+  maritalStatus           String?   @map("marital_status")
+  profession              String?
+  createdAt               DateTime  @default(now()) @map("created_at")
+  updatedAt               DateTime  @updatedAt @map("updated_at")
+
+  // Relations optimisées avec indexes
+  donations               Donation[]
+  createdEvents           Event[]          @relation("EventCreator")
+  animatedEvents          Event[]          @relation("EventPastor")
+  eventAttendances        EventAttendance[]
+  sermons                 Sermon[]
+  appointments            Appointment[]    @relation("UserAppointments")
+  pastorAppointments      Appointment[]    @relation("PastorAppointments")
+  prayers                 Prayer[]
+  prayerSupports          PrayerSupport[]
+  testimonies             Testimony[]
+  testimonyLikes          TestimonyLike[]
+  testimonyComments       TestimonyComment[]
+  messages                Message[]
+  notifications           Notification[]
+  polls                   Poll[]
+  pollVotes               PollVote[]
+  channelMemberships      ChannelMembership[]
+  messageReactions        MessageReaction[]
+  sentNotifications       SentNotification[]
+  scheduledNotifications  ScheduledNotification[]
+  pastorAvailability      PastorAvailability[]
+  pastorUnavailability    PastorUnavailability[]
+
+  @@map("users")
+  @@index([email])
+  @@index([role])
+  @@index([status])
+  @@index([membershipNumber])
+}
+
+// Modèle pour les rendez-vous avec indexes optimisés
+model Appointment {
+  id              String            @id @default(cuid())
+  userId          String            @map("user_id")
+  pastorId        String            @map("pastor_id")
+  appointmentDate DateTime          @map("appointment_date")
+  startTime       DateTime          @map("start_time")
+  endTime         DateTime          @map("end_time")
+  reason          String
+  status          AppointmentStatus @default(SCHEDULED)
+  notes           String?
+  location        String?
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+
+  // Relations
+  user            User              @relation("UserAppointments", fields: [userId], references: [id], onDelete: Cascade)
+  pastor          User              @relation("PastorAppointments", fields: [pastorId], references: [id])
+
+  @@map("appointments")
+  @@index([userId])
+  @@index([pastorId])
+  @@index([appointmentDate])
+  @@index([status])
+}
+
+// Modèle pour les notifications avec types énumérés
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String           @map("user_id")
+  title     String
+  message   String
+  type      NotificationType
+  isRead    Boolean          @default(false) @map("is_read")
+  actionUrl String?          @map("action_url")
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  // Relations
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+  @@index([userId])
+  @@index([type])
+  @@index([isRead])
+  @@index([createdAt])
+}
+
+// Modèle pour les dons avec types énumérés
+model Donation {
+  id          String       @id @default(cuid())
+  userId      String       @map("user_id")
+  amount      Float
+  currency    String       @default("CDF")
+  type        DonationType
+  description String?
+  isAnonymous Boolean      @default(false) @map("is_anonymous")
+  createdAt   DateTime     @default(now()) @map("created_at")
+
+  // Relations
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("donations")
+  @@index([userId])
+  @@index([type])
+  @@index([createdAt])
+}
+
+// Modèle pour les prières
+model Prayer {
+  id          String          @id @default(cuid())
+  userId      String          @map("user_id")
+  title       String
+  content     String
+  isPrivate   Boolean         @default(false) @map("is_private")
+  isAnswered  Boolean         @default(false) @map("is_answered")
+  createdAt   DateTime        @default(now()) @map("created_at")
+  updatedAt   DateTime        @updatedAt @map("updated_at")
+
+  // Relations
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  supports    PrayerSupport[]
+
+  @@map("prayers")
+  @@index([userId])
+  @@index([isPrivate])
+  @@index([isAnswered])
+  @@index([createdAt])
+}
+
+// Modèle pour les témoignages
+model Testimony {
+  id        String             @id @default(cuid())
+  userId    String             @map("user_id")
+  title     String
+  content   String
+  isApproved Boolean           @default(false) @map("is_approved")
+  createdAt DateTime           @default(now()) @map("created_at")
+  updatedAt DateTime           @updatedAt @map("updated_at")
+
+  // Relations
+  user      User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes     TestimonyLike[]
+  comments  TestimonyComment[]
+
+  @@map("testimonies")
+  @@index([userId])
+  @@index([isApproved])
+  @@index([createdAt])
+}
+
+// Autres modèles simplifiés pour l'exemple...
+model PrayerSupport {
+  id       String  @id @default(cuid())
+  userId   String  @map("user_id")
+  prayerId String  @map("prayer_id")
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  prayer   Prayer  @relation(fields: [prayerId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, prayerId])
+  @@map("prayer_supports")
+}
+
+model TestimonyLike {
+  id          String    @id @default(cuid())
+  userId      String    @map("user_id")
+  testimonyId String    @map("testimony_id")
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  testimony   Testimony @relation(fields: [testimonyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, testimonyId])
+  @@map("testimony_likes")
+}
+
+model TestimonyComment {
+  id          String    @id @default(cuid())
+  userId      String    @map("user_id")
+  testimonyId String    @map("testimony_id")
+  content     String
+  createdAt   DateTime  @default(now()) @map("created_at")
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  testimony   Testimony @relation(fields: [testimonyId], references: [id], onDelete: Cascade)
+
+  @@map("testimony_comments")
+  @@index([testimonyId])
+  @@index([createdAt])
+}
+
+// Modèles pour les fonctionnalités étendues
+model Event {
+  id            String            @id @default(cuid())
+  title         String
+  description   String?
+  startDate     DateTime          @map("start_date")
+  endDate       DateTime?         @map("end_date")
+  location      String?
+  creatorId     String            @map("creator_id")
+  pastorId      String?           @map("pastor_id")
+  isPublic      Boolean           @default(true) @map("is_public")
+  createdAt     DateTime          @default(now()) @map("created_at")
+
+  creator       User              @relation("EventCreator", fields: [creatorId], references: [id])
+  pastor        User?             @relation("EventPastor", fields: [pastorId], references: [id])
+  attendances   EventAttendance[]
+
+  @@map("events")
+  @@index([startDate])
+  @@index([creatorId])
+}
+
+model EventAttendance {
+  id      String @id @default(cuid())
+  userId  String @map("user_id")
+  eventId String @map("event_id")
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, eventId])
+  @@map("event_attendances")
+}
+
+model Sermon {
+  id          String    @id @default(cuid())
+  title       String
+  description String?
+  videoUrl    String?   @map("video_url")
+  audioUrl    String?   @map("audio_url")
+  preacherId  String    @map("preacher_id")
+  date        DateTime
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  preacher    User      @relation(fields: [preacherId], references: [id])
+
+  @@map("sermons")
+  @@index([date])
+  @@index([preacherId])
+}
+
+model Poll {
+  id          String     @id @default(cuid())
+  title       String
+  description String?
+  options     String[]
+  creatorId   String     @map("creator_id")
+  isActive    Boolean    @default(true) @map("is_active")
+  expiresAt   DateTime?  @map("expires_at")
+  createdAt   DateTime   @default(now()) @map("created_at")
+
+  creator     User       @relation(fields: [creatorId], references: [id])
+  votes       PollVote[]
+
+  @@map("polls")
+  @@index([creatorId])
+  @@index([isActive])
+}
+
+model PollVote {
+  id       String @id @default(cuid())
+  userId   String @map("user_id")
+  pollId   String @map("poll_id")
+  option   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  poll     Poll   @relation(fields: [pollId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, pollId])
+  @@map("poll_votes")
+}
+
+// Modèles pour le chat
+model Channel {
+  id          String              @id @default(cuid())
+  name        String
+  description String?
+  isPrivate   Boolean             @default(false) @map("is_private")
+  createdAt   DateTime            @default(now()) @map("created_at")
+
+  messages    Message[]
+  memberships ChannelMembership[]
+
+  @@map("channels")
+}
+
+model ChannelMembership {
+  id        String  @id @default(cuid())
+  userId    String  @map("user_id")
+  channelId String  @map("channel_id")
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  channel   Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, channelId])
+  @@map("channel_memberships")
+}
+
+model Message {
+  id        String            @id @default(cuid())
+  content   String
+  userId    String            @map("user_id")
+  channelId String            @map("channel_id")
+  expiresAt DateTime?         @map("expires_at")
+  createdAt DateTime          @default(now()) @map("created_at")
+
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  channel   Channel           @relation(fields: [channelId], references: [id], onDelete: Cascade)
+  reactions MessageReaction[]
+
+  @@map("messages")
+  @@index([channelId])
+  @@index([createdAt])
+}
+
+model MessageReaction {
+  id        String  @id @default(cuid())
+  userId    String  @map("user_id")
+  messageId String  @map("message_id")
+  emoji     String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  message   Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, messageId, emoji])
+  @@map("message_reactions")
+}
+
+// Modèles pour les notifications avancées
+model SentNotification {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  title     String
+  message   String
+  sentAt    DateTime @default(now()) @map("sent_at")
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sent_notifications")
+  @@index([userId])
+}
+
+model ScheduledNotification {
+  id          String   @id @default(cuid())
+  userId      String   @map("user_id")
+  title       String
+  message     String
+  scheduledAt DateTime @map("scheduled_at")
+  isSent      Boolean  @default(false) @map("is_sent")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("scheduled_notifications")
+  @@index([userId])
+  @@index([scheduledAt])
+}
+
+// Modèles pour la gestion pastorale
+model PastorAvailability {
+  id        String   @id @default(cuid())
+  pastorId  String   @map("pastor_id")
+  dayOfWeek Int      @map("day_of_week") // 0-6 (Dimanche-Samedi)
+  startTime String   @map("start_time")  // Format HH:mm
+  endTime   String   @map("end_time")    // Format HH:mm
+  isActive  Boolean  @default(true) @map("is_active")
+  pastor    User     @relation(fields: [pastorId], references: [id], onDelete: Cascade)
+
+  @@map("pastor_availability")
+  @@index([pastorId])
+}
+
+model PastorUnavailability {
+  id       String   @id @default(cuid())
+  pastorId String   @map("pastor_id")
+  date     DateTime
+  reason   String?
+  pastor   User     @relation(fields: [pastorId], references: [id], onDelete: Cascade)
+
+  @@map("pastor_unavailability")
+  @@index([pastorId])
+  @@index([date])
+}
