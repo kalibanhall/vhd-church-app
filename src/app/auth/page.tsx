@@ -13,6 +13,7 @@ export default function AuthPage() {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    confirmPassword: '',
     firstName: '',
     lastName: '',
     phone: '',
@@ -47,6 +48,20 @@ export default function AuthPage() {
     setLoading(true)
     setError('')
 
+    // Validation pour l'inscription
+    if (!isLogin) {
+      if (formData.password !== formData.confirmPassword) {
+        setError('Les mots de passe ne correspondent pas')
+        setLoading(false)
+        return
+      }
+      if (formData.password.length < 6) {
+        setError('Le mot de passe doit contenir au moins 6 caractères')
+        setLoading(false)
+        return
+      }
+    }
+
     try {
       const endpoint = isLogin ? '/api/auth/login' : '/api/auth/register'
       const response = await fetch(endpoint, {
@@ -66,7 +81,7 @@ export default function AuthPage() {
           router.push('/')
         } else {
           setIsLogin(true)
-        setFormData({ ...formData, password: '', rememberMe: false })
+        setFormData({ ...formData, password: '', confirmPassword: '', rememberMe: false })
         setError('Inscription réussie ! Vous pouvez maintenant vous connecter.')
         }
       } else {
@@ -257,6 +272,48 @@ export default function AuthPage() {
               </div>
             </div>
 
+            {!isLogin && (
+              <div>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                  Confirmer le mot de passe
+                </label>
+                <div className="relative">
+                  <input
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                    required
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    className={`w-full px-4 py-3 pr-12 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition-all ${
+                      formData.confirmPassword && formData.password !== formData.confirmPassword 
+                        ? 'border-red-300 focus:ring-red-500 bg-red-50' 
+                        : 'border-gray-300 focus:ring-blue-500'
+                    }`}
+                    placeholder=""
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                    title={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
+                {formData.confirmPassword && formData.password !== formData.confirmPassword && (
+                  <p className="mt-2 text-sm text-red-600">
+                    Les mots de passe ne correspondent pas
+                  </p>
+                )}
+              </div>
+            )}
+
             {isLogin && (
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
@@ -305,7 +362,7 @@ export default function AuthPage() {
               onClick={() => {
                 setIsLogin(!isLogin)
                 setError('')
-                setFormData({ email: '', password: '', firstName: '', lastName: '', phone: '', rememberMe: false })
+                setFormData({ email: '', password: '', confirmPassword: '', firstName: '', lastName: '', phone: '', rememberMe: false })
               }}
               className="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors"
             >
