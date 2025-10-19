@@ -75,10 +75,14 @@ export async function POST(request: NextRequest) {
 
     return setAuthCookie(response, token, rememberMe)
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Erreur de connexion:', error)
     return NextResponse.json(
-      { error: 'Erreur interne du serveur' },
+      { 
+        error: 'Erreur interne du serveur',
+        details: error.message || 'Erreur inconnue',
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      },
       { status: 500 }
     )
   }
