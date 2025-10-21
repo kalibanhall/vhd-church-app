@@ -49,35 +49,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
     localStorage.removeItem('user')
     localStorage.removeItem('token') // Nettoyage pour compatibilité
-    localStorage.removeItem('adminAccess') // Nettoyage accès admin direct
-    localStorage.removeItem('simpleAuth') // Nettoyage auth simplifiée
-    localStorage.removeItem('accessTime') // Nettoyage timestamp
   }
 
   const checkAuth = async () => {
     try {
       console.log('🔍 AuthContext: Vérification de l\'authentification...')
       
-      // Vérifier d'abord l'accès admin direct
-      const adminAccess = localStorage.getItem('adminAccess')
-      const simpleAuth = localStorage.getItem('simpleAuth')
-      const userStorage = localStorage.getItem('user')
-      
-      if ((adminAccess === 'true' || simpleAuth === 'true') && userStorage) {
-        try {
-          const userData = JSON.parse(userStorage)
-          if (userData.email && userData.role) {
-            console.log('✅ AuthContext: Accès direct détecté -', adminAccess ? 'Admin' : 'Simple Auth')
-            setUser(userData)
-            setIsLoading(false)
-            return
-          }
-        } catch (error) {
-          console.error('Erreur parsing user data:', error)
-        }
-      }
-      
-      // Sinon, vérification normale via API
+      // Vérification via API
       const response = await fetch('/api/auth/me', {
         method: 'GET',
         credentials: 'include'
