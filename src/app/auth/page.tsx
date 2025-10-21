@@ -377,6 +377,16 @@ export default function AuthPage() {
             <p className="text-xs italic text-blue-600 font-medium">
               Où Dieu convertit le POTENTIEL en l'EXTRAORDINAIRE
             </p>
+            
+            {/* Lien admin discret */}
+            <div className="mt-4 pt-3 border-t border-gray-100">
+              <a 
+                href="/admin-access" 
+                className="text-xs text-gray-400 hover:text-blue-600 transition-colors"
+              >
+                🔐 Accès Administration
+              </a>
+            </div>
           </footer>
         </div>
       </div>

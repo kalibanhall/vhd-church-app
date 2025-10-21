@@ -49,11 +49,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null)
     localStorage.removeItem('user')
     localStorage.removeItem('token') // Nettoyage pour compatibilité
+    localStorage.removeItem('adminAccess') // Nettoyage accès admin direct
+    localStorage.removeItem('accessTime') // Nettoyage timestamp
   }
 
   const checkAuth = async () => {
     try {
       console.log('🔍 AuthContext: Vérification de l\'authentification...')
+      
+      // Vérifier d'abord l'accès admin direct
+      const adminAccess = localStorage.getItem('adminAccess')
+      const userStorage = localStorage.getItem('user')
+      
+      if (adminAccess === 'true' && userStorage) {
+        try {
+          const userData = JSON.parse(userStorage)
+          if (userData.email === 'admin@vhd.app' && userData.role === 'ADMIN') {
+            console.log('✅ AuthContext: Accès admin direct détecté')
+            setUser(userData)
+            setIsLoading(false)
+            return
+          }
+        } catch (error) {
+          console.error('Erreur parsing admin data:', error)
+        }
+      }
+      
+      // Sinon, vérification normale via API
       const response = await fetch('/api/auth/me', {
         method: 'GET',
         credentials: 'include'
