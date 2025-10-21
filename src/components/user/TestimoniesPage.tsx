@@ -66,7 +66,9 @@ export default function TestimoniesPage() {
         ...(activeTab === 'all' && { status: 'approved' })
       })
 
-      const response = await fetch(`/api/testimonies?${params}`)
+      const response = await fetch(`/api/testimonies?${params}`, {
+        credentials: 'include'
+      })
       if (response.ok) {
         const data = await response.json()
         setTestimonies(data)
@@ -88,6 +90,7 @@ export default function TestimoniesPage() {
         headers: {
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(newTestimony)
       })
 
@@ -108,7 +111,8 @@ export default function TestimoniesPage() {
 
     try {
       const response = await fetch(`/api/testimonies/like?userId=${user.id}&testimonyId=${testimonyId}`, {
-        method: 'POST'
+        method: 'POST',
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -121,7 +125,9 @@ export default function TestimoniesPage() {
 
   const fetchComments = async (testimonyId: string) => {
     try {
-      const response = await fetch(`/api/testimonies/comments?testimonyId=${testimonyId}`)
+      const response = await fetch(`/api/testimonies/comments?testimonyId=${testimonyId}`, {
+        credentials: 'include'
+      })
       if (response.ok) {
         const data = await response.json()
         setComments(prev => ({ ...prev, [testimonyId]: data }))
@@ -140,6 +146,7 @@ export default function TestimoniesPage() {
         headers: {
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({ content: newComment })
       })
 
@@ -198,10 +205,10 @@ export default function TestimoniesPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex space-x-1 mb-6 bg-gray-100 p-1 rounded-lg w-fit">
+      <div className="flex space-x-1 mb-6 bg-gray-100 p-1 rounded-lg w-full sm:w-fit">
         <button
           onClick={() => setActiveTab('all')}
-          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+          className={`flex-1 sm:flex-none px-4 py-3 sm:py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'all' 
               ? 'bg-white text-blue-600 shadow-sm' 
               : 'text-gray-600 hover:text-gray-900'
@@ -211,7 +218,7 @@ export default function TestimoniesPage() {
         </button>
         <button
           onClick={() => setActiveTab('my')}
-          className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+          className={`flex-1 sm:flex-none px-4 py-3 sm:py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'my' 
               ? 'bg-white text-blue-600 shadow-sm' 
               : 'text-gray-600 hover:text-gray-900'
@@ -258,14 +265,15 @@ export default function TestimoniesPage() {
                   Publier de manière anonyme
                 </label>
               </div>
-              <div className="flex gap-3">
-                <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button type="submit" className="bg-blue-600 hover:bg-blue-700 py-3 text-base">
                   Soumettre pour validation
                 </Button>
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setShowAddForm(false)}
+                  className="py-3 text-base"
                 >
                   Annuler
                 </Button>

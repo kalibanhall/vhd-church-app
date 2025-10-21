@@ -205,6 +205,7 @@ export default function AppointmentsPage() {
                 <input
                   type="date"
                   value={formData.appointmentDate}
+                  min={new Date().toISOString().split('T')[0]}
                   onChange={(e) => setFormData({ ...formData, appointmentDate: e.target.value })}
                   className="w-full border border-gray-300 rounded-lg px-3 py-2"
                 />

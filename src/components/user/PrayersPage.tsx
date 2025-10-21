@@ -80,6 +80,7 @@ export default function PrayersPage() {
         headers: {
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify(newPrayer)
       })
 
@@ -113,7 +114,8 @@ export default function PrayersPage() {
 
       // L'API gère automatiquement l'ajout/suppression selon l'état actuel
       const response = await fetch(`/api/prayers/support?prayerId=${prayerId}&userId=${user.id}`, {
-        method: 'POST'
+        method: 'POST',
+        credentials: 'include'
       })
 
       if (response.ok) {
@@ -185,22 +187,25 @@ export default function PrayersPage() {
       </div>
 
       {/* Filtres */}
-      <div className="flex space-x-4 mb-6">
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
         <Button
           variant={filter === 'all' ? 'default' : 'outline'}
           onClick={() => setFilter('all')}
+          className="flex-1 sm:flex-none py-3 text-base"
         >
           Toutes les prières
         </Button>
         <Button
           variant={filter === 'my' ? 'default' : 'outline'}
           onClick={() => setFilter('my')}
+          className="flex-1 sm:flex-none py-3 text-base"
         >
           Mes prières
         </Button>
         <Button
           variant={filter === 'pending' ? 'default' : 'outline'}
           onClick={() => setFilter('pending')}
+          className="flex-1 sm:flex-none py-3 text-base"
         >
           En attente de validation
         </Button>
@@ -271,15 +276,16 @@ export default function PrayersPage() {
                 </label>
               </div>
 
-              <div className="flex justify-end space-x-3">
+              <div className="flex flex-col sm:flex-row gap-3 sm:justify-end">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setShowCreateForm(false)}
+                  className="py-3 text-base"
                 >
                   Annuler
                 </Button>
-                <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+                <Button type="submit" className="bg-blue-600 hover:bg-blue-700 py-3 text-base">
                   <Send className="h-4 w-4 mr-2" />
                   Soumettre pour validation
                 </Button>

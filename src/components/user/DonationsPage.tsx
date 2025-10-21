@@ -46,18 +46,15 @@ const DonationsPage: React.FC = () => {
 
   const fetchDonations = async () => {
     try {
-      const token = localStorage.getItem('token')
-      if (!token) return
-
       const response = await fetch('/api/donations', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+        credentials: 'include' // Utiliser les cookies au lieu du localStorage
       })
 
       if (response.ok) {
         const data = await response.json()
-        setDonations(data)
+        setDonations(data.donations || [])
+      } else {
+        console.error('Erreur récupération donations:', response.status)
       }
     } catch (error) {
       console.error('Erreur lors de la récupération des donations:', error)
@@ -106,11 +103,6 @@ const DonationsPage: React.FC = () => {
     setMessage(null)
 
     try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        throw new Error('Non authentifié')
-      }
-
       // Calculer le montant final
       const finalAmount = selectedAmount === 'custom' ? customAmount : selectedAmount
 
@@ -126,9 +118,9 @@ const DonationsPage: React.FC = () => {
 
       const response = await fetch('/api/donations', {
         method: 'POST',
+        credentials: 'include', // Utiliser les cookies au lieu de Authorization header
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           amount: parseFloat(finalAmount),
@@ -391,7 +383,7 @@ const DonationsPage: React.FC = () => {
           <button
             type="submit"
             disabled={loading || (!selectedAmount && !customAmount)}
-            className="w-full bg-gray-300 text-gray-600 py-4 px-6 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-400 transition-colors flex items-center justify-center gap-2"
+            className="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
           >
             {loading ? (
               <>
