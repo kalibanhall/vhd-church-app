@@ -14,7 +14,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '../../../lib/prisma'
-import { runSeed } from '../../../../prisma/seed'
+import bcrypt from 'bcryptjs'
 
 export async function GET(request: NextRequest) {
   try {
@@ -39,13 +39,21 @@ export async function GET(request: NextRequest) {
       })
     }
     
-    // Exécuter le seed pour créer l'admin
-    console.log('🌱 Initialisation de la base de données...')
-    await runSeed()
+    // Créer l'admin directement (plus simple que seed complexe)
+    console.log('🌱 Création admin par défaut...')
+    const passwordHash = await bcrypt.hash('Qualis@2025', 10)
     
-    // Récupérer l'admin créé
-    const newAdmin = await prisma.user.findFirst({
-      where: { role: 'ADMIN' }
+    const newAdmin = await prisma.user.create({
+      data: {
+        email: 'admin@vhd.app',
+        passwordHash,
+        firstName: 'Chris',
+        lastName: 'Kasongo',
+        phone: '+243123456789',
+        role: 'ADMIN',
+        status: 'ACTIVE',
+        membershipDate: new Date()
+      }
     })
     
     return NextResponse.json({
