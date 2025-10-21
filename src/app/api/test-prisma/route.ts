@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export async function POST() {
+export async function GET() {
   try {
     // Test Prisma seul - juste une connexion simple
     const { prisma } = await import('../../../lib/prisma');
