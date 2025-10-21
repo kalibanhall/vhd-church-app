@@ -39,8 +39,8 @@ export default function AdminAccessPage() {
         
         console.log('✅ Accès admin accordé - Redirection vers dashboard')
         
-        // Rediriger vers le dashboard admin
-        router.push('/dashboard?admin-direct=true')
+        // Rediriger vers la page principale (dashboard)
+        router.push('/?admin-direct=true')
         
       } else {
         setError('Identifiants administrateur incorrects')
