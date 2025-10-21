@@ -378,11 +378,17 @@ export default function AuthPage() {
               Où Dieu convertit le POTENTIEL en l'EXTRAORDINAIRE
             </p>
             
-            {/* Lien admin discret */}
-            <div className="mt-4 pt-3 border-t border-gray-100">
+            {/* Liens spéciaux */}
+            <div className="mt-4 pt-3 border-t border-gray-100 space-y-2">
+              <a 
+                href="/simple-auth" 
+                className="block text-xs text-orange-500 hover:text-orange-700 transition-colors font-medium"
+              >
+                ⚡ Mode Test (Sans API)
+              </a>
               <a 
                 href="/admin-access" 
-                className="text-xs text-gray-400 hover:text-blue-600 transition-colors"
+                className="block text-xs text-gray-400 hover:text-blue-600 transition-colors"
               >
                 🔐 Accès Administration
               </a>

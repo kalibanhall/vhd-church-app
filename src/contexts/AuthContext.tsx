@@ -50,6 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem('user')
     localStorage.removeItem('token') // Nettoyage pour compatibilité
     localStorage.removeItem('adminAccess') // Nettoyage accès admin direct
+    localStorage.removeItem('simpleAuth') // Nettoyage auth simplifiée
     localStorage.removeItem('accessTime') // Nettoyage timestamp
   }
 
@@ -59,19 +60,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       // Vérifier d'abord l'accès admin direct
       const adminAccess = localStorage.getItem('adminAccess')
+      const simpleAuth = localStorage.getItem('simpleAuth')
       const userStorage = localStorage.getItem('user')
       
-      if (adminAccess === 'true' && userStorage) {
+      if ((adminAccess === 'true' || simpleAuth === 'true') && userStorage) {
         try {
           const userData = JSON.parse(userStorage)
-          if (userData.email === 'admin@vhd.app' && userData.role === 'ADMIN') {
-            console.log('✅ AuthContext: Accès admin direct détecté')
+          if (userData.email && userData.role) {
+            console.log('✅ AuthContext: Accès direct détecté -', adminAccess ? 'Admin' : 'Simple Auth')
             setUser(userData)
             setIsLoading(false)
             return
           }
         } catch (error) {
-          console.error('Erreur parsing admin data:', error)
+          console.error('Erreur parsing user data:', error)
         }
       }
       
