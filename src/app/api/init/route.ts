@@ -18,7 +18,11 @@ import { runSeed } from '../../../../prisma/seed'
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('🚀 API /api/init appelée')
+    console.log('🚀 API /api/init appelée - Version Debug v2')
+    console.log('🔍 Variables d\'environnement:')
+    console.log('- DATABASE_URL présent:', !!process.env.DATABASE_URL)
+    console.log('- JWT_SECRET présent:', !!process.env.JWT_SECRET)
+    console.log('- NODE_ENV:', process.env.NODE_ENV)
     
     // Vérifier si un admin existe déjà
     const existingAdmin = await prisma.user.findFirst({
