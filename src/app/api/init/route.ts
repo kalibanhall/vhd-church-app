@@ -18,11 +18,15 @@ import { runSeed } from '../../../../prisma/seed'
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('🚀 API /api/init appelée - Version Debug v2')
+    console.log('🚀 API /api/init appelée - Version Simplifiée v3')
     console.log('🔍 Variables d\'environnement:')
     console.log('- DATABASE_URL présent:', !!process.env.DATABASE_URL)
     console.log('- JWT_SECRET présent:', !!process.env.JWT_SECRET)
     console.log('- NODE_ENV:', process.env.NODE_ENV)
+    
+    // Test de connexion simple
+    const userCount = await prisma.user.count()
+    console.log('📊 Nombre d\'utilisateurs:', userCount)
     
     // Vérifier si un admin existe déjà
     const existingAdmin = await prisma.user.findFirst({
@@ -30,36 +34,47 @@ export async function GET(request: NextRequest) {
     })
     
     if (existingAdmin) {
+      console.log('✅ Admin existant trouvé')
       return NextResponse.json({
         success: true,
-        message: 'Application déjà initialisée',
+        message: 'Application déjà initialisée - Admin existant',
         admin: {
           email: existingAdmin.email,
           firstName: existingAdmin.firstName,
           lastName: existingAdmin.lastName,
           role: existingAdmin.role
         },
+        stats: { userCount },
         alreadyInitialized: true
       })
     }
     
-    // Exécuter le seed pour créer l'admin
-    console.log('🌱 Initialisation de la base de données...')
-    await runSeed()
+    // Créer l'admin directement sans seed complexe
+    console.log('🌱 Création admin simple...')
+    const bcrypt = require('bcryptjs')
+    const hashedPassword = await bcrypt.hash('Qualis@2025', 10)
     
-    // Récupérer l'admin créé
-    const newAdmin = await prisma.user.findFirst({
-      where: { role: 'ADMIN' }
+    const newAdmin = await prisma.user.create({
+      data: {
+        email: 'admin@vhd.app',
+        passwordHash: hashedPassword,
+        firstName: 'Chris',
+        lastName: 'Kasongo',
+        role: 'ADMIN',
+        status: 'ACTIVE',
+        phone: '+243123456789',
+        membershipDate: new Date()
+      }
     })
     
     return NextResponse.json({
       success: true,
-      message: 'Application initialisée avec succès !',
+      message: 'Admin créé avec succès !',
       admin: {
-        email: newAdmin?.email,
-        firstName: newAdmin?.firstName,
-        lastName: newAdmin?.lastName,
-        role: newAdmin?.role
+        email: newAdmin.email,
+        firstName: newAdmin.firstName,
+        lastName: newAdmin.lastName,
+        role: newAdmin.role
       },
       credentials: {
         email: 'admin@vhd.app',
