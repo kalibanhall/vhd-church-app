@@ -19,7 +19,13 @@ import { AUTH_CONFIG, setAuthCookie } from '../../../../lib/auth-config'
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('🔐 Login API appelée')
+    console.log('🔍 Variables d\'environnement:')
+    console.log('- DATABASE_URL présent:', !!process.env.DATABASE_URL)
+    console.log('- JWT_SECRET présent:', !!process.env.JWT_SECRET)
+    
     const { email, password, rememberMe = false } = await request.json()
+    console.log('📧 Tentative de connexion pour:', email)
 
     // Vérifier si l'utilisateur existe
     const user = await prisma.user.findUnique({

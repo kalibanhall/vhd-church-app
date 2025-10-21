@@ -4,7 +4,7 @@ export const AUTH_CONFIG = {
     name: 'auth-token',
     options: {
       httpOnly: true,
-      secure: false, // Désactivé pour le développement local
+      secure: process.env.NODE_ENV === 'production', // Automatique selon l'environnement
       sameSite: 'lax' as const,
       maxAge: 7 * 24 * 60 * 60, // 7 jours
       path: '/',
@@ -13,7 +13,7 @@ export const AUTH_CONFIG = {
     }
   },
   jwt: {
-    secret: process.env.JWT_SECRET || 'your-secret-key-change-in-production',
+    secret: process.env.JWT_SECRET || 'VhdChurch2025SecretKey',
     expiresIn: '7d'
   }
 }
