@@ -3,7 +3,7 @@ export const tempUsers = [
   {
     id: 'admin-chris-kasongo-temp',
     email: 'admin@vhd.app',
-    passwordHash: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password: Qualis@2025
+    passwordHash: '$2a$12$5w7wbciIDhCiGtQubYCzN.TObWHHtrh4M3o9GJeM4Em2pxh4qEaKO', // password: Qualis@2025
     firstName: 'Chris',
     lastName: 'Kasongo',
     role: 'ADMIN',
@@ -15,7 +15,7 @@ export const tempUsers = [
   {
     id: 'demo-user-temp',
     email: 'membre@vhd.app',
-    passwordHash: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password: Demo123!
+    passwordHash: '$2a$12$V0qrbgwleamQpc4LRMNPTefG7.nV2wo.jeq0YUcTumhIxJya8Piwq', // password: Demo123!
     firstName: 'Demo',
     lastName: 'Membre',
     role: 'MEMBER',
