@@ -33,7 +33,6 @@ interface Appointment {
   pastor: Pastor;
 }
 
-export default function AppointmentsPage() {
   const router = useRouter();
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [pastors, setPastors] = useState<Pastor[]>([]);
@@ -45,6 +44,14 @@ export default function AppointmentsPage() {
     appointmentTime: '',
     reason: ''
   });
+  const [errorMessage, setErrorMessage] = useState('');
+  const [token, setToken] = useState('');
+
+  useEffect(() => {
+    // Récupère le token JWT depuis le localStorage
+    const storedToken = typeof window !== 'undefined' ? localStorage.getItem('token') : '';
+    if (storedToken) setToken(storedToken);
+  }, []);
 
   useEffect(() => {
     fetchAppointments();
@@ -84,6 +91,7 @@ export default function AppointmentsPage() {
   };
 
   const createAppointment = async () => {
+    setErrorMessage('');
     try {
       const response = await fetch('/api/appointments', {
         method: 'POST',
@@ -99,16 +107,16 @@ export default function AppointmentsPage() {
         setAppointments(prev => [...prev, data.appointment]);
         setShowNewForm(false);
         setFormData({ pastorId: '', appointmentDate: '', appointmentTime: '', reason: '' });
-        
+        setErrorMessage('');
         // Créer une notification
         await createNotification(data.appointment);
       } else {
         const errorData = await response.json();
-        alert(errorData.error || 'Erreur lors de la création');
+        setErrorMessage(errorData.error || 'Erreur lors de la création');
       }
     } catch (error) {
       console.error('Erreur création rendez-vous:', error);
-      alert('Erreur de connexion');
+      setErrorMessage('Erreur de connexion');
     }
   };
 
@@ -370,6 +378,9 @@ export default function AppointmentsPage() {
                   rows={3}
                 />
               </div>
+              {errorMessage && (
+                <div className="text-red-600 text-sm mt-2">{errorMessage}</div>
+              )}
             </div>
 
             <div className="flex space-x-3 mt-6">

@@ -35,9 +35,9 @@ export async function GET(req: NextRequest) {
 
     // Récupérer les informations de l'utilisateur
     const users = await sql`
-      SELECT id, email, name, role, phone, address, created_at, updated_at
+      SELECT id, email, first_name, last_name, role, phone, address, created_at, updated_at
       FROM users 
-      WHERE id = ${decoded.userId}
+      WHERE id = ${decoded.userId}::uuid
       LIMIT 1
     `
 
@@ -54,7 +54,7 @@ export async function GET(req: NextRequest) {
       success: true,
       user: {
         id: user.id,
-        name: user.name,
+        name: `${user.first_name} ${user.last_name}`,
         email: user.email,
         role: user.role,
         phone: user.phone,
