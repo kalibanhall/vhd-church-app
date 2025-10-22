@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
 
     // Rechercher l'utilisateur avec PostgreSQL direct
     const users = await sql`
-      SELECT id, email, password, name, role, phone, address 
+      SELECT id, email, password_hash, first_name, last_name, role, phone, address 
       FROM users 
       WHERE email = ${email}
       LIMIT 1
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
     const user = users[0]
 
     // Vérifier le mot de passe
-    const validPassword = await bcrypt.compare(password, user.password)
+    const validPassword = await bcrypt.compare(password, user.password_hash)
     
     if (!validPassword) {
       return NextResponse.json(
@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
       token,
       user: {
         id: user.id,
-        name: user.name,
+        name: `${user.first_name} ${user.last_name}`,
         email: user.email,
         role: user.role,
         phone: user.phone,
