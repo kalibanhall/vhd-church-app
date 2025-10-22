@@ -59,8 +59,6 @@ export async function POST(request: NextRequest) {
       )
     )
     return NextResponse.json({ success: true, message: 'Vote enregistré avec succès' })
-      votes
-    })
   } catch (error) {
     console.error('Erreur lors du vote:', error)
     return NextResponse.json({
