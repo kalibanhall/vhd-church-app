@@ -76,13 +76,20 @@ export default function AuthPage() {
 
       if (response.ok) {
         if (isLogin) {
-          // Le cookie est automatiquement défini par l'API
-          await login() // Vérifier l'authentification
-          router.push('/')
+          // Sauvegarder le token et les données utilisateur
+          if (data.token) {
+            localStorage.setItem('token', data.token)
+          }
+          if (data.user) {
+            localStorage.setItem('user', JSON.stringify(data.user))
+          }
+          
+          // Redirection vers l'accueil
+          window.location.href = '/'
         } else {
           setIsLogin(true)
-        setFormData({ ...formData, password: '', confirmPassword: '', rememberMe: false })
-        setError('Inscription réussie ! Vous pouvez maintenant vous connecter.')
+          setFormData({ ...formData, password: '', confirmPassword: '', rememberMe: false })
+          setError('Inscription réussie ! Vous pouvez maintenant vous connecter.')
         }
       } else {
         setError(data.error || 'Une erreur est survenue')

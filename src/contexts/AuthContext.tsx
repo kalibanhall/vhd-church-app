@@ -55,10 +55,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       console.log('🔍 AuthContext: Vérification de l\'authentification...')
       
-      // Vérification via API
+      // Récupérer le token du localStorage
+      const token = localStorage.getItem('token')
+      if (!token) {
+        clearAuth()
+        return
+      }
+      
+      // Vérification via API avec token Bearer
       const response = await fetch('/api/auth/me', {
         method: 'GET',
-        credentials: 'include'
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        }
       })
 
       console.log('📊 AuthContext: Statut de /api/auth/me:', response.status)
