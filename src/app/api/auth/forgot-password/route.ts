@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
-import { prisma } from '../../../../lib/prisma'
+import postgres from 'postgres'
+const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' })
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
 
@@ -17,9 +18,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Vérifier si l'utilisateur existe
-    const user = await prisma.user.findUnique({
-      where: { email }
-    })
+    const users = await sql`SELECT id, email FROM users WHERE email = ${email} LIMIT 1`
+    const user = users[0]
 
     if (!user) {
       // Ne pas révéler si l'utilisateur existe ou non pour des raisons de sécurité

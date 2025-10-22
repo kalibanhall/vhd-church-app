@@ -37,8 +37,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Hasher le mot de passe
-    const passwordHash = await bcrypt.hash(password, 10)
+  // Hasher le mot de passe
+  const passwordHash = await bcrypt.hash(password, 10)
 
     // Vérifier s'il y a déjà des utilisateurs dans la base
     const userCountResult = await sql`
@@ -48,16 +48,17 @@ export async function POST(request: NextRequest) {
 
     // Créer l'utilisateur
     const result = await sql`
-      INSERT INTO users (email, password, name, phone, role, created_at)
+      INSERT INTO users (email, password_hash, first_name, last_name, phone, role, created_at)
       VALUES (
         ${email}, 
         ${passwordHash}, 
-        ${`${firstName} ${lastName}`}, 
+        ${firstName}, 
+        ${lastName}, 
         ${phone || null}, 
         ${isFirstUser ? 'admin' : 'member'},
         NOW()
       )
-      RETURNING id, email, name, role, phone, created_at
+      RETURNING id, email, first_name, last_name, role, phone, created_at
     `
     
     const user = result[0]

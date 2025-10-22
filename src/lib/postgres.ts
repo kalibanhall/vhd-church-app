@@ -1,0 +1,8 @@
+import { Pool } from 'pg'
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  // You can add more config options here if needed
+})
+
+export { pool }

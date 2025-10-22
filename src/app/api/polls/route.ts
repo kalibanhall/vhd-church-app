@@ -13,6 +13,8 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '../../../lib/prisma'
+import postgres from 'postgres'
+const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' })
 import { verifyAuthentication } from '../../../lib/auth-middleware'
 
 // GET - Récupérer tous les sondages actifs
@@ -40,37 +42,15 @@ export async function GET(request: NextRequest) {
       where.creatorId = auth.user!.id
     }
 
-    const polls = await prisma.poll.findMany({
-      where,
-      include: {
-        creator: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            role: true
-          }
-        },
-        options: {
-          orderBy: { order: 'asc' },
-          include: {
-            _count: {
-              select: { votes: true }
-            }
-          }
-        },
-        _count: {
-          select: { votes: true }
-        },
-        votes: {
-          where: { userId: auth.user!.id },
-          include: {
-            option: true
-          }
-        }
-      },
-      orderBy: { createdAt: 'desc' }
-    })
+    // Example direct SQL query for polls (adapt fields as needed)
+    const polls = await sql`
+      SELECT p.*, u.first_name AS creator_first_name, u.last_name AS creator_last_name, u.role AS creator_role
+      FROM polls p
+      LEFT JOIN users u ON p.creator_id = u.id
+      WHERE (${includeExpired} OR p.expires_at IS NULL OR p.expires_at > NOW())
+      ${onlyMine ? sql`AND p.creator_id = ${auth.user!.id}` : sql``}
+      ORDER BY p.created_at DESC
+    `
 
     // Calculer les statistiques pour chaque sondage
     const pollsWithStats = polls.map(poll => ({

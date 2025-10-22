@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import postgres from 'postgres'
+const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' })
 import { prisma } from '../../../../lib/prisma'
 import { verifyAuthentication } from '../../../../lib/auth-middleware'
 
@@ -17,30 +19,16 @@ export async function GET(request: NextRequest) {
     console.log('✅ User authenticated:', user.email, user.role)
 
     // Récupérer les rendez-vous de l'utilisateur connecté
-    const appointments = await prisma.appointment.findMany({
-      where: { userId: user.id },
-      include: {
-        pastor: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            email: true
-          }
-        }
-      },
-      orderBy: [
-        { appointmentDate: 'desc' },
-        { startTime: 'desc' }
-      ]
-    })
-
+    const appointmentsRes = await sql`
+      SELECT a.*, u.id AS pastor_id, u.first_name AS pastor_first_name, u.last_name AS pastor_last_name, u.email AS pastor_email
+      FROM appointments a
+      LEFT JOIN users u ON a.pastor_id = u.id
+      WHERE a.user_id = ${user.id}
+      ORDER BY a.appointment_date DESC, a.start_time DESC
+    `
+    const appointments = appointmentsRes;
     console.log(`✅ Found ${appointments.length} appointments for user ${user.id}`)
-
-    return NextResponse.json({
-      success: true,
-      appointments
-    })
+    return NextResponse.json({ success: true, appointments })
 
   } catch (error) {
     console.error('❌ Erreur récupération rendez-vous membre:', error)

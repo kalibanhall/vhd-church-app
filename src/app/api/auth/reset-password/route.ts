@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
-import { prisma } from '../../../../lib/prisma'
+import postgres from 'postgres'
+const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' })
 import { AUTH_CONFIG, setAuthCookie } from '../../../../lib/auth-config'
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
@@ -45,9 +46,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Vérifier que l'utilisateur existe toujours
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.userId }
-    })
+    const users = await sql`SELECT id, email, role FROM users WHERE id = ${decoded.userId} LIMIT 1`
+    const user = users[0]
 
     if (!user) {
       return NextResponse.json(
@@ -60,10 +60,7 @@ export async function POST(request: NextRequest) {
     const hashedPassword = await bcrypt.hash(newPassword, 12)
 
     // Mettre à jour le mot de passe
-    await prisma.user.update({
-      where: { id: user.id },
-      data: { passwordHash: hashedPassword }
-    })
+    await sql`UPDATE users SET password_hash = ${hashedPassword} WHERE id = ${user.id}`
 
     // Créer un nouveau token de connexion
     const authToken = jwt.sign(
@@ -76,14 +73,15 @@ export async function POST(request: NextRequest) {
       { expiresIn: '7d' }
     )
 
-    // Retourner les données utilisateur (sans le mot de passe)
-    const { passwordHash, ...userWithoutPassword } = user
-
     // Créer la réponse avec le cookie sécurisé
     const response = NextResponse.json({
       success: true,
       message: 'Mot de passe réinitialisé avec succès',
-      user: userWithoutPassword
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role
+      }
     })
 
     return setAuthCookie(response, authToken)

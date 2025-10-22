@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '../../../../lib/prisma'
+import postgres from 'postgres'
+const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' })
 import { verifyAuthentication } from '../../../../lib/auth-middleware'
 
 // PUT - Modifier un sondage (Admin/Pastor seulement)
@@ -95,30 +97,16 @@ export async function DELETE(request: NextRequest, { params }: { params: { id: s
     const { id } = params
 
     // Vérifier que le sondage existe
-    const existingPoll = await prisma.poll.findUnique({
-      where: { id },
-      include: {
-        _count: {
-          select: { votes: true }
-        }
-      }
-    })
-
+    const pollRes = await sql`SELECT * FROM polls WHERE id = ${id}`
+    const existingPoll = pollRes[0]
     if (!existingPoll) {
-      return NextResponse.json({
-        error: 'Sondage non trouvé'
-      }, { status: 404 })
+      return NextResponse.json({ error: 'Sondage non trouvé' }, { status: 404 })
     }
-
-    // Supprimer le sondage (cascade supprime automatiquement les options et votes)
-    await prisma.poll.delete({
-      where: { id }
-    })
-
-    return NextResponse.json({
-      success: true,
-      message: `Sondage supprimé avec succès (${existingPoll._count.votes} votes supprimés)`
-    })
+    // Supprimer les votes et options liés au sondage
+    await sql`DELETE FROM poll_votes WHERE poll_id = ${id}`
+    await sql`DELETE FROM poll_options WHERE poll_id = ${id}`
+    await sql`DELETE FROM polls WHERE id = ${id}`
+    return NextResponse.json({ success: true, message: 'Sondage supprimé avec succès' })
   } catch (error) {
     console.error('Erreur lors de la suppression du sondage:', error)
     return NextResponse.json({

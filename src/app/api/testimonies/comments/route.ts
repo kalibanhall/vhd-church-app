@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '../../../../lib/prisma'
+import postgres from 'postgres'
+const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' })
 
 // GET - Récupérer les commentaires d'un témoignage
 export async function GET(request: NextRequest) {
@@ -14,35 +15,23 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const comments = await prisma.testimonyComment.findMany({
-      where: {
-        testimonyId
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true
-          }
-        }
-      },
-      orderBy: {
-        createdAt: 'desc'
-      }
-    })
-
+    const comments = await sql`
+      SELECT c.*, u.id as user_id, u.first_name, u.last_name
+      FROM testimony_comments c
+      JOIN users u ON c.user_id = u.id
+      WHERE c.testimony_id = ${testimonyId}
+      ORDER BY c.created_at DESC
+    `
     const formattedComments = comments.map(comment => ({
       id: comment.id,
       content: comment.content,
-      createdAt: comment.createdAt,
-      updatedAt: comment.updatedAt,
+      createdAt: comment.created_at,
+      updatedAt: comment.updated_at,
       user: {
-        id: comment.user.id,
-        name: `${comment.user.firstName} ${comment.user.lastName}`
+        id: comment.user_id,
+        name: `${comment.first_name} ${comment.last_name}`
       }
     }))
-
     return NextResponse.json(formattedComments)
 
   } catch (error) {
@@ -85,34 +74,23 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const comment = await prisma.testimonyComment.create({
-      data: {
-        testimonyId,
-        userId,
-        content: content.trim()
-      },
-      include: {
-        user: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true
-          }
-        }
-      }
-    })
-
+    const result = await sql`
+      INSERT INTO testimony_comments (testimony_id, user_id, content, created_at, updated_at)
+      VALUES (${testimonyId}, ${userId}, ${content.trim()}, NOW(), NOW())
+      RETURNING *
+    `
+    const comment = result[0]
+    const userInfo = await sql`SELECT id, first_name, last_name FROM users WHERE id = ${userId}`
     const formattedComment = {
       id: comment.id,
       content: comment.content,
-      createdAt: comment.createdAt,
-      updatedAt: comment.updatedAt,
+      createdAt: comment.created_at,
+      updatedAt: comment.updated_at,
       user: {
-        id: comment.user.id,
-        name: `${comment.user.firstName} ${comment.user.lastName}`
+        id: userInfo[0].id,
+        name: `${userInfo[0].first_name} ${userInfo[0].last_name}`
       }
     }
-
     return NextResponse.json(formattedComment, { status: 201 })
 
   } catch (error) {

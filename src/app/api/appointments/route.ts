@@ -20,6 +20,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+import { verifyAuthentication } from '../../../lib/auth-middleware'
 
 import postgres from 'postgres'
 import jwt from 'jsonwebtoken'
@@ -40,32 +41,18 @@ export async function GET(request: NextRequest) {
   const user = verification.user!
 
   try {
-    const appointments = await prisma.appointment.findMany({
-      where: { userId: user.id },
-      include: {
-        pastor: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            email: true,
-            phone: true
-          }
-        }
-      },
-      orderBy: { appointmentDate: 'asc' }
-    })
-
-    return NextResponse.json({
-      success: true,
-      appointments
-    })
+    const appointmentsRes = await sql`
+      SELECT a.*, u.id AS pastor_id, u.first_name AS pastor_first_name, u.last_name AS pastor_last_name, u.email AS pastor_email, u.phone AS pastor_phone
+      FROM appointments a
+      LEFT JOIN users u ON a.pastor_id = u.id
+      WHERE a.user_id = ${user.id}
+      ORDER BY a.appointment_date ASC
+    `
+    const appointments = appointmentsRes;
+    return NextResponse.json({ success: true, appointments })
   } catch (error) {
     console.error('Erreur récupération rendez-vous:', error)
-    return NextResponse.json(
-      { error: 'Erreur lors de la récupération des rendez-vous' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Erreur lors de la récupération des rendez-vous' }, { status: 500 })
   }
 }
 
@@ -149,16 +136,9 @@ export async function PUT(request: NextRequest) {
     const { appointmentId, action } = await request.json()
 
     if (action === 'cancel') {
-      const appointment = await prisma.appointment.update({
-        where: {
-          id: appointmentId,
-          userId: user.id
-        },
-        data: {
-          status: 'CANCELLED'
-        }
-      })
-
+      await sql`
+        UPDATE appointments SET status = 'CANCELLED' WHERE id = ${appointmentId} AND user_id = ${user.id}
+      `
       return NextResponse.json({
         success: true,
         message: 'Rendez-vous annulé'

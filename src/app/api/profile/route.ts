@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { prisma } from '../../../lib/prisma'
+import postgres from 'postgres'
+const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' })
+// ...existing code...
 import jwt from 'jsonwebtoken'
 import { writeFile, mkdir } from 'fs/promises'
 import { join } from 'path'
@@ -20,113 +22,46 @@ export async function GET(request: NextRequest) {
     const userId = auth.user!.id
 
     // Récupérer l'utilisateur complet depuis la base
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: {
-        id: true,
-        email: true,
-        firstName: true,
-        lastName: true,
-        phone: true,
-        role: true,
-        profileImageUrl: true,
-        membershipNumber: true,
-        createdAt: true
-      }
-    })
-
-    if (!user) {
-      return NextResponse.json({ error: 'Utilisateur introuvable' }, { status: 404 })
-    }
+    const userRes = await sql`
+      SELECT id, email, first_name AS "firstName", last_name AS "lastName", phone, role, profile_image_url AS "profileImageUrl", membership_number AS "membershipNumber", created_at AS "createdAt" FROM users WHERE id = ${userId}
+    `
+    const user = userRes[0]
 
     // Récupérer les statistiques de l'utilisateur
-    const [donations, appointments, prayers, testimonies] = await Promise.all([
-      // Total des dons
-      prisma.donation.aggregate({
-        where: { userId: user.id },
-        _sum: { amount: true },
-        _count: true
-      }),
-      
-      // Rendez-vous
-      prisma.appointment.count({
-        where: { userId: user.id }
-      }),
-      
-      // Intentions de prière
-      prisma.prayer.count({
-        where: { userId: user.id }
-      }),
-      
-      // Témoignages
-      prisma.testimony.count({
-        where: { userId: user.id }
-      })
-    ])
+    const donationsRes = await sql`SELECT COALESCE(SUM(amount),0) AS total, COUNT(*) AS count FROM donations WHERE user_id = ${user.id}`
+    const appointmentsRes = await sql`SELECT COUNT(*) AS count FROM appointments WHERE user_id = ${user.id}`
+    const prayersRes = await sql`SELECT COUNT(*) AS count FROM prayers WHERE user_id = ${user.id}`
+    const testimoniesRes = await sql`SELECT COUNT(*) AS count FROM testimonies WHERE user_id = ${user.id}`
+    const donations = { _sum: { amount: donationsRes[0].total }, _count: donationsRes[0].count }
+    const appointments = parseInt(appointmentsRes[0].count)
+    const prayers = parseInt(prayersRes[0].count)
+    const testimonies = parseInt(testimoniesRes[0].count)
 
     // Récupérer l'activité récente
-    const recentActivity = await Promise.all([
-      // Dons récents
-      prisma.donation.findMany({
-        where: { userId: user.id },
-        orderBy: { createdAt: 'desc' },
-        take: 3,
-        select: {
-          id: true,
-          amount: true,
-          createdAt: true,
-          donationType: true
-        }
-      }),
-      
-      // Rendez-vous récents
-      prisma.appointment.findMany({
-        where: { userId: user.id },
-        orderBy: { createdAt: 'desc' },
-        take: 2,
-        select: {
-          id: true,
-          appointmentDate: true,
-          createdAt: true,
-          status: true
-        }
-      }),
-      
-      // Intentions de prière récentes
-      prisma.prayer.findMany({
-        where: { userId: user.id },
-        orderBy: { createdAt: 'desc' },
-        take: 2,
-        select: {
-          id: true,
-          title: true,
-          createdAt: true
-        }
-      })
-    ])
-
-    // Formatter l'activité récente
-    const formattedActivity = [
-      ...recentActivity[0].map((donation: any) => ({
+    const donationsRecentRes = await sql`SELECT id, amount, created_at, donation_type FROM donations WHERE user_id = ${user.id} ORDER BY created_at DESC LIMIT 3`
+    const appointmentsRecentRes = await sql`SELECT id, appointment_date, created_at, status FROM appointments WHERE user_id = ${user.id} ORDER BY created_at DESC LIMIT 2`
+    const prayersRecentRes = await sql`SELECT id, title, created_at FROM prayers WHERE user_id = ${user.id} ORDER BY created_at DESC LIMIT 2`
+    const recentActivity = [
+      ...donationsRecentRes.map((donation: any) => ({
         id: donation.id,
         type: 'donation' as const,
         title: 'Don effectué',
-        description: `${donation.donationType} • $${donation.amount}`,
-        date: donation.createdAt.toISOString()
+        description: `${donation.donation_type} • $${donation.amount}`,
+        date: new Date(donation.created_at).toISOString()
       })),
-      ...recentActivity[1].map((appointment: any) => ({
+      ...appointmentsRecentRes.map((appointment: any) => ({
         id: appointment.id,
         type: 'appointment' as const,
         title: 'Rendez-vous',
         description: `${appointment.status === 'CONFIRMED' ? 'Confirmé' : 'En attente'}`,
-        date: appointment.createdAt.toISOString()
+        date: new Date(appointment.created_at).toISOString()
       })),
-      ...recentActivity[2].map((prayer: any) => ({
+      ...prayersRecentRes.map((prayer: any) => ({
         id: prayer.id,
         type: 'prayer' as const,
         title: 'Intention de prière',
         description: prayer.title,
-        date: prayer.createdAt.toISOString()
+        date: new Date(prayer.created_at).toISOString()
       }))
     ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 5)
 
@@ -145,7 +80,7 @@ export async function GET(request: NextRequest) {
         prayerIntentions: prayers,
         testimonies: testimonies
       },
-      recentActivity: formattedActivity
+  recentActivity: recentActivity
     }
 
     return NextResponse.json({ success: true, profile: userProfile })
@@ -181,10 +116,8 @@ export async function PUT(request: NextRequest) {
 
     // Vérifier si l'email n'est pas déjà utilisé par un autre utilisateur
     if (email !== user.email) {
-      const existingUser = await prisma.user.findUnique({
-        where: { email }
-      })
-      
+      const existingUserRes = await sql`SELECT id FROM users WHERE email = ${email}`
+      const existingUser = existingUserRes[0]
       if (existingUser && existingUser.id !== user.id) {
         return NextResponse.json(
           { error: 'Cet email est déjà utilisé' },
@@ -192,18 +125,11 @@ export async function PUT(request: NextRequest) {
         )
       }
     }
-
     // Mettre à jour l'utilisateur
-    const updatedUser = await prisma.user.update({
-      where: { id: user.id },
-      data: {
-        firstName,
-        lastName,
-        email,
-        phone,
-        profileImageUrl
-      }
-    })
+    const updatedUserRes = await sql`
+      UPDATE users SET first_name = ${firstName}, last_name = ${lastName}, email = ${email}, phone = ${phone}, profile_image_url = ${profileImageUrl} WHERE id = ${user.id} RETURNING *
+    `
+    const updatedUser = updatedUserRes[0]
 
     return NextResponse.json({ 
       success: true, 

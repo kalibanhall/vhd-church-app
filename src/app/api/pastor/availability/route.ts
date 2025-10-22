@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '../../../../lib/prisma'
+import postgres from 'postgres'
+const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' })
 import { verifyAuthentication } from '../../../../lib/auth-middleware'
 
 export async function GET(request: NextRequest) {
@@ -19,18 +21,10 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    const availability = await prisma.pastorAvailability.findMany({
-      where: { pastorId: user.id },
-      orderBy: [
-        { dayOfWeek: 'asc' },
-        { startTime: 'asc' }
-      ]
-    })
-
-    return NextResponse.json({
-      success: true,
-      availability
-    })
+    const availability = await sql`
+      SELECT * FROM pastor_availability WHERE pastor_id = ${user.id} ORDER BY day_of_week ASC, start_time ASC
+    `
+    return NextResponse.json({ success: true, availability })
 
   } catch (error) {
     console.error('Erreur récupération disponibilités:', error)

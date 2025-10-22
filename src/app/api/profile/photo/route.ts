@@ -3,6 +3,9 @@ import { writeFile, mkdir } from 'fs/promises'
 import { join } from 'path'
 import jwt from 'jsonwebtoken'
 import { prisma } from '../../../../lib/prisma'
+import postgres from 'postgres'
+const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' })
+// @ts-ignore
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
 
@@ -63,10 +66,7 @@ export async function POST(request: NextRequest) {
     const publicUrl = `/uploads/profiles/${fileName}`
 
     // Mettre à jour le profil utilisateur avec la nouvelle photo
-    await prisma.user.update({
-      where: { id: userId },
-      data: { profileImageUrl: publicUrl }
-    })
+    await sql`UPDATE users SET profile_image_url = ${publicUrl} WHERE id = ${userId}`
 
     return NextResponse.json({
       success: true,
@@ -93,12 +93,7 @@ export async function DELETE(request: NextRequest) {
     const userId = auth.user!.id
 
     // Mettre à jour l'utilisateur pour supprimer la photo de profil
-    await prisma.user.update({
-      where: { id: userId },
-      data: {
-        profileImageUrl: null
-      }
-    })
+    await sql`UPDATE users SET profile_image_url = NULL WHERE id = ${userId}`
 
     return NextResponse.json({
       success: true,
