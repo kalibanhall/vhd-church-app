@@ -132,11 +132,12 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
             <NotificationsPanel />
 
             {/* User Profile */}
+            {/* Photo de profil cliquable uniquement, sans texte résumé */}
             <button
               onClick={onProfileClick || handleProfileClick}
-              className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors text-base md:text-lg"
+              className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              title="Profil"
             >
-              {/* Photo de profil ou icône par défaut */}
               {user.profileImageUrl ? (
                 <img 
                   src={user.profileImageUrl} 
@@ -148,12 +149,6 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
                   <User className="h-6 w-6 text-white" />
                 </div>
               )}
-              <div className="text-left">
-                <p className="font-semibold text-gray-900">
-                  {user.firstName} {user.lastName}
-                </p>
-                <p className="text-sm text-gray-500 capitalize">{user.role.toLowerCase()}</p>
-              </div>
             </button>
 
             {/* Menu déroulant du profil avec accès au profil et déconnexion */}
