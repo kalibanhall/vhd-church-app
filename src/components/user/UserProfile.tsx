@@ -209,7 +209,7 @@ export default function UserProfile({ user }: ProfileProps) {
                     <input
                       type="text"
                       value={editData.firstName}
-                      onChange={(e) => handleInputChange('firstName', e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('firstName', e.target.value)}
                       className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                       required
                     />
@@ -370,7 +370,6 @@ export default function UserProfile({ user }: ProfileProps) {
   return (
     <div className="min-h-screen bg-gray-50 p-4 lg:p-8">
       <div className="max-w-4xl mx-auto">
-        
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-6">
@@ -386,7 +385,6 @@ export default function UserProfile({ user }: ProfileProps) {
                     <User className="w-12 h-12 text-white" />
                   </div>
                 )}
-                
                 {/* Boutons photo - visibles au survol */}
                 <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                   <div className="flex space-x-2">
@@ -414,7 +412,6 @@ export default function UserProfile({ user }: ProfileProps) {
                   </div>
                 </div>
               </div>
-              
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">
                   {user.firstName} {user.lastName}
@@ -535,10 +532,14 @@ export default function UserProfile({ user }: ProfileProps) {
         
       </div>
       
-      {/* Input hidden pour l'upload de photos */}
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        onChange={handlePhotoUpload}
-        className="hidden" />
+        {/* Input hidden pour l'upload de photos */}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handlePhotoUpload}
+          className="hidden"
+        />
+    </div>
+  );
+}
