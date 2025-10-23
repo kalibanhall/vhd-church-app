@@ -68,14 +68,14 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
   }
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200">
+    <header className="bg-white shadow-sm border-b border-gray-200 fixed top-0 left-0 w-full z-50">
       <div className="px-6 py-4">
-        <div className="flex items-center justify-between">
+  <div className="flex items-center justify-between">
           {/* Bouton Menu (style Gmail mobile) - visible sur mobile et desktop sauf en mode admin */}
           {!hideMenuButton && (
             <button
               onClick={onMenuClick}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              className="p-2 rounded-lg hover:bg-gray-100 transition-colors text-base md:text-lg"
               title="Menu"
             >
               <Menu className="h-6 w-6 text-gray-600" />
@@ -93,7 +93,7 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setShowSuggestions(true)}
                 onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base md:text-lg"
               />
               
               {/* Simple Results Dropdown */}
@@ -134,7 +134,7 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
             {/* User Profile */}
             <button
               onClick={onProfileClick || handleProfileClick}
-              className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors text-base md:text-lg"
             >
               {/* Photo de profil ou icône par défaut */}
               {user.profileImageUrl ? (
@@ -156,15 +156,45 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
               </div>
             </button>
 
-            {/* Logout Button */}
-            <button
-              onClick={() => setShowLogoutConfirm(true)}
-              className="flex items-center space-x-2 p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-              title="Se déconnecter"
-            >
-              <LogOut className="h-5 w-5" />
-              <span className="text-sm font-medium">Déconnexion</span>
-            </button>
+            {/* Menu déroulant du profil avec accès au profil et déconnexion */}
+            <div className="relative group">
+              <button className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-lg transition-colors" title="Profil">
+                {user.profileImageUrl ? (
+                  <img src={user.profileImageUrl} alt="Profil" className="w-8 h-8 rounded-full object-cover" />
+                ) : (
+                  <User className="h-8 w-8 text-gray-500" />
+                )}
+                <span className="font-semibold text-gray-900 text-base md:text-lg">{user.firstName} {user.lastName}</span>
+                <svg className="w-4 h-4 ml-1 text-gray-400 group-hover:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+              </button>
+              <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity">
+                <div className="p-4 border-b border-gray-100 flex items-center space-x-3">
+                  {user.profileImageUrl ? (
+                    <img src={user.profileImageUrl} alt="Profil" className="w-10 h-10 rounded-full object-cover" />
+                  ) : (
+                    <User className="h-10 w-10 text-gray-500" />
+                  )}
+                  <div>
+                    <p className="font-semibold text-gray-900">{user.firstName} {user.lastName}</p>
+                    <p className="text-xs text-gray-500">{user.role}</p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => router.push('/profile')}
+                  className="w-full flex items-center px-4 py-2 text-gray-700 hover:bg-gray-50 transition-colors text-base md:text-lg"
+                >
+                  <User className="h-5 w-5 mr-2" />
+                  Profil
+                </button>
+                <button
+                  onClick={() => setShowLogoutConfirm(true)}
+                  className="w-full flex items-center px-4 py-2 text-red-600 hover:bg-red-50 transition-colors border-t border-gray-100 text-base md:text-lg"
+                >
+                  <LogOut className="h-5 w-5 mr-2" />
+                  Déconnexion
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

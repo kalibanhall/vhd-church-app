@@ -45,9 +45,10 @@ export default function UserProfile({ user }: ProfileProps) {
     maritalStatus: '',
     bio: ''
   })
-  
   const [profilePhoto, setProfilePhoto] = useState(user.profileImageUrl)
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false)
+  const [formError, setFormError] = useState<string | null>(null)
+  const [saving, setSaving] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleInputChange = (field: string, value: string) => {
@@ -58,22 +59,39 @@ export default function UserProfile({ user }: ProfileProps) {
   }
 
   const handleSave = async () => {
+    setFormError(null)
+    // Validation stricte
+    if (!editData.firstName.trim()) {
+      setFormError('Le prénom est requis.')
+      return
+    }
+    if (!editData.lastName.trim()) {
+      setFormError('Le nom est requis.')
+      return
+    }
+    if (!editData.email.trim() || !/^\S+@\S+\.\S+$/.test(editData.email)) {
+      setFormError('Un email valide est requis.')
+      return
+    }
+    setSaving(true)
     try {
       const response = await authenticatedFetch('/api/profile', {
         method: 'PUT',
         body: JSON.stringify(editData),
       })
-
       if (response.ok) {
         setIsEditing(false)
-        window.location.reload()
+        // Mettre à jour localement les données utilisateur
+        // Option: afficher un message de succès
       } else {
         const error = await response.json()
-        alert(error.error || 'Erreur lors de la sauvegarde du profil')
+        setFormError(error.error || 'Erreur lors de la sauvegarde du profil')
       }
     } catch (error) {
       console.error('Erreur:', error)
-      alert('Erreur lors de la sauvegarde du profil')
+      setFormError('Erreur lors de la sauvegarde du profil')
+    } finally {
+      setSaving(false)
     }
   }
 
@@ -523,8 +541,4 @@ export default function UserProfile({ user }: ProfileProps) {
         type="file"
         accept="image/*"
         onChange={handlePhotoUpload}
-        className="hidden"
-      />
-    </div>
-  )
-}
+        className="hidden" />

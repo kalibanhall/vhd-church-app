@@ -56,6 +56,18 @@ export async function POST(request: NextRequest) {
       projectName,
       notes
     } = body
+
+    // Validation stricte des champs
+    if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
+      return NextResponse.json({ error: 'Montant invalide ou manquant' }, { status: 400 })
+    }
+    if (!donationType || typeof donationType !== 'string') {
+      return NextResponse.json({ error: 'Type de don manquant ou invalide' }, { status: 400 })
+    }
+    if (!paymentMethod || typeof paymentMethod !== 'string') {
+      return NextResponse.json({ error: 'Méthode de paiement manquante ou invalide' }, { status: 400 })
+    }
+
     // Récupérer l'id du projet si projetName fourni
     let projectId = null
     if (donationType === 'PROJECT' && projectName) {
