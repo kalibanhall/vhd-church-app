@@ -9,7 +9,7 @@
 -- Table pour stocker les descripteurs faciaux des membres
 CREATE TABLE IF NOT EXISTS face_descriptors (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id VARCHAR(255) NOT NULL,
+    user_id UUID NOT NULL, -- Changé de VARCHAR à UUID
     descriptor JSONB NOT NULL, -- Tableau de 128 valeurs (face-api.js)
     photo_url TEXT,
     quality_score DECIMAL(3,2), -- Score de qualité de la photo (0.00 à 1.00)
@@ -27,7 +27,7 @@ CREATE INDEX IF NOT EXISTS idx_face_descriptors_primary ON face_descriptors(user
 -- Table pour les sessions de présence (cultes, réunions, etc.)
 CREATE TABLE IF NOT EXISTS attendance_sessions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    event_id VARCHAR(255), -- Lien optionnel vers un événement
+    event_id UUID, -- Lien optionnel vers un événement (changé en UUID)
     session_name VARCHAR(255) NOT NULL,
     session_type VARCHAR(50) NOT NULL, -- CULTE, REUNION, CONFERENCE, FORMATION, etc.
     session_date DATE NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS attendance_sessions (
     actual_attendees INTEGER DEFAULT 0,
     face_recognition_enabled BOOLEAN DEFAULT true,
     qr_code_enabled BOOLEAN DEFAULT true, -- Backup avec QR code
-    created_by VARCHAR(255) NOT NULL,
+    created_by UUID NOT NULL, -- Changé de VARCHAR à UUID
     notes TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -57,7 +57,7 @@ CREATE INDEX IF NOT EXISTS idx_attendance_sessions_type ON attendance_sessions(s
 CREATE TABLE IF NOT EXISTS check_ins (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     session_id UUID NOT NULL,
-    user_id VARCHAR(255) NOT NULL,
+    user_id UUID NOT NULL, -- Changé de VARCHAR à UUID
     check_in_time TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     check_in_method VARCHAR(50) NOT NULL, -- FACIAL_RECOGNITION, QR_CODE, MANUAL
     confidence_score DECIMAL(5,4), -- Score de confiance pour reconnaissance faciale (0.0000 à 1.0000)
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS check_ins (
     camera_id UUID, -- Caméra utilisée
     device_info JSONB, -- Infos appareil (modèle, OS, etc.)
     location_data JSONB, -- GPS si disponible
-    verified_by VARCHAR(255), -- ID admin si vérification manuelle
+    verified_by UUID, -- ID admin si vérification manuelle (changé en UUID)
     is_verified BOOLEAN DEFAULT true,
     notes TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS cameras (
     last_ping TIMESTAMP WITH TIME ZONE,
     ip_address INET,
     settings JSONB, -- Configuration caméra (résolution, seuil confiance, etc.)
-    assigned_to VARCHAR(255), -- Responsable de la caméra
+    assigned_to UUID, -- Responsable de la caméra (changé en UUID)
     notes TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
