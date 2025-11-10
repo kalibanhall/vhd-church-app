@@ -1,0 +1,51 @@
+{
+  "_comment": "This is a template file. To use Firebase services, replace this with your actual google-services.json from Firebase Console.",
+  "_instructions": [
+    "1. Go to https://console.firebase.google.com/",
+    "2. Select your project or create a new one",
+    "3. Go to Project Settings (gear icon)",
+    "4. Under 'Your apps', add an Android app or download config for existing app",
+    "5. Package name must be: com.mychurchapp",
+    "6. Download google-services.json",
+    "7. Replace this file with the downloaded google-services.json",
+    "8. NEVER commit the real google-services.json to version control"
+  ],
+  "project_info": {
+    "project_number": "YOUR_PROJECT_NUMBER",
+    "firebase_url": "https://YOUR_PROJECT_ID.firebaseio.com",
+    "project_id": "YOUR_PROJECT_ID",
+    "storage_bucket": "YOUR_PROJECT_ID.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:YOUR_PROJECT_NUMBER:android:YOUR_APP_ID",
+        "android_client_info": {
+          "package_name": "com.mychurchapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "YOUR_CLIENT_ID.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "YOUR_API_KEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "YOUR_CLIENT_ID.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -3,14 +3,14 @@
  * MINISTÈRE DES VAILLANTS HOMMES DE DAVID - SIDEBAR COMPONENT
  * =============================================================================
  * 
- * Auteur: CHRIS NGOZULU KASONGO (KalibanHall)
+ * userId: CHRIS NGOZULU KASONGO (KalibanHall)
  * GitHub: https://github.com/KalibanHall
  * 
- * Description: Navigation latérale de l'application - EXACTEMENT comme le web
+ * notes: Navigation latérale de l'application - EXACTEMENT comme le web
  * Correspond à: src/components/layout/Sidebar.tsx
  * 
  * Fonctionnalités:
- * - Logo VHD avec titre d'espace selon le rôle
+ * - Logo VHD avec title d'espace selon le rôle
  * - Menu principal (Accueil, Prédications, Soutien, etc.)
  * - Tableau de bord pour ADMIN et PASTOR (menu déroulant)
  * - Navigation contextuelle selon le rôle
@@ -107,16 +107,16 @@ fun Sidebar(
     // Vérifier si l'utilisateur est admin ou pasteur
     val isAdminUser = user.role == "ADMIN" || user.role == "PASTOR"
 
-    // Titre de l'espace selon le rôle - EXACTEMENT comme dans le web
-    val spaceTitle = when (user.role) {
+    // title de l'espace selon le rôle - EXACTEMENT comme dans le web
+    val spaceTitle = when (user.userRole) {
         "ADMIN" -> "Espace Admin"
         "PASTOR" -> "Espace Pasteur"
         "FIDELE" -> "Espace Fidèle"
         else -> "Espace Vaillants"
     }
 
-    // Titre du tableau de bord selon le rôle
-    val dashboardTitle = when (user.role) {
+    // title du tableau de bord selon le rôle
+    val dashboardTitle = when (user.userRole) {
         "ADMIN" -> "Tableau de Bord Admin"
         "PASTOR" -> "Tableau de Bord Pasteur"
         else -> "Tableau de Bord"
@@ -184,7 +184,7 @@ fun Sidebar(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            // Logo et titre
+                            // Logo et title
                             Column(
                                 modifier = Modifier.weight(1f),
                                 horizontalAlignment = Alignment.CenterHorizontally
@@ -327,7 +327,7 @@ fun Sidebar(
                     // Interface spécialisée - Tableau de bord admin OU pasteur
                     if (isAdminUser && isInSpecializedSpace) {
                         item {
-                            // Titre Tableau de Bord avec icône
+                            // title Tableau de Bord avec icône
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()

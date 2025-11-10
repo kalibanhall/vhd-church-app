@@ -1,5 +1,7 @@
 package com.mychurchapp.data.local.dao
 
+import com.mychurchapp.data.models.User
+
 import androidx.room.*
 import com.mychurchapp.data.local.entity.TestimonyEntity
 import kotlinx.coroutines.flow.Flow

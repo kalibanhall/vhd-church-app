@@ -47,7 +47,7 @@ fun TestimonyDetailsScreen(
                 Que Dieu soit glorifié ! 🙏
             """.trimIndent(),
             category = "GUERISON",
-            date = System.currentTimeMillis() - (14 * 24 * 60 * 60 * 1000),
+            appointmentDate = System.currentTimeMillis() - (14 * 24 * 60 * 60 * 1000),
             likes = 458,
             commentsCount = 67,
             shares = 23,
@@ -62,21 +62,21 @@ fun TestimonyDetailsScreen(
                 userName = "Jean KALOMBO",
                 userPhotoUrl = "https://i.pravatar.cc/150?img=12",
                 content = "Gloire à Dieu ! Quel témoignage puissant ! Que le Seigneur continue de bénir votre famille.",
-                date = System.currentTimeMillis() - (12 * 60 * 60 * 1000)
+                appointmentDate = System.currentTimeMillis() - (12 * 60 * 60 * 1000)
             ),
             Comment(
                 id = "2",
                 userName = "Sarah TSHIANI",
                 userPhotoUrl = "https://i.pravatar.cc/150?img=9",
                 content = "Amen ! Dieu est vraiment fidèle. Merci de partager ce témoignage qui fortifie notre foi.",
-                date = System.currentTimeMillis() - (10 * 60 * 60 * 1000)
+                appointmentDate = System.currentTimeMillis() - (10 * 60 * 60 * 1000)
             ),
             Comment(
                 id = "3",
                 userName = "Pierre KABONGO",
                 userPhotoUrl = "https://i.pravatar.cc/150?img=8",
                 content = "Gloire à Dieu ! Ce témoignage m'encourage énormément. Je prie pour la guérison de mon père.",
-                date = System.currentTimeMillis() - (8 * 60 * 60 * 1000)
+                appointmentDate = System.currentTimeMillis() - (8 * 60 * 60 * 1000)
             )
         )
     }
@@ -116,7 +116,7 @@ fun TestimonyDetailsScreen(
                         .background(Color(0xFFF9FAFB))
                         .padding(16.dp)
                 ) {
-                    // Auteur
+                    // userId
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.fillMaxWidth()
@@ -138,7 +138,7 @@ fun TestimonyDetailsScreen(
                                 fontWeight = FontWeight.Bold
                             )
                             Text(
-                                text = formatDate(testimony.date),
+                                text = formatDate(testimony.appointmentDate),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = Color(0xFF6B7280)
                             )
@@ -172,7 +172,7 @@ fun TestimonyDetailsScreen(
                     
                     Spacer(modifier = Modifier.height(16.dp))
                     
-                    // Titre
+                    // title
                     Text(
                         text = testimony.title,
                         style = MaterialTheme.typography.headlineSmall,
@@ -196,7 +196,7 @@ fun TestimonyDetailsScreen(
                 }
             }
             
-            // Contenu
+            // content
             item {
                 Column(
                     modifier = Modifier
@@ -355,7 +355,7 @@ fun CommentItem(comment: Comment) {
             }
             
             Text(
-                text = formatRelativeTime(comment.date),
+                text = formatRelativeTime(comment.appointmentDate),
                 style = MaterialTheme.typography.bodySmall,
                 color = Color(0xFF9CA3AF),
                 modifier = Modifier.padding(start = 12.dp, top = 4.dp)
@@ -372,7 +372,7 @@ data class Testimony(
     val title: String,
     val content: String,
     val category: String,
-    val date: Long,
+    val appointmentDate: Long,
     val likes: Int,
     val commentsCount: Int,
     val shares: Int,
@@ -384,7 +384,7 @@ data class Comment(
     val userName: String,
     val userPhotoUrl: String,
     val content: String,
-    val date: Long
+    val appointmentDate: Long
 )
 
 // Fonctions utilitaires

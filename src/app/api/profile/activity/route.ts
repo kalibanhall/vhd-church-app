@@ -1,6 +1,147 @@
 import { NextRequest, NextResponse } from 'next/server'
-import postgres from 'postgres'
-const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' })
+import { prisma } from '../../../../lib/prisma'
+import jwt from 'jsonwebtoken'
+
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
+
+// Vérification JWT
+async function verifyToken(request: NextRequest) {
+  try {
+    const authHeader = request.headers.get('authorization')
+    
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return { error: 'Token manquant', status: 401 }
+    }
+    
+    const token = authHeader.substring(7)
+    const decoded = jwt.verify(token, JWT_SECRET) as any
+    
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.userId }
+    })
+    
+    if (!user) {
+      return { error: 'Utilisateur introuvable', status: 404 }
+    }
+
+    return { user }
+  } catch (error) {
+    return { error: 'Token invalide', status: 401 }
+  }
+}
+
+// GET - Récupérer l'activité récente de l'utilisateur
+export async function GET(request: NextRequest) {
+  try {
+    const auth = await verifyToken(request)
+    if (auth.error) {
+      return NextResponse.json({ error: auth.error }, { status: auth.status })
+    }
+
+    const userId = auth.user!.id
+
+    // Récupérer l'activité récente (derniers 10 éléments)
+    const [recentDonations, recentAppointments, recentPrayers] = await Promise.all([
+      // Dernières donations
+      prisma.donation.findMany({
+        where: { userId: userId },
+        orderBy: { createdAt: 'desc' },
+        take: 3,
+        select: {
+          id: true,
+          amount: true,
+          donationType: true,
+          createdAt: true,
+          status: true
+        }
+      }),
+
+      // Derniers rendez-vous
+      prisma.appointment.findMany({
+        where: { userId: userId },
+        orderBy: { createdAt: 'desc' },
+        take: 3,
+        select: {
+          id: true,
+          reason: true,
+          appointmentDate: true,
+          status: true,
+          createdAt: true
+        }
+      }),
+
+      // Dernières intentions de prière
+      prisma.prayer.findMany({
+        where: { userId: userId },
+        orderBy: { createdAt: 'desc' },
+        take: 3,
+        select: {
+          id: true,
+          title: true,
+          createdAt: true,
+          isPublic: true
+        }
+      })
+    ])
+
+    // Formater l'activité en un seul tableau
+    const activities: any[] = []
+
+    // Ajouter les donations
+    recentDonations.forEach((donation: any) => {
+      activities.push({
+        id: donation.id,
+        type: 'donation',
+        title: donation.status === 'COMPLETED' ? 'Don effectué' : 'Don en attente',
+        description: `${donation.amount} USD • ${donation.donationType}`,
+        date: formatDate(donation.createdAt),
+        icon: 'Heart'
+      })
+    })
+
+    // Ajouter les rendez-vous
+    recentAppointments.forEach((appointment: any) => {
+      activities.push({
+        id: appointment.id,
+        type: 'appointment',
+        title: appointment.status === 'CONFIRMED' ? 'Rendez-vous confirmé' : 'Nouveau rendez-vous',
+        description: appointment.reason,
+        date: formatDate(appointment.createdAt),
+        icon: 'Calendar'
+      })
+    })
+
+    // Ajouter les intentions de prière
+    recentPrayers.forEach((prayer: any) => {
+      activities.push({
+        id: prayer.id,
+        type: 'prayer',
+        title: 'Intention de prière soumise',
+        description: prayer.title,
+        date: formatDate(prayer.createdAt),
+        icon: 'Users'
+      })
+    })
+
+    // Trier par date (plus récent en premier)
+    activities.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+
+    // Limiter à 5 activités
+    const limitedActivities = activities.slice(0, 5)
+
+    return NextResponse.json({
+      success: true,
+      activities: limitedActivities
+    })
+  } catch (error) {
+    console.error('Erreur lors de la récupération de l\'activité:', error)
+    return NextResponse.json(
+      { error: 'Erreur serveur' },
+      { status: 500 }
+    )
+  }
+}
+
 function formatDate(date: Date) {
   const now = new Date()
   const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60))
@@ -16,82 +157,3 @@ function formatDate(date: Date) {
     return `Il y a ${Math.floor(diffInDays / 7)} semaine${Math.floor(diffInDays / 7) > 1 ? 's' : ''}`
   }
 }
-import jwt from 'jsonwebtoken'
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
-
-// Vérification JWT
-async function verifyToken(request: NextRequest) {
-  try {
-    const authHeader = request.headers.get('authorization')
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return { error: 'Token manquant', status: 401 }
-    }
-    const token = authHeader.substring(7)
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string }
-    const userRes = await sql`SELECT * FROM users WHERE id = ${decoded.userId}`
-    const user = userRes[0]
-    if (!user) {
-      return { error: 'Utilisateur introuvable', status: 404 }
-    }
-    return { user }
-  } catch (error) {
-    return { error: 'Erreur serveur', status: 500 }
-  }
-
-// GET - Récupérer l'activité récente de l'utilisateur
-async function GET(request: NextRequest) {
-  try {
-    const auth = await verifyToken(request)
-    if (!auth || auth.error) {
-      return NextResponse.json({ error: auth?.error || 'Erreur d\'authentification' }, { status: auth?.status || 401 })
-    }
-  const userId = auth?.user?.id
-    // Direct SQL queries for recent activities
-    const donationsRes = await sql`SELECT id, amount, donation_type, created_at, status FROM donations WHERE user_id = ${userId} ORDER BY created_at DESC LIMIT 3`
-    const appointmentsRes = await sql`SELECT id, reason, appointment_date, status, created_at FROM appointments WHERE user_id = ${userId} ORDER BY created_at DESC LIMIT 3`
-    const prayersRes = await sql`SELECT id, title, created_at FROM prayers WHERE user_id = ${userId} ORDER BY created_at DESC LIMIT 3`
-    const recentDonations = donationsRes
-    const recentAppointments = appointmentsRes
-    const recentPrayers = prayersRes
-    // Format activities
-    const activities: any[] = []
-    recentDonations.forEach((donation: any) => {
-      activities.push({
-        id: donation.id,
-        type: 'donation',
-        title: donation.status === 'COMPLETED' ? 'Don effectué' : 'Don en attente',
-        description: `${donation.amount} USD • ${donation.donation_type}`,
-        date: formatDate(new Date(donation.created_at)),
-        icon: 'Heart'
-      })
-    })
-    recentAppointments.forEach((appointment: any) => {
-      activities.push({
-        id: appointment.id,
-        type: 'appointment',
-        title: appointment.status === 'CONFIRMED' ? 'Rendez-vous confirmé' : 'Nouveau rendez-vous',
-        description: appointment.reason,
-        date: formatDate(new Date(appointment.created_at)),
-        icon: 'Calendar'
-      })
-    })
-    recentPrayers.forEach((prayer: any) => {
-      activities.push({
-        id: prayer.id,
-        type: 'prayer',
-        title: 'Intention de prière soumise',
-        description: prayer.title,
-        date: formatDate(new Date(prayer.created_at)),
-        icon: 'Users'
-      })
-    })
-    activities.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    const limitedActivities = activities.slice(0, 5)
-    return NextResponse.json({ success: true, activities: limitedActivities })
-  } catch (error) {
-    console.error('Erreur lors de la récupération de l\'activité:', error)
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 })
-  }
-}
-  }

@@ -136,6 +136,7 @@ const DonationsPage: React.FC = () => {
         const newDonation = await response.json()
         setDonations([newDonation, ...donations])
         setMessage({ type: 'success', text: `Don de ${finalAmount} ${currency} enregistré avec succès ! Merci pour votre générosité.` })
+        
         // Réinitialiser le formulaire
         setSelectedAmount('')
         setCustomAmount('')
@@ -144,11 +145,10 @@ const DonationsPage: React.FC = () => {
         setProjectName('')
         setNotes('')
       } else {
-        const errorData = await response.json()
-        setMessage({ type: 'error', text: errorData.error || "Erreur lors de l'enregistrement du don. Veuillez réessayer." })
+        throw new Error('Erreur lors de l\'enregistrement')
       }
     } catch (error) {
-      setMessage({ type: 'error', text: error instanceof Error ? error.message : 'Erreur lors de l\'enregistrement du don. Veuillez réessayer.' })
+      setMessage({ type: 'error', text: 'Erreur lors de l\'enregistrement du don. Veuillez réessayer.' })
     } finally {
       setLoading(false)
     }

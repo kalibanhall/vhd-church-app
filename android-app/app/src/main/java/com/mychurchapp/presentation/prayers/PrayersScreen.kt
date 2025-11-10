@@ -76,7 +76,7 @@ fun PrayersScreen(
             // Liste des prières
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing),
-                onRefresh = { viewModel.refresh() }
+                onRefresh = { viewModel.refreshChannels() }
             ) {
                 when (val state = prayers) {
                     is Resource.Success -> {
@@ -92,7 +92,7 @@ fun PrayersScreen(
                     }
                     is Resource.Error -> {
                         ErrorView(message = state.message) {
-                            viewModel.refresh()
+                            viewModel.refreshChannels()
                         }
                     }
                     is Resource.Loading -> LoadingView()
@@ -105,8 +105,8 @@ fun PrayersScreen(
         if (showCreateDialog) {
             CreatePrayerDialog(
                 onDismiss = { showCreateDialog = false },
-                onConfirm = { titre, demande, isAnonymous ->
-                    viewModel.createPrayer(titre, demande, isAnonymous)
+                onConfirm = { title, demande, isAnonymous ->
+                    viewModel.createPrayer(title, demande, isAnonymous)
                 },
                 isLoading = createState is Resource.Loading
             )
@@ -174,7 +174,7 @@ private fun PrayerCard(
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            // En-tête avec auteur et statut
+            // En-tête avec auteur et status
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -197,14 +197,14 @@ private fun PrayerCard(
                         fontWeight = FontWeight.Medium
                     )
                 }
-                StatusBadge(prayer.statut)
+                StatusBadge(prayer.status)
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Titre
+            // title
             Text(
-                text = prayer.titre,
+                text = prayer.title,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -238,7 +238,7 @@ private fun PrayerCard(
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = formatDate(prayer.date),
+                            text = formatDate(prayer.appointmentDate),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -262,7 +262,7 @@ private fun PrayerCard(
                 }
 
                 // Bouton Soutenir (seulement si EN_COURS)
-                if (prayer.statut == "EN_COURS") {
+                if (prayer.status == PrayerStatus.ACTIVE) {
                     FilledTonalButton(
                         onClick = onSupportClick,
                         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
@@ -279,7 +279,7 @@ private fun PrayerCard(
             }
 
             // Message de réponse (si exaucée)
-            if (prayer.statut == "EXAUCEE" && !prayer.reponse.isNullOrBlank()) {
+            if (prayer.status == PrayerStatus.ANSWERED && !prayer.reponse.isNullOrBlank()) {
                 Spacer(modifier = Modifier.height(12.dp))
                 Divider()
                 Spacer(modifier = Modifier.height(12.dp))
@@ -360,10 +360,10 @@ private fun StatusBadge(status: String) {
 @Composable
 private fun CreatePrayerDialog(
     onDismiss: () -> Unit,
-    onConfirm: (titre: String, demande: String, isAnonymous: Boolean) -> Unit,
+    onConfirm: (title: String, demande: String, isAnonymous: Boolean) -> Unit,
     isLoading: Boolean
 ) {
-    var titre by remember { mutableStateOf("") }
+    var title by remember { mutableStateOf("") }
     var demande by remember { mutableStateOf("") }
     var isAnonymous by remember { mutableStateOf(false) }
 
@@ -376,9 +376,9 @@ private fun CreatePrayerDialog(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 OutlinedTextField(
-                    value = titre,
-                    onValueChange = { titre = it },
-                    label = { Text("Titre") },
+                    value = title,
+                    onValueChange = { title = it },
+                    label = { Text("title") },
                     placeholder = { Text("Sujet de la prière") },
                     leadingIcon = {
                         Icon(Icons.Default.Title, null)
@@ -422,11 +422,11 @@ private fun CreatePrayerDialog(
         confirmButton = {
             Button(
                 onClick = {
-                    if (titre.isNotBlank() && demande.isNotBlank()) {
-                        onConfirm(titre, demande, isAnonymous)
+                    if (title.isNotBlank() && demande.isNotBlank()) {
+                        onConfirm(title, demande, isAnonymous)
                     }
                 },
-                enabled = !isLoading && titre.isNotBlank() && demande.isNotBlank()
+                enabled = !isLoading && title.isNotBlank() && demande.isNotBlank()
             ) {
                 if (isLoading) {
                     CircularProgressIndicator(
@@ -527,8 +527,8 @@ private fun filterPrayers(
 ): List<Prayer> {
     return when (filter) {
         PrayerFilter.ALL -> prayers
-        PrayerFilter.ONGOING -> prayers.filter { it.statut == "EN_COURS" }
-        PrayerFilter.ANSWERED -> prayers.filter { it.statut == "EXAUCEE" }
+        PrayerFilter.ONGOING -> prayers.filter { it.status == PrayerStatus.ACTIVE }
+        PrayerFilter.ANSWERED -> prayers.filter { it.status == PrayerStatus.ANSWERED }
     }
 }
 

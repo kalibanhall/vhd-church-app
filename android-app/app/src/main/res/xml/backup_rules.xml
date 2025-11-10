@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- 
+        Backup Rules for Android 6+ (API 23-30)
+        Controls what data is included in automatic backups
+    -->
+    
+    <!-- Include app data by default -->
+    <include domain="sharedpref" path="."/>
+    <include domain="database" path="."/>
+    <include domain="file" path="."/>
+    
+    <!-- Exclude sensitive and large files -->
+    <exclude domain="sharedpref" path="secure_prefs.xml"/>
+    <exclude domain="database" path="facenet.tflite"/>
+    <exclude domain="file" path="cache/"/>
+    <exclude domain="file" path="temp/"/>
+</full-backup-content>

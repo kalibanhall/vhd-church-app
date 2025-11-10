@@ -266,11 +266,7 @@ export default function TestimoniesPage() {
                 </label>
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button 
-                  type="submit" 
-                  className="bg-blue-600 hover:bg-blue-700 py-3 text-base"
-                  disabled={!newTestimony.title || !newTestimony.content}
-                >
+                <Button type="submit" className="bg-blue-600 hover:bg-blue-700 py-3 text-base">
                   Soumettre pour validation
                 </Button>
                 <Button

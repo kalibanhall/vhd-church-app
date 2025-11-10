@@ -31,23 +31,36 @@ interface DonationsRepository {
  * Repository pour les événements
  */
 interface EventsRepository {
-    suspend fun getEvents(page: Int, limit: Int, type: String?, status: String?, startDate: String?, endDate: String?): Flow<Resource<PaginatedResponse<Event>>>
+    suspend fun getEvents(
+        page: Int = 1,
+        limit: Int = 20,
+        type: String? = null,
+        status: String? = null,
+        startDate: String? = null,
+        endDate: String? = null
+    ): Flow<Resource<PaginatedResponse<Event>>>
     suspend fun getEventById(id: String): Flow<Resource<Event>>
     suspend fun createEvent(event: Event): Flow<Resource<Event>>
     suspend fun updateEvent(id: String, event: Event): Flow<Resource<Event>>
     suspend fun deleteEvent(id: String): Flow<Resource<Unit>>
     suspend fun registerAttendance(id: String, attendance: Attendance): Flow<Resource<Attendance>>
-    suspend fun getUpcomingEvents(limit: Int): Flow<Resource<List<Event>>>
+    suspend fun getUpcomingEvents(limit: Int = 10): Flow<Resource<List<Event>>>
 }
 
 /**
  * Repository pour les prédications
  */
 interface SermonsRepository {
-    suspend fun getSermons(page: Int, limit: Int, type: String?, preacherId: String?, search: String?): Flow<Resource<PaginatedResponse<Sermon>>>
+    suspend fun getSermons(
+        page: Int = 1,
+        limit: Int = 20,
+        type: String? = null,
+        preacherId: String? = null,
+        search: String? = null
+    ): Flow<Resource<PaginatedResponse<Sermon>>>
     suspend fun getSermonById(id: String): Flow<Resource<Sermon>>
-    suspend fun getRecentSermons(limit: Int): Flow<Resource<List<Sermon>>>
-    suspend fun getPopularSermons(limit: Int): Flow<Resource<List<Sermon>>>
+    suspend fun getRecentSermons(limit: Int = 10): Flow<Resource<List<Sermon>>>
+    suspend fun getPopularSermons(limit: Int = 10): Flow<Resource<List<Sermon>>>
     suspend fun incrementViewCount(id: String): Flow<Resource<Unit>>
     suspend fun incrementDownloadCount(id: String): Flow<Resource<Unit>>
 }
@@ -56,7 +69,13 @@ interface SermonsRepository {
  * Repository pour les rendez-vous
  */
 interface AppointmentsRepository {
-    suspend fun getAppointments(page: Int, limit: Int, userId: String?, pastorId: String?, status: String?): Flow<Resource<PaginatedResponse<Appointment>>>
+    suspend fun getAppointments(
+        page: Int = 1,
+        limit: Int = 20,
+        userId: String? = null,
+        pastorId: String? = null,
+        status: String? = null
+    ): Flow<Resource<PaginatedResponse<Appointment>>>
     suspend fun getAppointmentById(id: String): Flow<Resource<Appointment>>
     suspend fun createAppointment(request: CreateAppointmentRequest): Flow<Resource<Appointment>>
     suspend fun cancelAppointment(id: String): Flow<Resource<Unit>>
@@ -68,7 +87,12 @@ interface AppointmentsRepository {
  * Repository pour les prières
  */
 interface PrayersRepository {
-    suspend fun getPrayers(page: Int, limit: Int, status: String?, isPublic: Boolean?): Flow<Resource<PaginatedResponse<Prayer>>>
+    suspend fun getPrayers(
+        page: Int = 1,
+        limit: Int = 20,
+        status: String? = null,
+        isPublic: Boolean? = null
+    ): Flow<Resource<PaginatedResponse<Prayer>>>
     suspend fun getPrayerById(id: String): Flow<Resource<Prayer>>
     suspend fun createPrayer(request: CreatePrayerRequest): Flow<Resource<Prayer>>
     suspend fun supportPrayer(id: String): Flow<Resource<PrayerSupport>>
@@ -80,7 +104,11 @@ interface PrayersRepository {
  * Repository pour les témoignages
  */
 interface TestimoniesRepository {
-    suspend fun getTestimonies(page: Int, limit: Int, status: String?): Flow<Resource<PaginatedResponse<Testimony>>>
+    suspend fun getTestimonies(
+        page: Int = 1,
+        limit: Int = 20,
+        status: String? = null
+    ): Flow<Resource<PaginatedResponse<Testimony>>>
     suspend fun getTestimonyById(id: String): Flow<Resource<Testimony>>
     suspend fun createTestimony(request: CreateTestimonyRequest): Flow<Resource<Testimony>>
     suspend fun likeTestimony(id: String): Flow<Resource<Unit>>
@@ -93,9 +121,14 @@ interface TestimoniesRepository {
  * Repository pour le chat
  */
 interface ChatRepository {
-    suspend fun getChannels(type: String?): Flow<Resource<List<ChatChannel>>>
+    suspend fun getChannels(type: String? = null): Flow<Resource<List<ChatChannel>>>
     suspend fun getChannelById(id: String): Flow<Resource<ChatChannel>>
-    suspend fun getMessages(id: String, page: Int, limit: Int, before: String?): Flow<Resource<PaginatedResponse<ChatMessage>>>
+    suspend fun getMessages(
+        id: String,
+        page: Int = 1,
+        limit: Int = 50,
+        before: String? = null
+    ): Flow<Resource<PaginatedResponse<ChatMessage>>>
     suspend fun sendMessage(id: String, message: ChatMessage): Flow<Resource<ChatMessage>>
     suspend fun editMessage(id: String, content: String): Flow<Resource<ChatMessage>>
     suspend fun deleteMessage(id: String): Flow<Resource<Unit>>

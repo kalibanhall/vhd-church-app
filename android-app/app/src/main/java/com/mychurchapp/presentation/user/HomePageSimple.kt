@@ -3,10 +3,10 @@
  * MINISTÈRE DES VAILLANTS HOMMES DE DAVID - HOME PAGE
  * =============================================================================
  * 
- * Auteur: CHRIS NGOZULU KASONGO (KalibanHall)
+ * userId: CHRIS NGOZULU KASONGO (KalibanHall)
  * GitHub: https://github.com/KalibanHall
  * 
- * Description: Page d'accueil - EXACTEMENT comme le web
+ * notes: Page d'accueil - EXACTEMENT comme le web
  * Correspond à: src/components/user/HomePageSimple.tsx
  * 
  * =============================================================================
@@ -366,7 +366,7 @@ fun DonationsPage() {
 }
 
 @Composable
-private fun DonationTypeCard(title: String, description: String, emoji: String) {
+private fun DonationTypeCard(title: String, notes: String, emoji: String) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = Color.White,

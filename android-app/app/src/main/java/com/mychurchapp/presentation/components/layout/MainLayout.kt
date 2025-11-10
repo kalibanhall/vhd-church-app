@@ -3,16 +3,16 @@
  * MINISTÈRE DES VAILLANTS HOMMES DE DAVID - MAIN LAYOUT
  * =============================================================================
  * 
- * Auteur: CHRIS NGOZULU KASONGO (KalibanHall)
+ * userId: CHRIS NGOZULU KASONGO (KalibanHall)
  * GitHub: https://github.com/KalibanHall
  * 
- * Description: Layout principal de l'application - EXACTEMENT comme le web
+ * notes: Layout principal de l'application - EXACTEMENT comme le web
  * Correspond à: src/components/Dashboard.tsx
  * 
  * Structure:
  * - Header (barre supérieure avec menu, recherche, notifications, profil)
  * - Sidebar (navigation latérale, repliée par défaut)
- * - Contenu principal
+ * - content principal
  * 
  * Comportement:
  * - Sidebar repliée par défaut (comme Gmail)
@@ -23,6 +23,8 @@
  */
 
 package com.mychurchapp.presentation.components.layout
+
+import androidx.compose.ui.unit.dp
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
@@ -68,7 +70,7 @@ fun MainLayout(
             onToggleCollapse = { isSidebarCollapsed = !isSidebarCollapsed }
         )
 
-        // Contenu principal
+        // content principal
         Column(modifier = Modifier.fillMaxSize()) {
             // Header - Barre supérieure
             Header(
@@ -80,7 +82,7 @@ fun MainLayout(
                 hideMenuButton = false
             )
 
-            // Contenu de la page
+            // content de la page
             Box(
                 modifier = Modifier
                     .fillMaxSize()

@@ -42,19 +42,19 @@ class PrayersViewModel @Inject constructor(
     }
 
     fun createPrayer(
-        titre: String,
-        description: String,
-        categorie: String,
+        title: String,
+        notes: String,
+        category: String,
         isAnonymous: Boolean = false
     ) {
         viewModelScope.launch {
             val prayer = Prayer(
                 id = "",
-                membreId = "", // Sera rempli par l'API
-                titre = titre,
+                userId = "", // Sera rempli par l'API
+                title = title,
                 description = description,
-                categorie = categorie,
-                statut = "EN_COURS",
+                category = category,
+                status = "EN_COURS",
                 isAnonymous = isAnonymous,
                 supportCount = 0,
                 createdAt = "",

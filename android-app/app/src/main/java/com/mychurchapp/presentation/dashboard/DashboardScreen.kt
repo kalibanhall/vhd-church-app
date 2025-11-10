@@ -1,5 +1,7 @@
 package com.mychurchapp.presentation.dashboard
 
+import androidx.compose.material.icons.filled.Person
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -47,7 +49,7 @@ fun DashboardScreen(
     ) { paddingValues ->
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing),
-            onRefresh = { viewModel.refresh() },
+            onRefresh = { viewModel.refreshChannels() },
             modifier = Modifier.padding(paddingValues)
         ) {
             when (val state = dashboardStats) {
@@ -62,7 +64,7 @@ fun DashboardScreen(
                 }
                 is Resource.Error -> {
                     ErrorView(message = state.message) {
-                        viewModel.refresh()
+                        viewModel.refreshChannels()
                     }
                 }
                 is Resource.Loading -> {
@@ -110,7 +112,7 @@ private fun DashboardContent(
                 items(
                     listOf(
                         StatCard("Membres totaux", stats.totalMembers.toString(), Icons.Default.People, MaterialTheme.colorScheme.primary),
-                        StatCard("Membres actifs", stats.activeMembers.toString(), Icons.Default.PersonCheck, MaterialTheme.colorScheme.secondary),
+                        StatCard("Membres actifs", stats.activeMembers.toString(), Icons.Default.Person, MaterialTheme.colorScheme.secondary),
                         StatCard("Présence aujourd'hui", stats.todaysPresence.toString(), Icons.Default.CalendarToday, MaterialTheme.colorScheme.tertiary),
                         StatCard("Dons du mois", "${stats.monthlyDonations}€", Icons.Default.AttachMoney, MaterialTheme.colorScheme.primary)
                     )

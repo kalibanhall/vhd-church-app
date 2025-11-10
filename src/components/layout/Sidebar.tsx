@@ -140,7 +140,7 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
   }
 
   return (
-  <div className="pt-16">
+    <div>
       {/* Overlay pour mobile quand la sidebar est ouverte - Pas en mode spécialisé */}
       {!isCollapsed && !isInSpecializedSpace && (
         <div 

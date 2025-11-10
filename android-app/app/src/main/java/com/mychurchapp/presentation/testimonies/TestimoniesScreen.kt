@@ -1,5 +1,7 @@
 package com.mychurchapp.presentation.testimonies
 
+import androidx.compose.material.icons.filled.Description
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -77,7 +79,7 @@ fun TestimoniesScreen(
             // Liste des témoignages
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing),
-                onRefresh = { viewModel.refresh() }
+                onRefresh = { viewModel.refreshChannels() }
             ) {
                 when (val state = testimonies) {
                     is Resource.Success -> {
@@ -94,7 +96,7 @@ fun TestimoniesScreen(
                     }
                     is Resource.Error -> {
                         ErrorView(message = state.message) {
-                            viewModel.refresh()
+                            viewModel.refreshChannels()
                         }
                     }
                     is Resource.Loading -> LoadingView()
@@ -107,8 +109,8 @@ fun TestimoniesScreen(
         if (showCreateDialog) {
             CreateTestimonyDialog(
                 onDismiss = { showCreateDialog = false },
-                onConfirm = { titre, contenu, categorie ->
-                    viewModel.createTestimony(titre, contenu, categorie)
+                onConfirm = { title, content, category ->
+                    viewModel.createTestimony(title, content, category)
                 },
                 isLoading = createState is Resource.Loading
             )
@@ -180,7 +182,7 @@ private fun TestimonyCard(
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            // En-tête avec auteur et catégorie
+            // En-tête avec userId et catégorie
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -198,33 +200,33 @@ private fun TestimonyCard(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = testimony.auteur,
+                        text = testimony.userId,
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Medium
                     )
                 }
-                testimony.categorie?.let { CategoryBadge(it) }
+                testimony.category?.let { CategoryBadge(it) }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Titre
+            // title
             Text(
-                text = testimony.titre,
+                text = testimony.title,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )
 
-            // Contenu (aperçu)
+            // content (aperçu)
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = testimony.contenu,
+                text = testimony.content,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 maxLines = 4
             )
 
-            // Date et statut
+            // Date et status
             Spacer(modifier = Modifier.height(12.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -245,7 +247,7 @@ private fun TestimonyCard(
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
-                            text = formatDate(testimony.date),
+                            text = formatDate(testimony.appointmentDate),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -289,8 +291,8 @@ private fun TestimonyCard(
                 }
             }
 
-            // Statut de validation
-            if (testimony.statut == "EN_ATTENTE") {
+            // status de validation
+            if (testimony.status.name == "PENDING") {
                 Spacer(modifier = Modifier.height(8.dp))
                 Surface(
                     shape = MaterialTheme.shapes.small,
@@ -346,11 +348,11 @@ private fun CategoryBadge(category: String) {
 @Composable
 private fun CreateTestimonyDialog(
     onDismiss: () -> Unit,
-    onConfirm: (titre: String, contenu: String, categorie: String) -> Unit,
+    onConfirm: (title: String, content: String, category: String) -> Unit,
     isLoading: Boolean
 ) {
-    var titre by remember { mutableStateOf("") }
-    var contenu by remember { mutableStateOf("") }
+    var title by remember { mutableStateOf("") }
+    var content by remember { mutableStateOf("") }
     var selectedCategory by remember { mutableStateOf("GUERISON") }
     var showCategoryMenu by remember { mutableStateOf(false) }
 
@@ -372,10 +374,10 @@ private fun CreateTestimonyDialog(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 OutlinedTextField(
-                    value = titre,
-                    onValueChange = { titre = it },
-                    label = { Text("Titre") },
-                    placeholder = { Text("Titre du témoignage") },
+                    value = title,
+                    onValueChange = { title = it },
+                    label = { Text("title") },
+                    placeholder = { Text("title du témoignage") },
                     leadingIcon = {
                         Icon(Icons.Default.Title, null)
                     },
@@ -419,9 +421,9 @@ private fun CreateTestimonyDialog(
                 }
 
                 OutlinedTextField(
-                    value = contenu,
-                    onValueChange = { contenu = it },
-                    label = { Text("Contenu") },
+                    value = content,
+                    onValueChange = { content = it },
+                    label = { Text("content") },
                     placeholder = { Text("Partagez votre témoignage") },
                     leadingIcon = {
                         Icon(Icons.Default.Description, null)
@@ -436,11 +438,11 @@ private fun CreateTestimonyDialog(
         confirmButton = {
             Button(
                 onClick = {
-                    if (titre.isNotBlank() && contenu.isNotBlank()) {
-                        onConfirm(titre, contenu, selectedCategory)
+                    if (title.isNotBlank() && content.isNotBlank()) {
+                        onConfirm(title, content, selectedCategory)
                     }
                 },
-                enabled = !isLoading && titre.isNotBlank() && contenu.isNotBlank()
+                enabled = !isLoading && title.isNotBlank() && content.isNotBlank()
             ) {
                 if (isLoading) {
                     CircularProgressIndicator(
@@ -541,8 +543,8 @@ private fun filterTestimonies(
 ): List<Testimony> {
     return when (filter) {
         TestimonyFilter.ALL -> testimonies
-        TestimonyFilter.VALIDATED -> testimonies.filter { it.statut == "VALIDE" }
-        TestimonyFilter.PENDING -> testimonies.filter { it.statut == "EN_ATTENTE" }
+        TestimonyFilter.VALIDATED -> testimonies.filter { it.status == "VALIDE" }
+        TestimonyFilter.PENDING -> testimonies.filter { it.status.name == "PENDING" }
     }
 }
 
@@ -550,7 +552,7 @@ private fun formatDate(dateString: String): String {
     return try {
         val parser = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val formatter = SimpleDateFormat("dd MMM yyyy", Locale("fr", "FR"))
-        val date = parser.parse(dateString)
+        val appointmentDate = parser.parse(dateString)
         date?.let { formatter.format(it) } ?: dateString
     } catch (e: Exception) {
         dateString

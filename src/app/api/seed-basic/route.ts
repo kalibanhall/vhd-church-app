@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '../../../lib/prisma';
-import postgres from 'postgres';
-const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' });
 
 export async function POST(request: Request) {
   try {
@@ -12,33 +10,31 @@ export async function POST(request: Request) {
     }
 
     // Créer quelques événements de test
-    await sql`
-      INSERT INTO events (title, description, event_type, start_date, end_date, location, is_public, created_by)
-      VALUES (
-        'Culte du Dimanche',
-        'Culte dominical hebdomadaire',
-        'WORSHIP_SERVICE',
-        ${new Date('2025-10-27T10:00:00')},
-        ${new Date('2025-10-27T12:00:00')},
-        'Sanctuaire Principal',
-        true,
-        'admin-chris-kasongo-1760972831746'
-      )
-    `;
+    await prisma.event.create({
+      data: {
+        title: 'Culte du Dimanche',
+        description: 'Culte dominical hebdomadaire',
+        eventType: 'WORSHIP_SERVICE',
+        startDate: new Date('2025-10-27T10:00:00'),
+        endDate: new Date('2025-10-27T12:00:00'),
+        location: 'Sanctuaire Principal',
+        isPublic: true,
+        createdBy: 'admin-chris-kasongo-1760972831746'
+      }
+    });
 
     // Créer quelques prédications de test
-    await sql`
-      INSERT INTO preachings (title, description, scripture_reference, preacher, preached_at, is_public, created_by)
-      VALUES (
-        'La Foi en Action',
-        'Une prédication sur la foi pratique',
-        'Jacques 2:14-26',
-        'Pasteur Chris Kasongo',
-        ${new Date('2025-10-20')},
-        true,
-        'admin-chris-kasongo-1760972831746'
-      )
-    `;
+    await prisma.preaching.create({
+      data: {
+        title: 'La Foi en Action',
+        description: 'Une prédication sur la foi pratique',
+        scriptureReference: 'Jacques 2:14-26',
+        preacher: 'Pasteur Chris Kasongo',
+        preachedAt: new Date('2025-10-20'),
+        isPublic: true,
+        createdBy: 'admin-chris-kasongo-1760972831746'
+      }
+    });
 
     return NextResponse.json({
       success: true,

@@ -3,10 +3,10 @@
  * MINISTÈRE DES VAILLANTS HOMMES DE DAVID - DASHBOARD CONTAINER
  * =============================================================================
  * 
- * Auteur: CHRIS NGOZULU KASONGO (KalibanHall)
+ * userId: CHRIS NGOZULU KASONGO (KalibanHall)
  * GitHub: https://github.com/KalibanHall
  * 
- * Description: Container principal du Dashboard - EXACTEMENT comme le web
+ * notes: Container principal du Dashboard - EXACTEMENT comme le web
  * Correspond à: src/components/Dashboard.tsx
  * 
  * Fonctionnalités:
@@ -55,7 +55,7 @@ fun DashboardContainer(
         return
     }
 
-    // MainLayout avec Header + Sidebar + Contenu
+    // MainLayout avec Header + Sidebar + content
     MainLayout(
         user = user!!,
         activeTab = activeTab,
@@ -73,7 +73,7 @@ fun DashboardContainer(
             
             "appointments" -> {
                 // Redirection selon le rôle (comme dans le web)
-                if (user!!.role == "PASTOR" || user!!.role == "ADMIN") {
+                if (user.role == UserRole.PASTOR || user.role == UserRole.ADMIN) {
                     AppointmentsManagement()
                 } else {
                     MemberAppointments()
@@ -92,7 +92,7 @@ fun DashboardContainer(
             
             // Admin/Pastor routes
             "admin" -> {
-                if (user!!.role == "ADMIN") {
+                if (user.role == UserRole.ADMIN) {
                     AdminDashboard()
                 } else {
                     HomePageSimple() // Fallback
@@ -100,7 +100,7 @@ fun DashboardContainer(
             }
             
             "analytics" -> {
-                if (user!!.role == "ADMIN") {
+                if (user.role == UserRole.ADMIN) {
                     AnalyticsPage()
                 } else {
                     HomePageSimple()
@@ -108,7 +108,7 @@ fun DashboardContainer(
             }
             
             "members" -> {
-                if (user!!.role == "ADMIN") {
+                if (user.role == UserRole.ADMIN) {
                     MembersManagement()
                 } else {
                     HomePageSimple()
@@ -116,7 +116,7 @@ fun DashboardContainer(
             }
             
             "events" -> {
-                if (user!!.role == "ADMIN") {
+                if (user.role == UserRole.ADMIN) {
                     EventsManagement()
                 } else {
                     HomePageSimple()
@@ -124,7 +124,7 @@ fun DashboardContainer(
             }
             
             "polls-admin" -> {
-                if (user!!.role == "ADMIN") {
+                if (user.role == UserRole.ADMIN) {
                     PollsManagement()
                 } else {
                     HomePageSimple()
@@ -132,7 +132,7 @@ fun DashboardContainer(
             }
             
             "notifications" -> {
-                if (user!!.role == "ADMIN") {
+                if (user.role == UserRole.ADMIN) {
                     NotificationsManagement()
                 } else {
                     HomePageSimple()
@@ -140,7 +140,7 @@ fun DashboardContainer(
             }
             
             "validate-testimonies" -> {
-                if (user!!.role == "ADMIN") {
+                if (user.role == UserRole.ADMIN) {
                     PrayersTestimoniesValidation()
                 } else {
                     HomePageSimple()
@@ -148,7 +148,7 @@ fun DashboardContainer(
             }
             
             "pastor-appointments" -> {
-                if (user!!.role == "ADMIN" || user!!.role == "PASTOR") {
+                if (user.role == UserRole.ADMIN || user.role == UserRole.PASTOR) {
                     AppointmentsManagement()
                 } else {
                     HomePageSimple()

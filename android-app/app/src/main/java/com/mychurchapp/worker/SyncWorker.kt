@@ -5,7 +5,7 @@ import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.mychurchapp.data.local.dao.*
-import com.mychurchapp.data.repository.SermonRepository
+import com.mychurchapp.domain.repository.SermonsRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import timber.log.Timber
@@ -14,7 +14,7 @@ import timber.log.Timber
 class SyncWorker @AssistedInject constructor(
     @Assisted appContext: Context,
     @Assisted workerParams: WorkerParameters,
-    private val sermonRepository: SermonRepository,
+    private val sermonsRepository: SermonsRepository,
     private val sermonDao: SermonDao,
     private val eventDao: EventDao,
     private val memberDao: MemberDao,

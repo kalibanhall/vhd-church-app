@@ -81,15 +81,7 @@ export default function AppointmentsPage() {
     }
   };
 
-  const [appointmentError, setAppointmentError] = useState<string | null>(null);
   const createAppointment = async () => {
-    setAppointmentError(null);
-    // Validation date
-    const today = new Date().toISOString().split('T')[0];
-    if (!formData.appointmentDate || formData.appointmentDate < today) {
-      setAppointmentError('La date sélectionnée doit être aujourd’hui ou ultérieure.');
-      return;
-    }
     try {
       const response = await fetch('/api/appointments', {
         method: 'POST',
@@ -106,7 +98,6 @@ export default function AppointmentsPage() {
         setFormData({ pastorId: '', appointmentDate: '', appointmentTime: '', reason: '' });
       }
     } catch (error) {
-      setAppointmentError('Erreur création rendez-vous.');
       console.error('Erreur création rendez-vous:', error);
     }
   };
@@ -246,9 +237,6 @@ export default function AppointmentsPage() {
               </div>
             </div>
 
-            {appointmentError && (
-              <div className="text-red-600 text-sm mb-2">{appointmentError}</div>
-            )}
             <div className="flex space-x-3 mt-6">
               <button
                 onClick={() => setShowNewForm(false)}

@@ -35,7 +35,8 @@ android {
     buildTypes {
         debug {
             isMinifyEnabled = false
-            applicationIdSuffix = ".debug"
+            // applicationIdSuffix removed to simplify Firebase configuration
+            // applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
         }
         release {
@@ -63,7 +64,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.4"
+        kotlinCompilerExtensionVersion = "1.5.15"
     }
 
     packaging {
@@ -173,19 +174,19 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:$accompanistVersion")
     implementation("com.google.accompanist:accompanist-swiperefresh:$accompanistVersion")
 
-    // Paiements
-    implementation("com.stripe:stripe-android:20.35.0")
-    implementation("com.paypal.checkout:android-sdk:1.2.0")
+    // Paiements - Removed: not used in the app
+    // implementation("com.stripe:stripe-android:20.35.0")
+    // implementation("com.paypal.checkout:android-sdk:1.2.0")
 
     // Charts
     implementation("com.patrykandpatrick.vico:compose-m3:1.13.1")
 
-    // PDF Generation
-    implementation("com.itextpdf:itext7-core:7.2.5")
+    // PDF Generation - Removed: not used in the app
+    // implementation("com.itextpdf:itext7-core:7.2.5")
 
-    // Excel Export
-    implementation("org.apache.poi:poi:5.2.5")
-    implementation("org.apache.poi:poi-ooxml:5.2.5")
+    // Excel Export - Removed: not used in the app
+    // implementation("org.apache.poi:poi:5.2.5")
+    // implementation("org.apache.poi:poi-ooxml:5.2.5")
 
     // Biometric
     implementation("androidx.biometric:biometric:1.2.0-alpha05")

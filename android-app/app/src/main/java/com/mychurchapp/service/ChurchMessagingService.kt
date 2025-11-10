@@ -9,7 +9,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.mychurchapp.MainActivity
+import com.mychurchapp.presentation.MainActivity
 import com.mychurchapp.R
 import timber.log.Timber
 

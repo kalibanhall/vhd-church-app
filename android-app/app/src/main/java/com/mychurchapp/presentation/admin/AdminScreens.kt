@@ -3,10 +3,10 @@
  * MINISTÈRE DES VAILLANTS HOMMES DE DAVID - ADMIN SCREENS
  * =============================================================================
  * 
- * Auteur: CHRIS NGOZULU KASONGO (KalibanHall)
+ * userId: CHRIS NGOZULU KASONGO (KalibanHall)
  * GitHub: https://github.com/KalibanHall
  * 
- * Description: Écrans d'administration - Selon les fichiers web
+ * notes: Écrans d'administration - Selon les fichiers web
  * 
  * =============================================================================
  */
@@ -189,7 +189,7 @@ private fun AdminStatCard(stat: StatCard) {
 }
 
 @Composable
-private fun ActivityItem(emoji: String, title: String, description: String, time: String) {
+private fun ActivityItem(emoji: String, title: String, notes: String, time: String) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = Color(0xFFF9FAFB),

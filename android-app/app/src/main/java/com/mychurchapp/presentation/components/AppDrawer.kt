@@ -301,7 +301,7 @@ private fun DrawerHeader(
 }
 
 /**
- * Titre de section dans le drawer
+ * title de section dans le drawer
  */
 @Composable
 private fun DrawerSectionTitle(title: String) {

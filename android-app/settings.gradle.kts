@@ -10,6 +10,13 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // Cardinal Commerce repository for PayPal SDK dependency
+        maven {
+            url = uri("https://cardinalcommerceprod.jfrog.io/artifactory/android")
+            content {
+                includeGroup("org.jfrog.cardinalcommerce.gradle")
+            }
+        }
     }
 }
 

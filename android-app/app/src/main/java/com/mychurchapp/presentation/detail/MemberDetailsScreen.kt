@@ -212,7 +212,7 @@ fun MemberDetailsScreen(
                     InfoRow(
                         icon = Icons.Default.AdminPanelSettings,
                         label = "Rôle",
-                        value = when (member.role) {
+                        value = when (member.userRole) {
                             "ADMIN" -> "Administrateur"
                             "PASTOR" -> "Pasteur"
                             else -> "Membre"

@@ -77,7 +77,7 @@ fun MembersScreen(
             // Liste des membres
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing),
-                onRefresh = { viewModel.refresh() }
+                onRefresh = { viewModel.refreshChannels() }
             ) {
                 when (val state = members) {
                     is Resource.Success -> {
@@ -92,7 +92,7 @@ fun MembersScreen(
                     }
                     is Resource.Error -> {
                         ErrorView(message = state.message) {
-                            viewModel.refresh()
+                            viewModel.refreshChannels()
                         }
                     }
                     is Resource.Loading -> {
@@ -186,7 +186,7 @@ private fun MemberCard(
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Text(
-                        text = member.nom.firstOrNull()?.uppercase() ?: "?",
+                        text = member.lastName.firstOrNull()?.uppercase() ?: "?",
                         style = MaterialTheme.typography.headlineSmall,
                         color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
@@ -198,7 +198,7 @@ private fun MemberCard(
             // Infos
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "${member.nom} ${member.prenom}",
+                    text = "${member.lastName} ${member.firstName}",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -217,7 +217,7 @@ private fun MemberCard(
             }
 
             // Badge rôle
-            RoleBadge(role = member.role)
+            RoleBadge(role = member.userRole)
         }
     }
 }

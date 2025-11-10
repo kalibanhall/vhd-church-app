@@ -76,7 +76,7 @@ fun AppointmentsScreen(
             // Liste des rendez-vous
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing),
-                onRefresh = { viewModel.refresh() }
+                onRefresh = { viewModel.loadAppointments() }
             ) {
                 when (val state = appointments) {
                     is Resource.Success -> {
@@ -92,7 +92,7 @@ fun AppointmentsScreen(
                     }
                     is Resource.Error -> {
                         ErrorView(message = state.message) {
-                            viewModel.refresh()
+                            viewModel.loadAppointments()
                         }
                     }
                     is Resource.Loading -> LoadingView()
@@ -105,8 +105,8 @@ fun AppointmentsScreen(
         if (showCreateDialog) {
             CreateAppointmentDialog(
                 onDismiss = { showCreateDialog = false },
-                onConfirm = { date, heure, motif ->
-                    viewModel.createAppointment(date, heure, motif)
+                onConfirm = { date, startTime, purpose ->
+                    viewModel.createAppointment(date, startTime, purpose)
                 },
                 isLoading = createState is Resource.Loading
             )
@@ -176,7 +176,7 @@ private fun AppointmentCard(
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            // En-tête avec statut
+            // En-tête avec status
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -188,12 +188,12 @@ private fun AppointmentCard(
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f)
                 )
-                StatusBadge(appointment.statut)
+                StatusBadge(appointment.status)
             }
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Date et heure
+            // Date et startTime
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -205,7 +205,7 @@ private fun AppointmentCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = formatDate(appointment.date),
+                    text = formatDate(appointment.appointmentDate),
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium
                 )
@@ -218,17 +218,17 @@ private fun AppointmentCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = appointment.heure,
+                    text = appointment.startTime,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Medium
                 )
             }
 
-            // Motif
-            appointment.motif?.let {
+            // purpose
+            appointment.purpose?.let {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = "Motif",
+                    text = "purpose",
                     style = MaterialTheme.typography.labelMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -240,7 +240,7 @@ private fun AppointmentCard(
             }
 
             // Bouton annuler (seulement si EN_ATTENTE)
-            if (appointment.statut == "EN_ATTENTE") {
+            if (appointment.status == AppointmentStatus.PENDING) {
                 Spacer(modifier = Modifier.height(12.dp))
                 OutlinedButton(
                     onClick = { showCancelDialog = true },
@@ -341,12 +341,12 @@ private fun StatusBadge(status: String) {
 @Composable
 private fun CreateAppointmentDialog(
     onDismiss: () -> Unit,
-    onConfirm: (date: String, heure: String, motif: String) -> Unit,
+    onConfirm: (appointmentDate: String, startTime: String, purpose: String) -> Unit,
     isLoading: Boolean
 ) {
     var selectedDate by remember { mutableStateOf("") }
     var selectedTime by remember { mutableStateOf("") }
-    var motif by remember { mutableStateOf("") }
+    var purpose by remember { mutableStateOf("") }
 
     AlertDialog(
         onDismissRequest = { if (!isLoading) onDismiss() },
@@ -371,7 +371,7 @@ private fun CreateAppointmentDialog(
                 OutlinedTextField(
                     value = selectedTime,
                     onValueChange = { selectedTime = it },
-                    label = { Text("Heure") },
+                    label = { Text("startTime") },
                     placeholder = { Text("HH:MM") },
                     leadingIcon = {
                         Icon(Icons.Default.AccessTime, null)
@@ -381,12 +381,12 @@ private fun CreateAppointmentDialog(
                 )
 
                 OutlinedTextField(
-                    value = motif,
-                    onValueChange = { motif = it },
-                    label = { Text("Motif") },
-                    placeholder = { Text("Décrivez le motif du rendez-vous") },
+                    value = purpose,
+                    onValueChange = { purpose = it },
+                    label = { Text("purpose") },
+                    placeholder = { Text("Décrivez le purpose du rendez-vous") },
                     leadingIcon = {
-                        Icon(Icons.Default.Description, null)
+                        Icon(Icons.Default.notes, null)
                     },
                     modifier = Modifier.fillMaxWidth(),
                     minLines = 3,
@@ -398,12 +398,12 @@ private fun CreateAppointmentDialog(
         confirmButton = {
             Button(
                 onClick = {
-                    if (selectedDate.isNotBlank() && selectedTime.isNotBlank() && motif.isNotBlank()) {
-                        onConfirm(selectedDate, selectedTime, motif)
+                    if (selectedDate.isNotBlank() && selectedTime.isNotBlank() && purpose.isNotBlank()) {
+                        onConfirm(selectedDate, selectedTime, purpose)
                     }
                 },
                 enabled = !isLoading && selectedDate.isNotBlank() && 
-                         selectedTime.isNotBlank() && motif.isNotBlank()
+                         selectedTime.isNotBlank() && purpose.isNotBlank()
             ) {
                 if (isLoading) {
                     CircularProgressIndicator(
@@ -504,8 +504,8 @@ private fun filterAppointments(
 ): List<Appointment> {
     return when (filter) {
         AppointmentFilter.ALL -> appointments
-        AppointmentFilter.PENDING -> appointments.filter { it.statut == "EN_ATTENTE" }
-        AppointmentFilter.CONFIRMED -> appointments.filter { it.statut == "CONFIRME" }
+        AppointmentFilter.PENDING -> appointments.filter { it.status == AppointmentStatus.PENDING }
+        AppointmentFilter.CONFIRMED -> appointments.filter { it.status == AppointmentStatus.CONFIRMED }
     }
 }
 

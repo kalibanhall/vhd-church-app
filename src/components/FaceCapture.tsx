@@ -1,0 +1,215 @@
+'use client';
+
+import React, { useRef, useEffect, useState } from 'react';
+import * as faceapi from 'face-api.js';
+
+interface FaceCaptureProps {
+  onFaceDetected?: (descriptor: Float32Array, imageData: string) => void;
+  mode?: 'capture' | 'verify';
+  existingDescriptor?: Float32Array;
+}
+
+export default function FaceCapture({ 
+  onFaceDetected, 
+  mode = 'capture',
+  existingDescriptor 
+}: FaceCaptureProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isModelLoaded, setIsModelLoaded] = useState(false);
+  const [stream, setStream] = useState<MediaStream | null>(null);
+  const [error, setError] = useState<string>('');
+  const [match, setMatch] = useState<number | null>(null);
+
+  // Charger les modèles face-api.js
+  useEffect(() => {
+    const loadModels = async () => {
+      try {
+        const MODEL_URL = '/models';
+        await Promise.all([
+          faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL),
+          faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+          faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL),
+        ]);
+        setIsModelLoaded(true);
+        setIsLoading(false);
+      } catch (err) {
+        setError('Erreur lors du chargement des modèles de reconnaissance faciale');
+        setIsLoading(false);
+      }
+    };
+
+    loadModels();
+  }, []);
+
+  // Démarrer la caméra
+  useEffect(() => {
+    if (!isModelLoaded) return;
+
+    const startVideo = async () => {
+      try {
+        const mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: 'user',
+            width: { ideal: 640 },
+            height: { ideal: 480 }
+          }
+        });
+        
+        if (videoRef.current) {
+          videoRef.current.srcObject = mediaStream;
+          setStream(mediaStream);
+        }
+      } catch (err) {
+        setError('Impossible d\'accéder à la caméra. Vérifiez les permissions.');
+      }
+    };
+
+    startVideo();
+
+    return () => {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [isModelLoaded]);
+
+  // Détection en temps réel
+  useEffect(() => {
+    if (!isModelLoaded || !videoRef.current || mode !== 'verify' || !existingDescriptor) return;
+
+    const interval = setInterval(async () => {
+      if (videoRef.current && canvasRef.current) {
+        const detection = await faceapi
+          .detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions())
+          .withFaceLandmarks()
+          .withFaceDescriptor();
+
+        if (detection) {
+          const distance = faceapi.euclideanDistance(
+            detection.descriptor,
+            existingDescriptor
+          );
+          
+          // Distance < 0.6 = même personne
+          const matchPercentage = Math.max(0, (1 - distance) * 100);
+          setMatch(matchPercentage);
+
+          // Dessiner le cadre
+          const dims = faceapi.matchDimensions(canvasRef.current, videoRef.current, true);
+          const resizedDetection = faceapi.resizeResults(detection, dims);
+          
+          canvasRef.current.getContext('2d')?.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+          
+          const boxColor = matchPercentage > 60 ? '#4ade80' : '#f87171';
+          faceapi.draw.drawDetections(canvasRef.current, [resizedDetection], { boxColor });
+          faceapi.draw.drawFaceLandmarks(canvasRef.current, [resizedDetection]);
+        }
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [isModelLoaded, mode, existingDescriptor]);
+
+  const capturePhoto = async () => {
+    if (!videoRef.current || !canvasRef.current) return;
+
+    try {
+      const detection = await faceapi
+        .detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceDescriptor();
+
+      if (!detection) {
+        setError('Aucun visage détecté. Positionnez-vous face à la caméra.');
+        return;
+      }
+
+      // Capturer l'image
+      const canvas = document.createElement('canvas');
+      canvas.width = videoRef.current.videoWidth;
+      canvas.height = videoRef.current.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx?.drawImage(videoRef.current, 0, 0);
+      const imageData = canvas.toDataURL('image/jpeg', 0.8);
+
+      // Retourner le descripteur et l'image
+      if (onFaceDetected) {
+        onFaceDetected(detection.descriptor, imageData);
+      }
+
+      setError('');
+    } catch (err) {
+      setError('Erreur lors de la capture. Réessayez.');
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center p-8 bg-gray-100 dark:bg-gray-800 rounded-lg">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-400">Chargement des modèles...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      {error && (
+        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+          <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+        </div>
+      )}
+
+      <div className="relative bg-black rounded-lg overflow-hidden">
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          muted
+          className="w-full h-auto"
+          onLoadedMetadata={(e) => {
+            const video = e.currentTarget;
+            if (canvasRef.current) {
+              canvasRef.current.width = video.videoWidth;
+              canvasRef.current.height = video.videoHeight;
+            }
+          }}
+        />
+        <canvas
+          ref={canvasRef}
+          className="absolute top-0 left-0 w-full h-full"
+        />
+        
+        {mode === 'verify' && match !== null && (
+          <div className="absolute top-4 right-4 bg-black/70 backdrop-blur-sm px-4 py-2 rounded-lg">
+            <p className="text-white font-semibold">
+              Correspondance: {match.toFixed(0)}%
+            </p>
+            {match > 60 && (
+              <p className="text-green-400 text-sm">✓ Visage reconnu</p>
+            )}
+          </div>
+        )}
+      </div>
+
+      {mode === 'capture' && (
+        <button
+          onClick={capturePhoto}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+        >
+          📸 Capturer le visage
+        </button>
+      )}
+
+      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+        <p className="text-sm text-blue-800 dark:text-blue-300">
+          💡 <strong>Conseil:</strong> Positionnez votre visage face à la caméra, bien éclairé et à environ 50cm de l'écran.
+        </p>
+      </div>
+    </div>
+  );
+}

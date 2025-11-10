@@ -42,19 +42,19 @@ class TestimoniesViewModel @Inject constructor(
     }
 
     fun createTestimony(
-        titre: String,
-        contenu: String,
-        categorie: String,
+        title: String,
+        content: String,
+        category: String,
         isAnonymous: Boolean = false
     ) {
         viewModelScope.launch {
             val testimony = Testimony(
                 id = "",
-                membreId = "", // Sera rempli par l'API
-                titre = titre,
-                contenu = contenu,
-                categorie = categorie,
-                statut = "EN_ATTENTE",
+                userId = "", // Sera rempli par l'API
+                title = title,
+                content = content,
+                category = category,
+                status = "EN_ATTENTE",
                 isAnonymous = isAnonymous,
                 likes = 0,
                 createdAt = "",

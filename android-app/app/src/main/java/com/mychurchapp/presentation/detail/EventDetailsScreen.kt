@@ -99,7 +99,7 @@ fun EventDetailsScreen(
                         )
                 )
                 
-                // Badge de statut
+                // Badge de status
                 Surface(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -126,13 +126,13 @@ fun EventDetailsScreen(
                 }
             }
             
-            // Contenu
+            // content
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                // Titre
+                // title
                 Text(
                     text = event.title,
                     style = MaterialTheme.typography.headlineMedium,
@@ -255,7 +255,7 @@ fun EventDetailsScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 
                 Text(
-                    text = event.description,
+                    text = event.notes,
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color(0xFF4B5563),
                     lineHeight = MaterialTheme.typography.bodyMedium.fontSize.value.dp * 1.6f
@@ -295,7 +295,7 @@ fun EventDetailsScreen(
 data class Event(
     val id: String,
     val title: String,
-    val description: String,
+    val notes: String,
     val type: String,
     val startDate: Long,
     val endDate: Long?,

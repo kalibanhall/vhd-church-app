@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import postgres from 'postgres'
-const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' })
-// @ts-ignore
+import { prisma } from '../../../../lib/prisma'
 import jwt from 'jsonwebtoken'
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
@@ -18,8 +16,9 @@ async function verifyToken(request: NextRequest) {
     const token = authHeader.substring(7)
     const decoded = jwt.verify(token, JWT_SECRET) as any
     
-    const userRes = await sql`SELECT * FROM users WHERE id = ${decoded.userId}`
-    const user = userRes[0]
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.userId }
+    })
     
     if (!user) {
       return { error: 'Utilisateur introuvable', status: 404 }
@@ -42,14 +41,31 @@ export async function GET(request: NextRequest) {
     const userId = auth.user!.id
 
     // Calculer les statistiques
-    const donationsRes = await sql`SELECT COALESCE(SUM(amount),0) AS total FROM donations WHERE user_id = ${userId} AND status = 'COMPLETED'`
-    const appointmentsRes = await sql`SELECT COUNT(*) AS count FROM appointments WHERE user_id = ${userId}`
-    const prayersRes = await sql`SELECT COUNT(*) AS count FROM prayers WHERE user_id = ${userId}`
-    const testimoniesRes = await sql`SELECT COUNT(*) AS count FROM testimonies WHERE user_id = ${userId}`
-    const donations = donationsRes[0].total
-    const appointments = parseInt(appointmentsRes[0].count)
-    const prayers = parseInt(prayersRes[0].count)
-    const testimonies = parseInt(testimoniesRes[0].count)
+    const [donations, appointments, prayers, testimonies] = await Promise.all([
+      // Total des dons
+      prisma.donation.aggregate({
+        where: { 
+          userId: userId,
+          status: 'COMPLETED'
+        },
+        _sum: { amount: true }
+      }),
+
+      // Nombre de rendez-vous
+      prisma.appointment.count({
+        where: { userId: userId }
+      }),
+
+      // Nombre d'intentions de prière
+      prisma.prayer.count({
+        where: { userId: userId }
+      }),
+
+      // Nombre de témoignages
+      prisma.testimony.count({
+        where: { userId: userId }
+      })
+    ])
 
     const stats = {
       totalDonations: donations._sum.amount || 0,

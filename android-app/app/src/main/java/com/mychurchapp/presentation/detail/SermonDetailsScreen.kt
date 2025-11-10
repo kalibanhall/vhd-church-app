@@ -44,7 +44,7 @@ fun SermonDetailsScreen(
             title = "La foi qui déplace les montagnes",
             description = "Dans ce message puissant, le pasteur nous enseigne comment développer une foi inébranlable qui peut déplacer les montagnes dans notre vie. À travers des exemples bibliques et des témoignages contemporains, découvrez les clés pour une foi victorieuse.",
             pastorName = "Pasteur Jean KALOMBO",
-            date = System.currentTimeMillis() - (7 * 24 * 60 * 60 * 1000), // Il y a 7 jours
+            appointmentDate = System.currentTimeMillis() - (7 * 24 * 60 * 60 * 1000), // Il y a 7 jours
             videoUrl = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
             thumbnailUrl = null,
             duration = 2700, // 45 minutes
@@ -150,7 +150,7 @@ fun SermonDetailsScreen(
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-                // Titre
+                // title
                 Text(
                     text = sermon.title,
                     style = MaterialTheme.typography.headlineSmall,
@@ -181,7 +181,7 @@ fun SermonDetailsScreen(
                     }
                     
                     Text(
-                        text = formatDate(sermon.date),
+                        text = formatDate(sermon.appointmentDate),
                         style = MaterialTheme.typography.bodySmall,
                         color = Color(0xFF9CA3AF)
                     )
@@ -287,7 +287,7 @@ fun SermonDetailsScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 
                 Text(
-                    text = sermon.description,
+                    text = sermon.notes,
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color(0xFF4B5563),
                     lineHeight = MaterialTheme.typography.bodyMedium.fontSize.value.dp * 1.5f
@@ -331,9 +331,9 @@ fun SermonDetailsScreen(
 data class Sermon(
     val id: String,
     val title: String,
-    val description: String,
+    val notes: String,
     val pastorName: String,
-    val date: Long,
+    val appointmentDate: Long,
     val videoUrl: String,
     val thumbnailUrl: String?,
     val duration: Int,

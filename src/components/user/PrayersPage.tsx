@@ -39,8 +39,6 @@ export default function PrayersPage() {
     isPublic: true,
     isAnonymous: false
   })
-  const [formError, setFormError] = useState<string | null>(null)
-  const [submitting, setSubmitting] = useState(false)
 
   useEffect(() => {
     if (user) {
@@ -75,16 +73,7 @@ export default function PrayersPage() {
 
   const handleCreatePrayer = async (e: React.FormEvent) => {
     e.preventDefault()
-    setFormError(null)
-    if (!newPrayer.title.trim()) {
-      setFormError('Le titre de la prière est requis.')
-      return
-    }
-    if (!newPrayer.content.trim()) {
-      setFormError('Le contenu de la prière est requis.')
-      return
-    }
-    setSubmitting(true)
+    
     try {
       const response = await fetch(`/api/prayers?userId=${user?.id}`, {
         method: 'POST',
@@ -105,17 +94,14 @@ export default function PrayersPage() {
         })
         setShowCreateForm(false)
         fetchPrayers()
-        setFormError(null)
         alert('Votre intention de prière a été soumise pour validation')
       } else {
         const error = await response.json()
-        setFormError(error.error || 'Erreur lors de la soumission')
+        alert('Erreur: ' + error.error)
       }
     } catch (error) {
       console.error('Erreur lors de la création:', error)
-      setFormError('Erreur lors de la soumission')
-    } finally {
-      setSubmitting(false)
+      alert('Erreur lors de la soumission')
     }
   }
 
@@ -242,12 +228,6 @@ export default function PrayersPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleCreatePrayer} className="space-y-4">
-              {formError && (
-                <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-2 flex items-center">
-                  <AlertCircle className="h-4 w-4 mr-2" />
-                  {formError}
-                </div>
-              )}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Titre de la prière
@@ -275,25 +255,24 @@ export default function PrayersPage() {
               </div>
 
               <div className="flex items-center space-x-4">
-                <label className="flex items-center mr-4">
-                  <input
-                    type="radio"
-                    name="prayerType"
-                    checked={newPrayer.isAnonymous}
-                    onChange={() => setNewPrayer(prev => ({ ...prev, isAnonymous: true, isPublic: false }))}
-                    className="mr-2"
-                  />
-                  Anonyme
-                </label>
                 <label className="flex items-center">
                   <input
-                    type="radio"
-                    name="prayerType"
-                    checked={newPrayer.isPublic}
-                    onChange={() => setNewPrayer(prev => ({ ...prev, isAnonymous: false, isPublic: true }))}
+                    type="checkbox"
+                    checked={newPrayer.isAnonymous}
+                    onChange={(e) => setNewPrayer(prev => ({ ...prev, isAnonymous: e.target.checked }))}
                     className="mr-2"
                   />
-                  Publique
+                  Publier anonymement
+                </label>
+
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={newPrayer.isPublic}
+                    onChange={(e) => setNewPrayer(prev => ({ ...prev, isPublic: e.target.checked }))}
+                    className="mr-2"
+                  />
+                  Visible publiquement
                 </label>
               </div>
 
@@ -303,17 +282,12 @@ export default function PrayersPage() {
                   variant="outline"
                   onClick={() => setShowCreateForm(false)}
                   className="py-3 text-base"
-                  disabled={submitting}
                 >
                   Annuler
                 </Button>
-                <Button
-                  type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 py-3 text-base"
-                  disabled={submitting || !newPrayer.title.trim() || !newPrayer.content.trim()}
-                >
+                <Button type="submit" className="bg-blue-600 hover:bg-blue-700 py-3 text-base">
                   <Send className="h-4 w-4 mr-2" />
-                  {submitting ? 'Envoi...' : 'Soumettre pour validation'}
+                  Soumettre pour validation
                 </Button>
               </div>
             </form>

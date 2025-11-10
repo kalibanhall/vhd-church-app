@@ -24,6 +24,9 @@
     "docker:logs": "docker-compose logs -f postgres"
   },
   "dependencies": {
+    "@capacitor/android": "^7.4.4",
+    "@capacitor/cli": "^7.4.4",
+    "@capacitor/core": "^7.4.4",
     "@hookform/resolvers": "^3.3.2",
     "@prisma/client": "^5.22.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",
@@ -41,6 +44,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^2.30.0",
+    "face-api.js": "^0.22.2",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.263.1",
     "next": "15.0.3",
@@ -49,6 +53,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.48.2",
+    "react-hot-toast": "^2.6.0",
     "tailwind-merge": "^2.6.0",
     "zod": "^3.22.4"
   },

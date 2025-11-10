@@ -12,8 +12,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import postgres from 'postgres'
-const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' })
+import { prisma } from '../../../lib/prisma'
 
 // Fonction pour vérifier les permissions utilisateur
 async function checkUserPermission(userId: string, action: 'read' | 'create' | 'moderate') {
@@ -22,8 +21,10 @@ async function checkUserPermission(userId: string, action: 'read' | 'create' | '
   }
 
   try {
-    const users = await sql`SELECT id, role, first_name, last_name FROM users WHERE id = ${userId} LIMIT 1`
-    const user = users[0]
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true, firstName: true, lastName: true }
+    })
 
     if (!user) {
       return { error: 'Utilisateur non trouvé', status: 404 }
@@ -76,45 +77,46 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    // Construction dynamique de la requête SQL
-    let sqlWhere = []
-    let sqlParams = []
-    if (whereClause.isApproved !== undefined) {
-      sqlWhere.push('t.is_approved = $' + (sqlParams.length + 1))
-      sqlParams.push(whereClause.isApproved)
-    }
-    if (whereClause.isPublished !== undefined) {
-      sqlWhere.push('t.is_published = $' + (sqlParams.length + 1))
-      sqlParams.push(whereClause.isPublished)
-    }
-    if (whereClause.userId) {
-      sqlWhere.push('t.user_id = $' + (sqlParams.length + 1))
-      sqlParams.push(whereClause.userId)
-    }
-    const whereSQL = sqlWhere.length ? 'WHERE ' + sqlWhere.join(' AND ') : ''
-    const testimonies = await sql.unsafe(`
-      SELECT t.*, u.first_name, u.last_name
-      FROM testimonies t
-      JOIN users u ON t.user_id = u.id
-      ${whereSQL}
-      ORDER BY t.created_at DESC
-    `, ...sqlParams)
+    const testimonies = await prisma.testimony.findMany({
+      where: whereClause,
+      include: {
+        user: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true
+          }
+        },
+        _count: {
+          select: {
+            likes: true,
+            comments: true
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    })
+
+    // Anonymiser les données si nécessaire
     const formattedTestimonies = testimonies.map((testimony: any) => ({
       id: testimony.id,
       title: testimony.title,
       content: testimony.content,
-      isAnonymous: testimony.is_anonymous || false,
-      isApproved: testimony.is_approved,
-      isPublished: testimony.is_published,
-      status: testimony.is_approved ? 'APPROVED' : 'PENDING',
-      testimonyDate: testimony.created_at,
-      likeCount: testimony.like_count || 0,
-      commentCount: testimony.comment_count || 0,
-      viewCount: testimony.view_count || 0,
-      userId: testimony.user_id,
-      userName: testimony.is_anonymous ? 'Anonyme' : `${testimony.first_name} ${testimony.last_name}`,
-      canEdit: testimony.user_id === userId || auth.user?.role === 'ADMIN' || auth.user?.role === 'PASTEUR'
+      isAnonymous: testimony.isAnonymous || false,
+      isApproved: testimony.isApproved,
+      isPublished: testimony.isPublished,
+      status: testimony.isApproved ? 'APPROVED' : 'PENDING',
+      testimonyDate: testimony.createdAt,
+      likeCount: testimony._count.likes,
+      commentCount: testimony._count.comments,
+      viewCount: testimony.viewCount || 0,
+      userId: testimony.userId,
+      userName: testimony.isAnonymous ? 'Anonyme' : `${testimony.user.firstName} ${testimony.user.lastName}`,
+      canEdit: testimony.userId === userId || auth.user?.role === 'ADMIN' || auth.user?.role === 'PASTEUR'
     }))
+
     return NextResponse.json(formattedTestimonies)
 
   } catch (error) {
@@ -150,16 +152,29 @@ export async function POST(request: NextRequest) {
     }
 
     // Créer le témoignage
-    const result = await sql`
-      INSERT INTO testimonies (title, content, is_anonymous, is_approved, is_published, user_id, category, created_at)
-      VALUES (${title}, ${content}, ${isAnonymous || false}, false, false, ${userId}, 'HEALING', NOW())
-      RETURNING *
-    `
-    const testimony = result[0]
-    const userInfo = await sql`SELECT first_name, last_name FROM users WHERE id = ${userId}`
+    const testimony = await prisma.testimony.create({
+      data: {
+        title,
+        content,
+        isAnonymous: isAnonymous || false,
+        isApproved: false, // Tous les témoignages nécessitent une approbation
+        isPublished: false,
+        userId: userId!,
+        category: 'HEALING'
+      },
+      include: {
+        user: {
+          select: {
+            firstName: true,
+            lastName: true
+          }
+        }
+      }
+    })
+
     return NextResponse.json({
       ...testimony,
-      userName: testimony.is_anonymous ? 'Anonyme' : `${userInfo[0].first_name} ${userInfo[0].last_name}`
+      userName: testimony.isAnonymous ? 'Anonyme' : `${testimony.user.firstName} ${testimony.user.lastName}`
     }, { status: 201 })
 
   } catch (error) {
@@ -202,17 +217,18 @@ export async function PATCH(request: NextRequest) {
     }
 
     // Mettre à jour le statut
-    const result = await sql`
-      UPDATE testimonies SET
-        is_approved = ${action === 'approve'},
-        is_published = ${action === 'approve'},
-        approved_by = ${action === 'approve' ? userId : null},
-        approved_at = ${action === 'approve' ? new Date() : null},
-        published_at = ${action === 'approve' ? new Date() : null}
-      WHERE id = ${testimonyId}
-      RETURNING *
-    `
-    return NextResponse.json(result[0])
+    const updatedTestimony = await prisma.testimony.update({
+      where: { id: testimonyId },
+      data: {
+        isApproved: action === 'approve',
+        isPublished: action === 'approve',
+        approvedBy: action === 'approve' ? userId : null,
+        approvedAt: action === 'approve' ? new Date() : null,
+        publishedAt: action === 'approve' ? new Date() : null
+      }
+    })
+
+    return NextResponse.json(updatedTestimony)
 
   } catch (error) {
     console.error('Erreur lors de la modération du témoignage:', error)
@@ -243,7 +259,10 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    await sql`DELETE FROM testimonies WHERE id = ${testimonyId}`
+    await prisma.testimony.delete({
+      where: { id: testimonyId }
+    })
+
     return NextResponse.json({ message: 'Témoignage supprimé avec succès' })
 
   } catch (error) {

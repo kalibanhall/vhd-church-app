@@ -1,5 +1,7 @@
 package com.mychurchapp.data.models
 
+import com.mychurchapp.data.models.User
+
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

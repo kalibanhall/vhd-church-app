@@ -40,14 +40,6 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-export function useAuth() {
-  const context = useContext(AuthContext)
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider')
-  }
-  return context
-}
-
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -62,12 +54,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const checkAuth = async () => {
     try {
       console.log('🔍 AuthContext: Vérification de l\'authentification...')
+      
+      // Récupérer le token du localStorage
       const token = localStorage.getItem('token')
-      if (!token || token === 'undefined' || token === '') {
-        console.error('❌ AuthContext: Token non défini ou invalide')
+      if (!token) {
         clearAuth()
         return
       }
+      
       // Vérification via API avec token Bearer
       const response = await fetch('/api/auth/me', {
         method: 'GET',
@@ -76,7 +70,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           'Content-Type': 'application/json'
         }
       })
+
       console.log('📊 AuthContext: Statut de /api/auth/me:', response.status)
+
       if (response.ok) {
         const data = await response.json()
         console.log('✅ AuthContext: Données reçues:', data)
@@ -133,4 +129,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext)
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider')
+  }
+  return context
 }

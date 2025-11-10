@@ -1,5 +1,11 @@
 package com.mychurchapp.data.repository
 
+import com.mychurchapp.data.models.CreateTestimonyRequest
+
+import com.mychurchapp.data.models.CreatePrayerRequest
+
+import com.mychurchapp.data.models.CreateAppointmentRequest
+
 import com.mychurchapp.data.api.*
 import com.mychurchapp.data.models.*
 import com.mychurchapp.domain.repository.*
@@ -17,12 +23,31 @@ class EventsRepositoryImpl @Inject constructor(
     private val eventsApi: EventsApiService
 ) : EventsRepository {
     
-    override suspend fun getEvents(): Flow<Resource<List<Event>>> = flow {
-        emit(Resource.Loading())
+    override suspend fun getEvents(
+        page: Int,
+        limit: Int,
+        type: String?,
+        status: String?,
+        startDate: String?,
+        endDate: String?
+    ): Flow<Resource<PaginatedResponse<Event>>> = flow {
+        emit(Resource.Loading)
         try {
             val response = eventsApi.getEvents()
             if (response.isSuccessful && response.body() != null) {
-                emit(Resource.Success(response.body()!!.data))
+                val events = response.body()!!.data
+                // Simuler une réponse paginée
+                val paginatedResponse = PaginatedResponse(
+                    success = true,
+                    data = events,
+                    page = page,
+                    pageSize = limit,
+                    totalPages = 1,
+                    totalItems = events.size,
+                    hasNext = false,
+                    hasPrevious = false
+                )
+                emit(Resource.Success(paginatedResponse))
             } else {
                 emit(Resource.Error("Erreur lors de la récupération des événements"))
             }
@@ -35,10 +60,10 @@ class EventsRepositoryImpl @Inject constructor(
         }
     }
     
-    override suspend fun getEventById(eventId: String): Flow<Resource<Event>> = flow {
-        emit(Resource.Loading())
+    override suspend fun getEventById(id: String): Flow<Resource<Event>> = flow {
+        emit(Resource.Loading)
         try {
-            val response = eventsApi.getEventById(eventId)
+            val response = eventsApi.getEventById(id)
             if (response.isSuccessful && response.body() != null) {
                 emit(Resource.Success(response.body()!!.data))
             } else {
@@ -50,7 +75,74 @@ class EventsRepositoryImpl @Inject constructor(
     }
     
     override suspend fun createEvent(event: Event): Flow<Resource<Event>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
+        try {
+            val response = eventsApi.createEvent(event)
+            if (response.isSuccessful && response.body() != null) {
+                emit(Resource.Success(response.body()!!.data))
+            } else {
+                emit(Resource.Error("Erreur lors de la création"))
+            }
+        } catch (e: Exception) {
+            emit(Resource.Error("Erreur: ${e.localizedMessage}"))
+        }
+    }
+    
+    override suspend fun updateEvent(id: String, event: Event): Flow<Resource<Event>> = flow {
+        emit(Resource.Loading)
+        try {
+            val response = eventsApi.updateEvent(id, event)
+            if (response.isSuccessful && response.body() != null) {
+                emit(Resource.Success(response.body()!!.data))
+            } else {
+                emit(Resource.Error("Erreur lors de la mise à jour"))
+            }
+        } catch (e: Exception) {
+            emit(Resource.Error("Erreur: ${e.localizedMessage}"))
+        }
+    }
+    
+    override suspend fun deleteEvent(id: String): Flow<Resource<Unit>> = flow {
+        emit(Resource.Loading)
+        try {
+            val response = eventsApi.deleteEvent(id)
+            if (response.isSuccessful) {
+                emit(Resource.Success(Unit))
+            } else {
+                emit(Resource.Error("Erreur lors de la suppression"))
+            }
+        } catch (e: Exception) {
+            emit(Resource.Error("Erreur: ${e.localizedMessage}"))
+        }
+    }
+    
+    override suspend fun registerAttendance(id: String, attendance: Attendance): Flow<Resource<Attendance>> = flow {
+        emit(Resource.Loading)
+        try {
+            // TODO: Implémenter l'appel API
+            emit(Resource.Success(attendance))
+        } catch (e: Exception) {
+            emit(Resource.Error("Erreur: ${e.localizedMessage}"))
+        }
+    }
+    
+    override suspend fun getUpcomingEvents(limit: Int): Flow<Resource<List<Event>>> = flow {
+        emit(Resource.Loading)
+        try {
+            val response = eventsApi.getEvents()
+            if (response.isSuccessful && response.body() != null) {
+                val events = response.body()!!.data.take(limit)
+                emit(Resource.Success(events))
+            } else {
+                emit(Resource.Error("Erreur"))
+            }
+        } catch (e: Exception) {
+            emit(Resource.Error("Erreur: ${e.localizedMessage}"))
+        }
+    }
+    
+    override suspend fun createEvent(event: Event): Flow<Resource<Event>> = flow {
+        emit(Resource.Loading)
         try {
             val response = eventsApi.createEvent(event)
             if (response.isSuccessful && response.body() != null) {
@@ -64,7 +156,7 @@ class EventsRepositoryImpl @Inject constructor(
     }
     
     override suspend fun registerForEvent(eventId: String): Flow<Resource<Unit>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
         try {
             val response = eventsApi.registerForEvent(eventId)
             if (response.isSuccessful) {
@@ -86,7 +178,7 @@ class SermonsRepositoryImpl @Inject constructor(
 ) : SermonsRepository {
     
     override suspend fun getSermons(): Flow<Resource<List<Sermon>>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
         try {
             val response = sermonsApi.getSermons()
             if (response.isSuccessful && response.body() != null) {
@@ -100,7 +192,7 @@ class SermonsRepositoryImpl @Inject constructor(
     }
     
     override suspend fun getSermonById(sermonId: String): Flow<Resource<Sermon>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
         try {
             val response = sermonsApi.getSermonById(sermonId)
             if (response.isSuccessful && response.body() != null) {
@@ -114,7 +206,7 @@ class SermonsRepositoryImpl @Inject constructor(
     }
     
     override suspend fun downloadSermon(sermonId: String): Flow<Resource<Unit>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
         try {
             // TODO: Implémenter le téléchargement réel
             emit(Resource.Success(Unit))
@@ -132,7 +224,7 @@ class AppointmentsRepositoryImpl @Inject constructor(
 ) : AppointmentsRepository {
     
     override suspend fun getAppointments(): Flow<Resource<List<Appointment>>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
         try {
             val response = appointmentsApi.getAppointments()
             if (response.isSuccessful && response.body() != null) {
@@ -146,7 +238,7 @@ class AppointmentsRepositoryImpl @Inject constructor(
     }
     
     override suspend fun createAppointment(appointment: Appointment): Flow<Resource<Appointment>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
         try {
             val response = appointmentsApi.createAppointment(appointment)
             if (response.isSuccessful && response.body() != null) {
@@ -160,7 +252,7 @@ class AppointmentsRepositoryImpl @Inject constructor(
     }
     
     override suspend fun confirmAppointment(appointmentId: String): Flow<Resource<Unit>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
         try {
             val response = appointmentsApi.confirmAppointment(appointmentId)
             if (response.isSuccessful) {
@@ -178,11 +270,11 @@ class AppointmentsRepositoryImpl @Inject constructor(
  * Implémentation du repository Prayers
  */
 class PrayersRepositoryImpl @Inject constructor(
-    private val prayersApi: PrayersTestimoniesApiService
+    private val prayersApi: PrayersApiService
 ) : PrayersRepository {
     
     override suspend fun getPrayers(): Flow<Resource<List<Prayer>>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
         try {
             val response = prayersApi.getPrayers()
             if (response.isSuccessful && response.body() != null) {
@@ -196,7 +288,7 @@ class PrayersRepositoryImpl @Inject constructor(
     }
     
     override suspend fun createPrayer(prayer: Prayer): Flow<Resource<Prayer>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
         try {
             val response = prayersApi.createPrayer(prayer)
             if (response.isSuccessful && response.body() != null) {
@@ -210,7 +302,7 @@ class PrayersRepositoryImpl @Inject constructor(
     }
     
     override suspend fun supportPrayer(prayerId: String): Flow<Resource<Unit>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
         try {
             val response = prayersApi.supportPrayer(prayerId)
             if (response.isSuccessful) {
@@ -228,11 +320,11 @@ class PrayersRepositoryImpl @Inject constructor(
  * Implémentation du repository Testimonies
  */
 class TestimoniesRepositoryImpl @Inject constructor(
-    private val testimoniesApi: PrayersTestimoniesApiService
+    private val testimoniesApi: TestimoniesApiService
 ) : TestimoniesRepository {
     
     override suspend fun getTestimonies(): Flow<Resource<List<Testimony>>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
         try {
             val response = testimoniesApi.getTestimonies()
             if (response.isSuccessful && response.body() != null) {
@@ -246,7 +338,7 @@ class TestimoniesRepositoryImpl @Inject constructor(
     }
     
     override suspend fun createTestimony(testimony: Testimony): Flow<Resource<Testimony>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
         try {
             val response = testimoniesApi.createTestimony(testimony)
             if (response.isSuccessful && response.body() != null) {
@@ -260,7 +352,7 @@ class TestimoniesRepositoryImpl @Inject constructor(
     }
     
     override suspend fun likeTestimony(testimonyId: String): Flow<Resource<Unit>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
         try {
             val response = testimoniesApi.likeTestimony(testimonyId)
             if (response.isSuccessful) {
@@ -282,7 +374,7 @@ class ChatRepositoryImpl @Inject constructor(
 ) : ChatRepository {
     
     override suspend fun getChannels(): Flow<Resource<List<ChatChannel>>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
         try {
             val response = chatApi.getChannels()
             if (response.isSuccessful && response.body() != null) {
@@ -296,7 +388,7 @@ class ChatRepositoryImpl @Inject constructor(
     }
     
     override suspend fun getMessages(channelId: String): Flow<Resource<List<ChatMessage>>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
         try {
             val response = chatApi.getMessages(channelId)
             if (response.isSuccessful && response.body() != null) {
@@ -310,7 +402,7 @@ class ChatRepositoryImpl @Inject constructor(
     }
     
     override suspend fun sendMessage(channelId: String, content: String): Flow<Resource<ChatMessage>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
         try {
             val response = chatApi.sendMessage(channelId, mapOf("content" to content))
             if (response.isSuccessful && response.body() != null) {

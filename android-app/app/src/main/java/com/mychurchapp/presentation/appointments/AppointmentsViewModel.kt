@@ -1,5 +1,7 @@
 package com.mychurchapp.presentation.appointments
 
+import com.mychurchapp.data.models.CreateAppointmentRequest
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mychurchapp.data.models.Appointment
@@ -45,19 +47,19 @@ class AppointmentsViewModel @Inject constructor(
         pastorId: String,
         date: String,
         time: String,
-        motif: String,
+        purpose: String,
         description: String?
     ) {
         viewModelScope.launch {
             val appointment = Appointment(
                 id = "",
-                membreId = "", // Sera rempli par l'API
-                pasteurId = pastorId,
+                userId = "", // Sera rempli par l'API
+                pastorId = pastorId,
                 date = date,
-                heure = time,
-                motif = motif,
+                startTime = time,
+                purpose = purpose,
                 description = description,
-                statut = "EN_ATTENTE",
+                status = "EN_ATTENTE",
                 createdAt = "",
                 updatedAt = null
             )

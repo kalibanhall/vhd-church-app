@@ -282,12 +282,12 @@ const DonationsPage: React.FC = () => {
             </div>
 
             {/* Boutons de montant prédéfinis */}
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-2 mb-4">
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mb-4">
               {predefinedAmounts[currency].map((amount) => (
                 <button
                   key={amount}
                   type="button"
-                  className={`py-2 px-2 text-sm border-2 rounded-lg font-medium transition-all ${
+                  className={`p-3 border-2 rounded-lg font-medium transition-all ${
                     selectedAmount === amount.toString() 
                       ? 'border-blue-500 bg-blue-50 text-blue-600' 
                       : 'border-gray-200 hover:border-gray-300'
@@ -302,7 +302,7 @@ const DonationsPage: React.FC = () => {
               ))}
               <button
                 type="button"
-                className={`py-2 px-2 text-sm border-2 rounded-lg font-medium transition-all ${
+                className={`p-3 border-2 rounded-lg font-medium transition-all ${
                   selectedAmount === 'custom' 
                     ? 'border-blue-500 bg-blue-50 text-blue-600' 
                     : 'border-gray-200 hover:border-gray-300'
@@ -327,7 +327,7 @@ const DonationsPage: React.FC = () => {
           {/* Mode de paiement */}
           <div>
             <h3 className="text-lg font-semibold mb-4">Mode de paiement</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div 
                 className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
                   paymentMethod === 'CARD' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'

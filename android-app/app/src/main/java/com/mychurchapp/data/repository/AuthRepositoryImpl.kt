@@ -1,5 +1,7 @@
 package com.mychurchapp.data.repository
 
+import com.mychurchapp.data.models.User
+
 import com.mychurchapp.data.api.AuthApiService
 import com.mychurchapp.data.local.TokenManager
 import com.mychurchapp.data.models.*
@@ -43,7 +45,7 @@ class AuthRepositoryImpl @Inject constructor(
                     authResponse.user?.let { user ->
                         tokenManager.saveUserId(user.id)
                         tokenManager.saveUserEmail(user.email)
-                        tokenManager.saveUserRole(user.role.name.lowercase())
+                        tokenManager.saveUserRole(user.userRole.name.lowercase())
                     }
                     
                     emit(Resource.Success(authResponse))
@@ -98,7 +100,7 @@ class AuthRepositoryImpl @Inject constructor(
                     authResponse.user?.let { user ->
                         tokenManager.saveUserId(user.id)
                         tokenManager.saveUserEmail(user.email)
-                        tokenManager.saveUserRole(user.role.name.lowercase())
+                        tokenManager.saveUserRole(user.userRole.name.lowercase())
                     }
                     
                     emit(Resource.Success(authResponse))

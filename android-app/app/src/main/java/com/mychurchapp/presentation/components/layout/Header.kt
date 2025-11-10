@@ -3,10 +3,10 @@
  * MINISTÈRE DES VAILLANTS HOMMES DE DAVID - HEADER COMPONENT
  * =============================================================================
  * 
- * Auteur: CHRIS NGOZULU KASONGO (KalibanHall)
+ * userId: CHRIS NGOZULU KASONGO (KalibanHall)
  * GitHub: https://github.com/KalibanHall
  * 
- * Description: Barre supérieure de l'application - EXACTEMENT comme le web
+ * notes: Barre supérieure de l'application - EXACTEMENT comme le web
  * Correspond à: src/components/layout/Header.tsx
  * 
  * Fonctionnalités:
@@ -89,7 +89,7 @@ fun Header(
     )
 
     // Ajouter liens admin si nécessaire
-    val searchResults = remember(user.role) {
+    val searchResults = remember(user.userRole) {
         if (user.role == "ADMIN") {
             baseSearchResults + listOf(
                 SearchResult("manage-members", "Gérer les membres", "url", "/admin/members"),
@@ -287,7 +287,7 @@ fun Header(
                             color = Color(0xFF111827)
                         )
                         Text(
-                            text = user.role.lowercase().replaceFirstChar { it.uppercase() },
+                            text = user.userRole.lowercase().replaceFirstChar { it.uppercase() },
                             style = MaterialTheme.typography.bodySmall,
                             color = Color(0xFF6B7280)
                         )
@@ -350,7 +350,7 @@ fun Header(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Titre
+                    // title
                     Text(
                         text = "Confirmer la déconnexion",
                         style = MaterialTheme.typography.titleMedium.copy(

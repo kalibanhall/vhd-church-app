@@ -77,7 +77,7 @@ fun EventsScreen(
             // Liste des événements
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing),
-                onRefresh = { viewModel.refresh() }
+                onRefresh = { viewModel.refreshChannels() }
             ) {
                 when (val state = events) {
                     is Resource.Success -> {
@@ -94,7 +94,7 @@ fun EventsScreen(
                     }
                     is Resource.Error -> {
                         ErrorView(message = state.message) {
-                            viewModel.refresh()
+                            viewModel.refreshChannels()
                         }
                     }
                     is Resource.Loading -> LoadingView()
@@ -169,14 +169,14 @@ private fun EventCard(
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            // En-tête avec titre et type
+            // En-tête avec title et type
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = event.titre,
+                    text = event.title,
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.weight(1f)
@@ -187,7 +187,7 @@ private fun EventCard(
             Spacer(modifier = Modifier.height(12.dp))
 
             // Description
-            event.description?.let {
+            event.notes?.let {
                 Text(
                     text = it,
                     style = MaterialTheme.typography.bodyMedium,
@@ -197,7 +197,7 @@ private fun EventCard(
                 Spacer(modifier = Modifier.height(12.dp))
             }
 
-            // Date et heure
+            // Date et startTime
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -209,7 +209,7 @@ private fun EventCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = formatDate(event.date),
+                    text = formatDate(event.appointmentDate),
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.width(16.dp))
@@ -221,13 +221,13 @@ private fun EventCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = event.heure ?: "Toute la journée",
+                    text = event.startTime ?: "Toute la journée",
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
 
             // Lieu
-            event.lieu?.let {
+            event.location?.let {
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
                     verticalAlignment = Alignment.CenterVertically
@@ -268,7 +268,7 @@ private fun EventCard(
                 }
 
                 // Bouton S'inscrire (si événement futur)
-                if (isEventUpcoming(event.date)) {
+                if (isEventUpcoming(event.appointmentDate)) {
                     Button(
                         onClick = onRegisterClick,
                         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
@@ -289,7 +289,7 @@ private fun EventCard(
 
 @Composable
 private fun EventTypeBadge(type: String) {
-    val (color, text) = when (type) {
+    val (color, text) = when (donationType) {
         "CULTE" -> MaterialTheme.colorScheme.primary to "Culte"
         "CONFERENCE" -> MaterialTheme.colorScheme.secondary to "Conférence"
         "PRIERE" -> MaterialTheme.colorScheme.tertiary to "Prière"
@@ -386,8 +386,8 @@ private fun filterEvents(events: List<Event>, filter: EventFilter): List<Event> 
     val now = Date()
     return when (filter) {
         EventFilter.ALL -> events
-        EventFilter.UPCOMING -> events.filter { isEventUpcoming(it.date) }
-        EventFilter.PAST -> events.filter { !isEventUpcoming(it.date) }
+        EventFilter.UPCOMING -> events.filter { isEventUpcoming(it.appointmentDate) }
+        EventFilter.PAST -> events.filter { !isEventUpcoming(it.appointmentDate) }
     }
 }
 
@@ -405,7 +405,7 @@ private fun formatDate(dateString: String): String {
     return try {
         val parser = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val formatter = SimpleDateFormat("dd MMMM yyyy", Locale("fr", "FR"))
-        val date = parser.parse(dateString)
+        val appointmentDate = parser.parse(dateString)
         date?.let { formatter.format(it) } ?: dateString
     } catch (e: Exception) {
         dateString

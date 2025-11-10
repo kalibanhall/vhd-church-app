@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import postgres from 'postgres'
-const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' })
+import { prisma } from '../../../../lib/prisma'
 
 // POST - Ajouter/Retirer un like sur un témoignage
 export async function POST(request: NextRequest) {
@@ -24,19 +23,34 @@ export async function POST(request: NextRequest) {
     }
 
     // Vérifier si l'utilisateur a déjà liké ce témoignage
-    const existingLikes = await sql`SELECT id FROM testimony_likes WHERE testimony_id = ${testimonyId} AND user_id = ${userId} LIMIT 1`
-    const existingLike = existingLikes[0]
+    const existingLike = await prisma.testimonyLike.findUnique({
+      where: {
+        testimonyId_userId: {
+          testimonyId,
+          userId
+        }
+      }
+    })
 
     if (existingLike) {
       // Si existe déjà, supprimer le like (toggle)
-      await sql`DELETE FROM testimony_likes WHERE id = ${existingLike.id}`
+      await prisma.testimonyLike.delete({
+        where: { id: existingLike.id }
+      })
+
       return NextResponse.json({ 
         message: 'Like retiré',
         action: 'removed'
       })
     } else {
       // Ajouter le like
-      await sql`INSERT INTO testimony_likes (testimony_id, user_id) VALUES (${testimonyId}, ${userId})`
+      await prisma.testimonyLike.create({
+        data: {
+          testimonyId,
+          userId
+        }
+      })
+
       return NextResponse.json({ 
         message: 'Like ajouté',
         action: 'added'

@@ -91,7 +91,7 @@ fun NotificationsScreen(
             // Liste des notifications
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing),
-                onRefresh = { viewModel.refresh() }
+                onRefresh = { viewModel.refreshChannels() }
             ) {
                 when (val state = notifications) {
                     is Resource.Success -> {
@@ -113,7 +113,7 @@ fun NotificationsScreen(
                     }
                     is Resource.Error -> {
                         ErrorView(message = state.message) {
-                            viewModel.refresh()
+                            viewModel.refreshChannels()
                         }
                     }
                     is Resource.Loading -> LoadingView()
@@ -239,7 +239,7 @@ private fun NotificationItem(
                         }
                     }
 
-                    // Contenu
+                    // content
                     Column(modifier = Modifier.weight(1f)) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -247,7 +247,7 @@ private fun NotificationItem(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = notification.titre,
+                                text = notification.title,
                                 style = MaterialTheme.typography.titleSmall,
                                 fontWeight = if (notification.isRead) FontWeight.Normal else FontWeight.Bold
                             )
@@ -309,7 +309,7 @@ private fun NotificationItem(
 }
 
 @Composable
-private fun getNotificationIcon(type: String) = when (type) {
+private fun getNotificationIcon(type: String) = when (donationType) {
     "NOUVEAU_MEMBRE" -> Icons.Default.PersonAdd
     "NOUVEAU_DON" -> Icons.Default.AttachMoney
     "NOUVEL_EVENEMENT" -> Icons.Default.Event
@@ -323,7 +323,7 @@ private fun getNotificationIcon(type: String) = when (type) {
 }
 
 @Composable
-private fun getNotificationColor(type: String) = when (type) {
+private fun getNotificationColor(type: String) = when (donationType) {
     "NOUVEAU_MEMBRE" -> MaterialTheme.colorScheme.primary
     "NOUVEAU_DON" -> MaterialTheme.colorScheme.tertiary
     "NOUVEL_EVENEMENT" -> MaterialTheme.colorScheme.secondary
@@ -423,7 +423,7 @@ private fun formatTimeAgo(timestamp: String): String {
     return try {
         val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
         val now = Date()
-        val date = parser.parse(timestamp) ?: return timestamp
+        val appointmentDate = parser.parse(timestamp) ?: return timestamp
         
         val diffInMillis = now.time - date.time
         val diffInMinutes = diffInMillis / (1000 * 60)

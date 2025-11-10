@@ -1,5 +1,11 @@
 package com.mychurchapp.data.models
 
+import com.mychurchapp.data.models.CreateTestimonyRequest
+
+import com.mychurchapp.data.models.CreatePrayerRequest
+
+import com.mychurchapp.data.models.CreateAppointmentRequest
+
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

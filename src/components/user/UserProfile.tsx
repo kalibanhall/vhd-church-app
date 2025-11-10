@@ -45,10 +45,9 @@ export default function UserProfile({ user }: ProfileProps) {
     maritalStatus: '',
     bio: ''
   })
+  
   const [profilePhoto, setProfilePhoto] = useState(user.profileImageUrl)
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false)
-  const [formError, setFormError] = useState<string | null>(null)
-  const [saving, setSaving] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleInputChange = (field: string, value: string) => {
@@ -59,39 +58,22 @@ export default function UserProfile({ user }: ProfileProps) {
   }
 
   const handleSave = async () => {
-    setFormError(null)
-    // Validation stricte
-    if (!editData.firstName.trim()) {
-      setFormError('Le prénom est requis.')
-      return
-    }
-    if (!editData.lastName.trim()) {
-      setFormError('Le nom est requis.')
-      return
-    }
-    if (!editData.email.trim() || !/^\S+@\S+\.\S+$/.test(editData.email)) {
-      setFormError('Un email valide est requis.')
-      return
-    }
-    setSaving(true)
     try {
       const response = await authenticatedFetch('/api/profile', {
         method: 'PUT',
         body: JSON.stringify(editData),
       })
+
       if (response.ok) {
         setIsEditing(false)
-        // Mettre à jour localement les données utilisateur
-        // Option: afficher un message de succès
+        window.location.reload()
       } else {
         const error = await response.json()
-        setFormError(error.error || 'Erreur lors de la sauvegarde du profil')
+        alert(error.error || 'Erreur lors de la sauvegarde du profil')
       }
     } catch (error) {
       console.error('Erreur:', error)
-      setFormError('Erreur lors de la sauvegarde du profil')
-    } finally {
-      setSaving(false)
+      alert('Erreur lors de la sauvegarde du profil')
     }
   }
 
@@ -209,7 +191,7 @@ export default function UserProfile({ user }: ProfileProps) {
                     <input
                       type="text"
                       value={editData.firstName}
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleInputChange('firstName', e.target.value)}
+                      onChange={(e) => handleInputChange('firstName', e.target.value)}
                       className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                       required
                     />
@@ -370,6 +352,7 @@ export default function UserProfile({ user }: ProfileProps) {
   return (
     <div className="min-h-screen bg-gray-50 p-4 lg:p-8">
       <div className="max-w-4xl mx-auto">
+        
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-6">
@@ -385,6 +368,7 @@ export default function UserProfile({ user }: ProfileProps) {
                     <User className="w-12 h-12 text-white" />
                   </div>
                 )}
+                
                 {/* Boutons photo - visibles au survol */}
                 <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                   <div className="flex space-x-2">
@@ -412,6 +396,7 @@ export default function UserProfile({ user }: ProfileProps) {
                   </div>
                 </div>
               </div>
+              
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">
                   {user.firstName} {user.lastName}
@@ -532,14 +517,14 @@ export default function UserProfile({ user }: ProfileProps) {
         
       </div>
       
-        {/* Input hidden pour l'upload de photos */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          onChange={handlePhotoUpload}
-          className="hidden"
-        />
+      {/* Input hidden pour l'upload de photos */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handlePhotoUpload}
+        className="hidden"
+      />
     </div>
-  );
+  )
 }

@@ -179,7 +179,7 @@ private fun ChannelItem(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = channel.lastMessage ?: channel.description ?: "Aucun message",
+                        text = channel.lastMessage ?: channel.notes ?: "Aucun message",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
@@ -322,10 +322,10 @@ private fun MessageBubble(message: ChatMessage) {
         Column(
             modifier = Modifier.widthIn(max = 300.dp)
         ) {
-            // Nom de l'auteur (si ce n'est pas nous)
+            // Nom de l'userId (si ce n'est pas nous)
             if (!isOwnMessage) {
                 Text(
-                    text = message.auteur,
+                    text = message.userId,
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.Bold
@@ -345,7 +345,7 @@ private fun MessageBubble(message: ChatMessage) {
                     modifier = Modifier.padding(12.dp)
                 ) {
                     Text(
-                        text = message.contenu,
+                        text = message.content,
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.height(4.dp))
@@ -503,7 +503,7 @@ private fun formatTime(timestamp: String): String {
     return try {
         val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
         val now = Date()
-        val date = parser.parse(timestamp) ?: return timestamp
+        val appointmentDate = parser.parse(timestamp) ?: return timestamp
         
         val diffInMillis = now.time - date.time
         val diffInHours = diffInMillis / (1000 * 60 * 60)

@@ -137,7 +137,7 @@ fun FacialRecognitionCameraScreen(
                     )
                 }
                 
-                // Message de statut
+                // Message de status
                 Surface(
                     modifier = Modifier
                         .align(Alignment.TopCenter)

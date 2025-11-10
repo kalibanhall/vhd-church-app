@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
 
     // Créer l'utilisateur
     const result = await sql`
-      INSERT INTO users (email, password_hash, name, phone, address, role)
+      INSERT INTO users (email, password, name, phone, address, role)
       VALUES (${email}, ${hashedPassword}, ${name}, ${phone || null}, ${address || null}, 'member')
       RETURNING id, email, name, role, phone, address, created_at
     `

@@ -56,7 +56,7 @@ fun ProfileScreen(
     ) { paddingValues ->
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing),
-            onRefresh = { viewModel.refresh() },
+            onRefresh = { viewModel.refreshChannels() },
             modifier = Modifier.padding(paddingValues)
         ) {
             when (val state = profile) {
@@ -70,7 +70,7 @@ fun ProfileScreen(
                 }
                 is Resource.Error -> {
                     ErrorView(message = state.message) {
-                        viewModel.refresh()
+                        viewModel.refreshChannels()
                     }
                 }
                 is Resource.Loading -> LoadingView()
@@ -150,7 +150,7 @@ private fun ProfileContent(
                     user.dateNaissance?.let {
                         InfoRow(Icons.Default.Cake, "Date de naissance", it)
                     }
-                    InfoRow(Icons.Default.Badge, "Rôle", getRoleLabel(user.role))
+                    InfoRow(Icons.Default.Badge, "Rôle", getRoleLabel(user.userRole))
                 }
             }
         }
@@ -167,7 +167,7 @@ private fun ProfileContent(
 
         // Actions rapides
         item {
-            QuickActionsCard(user.role)
+            QuickActionsCard(user.userRole)
         }
 
         // Espacement final
@@ -209,7 +209,7 @@ private fun ProfileHeader(
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Text(
-                            text = "${user.nom.firstOrNull()?.uppercase() ?: ""}${user.prenom.firstOrNull()?.uppercase() ?: ""}",
+                            text = "${user.lastName.firstOrNull()?.uppercase() ?: ""}${user.firstName.firstOrNull()?.uppercase() ?: ""}",
                             style = MaterialTheme.typography.displayLarge,
                             color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
@@ -241,7 +241,7 @@ private fun ProfileHeader(
 
         // Nom
         Text(
-            text = "${user.nom} ${user.prenom}",
+            text = "${user.lastName} ${user.firstName}",
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
@@ -249,7 +249,7 @@ private fun ProfileHeader(
         Spacer(modifier = Modifier.height(8.dp))
 
         // Badge rôle
-        RoleBadge(user.role)
+        RoleBadge(user.userRole)
 
         Spacer(modifier = Modifier.height(16.dp))
 

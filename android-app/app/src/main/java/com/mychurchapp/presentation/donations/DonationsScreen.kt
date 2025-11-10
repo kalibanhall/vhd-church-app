@@ -56,7 +56,7 @@ fun DonationsScreen(
     ) { paddingValues ->
         SwipeRefresh(
             state = rememberSwipeRefreshState(isRefreshing),
-            onRefresh = { viewModel.refresh() },
+            onRefresh = { viewModel.refreshChannels() },
             modifier = Modifier.padding(paddingValues)
         ) {
             Column(
@@ -88,7 +88,7 @@ fun DonationsScreen(
                     }
                     is Resource.Error -> {
                         ErrorView(message = state.message) {
-                            viewModel.refresh()
+                            viewModel.refreshChannels()
                         }
                     }
                     is Resource.Loading -> LoadingView()
@@ -186,7 +186,7 @@ private fun DonationCard(donation: Donation) {
             Surface(
                 modifier = Modifier.size(48.dp),
                 shape = MaterialTheme.shapes.medium,
-                color = when (donation.type) {
+                color = when (donation.donationType) {
                     "OFFRANDE" -> MaterialTheme.colorScheme.primaryContainer
                     "DIME" -> MaterialTheme.colorScheme.secondaryContainer
                     else -> MaterialTheme.colorScheme.tertiaryContainer
@@ -194,7 +194,7 @@ private fun DonationCard(donation: Donation) {
             ) {
                 Box(contentAlignment = Alignment.Center) {
                     Icon(
-                        imageVector = when (donation.type) {
+                        imageVector = when (donation.donationType) {
                             "OFFRANDE" -> Icons.Default.VolunteerActivism
                             "DIME" -> Icons.Default.Savings
                             else -> Icons.Default.CardGiftcard
@@ -209,12 +209,12 @@ private fun DonationCard(donation: Donation) {
             // Infos
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = formatCurrency(donation.montant),
+                    text = formatCurrency(donation.amount),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = donation.type,
+                    text = donation.donationType,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -225,8 +225,8 @@ private fun DonationCard(donation: Donation) {
                 )
             }
 
-            // Statut
-            StatusBadge(status = donation.statut)
+            // status
+            StatusBadge(status = donation.status)
         }
     }
 }
@@ -376,7 +376,7 @@ private fun formatCurrency(amount: Double): String {
     return NumberFormat.getCurrencyInstance(Locale("fr", "FR")).format(amount)
 }
 
-private fun formatDate(date: String): String {
+private fun formatDate(appointmentDate: String): String {
     return try {
         val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
         val formatter = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale("fr", "FR"))

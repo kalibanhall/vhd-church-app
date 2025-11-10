@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import postgres from 'postgres'
-const sql = postgres(process.env.DATABASE_URL!, { ssl: 'require' })
 import { prisma } from '../../../../lib/prisma'
 import { verifyAuthentication } from '../../../../lib/auth-middleware'
 
@@ -12,16 +10,31 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const pastorsRes = await sql`
-      SELECT id, first_name AS "firstName", last_name AS "lastName", email, phone, profile_image_url AS "profileImageUrl"
-      FROM users
-      WHERE role IN ('PASTOR', 'ADMIN') AND status = 'ACTIVE'
-      ORDER BY first_name ASC
-    `
-    const pastors = pastorsRes;
-    return NextResponse.json({ success: true, pastors })
+    const pastors = await prisma.user.findMany({
+      where: {
+        role: { in: ['PASTOR', 'ADMIN'] },
+        status: 'ACTIVE'
+      },
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        email: true,
+        phone: true,
+        profileImageUrl: true
+      },
+      orderBy: { firstName: 'asc' }
+    })
+
+    return NextResponse.json({
+      success: true,
+      pastors
+    })
   } catch (error) {
     console.error('Erreur récupération pasteurs:', error)
-    return NextResponse.json({ error: 'Erreur lors de la récupération des pasteurs' }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Erreur lors de la récupération des pasteurs' },
+      { status: 500 }
+    )
   }
 }

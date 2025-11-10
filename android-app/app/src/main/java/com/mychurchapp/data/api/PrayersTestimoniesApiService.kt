@@ -1,5 +1,9 @@
 package com.mychurchapp.data.api
 
+import com.mychurchapp.data.models.CreateTestimonyRequest
+
+import com.mychurchapp.data.models.CreatePrayerRequest
+
 import com.mychurchapp.data.models.*
 import retrofit2.Response
 import retrofit2.http.*

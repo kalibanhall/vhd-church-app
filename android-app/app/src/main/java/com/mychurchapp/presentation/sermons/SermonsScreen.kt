@@ -78,7 +78,7 @@ fun SermonsScreen(
             // Filtres par prédicateur
             if (sermons is Resource.Success) {
                 val preachers = (sermons as Resource.Success<List<Sermon>>).data
-                    .mapNotNull { it.predicateur }
+                    .mapNotNull { it.preacherId }
                     .distinct()
                 
                 if (preachers.isNotEmpty()) {
@@ -93,12 +93,12 @@ fun SermonsScreen(
             // Liste des sermons
             SwipeRefresh(
                 state = rememberSwipeRefreshState(isRefreshing),
-                onRefresh = { viewModel.refresh() }
+                onRefresh = { viewModel.refreshChannels() }
             ) {
                 when (val state = sermons) {
                     is Resource.Success -> {
                         val filteredSermons = selectedPreacher?.let { preacher ->
-                            state.data.filter { it.predicateur == preacher }
+                            state.data.filter { it.preacherId == preacher }
                         } ?: state.data
 
                         if (filteredSermons.isEmpty()) {
@@ -117,7 +117,7 @@ fun SermonsScreen(
                     }
                     is Resource.Error -> {
                         ErrorView(message = state.message) {
-                            viewModel.refresh()
+                            viewModel.refreshChannels()
                         }
                     }
                     is Resource.Loading -> LoadingView()
@@ -223,12 +223,12 @@ private fun SermonCard(
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = sermon.titre,
+                        text = sermon.title,
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    sermon.predicateur?.let {
+                    sermon.preacherId?.let {
                         Text(
                             text = "Par $it",
                             style = MaterialTheme.typography.bodyMedium,
@@ -274,13 +274,13 @@ private fun SermonCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = formatDate(sermon.date),
+                    text = formatDate(sermon.appointmentDate),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
                 // Durée
-                sermon.duree?.let {
+                sermon.duration?.let {
                     Spacer(modifier = Modifier.width(16.dp))
                     Icon(
                         Icons.Default.AccessTime,
@@ -384,12 +384,12 @@ private fun MiniPlayer(
             // Info sermon
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = sermon.titre,
+                    text = sermon.title,
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1
                 )
-                sermon.predicateur?.let {
+                sermon.preacherId?.let {
                     Text(
                         text = it,
                         style = MaterialTheme.typography.bodySmall,
@@ -472,7 +472,7 @@ private fun formatDate(dateString: String): String {
     return try {
         val parser = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val formatter = SimpleDateFormat("dd MMMM yyyy", Locale("fr", "FR"))
-        val date = parser.parse(dateString)
+        val appointmentDate = parser.parse(dateString)
         date?.let { formatter.format(it) } ?: dateString
     } catch (e: Exception) {
         dateString
