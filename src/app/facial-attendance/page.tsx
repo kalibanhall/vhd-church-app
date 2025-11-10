@@ -4,18 +4,41 @@ import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import FaceCapture from '@/components/FaceCapture';
 import { toast } from 'react-hot-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function FacialAttendancePage() {
   const [members, setMembers] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [currentMember, setCurrentMember] = useState<any | null>(null);
   const [attendanceMarked, setAttendanceMarked] = useState(false);
+  const { user } = useAuth();
+  const router = useRouter();
   const supabase = createClient();
+
+  // Vérifier les permissions
+  useEffect(() => {
+    if (!user) {
+      router.push('/login');
+      return;
+    }
+
+    // Seuls admin et pasteur peuvent accéder
+    if (user.role !== 'admin' && user.role !== 'pasteur') {
+      toast.error('Accès réservé aux administrateurs et pasteurs');
+      router.push('/dashboard');
+    }
+  }, [user, router]);
 
   // Charger les membres avec descripteur facial
   useEffect(() => {
-    loadMembers();
-  }, []);
+    const loadData = async () => {
+      if (user && (user.role === 'admin' || user.role === 'pasteur')) {
+        await loadMembers();
+      }
+    };
+    loadData();
+  }, [user]);
 
   const loadMembers = async () => {
     setIsLoading(true);

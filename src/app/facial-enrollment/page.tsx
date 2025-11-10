@@ -1,16 +1,34 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import FaceCapture from '@/components/FaceCapture';
 import { toast } from 'react-hot-toast';
+import { useAuth } from '@/contexts/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function EnrollFacePage() {
   const [step, setStep] = useState<'select' | 'capture' | 'success'>('select');
   const [selectedMemberId, setSelectedMemberId] = useState<string>('');
   const [members, setMembers] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { user } = useAuth();
+  const router = useRouter();
   const supabase = createClient();
+
+  // Vérifier les permissions
+  useEffect(() => {
+    if (!user) {
+      router.push('/login');
+      return;
+    }
+
+    // Seuls admin et pasteur peuvent accéder
+    if (user.role !== 'admin' && user.role !== 'pasteur') {
+      toast.error('Accès réservé aux administrateurs et pasteurs');
+      router.push('/dashboard');
+    }
+  }, [user, router]);
 
   // Charger les membres sans photo faciale
   const loadMembers = async () => {

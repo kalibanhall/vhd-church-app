@@ -38,7 +38,9 @@ import {
   Menu,
   X,
   Vote,
-  Bell
+  Bell,
+  ScanFace,
+  UserCog
 } from 'lucide-react'
 
 /**
@@ -81,7 +83,9 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
   const dashboardSubItems = userRole === 'PASTOR' 
     ? [
         // Pasteurs : accès uniquement au gestionnaire de rendez-vous
-        { id: 'pastor-appointments', label: 'Gestion rendez-vous', icon: UserCheck }
+        { id: 'pastor-appointments', label: 'Gestion rendez-vous', icon: UserCheck },
+        { id: 'facial-enrollment', label: 'Enregistrement facial', icon: UserCog },
+        { id: 'facial-attendance', label: 'Pointage facial', icon: ScanFace }
       ]
     : [
         // Admins : accès complet à tous les outils de gestion
@@ -92,7 +96,9 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
         { id: 'polls-admin', label: 'Gestion des sondages', icon: Vote },
         { id: 'notifications', label: 'Gestion des notifications', icon: Bell },
         { id: 'validate-testimonies', label: 'Validation témoignages', icon: CheckCircle },
-        { id: 'pastor-appointments', label: 'Gestion rendez-vous', icon: UserCheck }
+        { id: 'pastor-appointments', label: 'Gestion rendez-vous', icon: UserCheck },
+        { id: 'facial-enrollment', label: 'Enregistrement facial', icon: UserCog },
+        { id: 'facial-attendance', label: 'Pointage facial', icon: ScanFace }
       ]
 
   // Détermine si l'utilisateur a des privilèges d'administration

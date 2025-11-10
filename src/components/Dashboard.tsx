@@ -138,6 +138,16 @@ export default function Dashboard() {
       case 'pastor-appointments':
         return <AppointmentsManagement />
       
+      case 'facial-enrollment':
+        // Rediriger vers la page d'enregistrement facial
+        window.location.href = '/facial-enrollment'
+        return null
+      
+      case 'facial-attendance':
+        // Rediriger vers la page de pointage facial
+        window.location.href = '/facial-attendance'
+        return null
+      
       default:
         return <HomePageSimple />
     }
