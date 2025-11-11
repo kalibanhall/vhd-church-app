@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { toast } from 'react-hot-toast';
 import Link from 'next/link';
@@ -9,7 +9,13 @@ export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const supabase = createClient();
+
+  // Détecter le montage côté client
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,6 +43,15 @@ export default function ForgotPasswordPage() {
       setIsLoading(false);
     }
   };
+
+  // Ne rien rendre côté serveur
+  if (!isClient) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   if (emailSent) {
     return (
