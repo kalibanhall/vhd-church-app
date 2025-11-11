@@ -339,7 +339,7 @@ export default function AuthPage() {
                 <div className="text-sm">
                   <button
                     type="button"
-                    onClick={() => router.push('/auth/forgot-password')}
+                    onClick={() => router.push('/forgot-password')}
                     className="font-medium text-blue-600 hover:text-blue-500"
                   >
                     Mot de passe oublié ?
