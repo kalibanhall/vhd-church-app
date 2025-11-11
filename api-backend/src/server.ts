@@ -5,6 +5,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 
 // Import routes
+import authRoutes from './routes/auth';
 import membersRoutes from './routes/members';
 import donationsRoutes from './routes/donations';
 import preachingsRoutes from './routes/preachings';
@@ -89,6 +90,7 @@ app.get('/', (req: Request, res: Response) => {
 
 // API Routes
 app.use(`/${API_VERSION}/health`, healthRoutes);
+app.use(`/${API_VERSION}/auth`, authRoutes);
 app.use(`/${API_VERSION}/members`, membersRoutes);
 app.use(`/${API_VERSION}/donations`, donationsRoutes);
 app.use(`/${API_VERSION}/preachings`, preachingsRoutes);

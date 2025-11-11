@@ -9,6 +9,7 @@ const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
 const dotenv_1 = __importDefault(require("dotenv"));
 // Import routes
+const auth_1 = __importDefault(require("./routes/auth"));
 const members_1 = __importDefault(require("./routes/members"));
 const donations_1 = __importDefault(require("./routes/donations"));
 const preachings_1 = __importDefault(require("./routes/preachings"));
@@ -34,12 +35,23 @@ app.use((0, cors_1.default)({
         // Allow requests with no origin (like mobile apps or curl)
         if (!origin)
             return callback(null, true);
-        if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV === 'development') {
-            callback(null, true);
+        // Allow development mode
+        if (process.env.NODE_ENV === 'development') {
+            return callback(null, true);
         }
-        else {
-            callback(new Error('Not allowed by CORS'));
+        // Check if origin is in allowed list
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            return callback(null, true);
         }
+        // Allow all Vercel preview deployments (*.vercel.app)
+        if (origin.endsWith('.vercel.app')) {
+            return callback(null, true);
+        }
+        // Allow localhost for development
+        if (origin.includes('localhost')) {
+            return callback(null, true);
+        }
+        callback(new Error('Not allowed by CORS'));
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
@@ -70,6 +82,7 @@ app.get('/', (req, res) => {
 });
 // API Routes
 app.use(`/${API_VERSION}/health`, health_1.default);
+app.use(`/${API_VERSION}/auth`, auth_1.default);
 app.use(`/${API_VERSION}/members`, members_1.default);
 app.use(`/${API_VERSION}/donations`, donations_1.default);
 app.use(`/${API_VERSION}/preachings`, preachings_1.default);

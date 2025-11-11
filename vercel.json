@@ -1,5 +1,6 @@
 {
   "name": "vhd-church-app",
+  "version": 2,
   "regions": ["fra1"],
   "functions": {
     "app/api/**/*.ts": {
