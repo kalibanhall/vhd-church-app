@@ -7,10 +7,6 @@ import { toast } from 'react-hot-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 
-// Forcer le rendu dynamique (désactiver la génération statique)
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
 export default function FacialAttendancePage() {
   const [members, setMembers] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);

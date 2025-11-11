@@ -5,10 +5,6 @@ import { createClient } from '@/lib/supabase/client';
 import { toast } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 
-// Forcer le rendu dynamique
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-
 export default function ResetPasswordPage() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');

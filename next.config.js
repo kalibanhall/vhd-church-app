@@ -29,6 +29,10 @@ const nextConfig = {
       },
     ],
   },
+  // Désactiver la génération statique pour les pages d'authentification
+  experimental: {
+    isrMemoryCacheSize: 0,
+  },
 }
 
 module.exports = nextConfig
