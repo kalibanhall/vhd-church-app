@@ -72,8 +72,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return
       }
       
-      // Vérification via API avec token Bearer
-      const response = await fetch('/api/auth/me', {
+      // Vérification via API Render avec token Bearer
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/v1'
+      const response = await fetch(`${API_URL}/auth/me`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -81,7 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       })
 
-      console.log('📊 AuthContext: Statut de /api/auth/me:', response.status)
+      console.log('📊 AuthContext: Statut de auth/me:', response.status)
 
       if (response.ok) {
         const data = await response.json()
@@ -115,7 +116,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     try {
-      await fetch('/api/auth/logout', {
+      // Logout via API Render (optionnel car le token est dans localStorage)
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/v1'
+      await fetch(`${API_URL}/auth/logout`, {
         method: 'POST',
         credentials: 'include'
       })
