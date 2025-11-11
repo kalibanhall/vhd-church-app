@@ -43,15 +43,25 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [isClient, setIsClient] = useState(false)
   const router = useRouter()
+
+  // Détecter le montage côté client
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   const clearAuth = () => {
     setUser(null)
-    localStorage.removeItem('user')
-    localStorage.removeItem('token') // Nettoyage pour compatibilité
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('user')
+      localStorage.removeItem('token') // Nettoyage pour compatibilité
+    }
   }
 
   const checkAuth = async () => {
+    if (!isClient || typeof window === 'undefined') return
+    
     try {
       console.log('🔍 AuthContext: Vérification de l\'authentification...')
       
@@ -78,7 +88,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         console.log('✅ AuthContext: Données reçues:', data)
         if (data.success && data.user) {
           setUser(data.user)
-          localStorage.setItem('user', JSON.stringify(data.user))
+          if (typeof window !== 'undefined') {
+            localStorage.setItem('user', JSON.stringify(data.user))
+          }
         } else {
           console.log('⚠️  AuthContext: Données invalides, déconnexion')
           clearAuth()
@@ -115,9 +127,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
-    checkAuth()
-  }, [])
+    if (isClient) {
+      checkAuth()
+    }
+  }, [isClient])
 
   const value: AuthContextType = {
     user,
