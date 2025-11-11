@@ -1,0 +1,94 @@
+# =============================================================================
+# VARIABLES D'ENVIRONNEMENT PRODUCTION - VERCEL + RENDER
+# =============================================================================
+# 
+# Auteur: CHRIS NGOZULU KASONGO (KalibanHall)
+# GitHub: https://github.com/kalibanhall/vhd-church-app
+# Version: 2.0.0 - PRODUCTION avec API Backend Render
+# Date: Novembre 2025
+# 
+# 🎯 Backend API: https://vhd-church-api.onrender.com
+# 🎯 Frontend: https://vhd-church-app.vercel.app
+# 
+# =============================================================================
+
+# 🌐 API Backend (Render)
+NEXT_PUBLIC_API_URL="https://vhd-church-api.onrender.com/v1"
+
+# 🗄️ Base de données Supabase (Pooler Connection)
+DATABASE_URL="postgresql://postgres.lwmyferidfbzcnggddob:QualisApp2025@aws-1-eu-west-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+
+# 🔵 Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL="https://lwmyferidfbzcnggddob.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx3bXlmZXJpZGZiemNuZ2dkZG9iIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjExMjAzNTgsImV4cCI6MjA3NjY5NjM1OH0.LPCWcEpvGMBr5_M7v2R42OmfzpCSM6ZkNTq5ZFA7B_0"
+
+# 🔐 Sécurité JWT
+JWT_SECRET="vhd-church-app-chris-kasongo-jwt-secret-production-2025-qualis-super-secure-key"
+JWT_EXPIRES_IN="7d"
+
+# 🔑 NextAuth Configuration
+NEXTAUTH_SECRET="vhd-nextauth-secret-production-2025"
+NEXTAUTH_URL="https://vhd-church-app.vercel.app"
+
+# 🌐 URLs publiques de l'application
+NEXT_PUBLIC_BASE_URL="https://vhd-church-app.vercel.app"
+NEXT_PUBLIC_UPLOAD_URL="https://vhd-church-app.vercel.app"
+
+# 📁 Configuration fichiers (10MB max)
+NEXT_PUBLIC_MAX_FILE_SIZE="10485760"
+
+# 🏭 Mode de production
+NODE_ENV="production"
+
+# ⛪ Church Settings
+CHURCH_NAME="VHD Church App"
+CHURCH_ADDRESS="Votre adresse"
+CHURCH_PHONE="+33 1 23 45 67 89"
+CHURCH_EMAIL="contact@vhdchurchapp.com"
+
+# 🎨 App Info
+NEXT_PUBLIC_APP_NAME="VHD Church App"
+NEXT_PUBLIC_APP_VERSION="2.0.0"
+
+# =============================================================================
+# 📋 INSTRUCTIONS POUR VERCEL:
+# =============================================================================
+# 
+# 1. Aller sur: https://vercel.com/dashboard
+# 2. Sélectionner votre projet "vhd-church-app"
+# 3. Aller dans: Settings > Environment Variables
+# 4. Supprimer les anciennes variables (si nécessaire)
+# 5. Ajouter TOUTES ces variables:
+#
+#    Pour chaque variable:
+#    - Key: Le nom (ex: NEXT_PUBLIC_API_URL)
+#    - Value: La valeur (ex: https://vhd-church-api.onrender.com/v1)
+#    - Environment: Cocher "Production", "Preview", "Development"
+#    - Cliquer "Save"
+#
+# 6. Une fois TOUTES les variables ajoutées:
+#    - Aller dans "Deployments"
+#    - Cliquer sur les 3 points (...) du dernier déploiement
+#    - Sélectionner "Redeploy"
+#    - Cocher "Use existing Build Cache" (optionnel)
+#    - Cliquer "Redeploy"
+#
+# 7. Attendre 2-3 minutes que le déploiement se termine
+#
+# =============================================================================
+# ✅ VARIABLES IMPORTANTES (11 au total):
+# =============================================================================
+#
+# 1. NEXT_PUBLIC_API_URL
+# 2. DATABASE_URL
+# 3. NEXT_PUBLIC_SUPABASE_URL
+# 4. NEXT_PUBLIC_SUPABASE_ANON_KEY
+# 5. JWT_SECRET
+# 6. JWT_EXPIRES_IN
+# 7. NEXTAUTH_SECRET
+# 8. NEXTAUTH_URL
+# 9. NEXT_PUBLIC_BASE_URL
+# 10. NODE_ENV
+# 11. NEXT_PUBLIC_APP_NAME
+#
+# =============================================================================
