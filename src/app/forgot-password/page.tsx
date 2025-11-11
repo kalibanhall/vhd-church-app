@@ -5,6 +5,10 @@ import { createClient } from '@/lib/supabase/client';
 import { toast } from 'react-hot-toast';
 import Link from 'next/link';
 
+// Forcer le rendu dynamique
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
