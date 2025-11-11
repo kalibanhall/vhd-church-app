@@ -214,7 +214,7 @@ router.get('/me', async (req, res) => {
         // Récupérer l'utilisateur
         const { data: user, error } = await supabase
             .from('users')
-            .select('id, email, first_name, last_name, role, phone, avatar, status')
+            .select('id, email, first_name, last_name, role, phone, profile_image_url, status')
             .eq('id', decoded.id)
             .single();
         console.log('🔍 User found in DB:', user ? 'Yes' : 'No');
@@ -235,7 +235,7 @@ router.get('/me', async (req, res) => {
                 lastName: user.last_name,
                 role: user.role,
                 phone: user.phone,
-                avatar: user.avatar
+                avatar: user.profile_image_url
             }
         });
     }
