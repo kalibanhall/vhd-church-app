@@ -9,15 +9,23 @@ import { useRouter } from 'next/navigation';
 
 export default function FacialAttendancePage() {
   const [members, setMembers] = useState<any[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentMember, setCurrentMember] = useState<any | null>(null);
   const [attendanceMarked, setAttendanceMarked] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
   const supabase = createClient();
 
+  // Assurer que c'est côté client
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   // Vérifier les permissions
   useEffect(() => {
+    if (!isClient) return;
+    
     if (!user) {
       router.push('/login');
       return;
@@ -28,17 +36,19 @@ export default function FacialAttendancePage() {
       toast.error('Accès réservé aux administrateurs et pasteurs');
       router.push('/dashboard');
     }
-  }, [user, router]);
+  }, [user, router, isClient]);
 
   // Charger les membres avec descripteur facial
   useEffect(() => {
     const loadData = async () => {
+      if (!isClient) return;
       if (user && (user.role === 'admin' || user.role === 'pasteur')) {
         await loadMembers();
       }
     };
     loadData();
-  }, [user]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, isClient]);
 
   const loadMembers = async () => {
     setIsLoading(true);
@@ -132,6 +142,15 @@ export default function FacialAttendancePage() {
     }
     return Math.sqrt(sum);
   };
+
+  // Ne rien rendre côté serveur
+  if (!isClient) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto p-6">

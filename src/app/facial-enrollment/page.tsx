@@ -12,12 +12,21 @@ export default function EnrollFacePage() {
   const [selectedMemberId, setSelectedMemberId] = useState<string>('');
   const [members, setMembers] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
   const supabase = createClient();
 
-  // Vérifier les permissions
+  // Détecter le montage côté client
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Vérifier les permissions
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (!isClient) return;
+
     if (!user) {
       router.push('/login');
       return;
@@ -28,7 +37,7 @@ export default function EnrollFacePage() {
       toast.error('Accès réservé aux administrateurs et pasteurs');
       router.push('/dashboard');
     }
-  }, [user, router]);
+  }, [user, router, isClient]);
 
   // Charger les membres sans photo faciale
   const loadMembers = async () => {
@@ -105,6 +114,15 @@ export default function EnrollFacePage() {
       setIsLoading(false);
     }
   };
+
+  // Ne rien rendre côté serveur
+  if (!isClient) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
+  }
 
   if (step === 'select') {
     return (
