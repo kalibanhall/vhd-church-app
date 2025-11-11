@@ -19,7 +19,6 @@ export default function FacialAttendancePage() {
   const [isClient, setIsClient] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
-  const supabase = createClient();
 
   // Assurer que c'est côté client
   useEffect(() => {
@@ -56,6 +55,7 @@ export default function FacialAttendancePage() {
 
   const loadMembers = async () => {
     setIsLoading(true);
+    const supabase = createClient();
     const { data, error } = await supabase
       .from('membres')
       .select('id, nom, prenom, photo_url, face_descriptor')
@@ -71,6 +71,7 @@ export default function FacialAttendancePage() {
 
   const markAttendance = async (memberId: string) => {
     try {
+      const supabase = createClient();
       const today = new Date().toISOString().split('T')[0];
       
       const { error } = await supabase

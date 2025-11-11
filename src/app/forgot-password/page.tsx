@@ -14,7 +14,6 @@ export default function ForgotPasswordPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const supabase = createClient();
 
   // Détecter le montage côté client
   useEffect(() => {
@@ -32,6 +31,7 @@ export default function ForgotPasswordPage() {
     setIsLoading(true);
 
     try {
+      const supabase = createClient();
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/reset-password`,
       });

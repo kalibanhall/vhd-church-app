@@ -19,7 +19,6 @@ export default function EnrollFacePage() {
   const [isClient, setIsClient] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
-  const supabase = createClient();
 
   // Détecter le montage côté client
   useEffect(() => {
@@ -46,6 +45,7 @@ export default function EnrollFacePage() {
   // Charger les membres sans photo faciale
   const loadMembers = async () => {
     setIsLoading(true);
+    const supabase = createClient();
     const { data, error } = await supabase
       .from('membres')
       .select('id, nom, prenom, photo_url')
@@ -68,6 +68,8 @@ export default function EnrollFacePage() {
   const handleFaceDetected = async (descriptor: Float32Array, imageData: string) => {
     try {
       setIsLoading(true);
+
+      const supabase = createClient();
 
       // Convertir le descripteur en array pour le stockage
       const descriptorArray = Array.from(descriptor);

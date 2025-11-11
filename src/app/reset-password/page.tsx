@@ -16,7 +16,6 @@ export default function ResetPasswordPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const router = useRouter();
-  const supabase = createClient();
 
   // Détecter le montage côté client
   useEffect(() => {
@@ -29,6 +28,7 @@ export default function ResetPasswordPage() {
 
     // Vérifier que l'utilisateur vient bien d'un lien de réinitialisation
     const checkSession = async () => {
+      const supabase = createClient();
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         toast.error('Lien de réinitialisation invalide ou expiré');
@@ -36,7 +36,7 @@ export default function ResetPasswordPage() {
       }
     };
     checkSession();
-  }, [router, supabase, isClient]);
+  }, [router, isClient]);
 
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,6 +59,7 @@ export default function ResetPasswordPage() {
     setIsLoading(true);
 
     try {
+      const supabase = createClient();
       const { error } = await supabase.auth.updateUser({
         password: password
       });
