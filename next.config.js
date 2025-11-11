@@ -33,6 +33,19 @@ const nextConfig = {
   experimental: {
     isrMemoryCacheSize: 0,
   },
+  // Ignorer les modules Node.js dans face-api.js qui ne sont pas utilisés côté client
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      // Ne pas inclure ces modules Node.js dans le bundle client
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        path: false,
+        crypto: false,
+      };
+    }
+    return config;
+  },
 }
 
 module.exports = nextConfig
