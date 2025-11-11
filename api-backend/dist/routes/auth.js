@@ -55,14 +55,11 @@ router.post('/register', async (req, res) => {
             .insert([
             {
                 email,
-                password: hashedPassword,
+                password_hash: hashedPassword,
                 first_name: firstName || '',
                 last_name: lastName || '',
                 phone: phone || '',
-                role: 'member',
-                status: 'active',
-                created_at: new Date().toISOString(),
-                updated_at: new Date().toISOString()
+                role: 'member'
             }
         ])
             .select()
@@ -98,7 +95,8 @@ router.post('/register', async (req, res) => {
         console.error('Register error:', error);
         res.status(500).json({
             success: false,
-            error: 'Erreur serveur lors de l\'inscription'
+            error: error.message || 'Erreur serveur lors de l\'inscription',
+            details: process.env.NODE_ENV === 'development' ? error : undefined
         });
     }
 });
@@ -128,14 +126,14 @@ router.post('/login', async (req, res) => {
             });
         }
         // Vérifier le statut
-        if (user.status !== 'active') {
+        if (user.status && user.status !== 'active') {
             return res.status(403).json({
                 success: false,
                 error: 'Compte désactivé. Contactez l\'administrateur.'
             });
         }
         // Vérifier le mot de passe
-        const isPasswordValid = await bcryptjs_1.default.compare(password, user.password);
+        const isPasswordValid = await bcryptjs_1.default.compare(password, user.password_hash);
         if (!isPasswordValid) {
             return res.status(401).json({
                 success: false,
@@ -149,10 +147,10 @@ router.post('/login', async (req, res) => {
             email: user.email,
             role: user.role
         }, JWT_SECRET, tokenOptions);
-        // Mettre à jour la dernière connexion
+        // Mettre à jour la dernière connexion (si la colonne existe)
         await supabase
             .from('users')
-            .update({ last_login: new Date().toISOString() })
+            .update({ updated_at: new Date().toISOString() })
             .eq('id', user.id);
         res.json({
             success: true,

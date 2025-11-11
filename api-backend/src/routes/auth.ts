@@ -64,14 +64,11 @@ router.post('/register', async (req: Request, res: Response) => {
       .insert([
         {
           email,
-          password: hashedPassword,
+          password_hash: hashedPassword,
           first_name: firstName || '',
           last_name: lastName || '',
           phone: phone || '',
-          role: 'member',
-          status: 'active',
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
+          role: 'member'
         }
       ])
       .select()
@@ -113,7 +110,8 @@ router.post('/register', async (req: Request, res: Response) => {
     console.error('Register error:', error);
     res.status(500).json({
       success: false,
-      error: 'Erreur serveur lors de l\'inscription'
+      error: error.message || 'Erreur serveur lors de l\'inscription',
+      details: process.env.NODE_ENV === 'development' ? error : undefined
     });
   }
 });
@@ -148,7 +146,7 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 
     // Vérifier le statut
-    if (user.status !== 'active') {
+    if (user.status && user.status !== 'active') {
       return res.status(403).json({
         success: false,
         error: 'Compte désactivé. Contactez l\'administrateur.'
@@ -156,7 +154,7 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 
     // Vérifier le mot de passe
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password_hash);
 
     if (!isPasswordValid) {
       return res.status(401).json({
@@ -177,10 +175,10 @@ router.post('/login', async (req: Request, res: Response) => {
       tokenOptions
     );
 
-    // Mettre à jour la dernière connexion
+    // Mettre à jour la dernière connexion (si la colonne existe)
     await supabase
       .from('users')
-      .update({ last_login: new Date().toISOString() })
+      .update({ updated_at: new Date().toISOString() })
       .eq('id', user.id);
 
     res.json({
