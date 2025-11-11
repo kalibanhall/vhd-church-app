@@ -6,7 +6,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.requirePastorOrAdmin = exports.requireAdmin = exports.authenticate = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const supabase_js_1 = require("@supabase/supabase-js");
-const supabase = (0, supabase_js_1.createClient)(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
+const dotenv_1 = __importDefault(require("dotenv"));
+// Charger les variables d'environnement
+dotenv_1.default.config();
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_ANON_KEY;
+if (!supabaseUrl || !supabaseKey) {
+    throw new Error('SUPABASE_URL and SUPABASE_ANON_KEY must be defined in .env file');
+}
+const supabase = (0, supabase_js_1.createClient)(supabaseUrl, supabaseKey);
 /**
  * Middleware d'authentification
  * Vérifie le token JWT dans le header Authorization
