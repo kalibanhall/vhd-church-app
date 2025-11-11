@@ -197,27 +197,35 @@ router.post('/logout', async (req, res) => {
  */
 router.get('/me', async (req, res) => {
     try {
+        console.log('🔍 GET /auth/me called');
         const authHeader = req.headers.authorization;
+        console.log('🔍 Auth header:', authHeader ? 'Present' : 'Missing');
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            console.log('❌ No auth header or invalid format');
             return res.status(401).json({
                 success: false,
                 error: 'Non autorisé'
             });
         }
         const token = authHeader.substring(7);
+        console.log('🔍 Token received, length:', token.length);
         const decoded = jsonwebtoken_1.default.verify(token, JWT_SECRET);
+        console.log('🔍 Token decoded, user ID:', decoded.id);
         // Récupérer l'utilisateur
         const { data: user, error } = await supabase
             .from('users')
             .select('id, email, first_name, last_name, role, phone, avatar, status')
             .eq('id', decoded.id)
             .single();
+        console.log('🔍 User found in DB:', user ? 'Yes' : 'No');
         if (error || !user) {
+            console.log('❌ User not found:', error);
             return res.status(404).json({
                 success: false,
                 error: 'Utilisateur non trouvé'
             });
         }
+        console.log('✅ Returning user data for:', user.email);
         res.json({
             success: true,
             user: {
@@ -232,7 +240,7 @@ router.get('/me', async (req, res) => {
         });
     }
     catch (error) {
-        console.error('Auth me error:', error);
+        console.error('❌ Auth me error:', error);
         res.status(401).json({
             success: false,
             error: 'Token invalide'
