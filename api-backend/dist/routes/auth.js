@@ -131,7 +131,7 @@ router.post('/login', async (req, res) => {
         console.log('🔍 User role:', user.role);
         console.log('🔍 User has password_hash:', user.password_hash ? 'Yes' : 'No');
         // Vérifier le statut
-        if (user.status && user.status !== 'active') {
+        if (user.status && user.status.toLowerCase() !== 'active') {
             console.log('❌ User status inactive:', user.status);
             return res.status(403).json({
                 success: false,
