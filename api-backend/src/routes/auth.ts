@@ -138,15 +138,23 @@ router.post('/login', async (req: Request, res: Response) => {
       .eq('email', email)
       .single();
 
+    console.log('🔍 Login attempt for:', email);
+    console.log('🔍 User found:', user ? 'Yes' : 'No');
+
     if (error || !user) {
+      console.log('❌ User not found or error:', error);
       return res.status(401).json({
         success: false,
         error: 'Email ou mot de passe incorrect'
       });
     }
 
+    console.log('🔍 User role:', user.role);
+    console.log('🔍 User has password_hash:', user.password_hash ? 'Yes' : 'No');
+
     // Vérifier le statut
     if (user.status && user.status !== 'active') {
+      console.log('❌ User status inactive:', user.status);
       return res.status(403).json({
         success: false,
         error: 'Compte désactivé. Contactez l\'administrateur.'
@@ -154,9 +162,12 @@ router.post('/login', async (req: Request, res: Response) => {
     }
 
     // Vérifier le mot de passe
+    console.log('🔐 Comparing passwords...');
     const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+    console.log('🔐 Password valid:', isPasswordValid);
 
     if (!isPasswordValid) {
+      console.log('❌ Invalid password');
       return res.status(401).json({
         success: false,
         error: 'Email ou mot de passe incorrect'
