@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: vhd-church-api
+    runtime: node
+    region: frankfurt
+    plan: free
+    buildCommand: cd api-backend && npm install && npm run build
+    startCommand: cd api-backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: API_VERSION
+        value: v1
+      - key: DATABASE_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: ALLOWED_ORIGINS
+        value: https://vhd-church-app.vercel.app,http://localhost:3000
+      - key: CHURCH_NAME
+        value: VHD Church App
+      - key: CHURCH_EMAIL
+        value: contact@vhdchurchapp.com
