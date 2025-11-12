@@ -384,22 +384,23 @@ export default function UserProfile({ user }: ProfileProps) {
 
   // Vue normale du profil (sans sidebar)
   return (
-    <div className="min-h-screen bg-gray-50 p-4 lg:p-8">
+    <div className="min-h-screen bg-gray-50 p-2 md:p-4 lg:p-8 overflow-y-auto max-h-screen">
       <div className="max-w-4xl mx-auto">
         
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-6">
+        {/* Header Card - Compact mobile */}
+        <div className="bg-white rounded-lg shadow-sm p-3 md:p-6 mb-4 md:mb-6">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex items-center space-x-3 md:space-x-6">
               <div className="relative group">
                 {profilePhoto ? (
                   <img 
                     src={profilePhoto} 
                     alt="Profil" 
-                    className="w-24 h-24 rounded-full object-cover border-4 border-blue-200"
+                    className="w-16 h-16 md:w-24 md:h-24 rounded-full object-cover border-2 md:border-4 border-blue-200"
                   />
                 ) : (
-                  <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center border-4 border-blue-200">
-                    <User className="w-12 h-12 text-white" />
+                  <div className="w-16 h-16 md:w-24 md:h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center border-2 md:border-4 border-blue-200">
+                    <User className="w-8 h-8 md:w-12 md:h-12 text-white" />
                   </div>
                 )}
                 
@@ -409,22 +410,22 @@ export default function UserProfile({ user }: ProfileProps) {
                     <button
                       onClick={() => fileInputRef.current?.click()}
                       disabled={isUploadingPhoto}
-                      className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors disabled:opacity-50"
+                      className="p-1.5 md:p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors disabled:opacity-50"
                       title="Changer la photo"
                     >
                       {isUploadingPhoto ? (
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        <div className="w-3 h-3 md:w-4 md:h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                       ) : (
-                        <Edit3 className="w-4 h-4" />
+                        <Edit3 className="w-3 h-3 md:w-4 md:h-4" />
                       )}
                     </button>
                     {profilePhoto && (
                       <button
                         onClick={handleRemovePhoto}
-                        className="p-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
+                        className="p-1.5 md:p-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors"
                         title="Supprimer la photo"
                       >
-                        <X className="w-4 h-4" />
+                        <X className="w-3 h-3 md:w-4 md:h-4" />
                       </button>
                     )}
                   </div>
@@ -432,18 +433,18 @@ export default function UserProfile({ user }: ProfileProps) {
               </div>
               
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">
+                <h1 className="text-lg md:text-2xl font-bold text-gray-900">
                   {user.firstName} {user.lastName}
                 </h1>
-                <p className="text-blue-600 font-medium capitalize">{user.role}</p>
-                <div className="flex items-center space-x-4 mt-2 text-sm text-gray-600">
+                <p className="text-sm md:text-base text-blue-600 font-medium capitalize">{user.role}</p>
+                <div className="flex flex-col md:flex-row md:items-center md:space-x-4 mt-1 md:mt-2 text-xs md:text-sm text-gray-600">
                   <div className="flex items-center">
-                    <Mail className="w-4 h-4 mr-1" />
-                    {user.email}
+                    <Mail className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+                    <span className="truncate">{user.email}</span>
                   </div>
                   {user.phone && (
                     <div className="flex items-center">
-                      <Phone className="w-4 h-4 mr-1" />
+                      <Phone className="w-3 h-3 md:w-4 md:h-4 mr-1" />
                       {user.phone}
                     </div>
                   )}
@@ -451,61 +452,65 @@ export default function UserProfile({ user }: ProfileProps) {
               </div>
             </div>
             
-            <button
-              onClick={() => setIsEditing(true)}
-              className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              <Edit3 className="w-4 h-4 mr-2" />
-              Modifier le profil
-            </button>
-            
-            {!showFacialEnrollment ? (
+            {/* Boutons actions - Stack vertical sur mobile */}
+            <div className="flex flex-row md:flex-col gap-2">
               <button
-                onClick={() => setShowFacialEnrollment(true)}
-                className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
-                  hasFaceData 
-                    ? 'bg-green-50 text-green-700 hover:bg-green-100' 
-                    : 'bg-orange-50 text-orange-700 hover:bg-orange-100'
-                }`}
+                onClick={() => setIsEditing(true)}
+                className="flex items-center justify-center px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
-                {hasFaceData ? (
-                  <>
-                    <CheckCircle2 className="w-4 h-4 mr-2" />
-                    Visage enregistré
-                  </>
-                ) : (
-                  <>
-                    <Camera className="w-4 h-4 mr-2" />
-                    Enregistrer mon visage
-                  </>
-                )}
+                <Edit3 className="w-3 h-3 md:w-4 md:h-4 mr-1 md:mr-2" />
+                Modifier
               </button>
-            ) : (
-              <button
-                onClick={() => setShowFacialEnrollment(false)}
-                className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-              >
-                <X className="w-4 h-4 mr-2" />
-                Annuler
-              </button>
-            )}
+              
+              {!showFacialEnrollment ? (
+                <button
+                  onClick={() => setShowFacialEnrollment(true)}
+                  className={`flex items-center justify-center px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm rounded-lg transition-colors ${
+                    hasFaceData 
+                      ? 'bg-green-50 text-green-700 hover:bg-green-100' 
+                      : 'bg-orange-50 text-orange-700 hover:bg-orange-100'
+                  }`}
+                >
+                  {hasFaceData ? (
+                    <>
+                      <CheckCircle2 className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+                      <span className="hidden md:inline">Visage enregistré</span>
+                      <span className="md:hidden">Visage</span>
+                    </>
+                  ) : (
+                    <>
+                      <Camera className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+                      <span className="hidden md:inline">Enregistrer</span>
+                      <span className="md:hidden">Photo</span>
+                    </>
+                  )}
+                </button>
+              ) : (
+                <button
+                  onClick={() => setShowFacialEnrollment(false)}
+                  className="flex items-center justify-center px-3 md:px-4 py-1.5 md:py-2 text-xs md:text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  <X className="w-3 h-3 md:w-4 md:h-4 mr-1" />
+                  Annuler
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Section d'enregistrement facial */}
+        {/* Section d'enregistrement facial - Compact mobile */}
         {showFacialEnrollment && (
-          <div className="mb-6">
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-              <div className="flex items-start mb-4">
-                <AlertCircle className="w-5 h-5 text-blue-600 mr-3 mt-0.5" />
+          <div className="mb-4 md:mb-6">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 md:p-6">
+              <div className="flex items-start mb-3 md:mb-4">
+                <AlertCircle className="w-4 h-4 md:w-5 md:h-5 text-blue-600 mr-2 md:mr-3 mt-0.5" />
                 <div>
-                  <h3 className="font-semibold text-blue-900 mb-1">
+                  <h3 className="text-sm md:text-base font-semibold text-blue-900 mb-1">
                     Enregistrement de votre visage
                   </h3>
-                  <p className="text-sm text-blue-700">
+                  <p className="text-xs md:text-sm text-blue-700">
                     Cette fonctionnalité vous permettra de pointer automatiquement aux événements 
-                    grâce à la reconnaissance faciale. Votre photo sera sécurisée et utilisée 
-                    uniquement pour les pointages.
+                    grâce à la reconnaissance faciale.
                   </p>
                 </div>
               </div>
@@ -518,87 +523,89 @@ export default function UserProfile({ user }: ProfileProps) {
           </div>
         )}
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white rounded-lg shadow-sm p-6 text-center">
-            <Heart className="w-8 h-8 text-green-500 mx-auto mb-3" />
-            <div className="text-2xl font-bold text-green-600">12</div>
-            <div className="text-sm text-gray-600">Dons effectués</div>
+        {/* Stats Cards - Responsive mobile */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-4 md:mb-6">
+          <div className="bg-white rounded-lg shadow-sm p-3 md:p-6 text-center">
+            <Heart className="w-5 h-5 md:w-8 md:h-8 text-green-500 mx-auto mb-2 md:mb-3" />
+            <div className="text-lg md:text-2xl font-bold text-green-600">12</div>
+            <div className="text-xs md:text-sm text-gray-600">Dons</div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm p-6 text-center">
-            <Calendar className="w-8 h-8 text-blue-500 mx-auto mb-3" />
-            <div className="text-2xl font-bold text-blue-600">3</div>
-            <div className="text-sm text-gray-600">Rendez-vous</div>
+          <div className="bg-white rounded-lg shadow-sm p-3 md:p-6 text-center">
+            <Calendar className="w-5 h-5 md:w-8 md:h-8 text-blue-500 mx-auto mb-2 md:mb-3" />
+            <div className="text-lg md:text-2xl font-bold text-blue-600">3</div>
+            <div className="text-xs md:text-sm text-gray-600">RDV</div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm p-6 text-center">
-            <MessageCircle className="w-8 h-8 text-purple-500 mx-auto mb-3" />
-            <div className="text-2xl font-bold text-purple-600">8</div>
-            <div className="text-sm text-gray-600">Prières soumises</div>
+          <div className="bg-white rounded-lg shadow-sm p-3 md:p-6 text-center">
+            <MessageCircle className="w-5 h-5 md:w-8 md:h-8 text-purple-500 mx-auto mb-2 md:mb-3" />
+            <div className="text-lg md:text-2xl font-bold text-purple-600">8</div>
+            <div className="text-xs md:text-sm text-gray-600">Prières</div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm p-6 text-center">
-            <Book className="w-8 h-8 text-orange-500 mx-auto mb-3" />
-            <div className="text-2xl font-bold text-orange-600">5</div>
-            <div className="text-sm text-gray-600">Témoignages</div>
+          <div className="bg-white rounded-lg shadow-sm p-3 md:p-6 text-center">
+            <Book className="w-5 h-5 md:w-8 md:h-8 text-orange-500 mx-auto mb-2 md:mb-3" />
+            <div className="text-lg md:text-2xl font-bold text-orange-600">5</div>
+            <div className="text-xs md:text-sm text-gray-600">Témoignages</div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-xl font-semibold mb-4 flex items-center">
-              <User className="w-5 h-5 mr-2 text-blue-600" />
+        {/* Cartes Info - Responsive mobile */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-6">
+          <div className="lg:col-span-2 bg-white rounded-lg shadow-sm p-3 md:p-6">
+            <h2 className="text-base md:text-xl font-semibold mb-3 md:mb-4 flex items-center">
+              <User className="w-4 h-4 md:w-5 md:h-5 mr-1.5 md:mr-2 text-blue-600" />
               Informations personnelles
             </h2>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2 md:space-y-4">
+              <div className="grid grid-cols-2 gap-2 md:gap-4">
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Prénom</label>
-                  <p className="text-gray-900">{user.firstName}</p>
+                  <label className="text-xs md:text-sm font-medium text-gray-500">Prénom</label>
+                  <p className="text-sm md:text-base text-gray-900">{user.firstName}</p>
                 </div>
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Nom</label>
-                  <p className="text-gray-900">{user.lastName}</p>
+                  <label className="text-xs md:text-sm font-medium text-gray-500">Nom</label>
+                  <p className="text-sm md:text-base text-gray-900">{user.lastName}</p>
                 </div>
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-500">Email</label>
-                <p className="text-gray-900">{user.email}</p>
+                <label className="text-xs md:text-sm font-medium text-gray-500">Email</label>
+                <p className="text-sm md:text-base text-gray-900 truncate">{user.email}</p>
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-500">Téléphone</label>
-                <p className="text-gray-900">{user.phone || 'Non renseigné'}</p>
+                <label className="text-xs md:text-sm font-medium text-gray-500">Téléphone</label>
+                <p className="text-sm md:text-base text-gray-900">{user.phone || 'Non renseigné'}</p>
               </div>
               {user.membershipNumber && (
                 <div>
-                  <label className="text-sm font-medium text-gray-500">Numéro de membre</label>
-                  <p className="text-gray-900">{user.membershipNumber}</p>
+                  <label className="text-xs md:text-sm font-medium text-gray-500">Numéro de membre</label>
+                  <p className="text-sm md:text-base text-gray-900">{user.membershipNumber}</p>
                 </div>
               )}
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm p-6">
-            <h2 className="text-xl font-semibold mb-4 flex items-center">
-              <Clock className="w-5 h-5 mr-2 text-blue-600" />
+          <div className="bg-white rounded-lg shadow-sm p-3 md:p-6">
+            <h2 className="text-base md:text-xl font-semibold mb-3 md:mb-4 flex items-center">
+              <Clock className="w-4 h-4 md:w-5 md:h-5 mr-1.5 md:mr-2 text-blue-600" />
               Activité récente
             </h2>
-            <div className="space-y-4">
-              <div className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+            <div className="space-y-3 md:space-y-4">
+              <div className="flex items-start space-x-2 md:space-x-3">
+                <div className="w-2 h-2 bg-green-500 rounded-full mt-1.5 md:mt-2"></div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900">Don effectué</p>
+                  <p className="text-xs md:text-sm font-medium text-gray-900">Don effectué</p>
                   <p className="text-xs text-gray-500">Il y a 2 jours</p>
                 </div>
               </div>
-              <div className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+              <div className="flex items-start space-x-2 md:space-x-3">
+                <div className="w-2 h-2 bg-blue-500 rounded-full mt-1.5 md:mt-2"></div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900">Rendez-vous confirmé</p>
+                  <p className="text-xs md:text-sm font-medium text-gray-900">RDV confirmé</p>
                   <p className="text-xs text-gray-500">Il y a 3 jours</p>
                 </div>
               </div>
-              <div className="flex items-start space-x-3">
-                <div className="w-2 h-2 bg-purple-500 rounded-full mt-2"></div>
+              <div className="flex items-start space-x-2 md:space-x-3">
+                <div className="w-2 h-2 bg-purple-500 rounded-full mt-1.5 md:mt-2"></div>
                 <div>
-                  <p className="text-sm font-medium text-gray-900">Prière soumise</p>
+                  <p className="text-xs md:text-sm font-medium text-gray-900">Prière soumise</p>
                   <p className="text-xs text-gray-500">Il y a 1 semaine</p>
                 </div>
               </div>

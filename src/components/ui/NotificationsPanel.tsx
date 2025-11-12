@@ -303,15 +303,15 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
         )}
       </button>
 
-      {/* Panel déroulant - Largeur responsive pour mobile */}
+      {/* Panel déroulant - Centré sur mobile, à droite sur desktop */}
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-h-80 sm:max-h-96 flex flex-col">
+        <div className="fixed sm:absolute right-0 sm:right-0 top-16 sm:top-full left-0 sm:left-auto mt-0 sm:mt-2 w-full sm:w-80 md:w-96 bg-white rounded-none sm:rounded-lg shadow-xl border-t sm:border border-gray-200 z-50 max-h-[calc(100vh-4rem)] sm:max-h-80 md:max-h-96 flex flex-col">
           {/* Header du panel */}
-          <div className="flex items-center justify-between p-4 border-b border-gray-200">
-            <h3 className="text-lg font-semibold text-gray-900">
+          <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-900">
               Notifications
               {unreadCount > 0 && (
-                <span className="ml-2 text-sm bg-red-100 text-red-600 px-2 py-1 rounded-full">
+                <span className="ml-2 text-xs sm:text-sm bg-red-100 text-red-600 px-2 py-0.5 sm:py-1 rounded-full">
                   {unreadCount} non lue{unreadCount > 1 ? 's' : ''}
                 </span>
               )}

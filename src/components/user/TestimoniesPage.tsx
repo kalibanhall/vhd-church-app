@@ -188,33 +188,33 @@ export default function TestimoniesPage() {
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+    <div className="p-2 md:p-4 lg:p-6 max-w-4xl mx-auto">
+      {/* Header - Compact mobile */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 md:mb-6 gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Témoignages</h1>
-          <p className="text-gray-600 mt-2">Découvrez comment Dieu agit dans la vie des membres</p>
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900">Témoignages</h1>
+          <p className="text-xs md:text-sm lg:text-base text-gray-600 mt-1 md:mt-2">Découvrez comment Dieu agit</p>
         </div>
         <Button
           onClick={() => setShowAddForm(true)}
-          className="bg-blue-600 hover:bg-blue-700"
+          className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-xs md:text-sm py-2 md:py-2.5"
         >
-          <Plus className="h-4 w-4 mr-2" />
-          Partager mon témoignage
+          <Plus className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+          Partager
         </Button>
       </div>
 
-      {/* Tabs */}
-      <div className="flex space-x-1 mb-6 bg-gray-100 p-1 rounded-lg w-full sm:w-fit">
+      {/* Tabs - Responsive */}
+      <div className="flex space-x-1 mb-4 md:mb-6 bg-gray-100 p-1 rounded-lg w-full">
         <button
           onClick={() => setActiveTab('all')}
-          className={`flex-1 sm:flex-none px-4 py-3 sm:py-2 rounded-md text-sm font-medium transition-colors ${
+          className={`flex-1 sm:flex-none px-3 md:px-4 py-2 md:py-3 sm:py-2 rounded-md text-xs md:text-sm font-medium transition-colors ${
             activeTab === 'all' 
               ? 'bg-white text-blue-600 shadow-sm' 
               : 'text-gray-600 hover:text-gray-900'
           }`}
         >
-          Tous les témoignages
+          Tous
         </button>
         <button
           onClick={() => setActiveTab('my')}

@@ -577,20 +577,21 @@ const ChatPageReal: React.FC = () => {
 
   return (
     <div className="flex h-full bg-gray-50">
-      {/* Sidebar des canaux */}
-      <div className="w-80 bg-white border-r border-gray-200 flex flex-col">
-        {/* Header sidebar */}
-        <div className="p-4 border-b border-gray-200">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-lg font-semibold text-gray-900">💬 Discussion</h2>
-            <div className="flex space-x-2">
+      {/* Sidebar des canaux - Responsive */}
+      <div className="w-full md:w-64 lg:w-80 bg-white border-r border-gray-200 flex flex-col">
+        {/* Header sidebar - Compact mobile */}
+        <div className="p-2 md:p-4 border-b border-gray-200">
+          <div className="flex items-center justify-between mb-2 md:mb-3">
+            <h2 className="text-base md:text-lg font-semibold text-gray-900">💬 Discussion</h2>
+            <div className="flex space-x-1 md:space-x-2">
               <Button 
                 variant="outline" 
                 size="sm"
                 onClick={() => setShowMembers(!showMembers)}
                 title="Voir les membres en ligne"
+                className="p-1.5 md:p-2"
               >
-                <Users className="w-4 h-4" />
+                <Users className="w-3 h-3 md:w-4 md:h-4" />
               </Button>
               {canCreateChannels() && (
                 <Button 
@@ -598,46 +599,47 @@ const ChatPageReal: React.FC = () => {
                   size="sm"
                   onClick={() => setShowCreateChannel(!showCreateChannel)}
                   title="Créer un canal"
+                  className="p-1.5 md:p-2"
                 >
-                  <Plus className="w-4 h-4" />
+                  <Plus className="w-3 h-3 md:w-4 md:h-4" />
                 </Button>
               )}
             </div>
           </div>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Search className="absolute left-2 md:left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-3 h-3 md:w-4 md:h-4" />
             <Input
               type="text"
-              placeholder="Rechercher un canal..."
+              placeholder="Rechercher..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10"
+              className="pl-8 md:pl-10 text-xs md:text-sm py-1.5 md:py-2"
             />
           </div>
 
-          {/* Formulaire de création de canal */}
+          {/* Formulaire de création de canal - Compact */}
           {showCreateChannel && (
-            <div className="mt-3 p-3 bg-gray-50 rounded-lg border">
-              <h3 className="font-medium text-gray-900 mb-2">Nouveau canal</h3>
+            <div className="mt-2 md:mt-3 p-2 md:p-3 bg-gray-50 rounded-lg border">
+              <h3 className="text-sm md:text-base font-medium text-gray-900 mb-2">Nouveau canal</h3>
               <div className="space-y-2">
                 <Input
                   type="text"
                   placeholder="Nom du canal..."
                   value={newChannelName}
                   onChange={(e) => setNewChannelName(e.target.value)}
-                  className="text-sm"
+                  className="text-xs md:text-sm py-1.5"
                 />
                 <Input
                   type="text"
-                  placeholder="Description (optionnelle)..."
+                  placeholder="Description..."
                   value={newChannelDescription}
                   onChange={(e) => setNewChannelDescription(e.target.value)}
-                  className="text-sm"
+                  className="text-xs md:text-sm py-1.5"
                 />
                 <select
                   value={newChannelType}
                   onChange={(e) => setNewChannelType(e.target.value)}
-                  className="w-full p-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full p-1.5 md:p-2 text-xs md:text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="PUBLIC">Public</option>
                   <option value="PRIVATE">Privé</option>
@@ -814,36 +816,37 @@ const ChatPageReal: React.FC = () => {
         </div>
       </div>
 
-      {/* Zone de chat principale */}
+      {/* Zone de chat principale - Responsive */}
       <div className="flex-1 flex flex-col">
         {selectedChannel ? (
           <>
-            {/* Header du canal */}
-            <div className="bg-white border-b border-gray-200 p-4">
+            {/* Header du canal - Compact mobile */}
+            <div className="bg-white border-b border-gray-200 p-2 md:p-4">
               <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2 md:space-x-3 overflow-hidden">
                   {getChannelIcon(selectedChannel.type, selectedChannel)}
-                  <div>
-                    <h3 className="font-semibold text-gray-900">
+                  <div className="overflow-hidden">
+                    <h3 className="text-sm md:text-base font-semibold text-gray-900 truncate">
                       {selectedChannel.name}
                     </h3>
                     {selectedChannel.description && (
-                      <p className="text-sm text-gray-500">
+                      <p className="text-xs md:text-sm text-gray-500 truncate">
                         {selectedChannel.description}
                       </p>
                     )}
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-1 md:space-x-2">
                   <Button 
                     variant="outline" 
                     size="sm"
                     onClick={() => setShowMembers(!showMembers)}
+                    className="p-1.5 md:p-2"
                   >
-                    <Users className="w-4 h-4 mr-1" />
-                    {selectedChannel.members.length}
+                    <Users className="w-3 h-3 md:w-4 md:h-4 mr-0.5 md:mr-1" />
+                    <span className="hidden md:inline">{selectedChannel.members.length}</span>
                     {selectedChannel.members.some(member => onlineUsers.includes(member.userId)) && (
-                      <div className="w-2 h-2 bg-green-500 rounded-full ml-1"></div>
+                      <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-green-500 rounded-full ml-0.5 md:ml-1"></div>
                     )}
                   </Button>
 
@@ -895,8 +898,8 @@ const ChatPageReal: React.FC = () => {
               </div>
             </div>
 
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            {/* Messages - Compact mobile */}
+            <div className="flex-1 overflow-y-auto p-2 md:p-4 space-y-2 md:space-y-4">
               {messages.map((message, index) => {
                 const showDateDivider = index === 0 || 
                   formatDate(messages[index - 1].createdAt) !== formatDate(message.createdAt)
@@ -904,41 +907,41 @@ const ChatPageReal: React.FC = () => {
                 return (
                   <div key={message.id}>
                     {showDateDivider && (
-                      <div className="flex items-center justify-center my-4">
-                        <div className="bg-gray-100 text-gray-500 text-xs px-3 py-1 rounded-full">
+                      <div className="flex items-center justify-center my-2 md:my-4">
+                        <div className="bg-gray-100 text-gray-500 text-xs px-2 md:px-3 py-1 rounded-full">
                           {formatDate(message.createdAt)}
                         </div>
                       </div>
                     )}
                     
-                    <div className="flex space-x-3">
-                      <div className="w-8 h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-medium">
+                    <div className="flex space-x-2 md:space-x-3">
+                      <div className="w-6 h-6 md:w-8 md:h-8 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs md:text-sm font-medium flex-shrink-0">
                         {message.sender.firstName[0]}
                       </div>
-                      <div className="flex-1">
-                        <div className="flex items-baseline space-x-2">
-                          <span className="font-medium text-gray-900">
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-baseline space-x-1 md:space-x-2">
+                          <span className="text-xs md:text-sm font-medium text-gray-900 truncate">
                             {message.sender.firstName} {message.sender.lastName}
                           </span>
-                          <span className="text-xs text-gray-500">
+                          <span className="text-xs text-gray-500 flex-shrink-0">
                             {formatTime(message.createdAt)}
                           </span>
                           {message.isEdited && (
-                            <span className="text-xs text-gray-400 italic">
+                            <span className="text-xs text-gray-400 italic hidden md:inline">
                               (modifié)
                             </span>
                           )}
                         </div>
-                        <div className="mt-1 text-gray-700">
+                        <div className="mt-1 text-xs md:text-sm text-gray-700 break-words">
                           {message.content}
                         </div>
                         
-                        {/* Réactions */}
-                        <div className="flex items-center space-x-1 mt-2">
+                        {/* Réactions - Compact */}
+                        <div className="flex items-center space-x-1 mt-1 md:mt-2">
                           {message.reactions.map((reaction) => (
                             <div
                               key={reaction.id}
-                              className="flex items-center space-x-1 bg-gray-100 hover:bg-gray-200 px-2 py-1 rounded-full text-sm cursor-pointer"
+                              className="flex items-center space-x-1 bg-gray-100 hover:bg-gray-200 px-1.5 md:px-2 py-0.5 md:py-1 rounded-full text-xs cursor-pointer"
                               title={`${reaction.user.firstName} ${reaction.user.lastName}`}
                             >
                               <span>{reaction.emoji}</span>
@@ -967,34 +970,34 @@ const ChatPageReal: React.FC = () => {
               <div ref={messagesEndRef} />
             </div>
 
-            {/* Zone de saisie */}
-            <div className="bg-white border-t border-gray-200 p-4">
+            {/* Zone de saisie - Compact mobile */}
+            <div className="bg-white border-t border-gray-200 p-2 md:p-4">
               {canWriteInChannel(selectedChannel) ? (
-                <div className="flex items-end space-x-2">
+                <div className="flex items-end space-x-1 md:space-x-2">
                   <div className="flex-1">
                     <Input
                       type="text"
-                      placeholder={`Écrire dans ${selectedChannel.name}...`}
+                      placeholder={`Message...`}
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
                       onKeyPress={handleKeyPress}
                       disabled={sending}
-                      className="resize-none"
+                      className="text-xs md:text-sm py-1.5 md:py-2"
                     />
                   </div>
                   <Button 
                     onClick={sendMessage} 
                     disabled={!newMessage.trim() || sending}
-                    className="px-3 py-2"
+                    className="px-2 md:px-3 py-1.5 md:py-2"
                   >
-                    <Send className="w-4 h-4" />
+                    <Send className="w-3 h-3 md:w-4 md:h-4" />
                   </Button>
                 </div>
               ) : (
-                <div className="text-center p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <div className="text-center p-2 md:p-4 bg-gray-50 rounded-lg border border-gray-200">
                   <div className="flex items-center justify-center space-x-2 text-gray-600">
-                    <Lock className="w-5 h-5" />
-                    <span>
+                    <Lock className="w-4 h-4 md:w-5 md:h-5" />
+                    <span className="text-xs md:text-sm">
                       {selectedChannel.type === 'ANNOUNCEMENT' 
                         ? 'Seuls les pasteurs et administrateurs peuvent publier dans ce canal d\'annonces'
                         : 'Ce canal est restreint aux administrateurs'

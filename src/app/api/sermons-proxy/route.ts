@@ -6,9 +6,10 @@ export async function GET(request: NextRequest) {
     const queryString = searchParams.toString()
     
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://vhd-church-api.onrender.com/v1'
-    const url = queryString ? `${API_URL}/sermons?${queryString}` : `${API_URL}/sermons`
+    // Corriger l'endpoint: /preachings au lieu de /sermons
+    const url = queryString ? `${API_URL}/preachings?${queryString}` : `${API_URL}/preachings`
     
-    console.log('🔄 Proxying GET sermons request to:', url)
+    console.log('🔄 Proxying GET preachings request to:', url)
     
     const token = request.headers.get('authorization')
     const headers: HeadersInit = {
@@ -26,7 +27,7 @@ export async function GET(request: NextRequest) {
 
     const data = await response.json()
     
-    console.log('✅ Backend sermons response:', response.status)
+    console.log('✅ Backend preachings response:', response.status)
 
     if (!response.ok) {
       return NextResponse.json(
@@ -35,7 +36,11 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    return NextResponse.json(data)
+    // Mapper data.data vers sermons pour compatibilité frontend
+    return NextResponse.json({
+      success: true,
+      sermons: data.data || []
+    })
   } catch (error: any) {
     console.error('❌ Sermons proxy error:', error)
     return NextResponse.json(
@@ -59,9 +64,9 @@ export async function POST(request: NextRequest) {
     
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://vhd-church-api.onrender.com/v1'
     
-    console.log('🔄 Proxying POST sermons request to:', `${API_URL}/sermons`)
+    console.log('🔄 Proxying POST preachings request to:', `${API_URL}/preachings`)
     
-    const response = await fetch(`${API_URL}/sermons`, {
+    const response = await fetch(`${API_URL}/preachings`, {
       method: 'POST',
       headers: {
         'Authorization': token,
@@ -72,7 +77,7 @@ export async function POST(request: NextRequest) {
 
     const data = await response.json()
     
-    console.log('✅ Backend create sermon response:', response.status)
+    console.log('✅ Backend create preaching response:', response.status)
 
     if (!response.ok) {
       return NextResponse.json(
@@ -83,7 +88,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(data)
   } catch (error: any) {
-    console.error('❌ Create sermon proxy error:', error)
+    console.error('❌ Create preaching proxy error:', error)
     return NextResponse.json(
       { error: 'Erreur de connexion au serveur' },
       { status: 500 }

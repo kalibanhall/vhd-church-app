@@ -153,15 +153,15 @@ export default function AppointmentsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">Rendez-vous pastoraux</h1>
+    <div className="space-y-4 md:space-y-6 p-2 md:p-0">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <h1 className="text-xl md:text-2xl font-bold text-gray-900">Rendez-vous pastoraux</h1>
         <button
           onClick={() => setShowNewForm(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+          className="w-full sm:w-auto bg-blue-600 text-white px-3 md:px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 text-xs md:text-sm"
         >
-          <Plus className="h-4 w-4" />
-          <span>Nouveau rendez-vous</span>
+          <Plus className="h-3 w-3 md:h-4 md:w-4" />
+          <span>Nouveau</span>
         </button>
       </div>
 

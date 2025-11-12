@@ -170,44 +170,44 @@ export default function PrayersPage() {
   }
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+    <div className="p-2 md:p-4 lg:p-6 max-w-6xl mx-auto">
+      {/* Header - Compact mobile */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 md:mb-6 gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Intentions de prière</h1>
-          <p className="text-gray-600 mt-2">Partagez vos besoins de prière et priez pour les autres</p>
+          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900">Intentions de prière</h1>
+          <p className="text-xs md:text-sm lg:text-base text-gray-600 mt-1 md:mt-2">Partagez vos besoins de prière</p>
         </div>
         <Button 
           onClick={() => setShowCreateForm(true)}
-          className="bg-blue-600 hover:bg-blue-700"
+          className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-xs md:text-sm py-2 md:py-2.5"
         >
-          <Plus className="h-4 w-4 mr-2" />
-          Nouvelle intention
+          <Plus className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
+          Nouvelle
         </Button>
       </div>
 
-      {/* Filtres */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+      {/* Filtres - Grid responsive */}
+      <div className="grid grid-cols-3 gap-2 md:flex md:gap-3 mb-4 md:mb-6">
         <Button
           variant={filter === 'all' ? 'default' : 'outline'}
           onClick={() => setFilter('all')}
-          className="flex-1 sm:flex-none py-3 text-base"
+          className="text-xs md:text-sm py-2 md:py-3"
         >
-          Toutes les prières
+          Toutes
         </Button>
         <Button
           variant={filter === 'my' ? 'default' : 'outline'}
           onClick={() => setFilter('my')}
-          className="flex-1 sm:flex-none py-3 text-base"
+          className="text-xs md:text-sm py-2 md:py-3"
         >
-          Mes prières
+          Miennes
         </Button>
         <Button
           variant={filter === 'pending' ? 'default' : 'outline'}
           onClick={() => setFilter('pending')}
-          className="flex-1 sm:flex-none py-3 text-base"
+          className="text-xs md:text-sm py-2 md:py-3"
         >
-          En attente de validation
+          Attente
         </Button>
       </div>
 
