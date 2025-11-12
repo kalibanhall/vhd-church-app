@@ -1,11 +1,29 @@
 // Fonction utilitaire pour les appels API authentifiés
 export async function authenticatedFetch(url: string, options: RequestInit = {}) {
+  // Récupérer le token depuis localStorage
+  const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+  
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  
+  // Ajouter le header Authorization si token présent
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  
+  // Fusionner avec les headers fournis
+  if (options.headers) {
+    Object.entries(options.headers).forEach(([key, value]) => {
+      if (typeof value === 'string') {
+        headers[key] = value;
+      }
+    });
+  }
+  
   const defaultOptions: RequestInit = {
     credentials: 'include', // Toujours inclure les cookies
-    headers: {
-      'Content-Type': 'application/json',
-      ...options.headers,
-    },
+    headers,
     ...options,
   }
 

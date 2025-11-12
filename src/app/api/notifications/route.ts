@@ -17,12 +17,22 @@ import jwt from 'jsonwebtoken'
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key'
 
-// Vérification JWT par cookies
+// Vérification JWT par cookies ou Authorization header
 async function verifyToken(request: NextRequest) {
   try {
-    const token = request.cookies.get('auth-token')?.value
+    // Essayer d'abord le cookie
+    let token = request.cookies.get('auth-token')?.value
+    
+    // Si pas de cookie, essayer le header Authorization
+    if (!token) {
+      const authHeader = request.headers.get('Authorization')
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        token = authHeader.substring(7)
+      }
+    }
     
     if (!token) {
+      console.log('❌ Authentication failed: Token d\'authentification manquant')
       return { error: 'Non authentifié', status: 401 }
     }
     
@@ -38,6 +48,7 @@ async function verifyToken(request: NextRequest) {
 
     return { user }
   } catch (error) {
+    console.error('Token verification error:', error)
     return { error: 'Token invalide', status: 401 }
   }
 }

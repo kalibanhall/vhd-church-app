@@ -106,9 +106,16 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
   const fetchNotifications = async (loadAll = false) => {
     setLoading(true);
     try {
+      const token = localStorage.getItem('token');
+      const headers: HeadersInit = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
       const url = loadAll ? '/api/notifications?all=true' : '/api/notifications';
       const response = await fetch(url, {
-        credentials: 'include'
+        credentials: 'include',
+        headers
       });
 
       if (response.ok) {
@@ -125,8 +132,18 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
 
   const fetchUnreadCount = async () => {
     try {
+      const token = localStorage.getItem('token');
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json'
+      };
+      
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
       const response = await fetch('/api/notifications?unread=true', {
-        credentials: 'include'
+        credentials: 'include',
+        headers
       });
 
       if (response.ok) {
@@ -140,11 +157,17 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
 
   const markAsRead = async (notificationId: string) => {
     try {
+      const token = localStorage.getItem('token');
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json'
+      };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
       const response = await fetch('/api/notifications', {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers,
         credentials: 'include',
         body: JSON.stringify({ notificationId })
       });
@@ -165,11 +188,17 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
 
   const markAllAsRead = async () => {
     try {
+      const token = localStorage.getItem('token');
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json'
+      };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
       const response = await fetch('/api/notifications', {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers,
         credentials: 'include',
         body: JSON.stringify({ markAllAsRead: true })
       });
