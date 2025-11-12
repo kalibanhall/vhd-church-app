@@ -48,75 +48,89 @@ export default function PreachingsPage() {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [currentlyPlaying, setCurrentlyPlaying] = useState<string | null>(null)
   const [preachings, setPreachings] = useState<Preaching[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  // Charger les prédications
+  // Charger les prédications depuis l'API
   useEffect(() => {
-    setPreachings([
-      {
-        id: 'live-1',
-        title: '🔴 CULTE EN DIRECT - Dimanche Matin',
-        pastorName: 'Pasteur Jean Martin',
-        preachingDate: '2025-09-25',
-        duration: 'En cours',
-        preachingType: 'LIVE',
-        description: 'Rejoignez-nous pour notre culte dominical en direct ! Louange, prédication et prière communautaire.',
-        bibleVerses: 'Psaume 100:4, Hébreux 10:25',
-        liveUrl: 'https://youtube.com/live/example',
-        thumbnailUrl: '/live/current.jpg',
-        isLive: true,
-        viewerCount: 127,
-        viewCount: 856,
-        downloadCount: 0,
-        isPublished: true
-      },
-      {
-        id: '1',
-        title: 'La Foi qui Déplace les Montagnes',
-        pastorName: 'Pasteur Jean Martin',
-        preachingDate: '2025-09-22',
-        duration: '45:30',
-        preachingType: 'VIDEO',
-        description: 'Un message puissant sur la foi et sa capacité à transformer nos vies. Découvrez comment votre foi peut vous aider à surmonter tous les obstacles.',
-        bibleVerses: 'Matthieu 17:20, Marc 11:23',
-        videoUrl: '/preachings/video1.mp4',
-        thumbnailUrl: '/preachings/thumb1.jpg',
-        isLive: false,
-        viewCount: 234,
-        downloadCount: 45,
-        isPublished: true
-      },
-      {
-        id: '2',
-        title: 'L\'Amour de Dieu sans Limites',
-        pastorName: 'Pasteur Marie Dubois',
-        preachingDate: '2025-09-15',
-        duration: '38:15',
-        preachingType: 'AUDIO',
-        description: 'Explorez la profondeur de l\'amour inconditionnel de Dieu pour chacun de nous. Un message d\'espoir et de réconfort pour tous.',
-        bibleVerses: 'Jean 3:16, 1 Jean 4:7-8',
-        audioUrl: '/preachings/audio2.mp3',
-        isLive: false,
-        viewCount: 189,
-        downloadCount: 67,
-        isPublished: true
-      },
-      {
-        id: '3',
-        title: 'Marcher dans la Lumière',
-        pastorName: 'Pasteur Pierre Moreau',
-        preachingDate: '2025-09-08',
-        duration: '42:00',
-        preachingType: 'VIDEO',
-        description: 'Comment vivre une vie qui honore Dieu au quotidien. Des conseils pratiques pour marcher dans la vérité et la justice.',
-        bibleVerses: '1 Jean 1:7, Éphésiens 5:8',
-        videoUrl: '/preachings/video3.mp4',
-        thumbnailUrl: '/preachings/thumb3.jpg',
-        isLive: false,
-        viewCount: 156,
-        downloadCount: 32,
-        isPublished: true
+    const fetchPreachings = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+        
+        const token = localStorage.getItem('token')
+        const headers: HeadersInit = {
+          'Content-Type': 'application/json',
+        }
+        
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`
+        }
+        
+        console.log('📖 Chargement des prédications...')
+        const response = await fetch('/api/sermons-proxy', {
+          headers
+        })
+        
+        console.log('📊 Response status:', response.status)
+        
+        if (!response.ok) {
+          throw new Error('Erreur lors du chargement des prédications')
+        }
+        
+        const data = await response.json()
+        console.log('✅ Prédications chargées:', data)
+        
+        if (data.success && data.sermons) {
+          // Mapper les données du backend vers le format du frontend
+          const mappedSermons = data.sermons.map((sermon: any) => ({
+            id: sermon.id,
+            title: sermon.title,
+            pastorName: sermon.pastorName || sermon.pastor || 'Pasteur',
+            preachingDate: sermon.sermonDate || sermon.date,
+            duration: sermon.duration || '00:00',
+            preachingType: sermon.sermonType || sermon.type || 'TEXT',
+            description: sermon.description || '',
+            bibleVerses: sermon.bibleVerses || sermon.bibleReferences || '',
+            audioUrl: sermon.audioUrl,
+            videoUrl: sermon.videoUrl,
+            liveUrl: sermon.liveUrl,
+            thumbnailUrl: sermon.thumbnailUrl,
+            isLive: sermon.isLive || false,
+            viewerCount: sermon.viewerCount || 0,
+            viewCount: sermon.viewCount || 0,
+            downloadCount: sermon.downloadCount || 0,
+            isPublished: sermon.isPublished !== false
+          }))
+          
+          setPreachings(mappedSermons)
+        }
+      } catch (err: any) {
+        console.error('❌ Erreur chargement prédications:', err)
+        setError(err.message)
+        // En cas d'erreur, utiliser des données de démonstration
+        setPreachings([
+          {
+            id: 'demo-1',
+            title: 'La Foi qui Déplace les Montagnes',
+            pastorName: 'Pasteur Jean Martin',
+            preachingDate: '2025-09-22',
+            duration: '45:30',
+            preachingType: 'VIDEO',
+            description: 'Un message puissant sur la foi et sa capacité à transformer nos vies.',
+            bibleVerses: 'Matthieu 17:20, Marc 11:23',
+            isLive: false,
+            viewCount: 234,
+            downloadCount: 45,
+            isPublished: true
+          }
+        ])
+      } finally {
+        setLoading(false)
       }
-    ])
+    }
+    
+    fetchPreachings()
   }, [])
 
   const filteredPreachings = preachings.filter(preaching => {
@@ -156,12 +170,33 @@ export default function PreachingsPage() {
   return (
     <div className="container mx-auto py-8 space-y-8">
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">🎙️ Prédications de l'Église</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">🎙️ Prédications de l&apos;Église</h1>
         <p className="text-gray-600">Écoutez la Parole de Dieu prêchée avec passion et vérité</p>
       </div>
 
+      {/* Affichage du chargement */}
+      {loading && (
+        <div className="text-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Chargement des prédications...</p>
+        </div>
+      )}
+
+      {/* Affichage de l'erreur */}
+      {error && !loading && (
+        <Card className="border-red-200 bg-red-50">
+          <CardContent className="pt-6">
+            <div className="text-center">
+              <p className="text-red-600 font-medium mb-2">❌ Erreur de chargement</p>
+              <p className="text-gray-600 text-sm">{error}</p>
+              <p className="text-gray-500 text-sm mt-2">Affichage des prédications de démonstration</p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Alerte Live */}
-      {livePreachings.length > 0 && (
+      {!loading && livePreachings.length > 0 && (
         <Card className="border-red-200 bg-red-50">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">

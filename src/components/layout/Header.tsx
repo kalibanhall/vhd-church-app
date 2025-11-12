@@ -25,6 +25,7 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
   const [searchQuery, setSearchQuery] = useState('')
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false)
+  const [showProfileMenu, setShowProfileMenu] = useState(false)
 
   // Liens simples et directs
   const searchResults = [
@@ -68,7 +69,7 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
   }
 
   return (
-    <header className="bg-white shadow-sm border-b border-gray-200">
+    <header className="fixed top-0 left-0 right-0 bg-white shadow-sm border-b border-gray-200 z-40">
       <div className="px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Bouton Menu (style Gmail mobile) - visible sur mobile et desktop sauf en mode admin */}
@@ -131,40 +132,59 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
             {/* Notifications */}
             <NotificationsPanel />
 
-            {/* User Profile */}
-            <button
-              onClick={onProfileClick || handleProfileClick}
-              className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors"
-            >
-              {/* Photo de profil ou icône par défaut */}
-              {user.profileImageUrl ? (
-                <img 
-                  src={user.profileImageUrl} 
-                  alt="Photo de profil"
-                  className="w-10 h-10 rounded-full object-cover border-2 border-blue-200"
-                />
-              ) : (
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
-                  <User className="h-6 w-6 text-white" />
+            {/* User Profile avec Menu Déroulant */}
+            <div className="relative">
+              <button
+                onClick={() => setShowProfileMenu(!showProfileMenu)}
+                onBlur={() => setTimeout(() => setShowProfileMenu(false), 200)}
+                className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                {/* Photo de profil ou icône par défaut */}
+                {user.profileImageUrl ? (
+                  <img 
+                    src={user.profileImageUrl} 
+                    alt="Photo de profil"
+                    className="w-10 h-10 rounded-full object-cover border-2 border-blue-200"
+                  />
+                ) : (
+                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
+                    <User className="h-6 w-6 text-white" />
+                  </div>
+                )}
+                <div className="text-left">
+                  <p className="font-semibold text-gray-900">
+                    {user.firstName} {user.lastName}
+                  </p>
+                  <p className="text-sm text-gray-500 capitalize">{user.role.toLowerCase()}</p>
+                </div>
+              </button>
+
+              {/* Menu déroulant Profil/Déconnexion */}
+              {showProfileMenu && (
+                <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50 overflow-hidden">
+                  <button
+                    onClick={() => {
+                      setShowProfileMenu(false)
+                      onProfileClick ? onProfileClick() : handleProfileClick()
+                    }}
+                    className="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 border-b border-gray-100"
+                  >
+                    <User className="h-5 w-5 text-gray-600" />
+                    <span className="text-gray-900">Profil</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowProfileMenu(false)
+                      setShowLogoutConfirm(true)
+                    }}
+                    className="w-full px-4 py-3 text-left hover:bg-red-50 flex items-center space-x-3 text-red-600"
+                  >
+                    <LogOut className="h-5 w-5" />
+                    <span>Déconnexion</span>
+                  </button>
                 </div>
               )}
-              <div className="text-left">
-                <p className="font-semibold text-gray-900">
-                  {user.firstName} {user.lastName}
-                </p>
-                <p className="text-sm text-gray-500 capitalize">{user.role.toLowerCase()}</p>
-              </div>
-            </button>
-
-            {/* Logout Button */}
-            <button
-              onClick={() => setShowLogoutConfirm(true)}
-              className="flex items-center space-x-2 p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-              title="Se déconnecter"
-            >
-              <LogOut className="h-5 w-5" />
-              <span className="text-sm font-medium">Déconnexion</span>
-            </button>
+            </div>
           </div>
         </div>
       </div>

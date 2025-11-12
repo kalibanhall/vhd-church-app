@@ -190,7 +190,8 @@ export default function Dashboard() {
           hideMenuButton={isInAdminSpace}
         />
 
-        <main className="p-6">
+        {/* Padding-top pour compenser la navbar fixe (hauteur de la navbar ~80px) */}
+        <main className="p-6 pt-24">
           {renderCurrentPage()}
         </main>
       </div>

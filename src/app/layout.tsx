@@ -25,6 +25,12 @@ export const metadata: Metadata = {
     icon: '/favicon.ico',
     apple: '/icons/icon-192x192.png',
   },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+  },
 }
 
 export default function RootLayout({
@@ -35,6 +41,10 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <head>
+        {/* Meta viewport pour mobile - Critère PWA essentiel */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
+        
+        {/* PWA et manifest */}
         <link rel="manifest" href="/manifest.json" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
