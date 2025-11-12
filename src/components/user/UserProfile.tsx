@@ -13,9 +13,14 @@ import {
   X,
   MapPin,
   Book,
-  Clock
+  Clock,
+  Camera,
+  CheckCircle2,
+  AlertCircle
 } from 'lucide-react'
 import { authenticatedFetch } from '../../lib/api'
+import FaceCapture from '../FaceCapture'
+import { toast } from 'react-hot-toast'
 
 interface ProfileProps {
   user: {
@@ -33,6 +38,8 @@ interface ProfileProps {
 
 export default function UserProfile({ user }: ProfileProps) {
   const [isEditing, setIsEditing] = useState(false)
+  const [showFacialEnrollment, setShowFacialEnrollment] = useState(false)
+  const [hasFaceData, setHasFaceData] = useState(false)
   const [editData, setEditData] = useState({
     firstName: user.firstName || '',
     lastName: user.lastName || '',
@@ -142,7 +149,34 @@ export default function UserProfile({ user }: ProfileProps) {
       }
     } catch (error) {
       console.error('Erreur:', error)
-      alert('Erreur lors de la suppression de la photo')
+      alert('Erreur lors de la suppression')
+    }
+  }
+
+  const handleFaceDetected = async (descriptor: Float32Array, imageData: string) => {
+    try {
+      const response = await authenticatedFetch('/api/facial-recognition/descriptors', {
+        method: 'POST',
+        body: JSON.stringify({
+          userId: user.id,
+          descriptor: Array.from(descriptor),
+          photoUrl: imageData,
+          qualityScore: 0.9,
+          isPrimary: true
+        })
+      })
+
+      if (response.ok) {
+        toast.success('Visage enregistré avec succès!')
+        setShowFacialEnrollment(false)
+        setHasFaceData(true)
+      } else {
+        const error = await response.json()
+        toast.error(error.error || 'Erreur lors de l\'enregistrement du visage')
+      }
+    } catch (error) {
+      console.error('Erreur:', error)
+      toast.error('Erreur lors de l\'enregistrement du visage')
     }
   }
 
@@ -424,8 +458,55 @@ export default function UserProfile({ user }: ProfileProps) {
               <Edit3 className="w-4 h-4 mr-2" />
               Modifier le profil
             </button>
+            
+            <button
+              onClick={() => setShowFacialEnrollment(!showFacialEnrollment)}
+              className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
+                hasFaceData 
+                  ? 'bg-green-50 text-green-700 hover:bg-green-100' 
+                  : 'bg-orange-50 text-orange-700 hover:bg-orange-100'
+              }`}
+            >
+              {hasFaceData ? (
+                <>
+                  <CheckCircle2 className="w-4 h-4 mr-2" />
+                  Visage enregistré
+                </>
+              ) : (
+                <>
+                  <Camera className="w-4 h-4 mr-2" />
+                  Enregistrer mon visage
+                </>
+              )}
+            </button>
           </div>
         </div>
+
+        {/* Section d'enregistrement facial */}
+        {showFacialEnrollment && (
+          <div className="mb-6">
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+              <div className="flex items-start mb-4">
+                <AlertCircle className="w-5 h-5 text-blue-600 mr-3 mt-0.5" />
+                <div>
+                  <h3 className="font-semibold text-blue-900 mb-1">
+                    Enregistrement de votre visage
+                  </h3>
+                  <p className="text-sm text-blue-700">
+                    Cette fonctionnalité vous permettra de pointer automatiquement aux événements 
+                    grâce à la reconnaissance faciale. Votre photo sera sécurisée et utilisée 
+                    uniquement pour les pointages.
+                  </p>
+                </div>
+              </div>
+              
+              <FaceCapture 
+                mode="capture"
+                onFaceDetected={handleFaceDetected}
+              />
+            </div>
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-white rounded-lg shadow-sm p-6 text-center">
