@@ -2,27 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Comportement application mobile - DÉSACTIVER ZOOM */
+/* Comportement application mobile - DÉSACTIVER ZOOM mais permettre scroll */
 * {
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
 }
 
-input, textarea {
+/* Permettre sélection texte dans inputs */
+input, textarea, select {
   -webkit-user-select: text;
+  user-select: text;
 }
 
-html, body {
+/* Empêcher scroll horizontal et zoom */
+html {
   overflow-x: hidden;
-  position: fixed;
   width: 100%;
   height: 100%;
-  touch-action: pan-y;
+  touch-action: manipulation; /* Désactive double-tap zoom */
 }
 
 body {
-  overscroll-behavior: none;
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
+  overscroll-behavior-x: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Container principal de l'app */
+#__next {
+  width: 100%;
+  min-height: 100vh;
 }
 
 @layer utilities {
@@ -32,6 +42,30 @@ body {
     line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+  
+  /* Classes utilitaires pour responsive mobile */
+  .mobile-container {
+    width: 100%;
+    max-width: 100vw;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .mobile-safe-area {
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  
+  /* Empêcher débordement horizontal */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 

@@ -168,9 +168,9 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50 overflow-hidden">
+    <div className="flex flex-col h-screen bg-gray-50">
       {/* Navbar VRAIMENT FIXE - AU-DESSUS DE TOUT */}
-      <div className="fixed top-0 left-0 right-0 z-50">
+      <div className="fixed top-0 left-0 right-0 z-50 h-20">
         <Header
           user={user}
           onProfileClick={() => handleTabChange('profile')}
@@ -181,7 +181,7 @@ export default function Dashboard() {
       </div>
 
       {/* Conteneur principal avec sidebar et contenu */}
-      <div className="flex flex-1 pt-20">
+      <div className="flex flex-1 pt-20 overflow-hidden">
         {/* Sidebar */}
         <Sidebar
           activeTab={activeTab}
@@ -191,11 +191,11 @@ export default function Dashboard() {
           onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
         />
 
-        {/* Main Content - Scrollable */}
+        {/* Main Content - Scrollable avec hauteur fixe */}
         <div className={`flex-1 transition-all duration-300 ${
           isInAdminSpace && user?.role === 'ADMIN' ? 'ml-64' : 'ml-0'
-        } overflow-y-auto`}>
-          <main className="p-6">
+        } h-full overflow-y-auto overflow-x-hidden`}>
+          <main className="w-full max-w-full p-4 md:p-6">
             {renderCurrentPage()}
           </main>
         </div>

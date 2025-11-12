@@ -22,6 +22,8 @@ import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Badge } from '../ui/badge'
 
+import ResponsiveContainer from '../ui/ResponsiveContainer'
+
 interface Preaching {
   id: string
   title: string
@@ -168,7 +170,8 @@ export default function PreachingsPage() {
   const livePreachings = preachings.filter(p => p.isLive)
 
   return (
-    <div className="container mx-auto py-8 space-y-8">
+    <ResponsiveContainer maxWidth="6xl">
+      <div className="py-4 md:py-8 space-y-6 md:space-y-8">
       <div className="text-center">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">🎙️ Prédications de l&apos;Église</h1>
         <p className="text-gray-600">Écoutez la Parole de Dieu prêchée avec passion et vérité</p>
@@ -455,6 +458,7 @@ export default function PreachingsPage() {
           <p className="text-gray-600">Essayez de modifier vos critères de recherche</p>
         </div>
       )}
-    </div>
+      </div>
+    </ResponsiveContainer>
   )
 }
