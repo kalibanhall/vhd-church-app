@@ -31,7 +31,7 @@ const nextConfig = {
   },
   // Désactiver la génération statique pour les pages d'authentification
   experimental: {
-    isrMemoryCacheSize: 0,
+    // isrMemoryCacheSize supprimé - n'est plus supporté dans Next.js 15
   },
   // Ignorer les modules Node.js dans face-api.js qui ne sont pas utilisés côté client
   webpack: (config, { isServer }) => {
@@ -42,6 +42,7 @@ const nextConfig = {
         fs: false,
         path: false,
         crypto: false,
+        encoding: false,
       };
     }
     return config;
