@@ -32,7 +32,7 @@ export default function EnrollFacePage() {
     }
 
     // Seuls admin et pasteur peuvent accéder
-    if (user.role !== 'admin' && user.role !== 'pasteur') {
+    if (user.role !== 'ADMIN' && user.role !== 'PASTOR') {
       toast.error('Accès réservé aux administrateurs et pasteurs');
       router.push('/dashboard');
     }

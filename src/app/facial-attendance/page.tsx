@@ -31,7 +31,7 @@ export default function FacialAttendancePage() {
     }
 
     // Seuls admin et pasteur peuvent accéder
-    if (user.role !== 'admin' && user.role !== 'pasteur') {
+    if (user.role !== 'ADMIN' && user.role !== 'PASTOR') {
       toast.error('Accès réservé aux administrateurs et pasteurs');
       router.push('/dashboard');
     }
@@ -41,7 +41,7 @@ export default function FacialAttendancePage() {
   useEffect(() => {
     const loadData = async () => {
       if (!isClient) return;
-      if (user && (user.role === 'admin' || user.role === 'pasteur')) {
+      if (user && (user.role === 'ADMIN' || user.role === 'PASTOR')) {
         await loadMembers();
       }
     };
