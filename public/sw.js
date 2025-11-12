@@ -1,13 +1,72 @@
-// Service Worker pour les notifications push
-self.addEventListener('install', (event) => {
-  console.log('Service Worker installé')
-  self.skipWaiting()
-})
+/**
+ * Service Worker - VHD Church App PWA
+ * @author CHRIS NGOZULU KASONGO (KalibanHall)
+ */
 
+const CACHE_NAME = 'vhd-church-v1';
+const urlsToCache = [
+  '/',
+  '/auth',
+  '/offline',
+];
+
+// Installation du Service Worker
+self.addEventListener('install', (event) => {
+  console.log('✅ Service Worker installé');
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then((cache) => {
+        console.log('📦 Cache ouvert');
+        return cache.addAll(urlsToCache);
+      })
+      .then(() => self.skipWaiting())
+  );
+});
+
+// Activation du Service Worker
 self.addEventListener('activate', (event) => {
-  console.log('Service Worker activé')
-  event.waitUntil(self.clients.claim())
-})
+  console.log('✅ Service Worker activé');
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('🗑️ Suppression ancien cache:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
+  );
+});
+
+// Stratégie de cache : Network First, fallback to Cache
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    fetch(event.request)
+      .then((response) => {
+        // Clone la réponse car elle peut être utilisée une seule fois
+        const responseToCache = response.clone();
+        
+        caches.open(CACHE_NAME).then((cache) => {
+          cache.put(event.request, responseToCache);
+        });
+        
+        return response;
+      })
+      .catch(() => {
+        // Si le réseau échoue, chercher dans le cache
+        return caches.match(event.request)
+          .then((response) => {
+            if (response) {
+              return response;
+            }
+            // Si pas dans le cache, retourner une page offline
+            return caches.match('/offline');
+          });
+      })
+  );
+});
 
 // Écouter les notifications push
 self.addEventListener('push', (event) => {

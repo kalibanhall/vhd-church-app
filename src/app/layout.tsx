@@ -19,8 +19,12 @@ import { ClientProviders } from '@/components/ClientProviders'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'My Church App - Application de Gestion',
-  description: 'Application de gestion moderne pour My Church App - Gestion des membres, soutien à l\'œuvre, prédications, rendez-vous et plus',
+  title: 'VHD Church - Vaillants Hommes de David',
+  description: 'Application de gestion moderne pour le Ministère des Vaillants Hommes de David - Gestion des membres, soutien à l\'œuvre, prédications, rendez-vous et plus',
+  icons: {
+    icon: '/favicon.ico',
+    apple: '/icons/icon-192x192.png',
+  },
 }
 
 export default function RootLayout({
@@ -30,6 +34,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <meta name="theme-color" content="#1e40af" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="VHD Church" />
+      </head>
       <body className={inter.className}>
         <ClientProviders>
           {children}
