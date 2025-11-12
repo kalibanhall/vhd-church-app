@@ -303,9 +303,9 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
         )}
       </button>
 
-      {/* Panel déroulant */}
+      {/* Panel déroulant - Largeur responsive pour mobile */}
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-h-96 flex flex-col">
+        <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 bg-white rounded-lg shadow-xl border border-gray-200 z-50 max-h-80 sm:max-h-96 flex flex-col">
           {/* Header du panel */}
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <h3 className="text-lg font-semibold text-gray-900">

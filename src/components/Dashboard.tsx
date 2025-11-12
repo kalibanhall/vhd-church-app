@@ -169,8 +169,8 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col h-screen bg-gray-50">
-      {/* Navbar VRAIMENT FIXE - AU-DESSUS DE TOUT */}
-      <div className="fixed top-0 left-0 right-0 z-50 h-20">
+      {/* Navbar VRAIMENT FIXE - AU-DESSUS DE TOUT - Hauteur réduite mobile */}
+      <div className="fixed top-0 left-0 right-0 z-50 h-14 md:h-16">
         <Header
           user={user}
           onProfileClick={() => handleTabChange('profile')}
@@ -181,7 +181,7 @@ export default function Dashboard() {
       </div>
 
       {/* Conteneur principal avec sidebar et contenu */}
-      <div className="flex flex-1 pt-20 overflow-hidden">
+      <div className="flex flex-1 pt-14 md:pt-16 overflow-hidden">
         {/* Sidebar */}
         <Sidebar
           activeTab={activeTab}

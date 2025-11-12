@@ -70,23 +70,23 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 w-full">
-      <div className="px-6 py-4">
+      <div className="px-3 md:px-6 py-2 md:py-3">
         <div className="flex items-center justify-between">
           {/* Bouton Menu (style Gmail mobile) - visible sur mobile et desktop sauf en mode admin */}
           {!hideMenuButton && (
             <button
               onClick={onMenuClick}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              className="p-1.5 md:p-2 rounded-lg hover:bg-gray-100 transition-colors flex-shrink-0"
               title="Menu"
             >
-              <Menu className="h-6 w-6 text-gray-600" />
+              <Menu className="h-5 w-5 md:h-6 md:w-6 text-gray-600" />
             </button>
           )}
           
           {/* Simple Search Bar */}
-          <div className={`flex-1 max-w-lg ${hideMenuButton ? '' : 'ml-4'}`}>
+          <div className={`flex-1 max-w-md ${hideMenuButton ? '' : 'ml-2 md:ml-4'}`}>
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Search className="absolute left-2 md:left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 md:h-5 md:w-5" />
               <input
                 type="text"
                 placeholder="Rechercher..."
@@ -94,16 +94,16 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setShowSuggestions(true)}
                 onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-8 md:pl-10 pr-3 md:pr-4 py-1.5 md:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               
               {/* Simple Results Dropdown */}
               {showSuggestions && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto">
+                <div className="absolute top-full left-0 right-0 mt-1 md:mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-64 md:max-h-80 overflow-y-auto">
                   {filteredResults.length > 0 ? (
                     <>
                       {searchQuery && (
-                        <div className="p-2 text-sm text-gray-500 border-b">
+                        <div className="p-2 text-xs md:text-sm text-gray-500 border-b">
                           {filteredResults.length} résultat(s) trouvé(s)
                         </div>
                       )}
@@ -111,14 +111,14 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
                         <button
                           key={result.id}
                           onClick={() => handleResultClick(result)}
-                          className="w-full px-4 py-3 text-left hover:bg-gray-50 border-b border-gray-100 last:border-b-0 transition-colors"
+                          className="w-full px-3 md:px-4 py-2 md:py-3 text-left text-sm hover:bg-gray-50 border-b border-gray-100 last:border-b-0 transition-colors"
                         >
                           <div className="text-gray-900">{result.text}</div>
                         </button>
                       ))}
                     </>
                   ) : (
-                    <div className="p-4 text-gray-500 text-center">
+                    <div className="p-3 md:p-4 text-gray-500 text-center text-sm">
                       Aucun résultat trouvé
                     </div>
                   )}
@@ -128,7 +128,7 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
           </div>
 
           {/* Right Section */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 md:space-x-4">
             {/* Notifications */}
             <NotificationsPanel />
 
@@ -137,39 +137,39 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                 onBlur={() => setTimeout(() => setShowProfileMenu(false), 200)}
-                className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                className="flex items-center space-x-2 md:space-x-3 p-1.5 md:p-2 rounded-lg hover:bg-gray-100 transition-colors"
               >
                 {/* Photo de profil ou icône par défaut */}
                 {user.profileImageUrl ? (
                   <img 
                     src={user.profileImageUrl} 
                     alt="Photo de profil"
-                    className="w-10 h-10 rounded-full object-cover border-2 border-blue-200"
+                    className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover border-2 border-blue-200"
                   />
                 ) : (
-                  <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
-                    <User className="h-6 w-6 text-white" />
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
+                    <User className="h-4 w-4 md:h-6 md:w-6 text-white" />
                   </div>
                 )}
-                <div className="text-left">
-                  <p className="font-semibold text-gray-900">
+                <div className="text-left hidden md:block">
+                  <p className="font-semibold text-gray-900 text-sm">
                     {user.firstName} {user.lastName}
                   </p>
-                  <p className="text-sm text-gray-500 capitalize">{user.role.toLowerCase()}</p>
+                  <p className="text-xs text-gray-500 capitalize">{user.role.toLowerCase()}</p>
                 </div>
               </button>
 
               {/* Menu déroulant Profil/Déconnexion */}
               {showProfileMenu && (
-                <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50 overflow-hidden">
+                <div className="absolute right-0 mt-1 md:mt-2 w-48 md:w-56 bg-white border border-gray-200 rounded-lg shadow-lg z-50 overflow-hidden">
                   <button
                     onClick={() => {
                       setShowProfileMenu(false)
                       onProfileClick ? onProfileClick() : handleProfileClick()
                     }}
-                    className="w-full px-4 py-3 text-left hover:bg-gray-50 flex items-center space-x-3 border-b border-gray-100"
+                    className="w-full px-3 md:px-4 py-2 md:py-3 text-left hover:bg-gray-50 flex items-center space-x-2 md:space-x-3 border-b border-gray-100 text-sm"
                   >
-                    <User className="h-5 w-5 text-gray-600" />
+                    <User className="h-4 w-4 md:h-5 md:w-5 text-gray-600" />
                     <span className="text-gray-900">Profil</span>
                   </button>
                   <button
@@ -177,9 +177,9 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
                       setShowProfileMenu(false)
                       setShowLogoutConfirm(true)
                     }}
-                    className="w-full px-4 py-3 text-left hover:bg-red-50 flex items-center space-x-3 text-red-600"
+                    className="w-full px-3 md:px-4 py-2 md:py-3 text-left hover:bg-red-50 flex items-center space-x-2 md:space-x-3 text-red-600 text-sm"
                   >
-                    <LogOut className="h-5 w-5" />
+                    <LogOut className="h-4 w-4 md:h-5 md:w-5" />
                     <span>Déconnexion</span>
                   </button>
                 </div>
