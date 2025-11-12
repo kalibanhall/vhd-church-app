@@ -26,11 +26,12 @@ export async function GET(request: NextRequest) {
     }
 
     const decoded = jwt.verify(token, JWT_SECRET) as any
+    const userId = decoded.id || decoded.userId
     
     // Récupérer toutes les donations de l'utilisateur
     const donations = await prisma.donation.findMany({
       where: {
-        userId: decoded.userId
+        userId: userId
       },
       orderBy: {
         donationDate: 'desc'
@@ -56,6 +57,7 @@ export async function POST(request: NextRequest) {
     }
 
     const decoded = jwt.verify(token, JWT_SECRET) as any
+    const userId = decoded.id || decoded.userId
     const body = await request.json()
     
     const {
@@ -73,7 +75,7 @@ export async function POST(request: NextRequest) {
         paymentMethod,
         projectId: projectId || null,
         notes,
-        userId: decoded.userId,
+        userId,
         donationDate: new Date(),
         status: 'COMPLETED'
       }

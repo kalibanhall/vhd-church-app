@@ -16,15 +16,16 @@ function getUserFromToken(request: NextRequest) {
     }
 
     const decoded = jwt.verify(token, JWT_SECRET) as any
+    const userId = decoded.id || decoded.userId
     
     // Vérifier que le token contient les informations nécessaires
-    if (!decoded.userId) {
+    if (!userId) {
       console.error('Token JWT invalide - userId manquant:', decoded)
       return null
     }
 
     return {
-      id: decoded.userId,
+      id: userId,
       email: decoded.email,
       role: decoded.role
     }

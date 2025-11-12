@@ -44,9 +44,11 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const userId = decoded.id || decoded.userId
+    
     // Vérifier que l'utilisateur existe toujours
     const user = await prisma.user.findUnique({
-      where: { id: decoded.userId }
+      where: { id: userId }
     })
 
     if (!user) {

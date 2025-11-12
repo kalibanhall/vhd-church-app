@@ -40,10 +40,11 @@ export async function POST(request: NextRequest) {
     }
 
     const decoded = jwt.verify(token, JWT_SECRET) as any
+    const userId = decoded.id || decoded.userId
     
     // Vérifier que l'utilisateur est admin ou pasteur
     const user = await prisma.user.findUnique({
-      where: { id: decoded.userId }
+      where: { id: userId }
     })
 
     if (!user || !['ADMIN', 'PASTOR'].includes(user.role)) {

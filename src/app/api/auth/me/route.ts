@@ -26,7 +26,9 @@ export async function GET(req: NextRequest) {
       process.env.JWT_SECRET || 'vhd-church-app-chris-kasongo-jwt-secret-production-2025-qualis-super-secure-key'
     ) as any
 
-    if (!decoded.userId) {
+    const userId = decoded.id || decoded.userId
+    
+    if (!userId) {
       return NextResponse.json(
         { error: 'Token invalide' },
         { status: 401 }
@@ -37,7 +39,7 @@ export async function GET(req: NextRequest) {
     const users = await sql`
       SELECT id, email, name, role, phone, address, created_at, updated_at
       FROM users 
-      WHERE id = ${decoded.userId}
+      WHERE id = ${userId}
       LIMIT 1
     `
 

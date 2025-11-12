@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
       const token = cookieStore.get('auth-token')?.value
       if (token) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any
-        userId = decoded.userId
+        userId = decoded.id || decoded.userId
       }
     } catch (error) {
       // Ignorer les erreurs d'authentification pour cette API

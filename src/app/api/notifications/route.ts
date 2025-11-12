@@ -38,8 +38,16 @@ async function verifyToken(request: NextRequest) {
     
     const decoded = jwt.verify(token, JWT_SECRET) as any
     
+    // Le token contient 'id' et non 'userId'
+    const userId = decoded.id || decoded.userId
+    
+    if (!userId) {
+      console.log('❌ No user ID in token:', decoded)
+      return { error: 'Token invalide - pas d\'ID utilisateur', status: 401 }
+    }
+    
     const user = await prisma.user.findUnique({
-      where: { id: decoded.userId }
+      where: { id: userId }
     })
     
     if (!user) {
