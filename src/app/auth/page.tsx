@@ -70,10 +70,11 @@ export default function AuthPage() {
     }
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/v1'
-      const endpoint = isLogin ? `${API_URL}/auth/login` : `${API_URL}/auth/register`
+      // Utiliser la route API proxy pour éviter les problèmes CORS
+      const endpoint = isLogin ? '/api/auth/login-proxy' : '/api/auth/register-proxy'
       
       console.log('🔐 Auth request to:', endpoint)
+      console.log('📤 Form data:', { email: formData.email, password: '***' })
       
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -83,24 +84,34 @@ export default function AuthPage() {
         body: JSON.stringify(formData)
       })
 
+      console.log('📊 Response status:', response.status)
+      console.log('📊 Response headers:', Object.fromEntries(response.headers.entries()))
+
       // Vérifier si la réponse est du JSON
       const contentType = response.headers.get('content-type')
       if (!contentType || !contentType.includes('application/json')) {
+        const textResponse = await response.text()
+        console.error('❌ Response is not JSON:', textResponse)
         throw new Error('Le serveur a retourné une réponse invalide. Veuillez réessayer.')
       }
 
       const data = await response.json()
+      console.log('📦 Response data:', { ...data, token: data.token ? '***' : undefined })
 
       if (response.ok) {
         if (isLogin) {
+          console.log('✅ Login successful!')
           // Sauvegarder le token et les données utilisateur
           if (data.token) {
+            console.log('💾 Saving token to localStorage')
             localStorage.setItem('token', data.token)
           }
           if (data.user) {
+            console.log('💾 Saving user to localStorage:', data.user)
             localStorage.setItem('user', JSON.stringify(data.user))
           }
           
+          console.log('🔄 Redirecting to /')
           // Redirection vers l'accueil
           window.location.href = '/'
         } else {
@@ -109,10 +120,11 @@ export default function AuthPage() {
           setError('Inscription réussie ! Vous pouvez maintenant vous connecter.')
         }
       } else {
+        console.error('❌ Login failed:', data.error)
         setError(data.error || 'Une erreur est survenue')
       }
     } catch (error: any) {
-      console.error('Auth error:', error)
+      console.error('💥 Auth error:', error)
       setError(error.message || 'Erreur de connexion au serveur. Vérifiez votre connexion internet.')
     } finally {
       setLoading(false)
