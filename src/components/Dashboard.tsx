@@ -168,20 +168,9 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar */}
-      <Sidebar
-        activeTab={activeTab}
-        onTabChange={handleTabChange}
-        userRole={user.role}
-        isCollapsed={isSidebarCollapsed}
-        onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-      />
-
-      {/* Main Content */}
-      <div className={`flex-1 transition-all duration-300 ${
-        isInAdminSpace && user?.role === 'ADMIN' ? 'ml-64' : 'ml-0'
-      }`}>
+    <div className="flex flex-col min-h-screen bg-gray-50 overflow-hidden">
+      {/* Navbar VRAIMENT FIXE - AU-DESSUS DE TOUT */}
+      <div className="fixed top-0 left-0 right-0 z-50">
         <Header
           user={user}
           onProfileClick={() => handleTabChange('profile')}
@@ -189,11 +178,27 @@ export default function Dashboard() {
           onMenuClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
           hideMenuButton={isInAdminSpace}
         />
+      </div>
 
-        {/* Padding-top pour compenser la navbar fixe (hauteur de la navbar ~80px) */}
-        <main className="p-6 pt-24">
-          {renderCurrentPage()}
-        </main>
+      {/* Conteneur principal avec sidebar et contenu */}
+      <div className="flex flex-1 pt-20">
+        {/* Sidebar */}
+        <Sidebar
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          userRole={user.role}
+          isCollapsed={isSidebarCollapsed}
+          onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+        />
+
+        {/* Main Content - Scrollable */}
+        <div className={`flex-1 transition-all duration-300 ${
+          isInAdminSpace && user?.role === 'ADMIN' ? 'ml-64' : 'ml-0'
+        } overflow-y-auto`}>
+          <main className="p-6">
+            {renderCurrentPage()}
+          </main>
+        </div>
       </div>
     </div>
   )

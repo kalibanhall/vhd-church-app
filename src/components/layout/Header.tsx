@@ -69,7 +69,7 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
   }
 
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white shadow-sm border-b border-gray-200 z-40">
+    <header className="bg-white shadow-sm border-b border-gray-200 w-full">
       <div className="px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Bouton Menu (style Gmail mobile) - visible sur mobile et desktop sauf en mode admin */}

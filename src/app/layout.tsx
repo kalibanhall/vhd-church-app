@@ -25,12 +25,7 @@ export const metadata: Metadata = {
     icon: '/favicon.ico',
     apple: '/icons/icon-192x192.png',
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-    userScalable: true,
-  },
+  // Viewport désactivé ici car géré manuellement dans <head> pour plus de contrôle
 }
 
 export default function RootLayout({
@@ -41,8 +36,11 @@ export default function RootLayout({
   return (
     <html lang="fr">
       <head>
-        {/* Meta viewport pour mobile - Critère PWA essentiel */}
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
+        {/* Meta viewport STRICT pour application mobile - PAS DE ZOOM, PAS DE RECADRAGE */}
+        <meta 
+          name="viewport" 
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" 
+        />
         
         {/* PWA et manifest */}
         <link rel="manifest" href="/manifest.json" />
@@ -53,8 +51,11 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <meta name="apple-mobile-web-app-title" content="VHD Church" />
+        
+        {/* Désactiver le zoom iOS Safari */}
+        <meta name="format-detection" content="telephone=no" />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} overflow-x-hidden`}>
         <ClientProviders>
           {children}
         </ClientProviders>

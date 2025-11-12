@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Comportement application mobile - DÉSACTIVER ZOOM */
+* {
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+input, textarea {
+  -webkit-user-select: text;
+}
+
+html, body {
+  overflow-x: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+}
+
+body {
+  overscroll-behavior: none;
+}
+
 @layer utilities {
   .line-clamp-2 {
     display: -webkit-box;
