@@ -64,6 +64,7 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
   const [isDashboardOpen, setIsDashboardOpen] = useState(true)
 
   // Menu principal accessible à tous les utilisateurs (membres fidèles)
+  // ADMIN n'a PAS accès à ce menu, uniquement au dashboard admin
   const userMenuItems = [
     { id: 'home', label: 'Accueil', icon: Home },
     { id: 'sermons', label: 'Prédications', icon: Video },
@@ -189,8 +190,9 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
       {/* Navigation */}
       <nav className="flex-1 p-4 overflow-y-auto scrollbar-hide">
         <ul className="space-y-2">
-          {/* Menu utilisateur normal - Affiché uniquement si PAS dans l'espace spécialisé */}
-          {!isInSpecializedSpace && userMenuItems.map((item) => {
+          {/* Menu utilisateur normal - Affiché UNIQUEMENT pour les non-ADMIN */}
+          {/* Les ADMIN ne voient QUE leur dashboard admin */}
+          {userRole !== 'ADMIN' && userMenuItems.map((item) => {
             const Icon = item.icon
             return (
               <li key={item.id}>
@@ -216,8 +218,8 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
             )
           })}
 
-          {/* Section Tableau de bord pour les utilisateurs normaux (pas dans l'espace spécialisé) */}
-          {isAdminUser && !isInSpecializedSpace && (
+          {/* Section Tableau de bord pour PASTOR seulement (dans menu normal) */}
+          {userRole === 'PASTOR' && !isInSpecializedSpace && (
             <li>
               <button
                 onClick={() => setIsDashboardOpen(!isDashboardOpen)}
@@ -261,8 +263,8 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
             </li>
           )}
 
-          {/* Interface spécialisée - Tableau de bord admin OU pasteur */}
-          {isAdminUser && isInSpecializedSpace && (
+          {/* Interface spécialisée - Tableau de bord admin (ADMIN voit UNIQUEMENT ça) */}
+          {isAdminUser && (userRole === 'ADMIN' || isInSpecializedSpace) && (
             <li>
               {/* Titre Tableau de Bord avec icône Settings */}
               {!isCollapsed && (

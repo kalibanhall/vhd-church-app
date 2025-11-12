@@ -56,6 +56,13 @@ export default function Dashboard() {
   const isAdmin = user?.role === 'ADMIN'
   const isPastor = user?.role === 'PASTOR'
   
+  // Redirection automatique de l'ADMIN vers son dashboard
+  useEffect(() => {
+    if (user?.role === 'ADMIN' && activeTab === 'home') {
+      setActiveTab('admin')
+    }
+  }, [user?.role, activeTab])
+  
   // Vérifier si on est dans l'espace admin (cohérent avec Sidebar.tsx)
   const adminOnlyTabs = ['admin', 'analytics', 'members', 'events', 'polls-admin', 'notifications', 'validate-testimonies']
   const isInAdminSpace = adminOnlyTabs.includes(activeTab)
@@ -81,6 +88,13 @@ export default function Dashboard() {
   // Les stats sont maintenant gérées directement dans chaque composant via leurs APIs respectives
 
   const renderCurrentPage = () => {
+    // Restriction ADMIN : uniquement accès au dashboard admin
+    if (user?.role === 'ADMIN' && !adminOnlyTabs.includes(activeTab) && activeTab !== 'pastor-appointments' && activeTab !== 'facial-enrollment' && activeTab !== 'facial-attendance' && activeTab !== 'profile') {
+      // Rediriger vers le dashboard admin
+      setActiveTab('admin')
+      return <AdminDashboard />
+    }
+
     switch (activeTab) {
       case 'home':
         return <HomePageSimple />
