@@ -68,13 +68,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Récupérer le token du localStorage
       const token = localStorage.getItem('token')
       if (!token) {
+        console.log('⚠️  AuthContext: Pas de token trouvé')
         clearAuth()
         return
       }
       
-      // Vérification via API Render avec token Bearer
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/v1'
-      const response = await fetch(`${API_URL}/auth/me`, {
+      console.log('🔑 AuthContext: Token trouvé, vérification...')
+      
+      // Utiliser la route proxy au lieu de l'appel direct
+      const response = await fetch('/api/auth/me-proxy', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -88,6 +90,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         const data = await response.json()
         console.log('✅ AuthContext: Données reçues:', data)
         if (data.success && data.user) {
+          console.log('👤 AuthContext: Utilisateur authentifié:', data.user.email)
           setUser(data.user)
           if (typeof window !== 'undefined') {
             localStorage.setItem('user', JSON.stringify(data.user))
