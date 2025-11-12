@@ -80,13 +80,6 @@ export function SplashScreen() {
             Chargement en cours...
           </p>
         </div>
-
-        {/* Signature */}
-        <div className="absolute bottom-8 left-0 right-0 text-center">
-          <p className="text-xs text-blue-200/60">
-            Développé par KalibanHall
-          </p>
-        </div>
       </div>
 
       <style jsx>{`

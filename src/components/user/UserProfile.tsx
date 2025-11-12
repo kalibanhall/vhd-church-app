@@ -459,26 +459,36 @@ export default function UserProfile({ user }: ProfileProps) {
               Modifier le profil
             </button>
             
-            <button
-              onClick={() => setShowFacialEnrollment(!showFacialEnrollment)}
-              className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
-                hasFaceData 
-                  ? 'bg-green-50 text-green-700 hover:bg-green-100' 
-                  : 'bg-orange-50 text-orange-700 hover:bg-orange-100'
-              }`}
-            >
-              {hasFaceData ? (
-                <>
-                  <CheckCircle2 className="w-4 h-4 mr-2" />
-                  Visage enregistré
-                </>
-              ) : (
-                <>
-                  <Camera className="w-4 h-4 mr-2" />
-                  Enregistrer mon visage
-                </>
-              )}
-            </button>
+            {!showFacialEnrollment ? (
+              <button
+                onClick={() => setShowFacialEnrollment(true)}
+                className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
+                  hasFaceData 
+                    ? 'bg-green-50 text-green-700 hover:bg-green-100' 
+                    : 'bg-orange-50 text-orange-700 hover:bg-orange-100'
+                }`}
+              >
+                {hasFaceData ? (
+                  <>
+                    <CheckCircle2 className="w-4 h-4 mr-2" />
+                    Visage enregistré
+                  </>
+                ) : (
+                  <>
+                    <Camera className="w-4 h-4 mr-2" />
+                    Enregistrer mon visage
+                  </>
+                )}
+              </button>
+            ) : (
+              <button
+                onClick={() => setShowFacialEnrollment(false)}
+                className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                <X className="w-4 h-4 mr-2" />
+                Annuler
+              </button>
+            )}
           </div>
         </div>
 

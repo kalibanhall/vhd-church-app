@@ -83,6 +83,12 @@ export default function AuthPage() {
         body: JSON.stringify(formData)
       })
 
+      // Vérifier si la réponse est du JSON
+      const contentType = response.headers.get('content-type')
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Le serveur a retourné une réponse invalide. Veuillez réessayer.')
+      }
+
       const data = await response.json()
 
       if (response.ok) {
@@ -107,7 +113,7 @@ export default function AuthPage() {
       }
     } catch (error: any) {
       console.error('Auth error:', error)
-      setError(`Erreur de connexion: ${error.message || 'Serveur indisponible'}`)
+      setError(error.message || 'Erreur de connexion au serveur. Vérifiez votre connexion internet.')
     } finally {
       setLoading(false)
     }
