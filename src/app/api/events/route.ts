@@ -8,9 +8,10 @@ const sql = postgres(process.env.DATABASE_URL!, {
 export async function GET() {
   try {
     const events = await sql`
-      SELECT id, title, description, date, location, created_at, updated_at
+      SELECT id, title, description, event_date, event_type, location, status, 
+             show_on_homepage, created_at, updated_at
       FROM events 
-      ORDER BY date ASC
+      ORDER BY event_date ASC
     `
 
     return NextResponse.json({
@@ -19,8 +20,11 @@ export async function GET() {
         id: event.id,
         title: event.title,
         description: event.description,
-        date: event.date,
+        eventDate: event.event_date,
+        eventType: event.event_type,
         location: event.location,
+        status: event.status,
+        showOnHomepage: event.show_on_homepage,
         createdAt: event.created_at,
         updatedAt: event.updated_at
       }))
@@ -36,9 +40,9 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const { title, description, date, location } = await req.json()
+    const { title, description, eventDate, eventType, location } = await req.json()
 
-    if (!title || !date) {
+    if (!title || !eventDate) {
       return NextResponse.json(
         { error: 'Titre et date requis' },
         { status: 400 }
@@ -46,9 +50,12 @@ export async function POST(req: NextRequest) {
     }
 
     const result = await sql`
-      INSERT INTO events (title, description, date, location)
-      VALUES (${title}, ${description}, ${date}, ${location})
-      RETURNING id, title, description, date, location, created_at, updated_at
+      INSERT INTO events (title, description, event_date, event_type, location, 
+                          created_by, status, show_on_homepage)
+      VALUES (${title}, ${description}, ${eventDate}, ${eventType || 'WORSHIP_SERVICE'}, 
+              ${location}, 'system', 'SCHEDULED', true)
+      RETURNING id, title, description, event_date, event_type, location, status, 
+                show_on_homepage, created_at, updated_at
     `
 
     const event = result[0]
@@ -59,8 +66,11 @@ export async function POST(req: NextRequest) {
         id: event.id,
         title: event.title,
         description: event.description,
-        date: event.date,
+        eventDate: event.event_date,
+        eventType: event.event_type,
         location: event.location,
+        status: event.status,
+        showOnHomepage: event.show_on_homepage,
         createdAt: event.created_at,
         updatedAt: event.updated_at
       }
