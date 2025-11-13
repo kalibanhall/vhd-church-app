@@ -1,5 +1,6 @@
 import { Users, DollarSign, Calendar, Heart, TrendingUp } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface AdminStats {
   totalMembers: number;
@@ -32,10 +33,7 @@ export default function AdminDashboard() {
 
   const fetchAdminStats = async () => {
     try {
-      const response = await fetch('/api/analytics-proxy', {
-        headers: { "Content-Type": "application/json" },
-        credentials: "include"
-      })
+      const response = await authenticatedFetch('/api/analytics-proxy')
       
       if (response.ok) {
         const data = await response.json()

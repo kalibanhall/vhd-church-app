@@ -23,6 +23,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { authenticatedFetch } from '@/lib/auth-fetch';
 import { 
   Bell, 
   X, 
@@ -106,17 +107,8 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
   const fetchNotifications = async (loadAll = false) => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
-      const headers: HeadersInit = {};
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-      
       const url = loadAll ? '/api/notifications-proxy?all=true' : '/api/notifications-proxy';
-      const response = await fetch(url, {
-        credentials: 'include',
-        headers
-      });
+      const response = await authenticatedFetch(url);
 
       if (response.ok) {
         const data = await response.json();
@@ -132,19 +124,7 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
 
   const fetchUnreadCount = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const headers: HeadersInit = {
-        'Content-Type': 'application/json'
-      };
-      
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-
-      const response = await fetch('/api/notifications-proxy?unread=true', {
-        credentials: 'include',
-        headers
-      });
+      const response = await authenticatedFetch('/api/notifications-proxy?unread=true');
 
       if (response.ok) {
         const data = await response.json();
@@ -157,18 +137,8 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
 
   const markAsRead = async (notificationId: string) => {
     try {
-      const token = localStorage.getItem('token');
-      const headers: HeadersInit = {
-        'Content-Type': 'application/json'
-      };
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-      
-      const response = await fetch('/api/notifications-proxy', {
+      const response = await authenticatedFetch('/api/notifications-proxy', {
         method: 'PUT',
-        headers,
-        credentials: 'include',
         body: JSON.stringify({ notificationId })
       });
 
@@ -188,18 +158,8 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
 
   const markAllAsRead = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const headers: HeadersInit = {
-        'Content-Type': 'application/json'
-      };
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-      
-      const response = await fetch('/api/notifications-proxy', {
+      const response = await authenticatedFetch('/api/notifications-proxy', {
         method: 'PUT',
-        headers,
-        credentials: 'include',
         body: JSON.stringify({ markAllAsRead: true })
       });
 

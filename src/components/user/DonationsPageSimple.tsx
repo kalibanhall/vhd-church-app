@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState
+import { authenticatedFetch } from '@/lib/auth-fetch', useEffect } from 'react'
 
 interface Donation {
   id: string

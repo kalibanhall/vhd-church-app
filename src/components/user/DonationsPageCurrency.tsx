@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface Donation {
   id: string
@@ -46,14 +47,7 @@ const DonationsPage: React.FC = () => {
 
   const fetchDonations = async () => {
     try {
-      const token = localStorage.getItem('token')
-      if (!token) return
-
-      const response = await fetch('/api/donations-proxy', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
+      const response = await authenticatedFetch('/api/donations-proxy')
 
       if (response.ok) {
         const data = await response.json()
@@ -124,12 +118,8 @@ const DonationsPage: React.FC = () => {
         return
       }
 
-      const response = await fetch('/api/donations-proxy', {
+      const response = await authenticatedFetch('/api/donations-proxy', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
         body: JSON.stringify({
           amount: parseFloat(finalAmount),
           currency: currency,

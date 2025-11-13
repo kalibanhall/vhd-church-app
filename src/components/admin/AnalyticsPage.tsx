@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { 
   Users, DollarSign, Calendar, TrendingUp, Heart, BookOpen, 
@@ -68,9 +69,7 @@ export default function AnalyticsPage() {
       setLoading(true)
       setError(null)
       
-      const response = await fetch('/api/analytics-proxy', {
-        credentials: 'include'
-      })
+      const response = await authenticatedFetch('/api/analytics-proxy')
 
       if (!response.ok) {
         throw new Error('Erreur lors de la récupération des analytics')
