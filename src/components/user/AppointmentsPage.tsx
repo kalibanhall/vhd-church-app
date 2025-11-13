@@ -1,7 +1,6 @@
 'use client';
 
-import { useState
-import { authenticatedFetch } from '@/lib/auth-fetch', useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Plus, 
   Calendar, 
@@ -13,6 +12,8 @@ import {
   Phone,
   Mail
 } from 'lucide-react';
+import { authenticatedFetch } from '@/lib/auth-fetch';
+import { safeFormatDate } from '@/lib/utils';
 
 interface Pastor {
   id: string;
@@ -289,7 +290,7 @@ export default function AppointmentsPage() {
                   <div className="flex items-center space-x-4 text-sm text-gray-600 mb-3">
                     <div className="flex items-center space-x-1">
                       <Calendar className="h-4 w-4" />
-                      <span>{new Date(appointment.appointmentDate).toLocaleDateString('fr-FR')}</span>
+                      <span>{safeFormatDate(appointment.appointmentDate)}</span>
                     </div>
                     <div className="flex items-center space-x-1">
                       <Clock className="h-4 w-4" />

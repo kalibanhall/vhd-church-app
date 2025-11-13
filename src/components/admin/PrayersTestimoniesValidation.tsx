@@ -6,6 +6,7 @@ import { Button } from '../ui/button'
 import { Heart, BookOpen, Clock, CheckCircle, XCircle, Eye, User } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import { authenticatedFetch } from '@/lib/auth-fetch'
+import { safeFormatDateTime } from '@/lib/utils'
 
 interface Prayer {
   id: string
@@ -221,7 +222,7 @@ export default function PrayersTestimoniesValidation() {
                         </span>
                         <span className="flex items-center gap-1">
                           <Clock className="h-4 w-4" />
-                          {new Date(prayer.prayerDate).toLocaleString('fr-FR')}
+                          {safeFormatDateTime(prayer.prayerDate)}
                         </span>
                         <span className={`px-2 py-1 rounded text-xs ${
                           prayer.isPublic 
@@ -293,7 +294,7 @@ export default function PrayersTestimoniesValidation() {
                         </span>
                         <span className="flex items-center gap-1">
                           <Clock className="h-4 w-4" />
-                          {new Date(testimony.testimonyDate).toLocaleString('fr-FR')}
+                          {safeFormatDateTime(testimony.testimonyDate)}
                         </span>
                       </div>
                     </div>

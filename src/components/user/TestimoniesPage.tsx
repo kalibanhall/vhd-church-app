@@ -1,13 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Heart, MessageCircle, Plus, Clock, CheckCircle, X, Send, Eye } from 'lucide-react'
+import { MessageCircle, Star, Plus, Clock, CheckCircle, X, Eye, ThumbsUp, Share2, Heart, Send } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
 import { authenticatedFetch } from '@/lib/auth-fetch'
+import { safeFormatDate } from '@/lib/utils'
 
 interface Testimony {
   id: string
@@ -313,7 +314,7 @@ export default function TestimoniesPage() {
                       )}
                     </div>
                     <p className="text-sm text-gray-500">
-                      {new Date(testimony.testimonyDate).toLocaleDateString('fr-FR')}
+                      {safeFormatDate(testimony.testimonyDate)}
                     </p>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-500">
@@ -361,7 +362,7 @@ export default function TestimoniesPage() {
                           <div className="flex justify-between items-start mb-2">
                             <span className="font-medium text-sm">{comment.user.name}</span>
                             <span className="text-xs text-gray-500">
-                              {new Date(comment.createdAt).toLocaleDateString('fr-FR')}
+                              {safeFormatDate(comment.createdAt)}
                             </span>
                           </div>
                           <p className="text-sm text-gray-700">{comment.content}</p>

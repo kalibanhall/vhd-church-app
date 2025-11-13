@@ -9,6 +9,7 @@ import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
 import { Badge } from '../ui/badge'
 import { authenticatedFetch } from '@/lib/auth-fetch'
+import { safeFormatDate } from '@/lib/utils'
 
 interface Prayer {
   id: string
@@ -316,7 +317,7 @@ export default function PrayersPage() {
                       <User className="h-3 w-3" />
                       <span>{prayer.isAnonymous ? 'Anonyme' : prayer.userName}</span>
                       <Calendar className="h-3 w-3 ml-2" />
-                      <span>{new Date(prayer.prayerDate).toLocaleDateString('fr-FR')}</span>
+                      <span>{safeFormatDate(prayer.prayerDate)}</span>
                     </div>
                   </div>
                   {getStatusBadge(prayer.status)}

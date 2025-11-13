@@ -5,13 +5,47 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatDate(date: string | Date): string {
+export function formatDate(date: string | Date | null | undefined): string {
+  if (!date) return 'Date non disponible'
+  
   const dateObj = typeof date === 'string' ? new Date(date) : date
+  
+  // Check for invalid date
+  if (isNaN(dateObj.getTime())) {
+    return 'Date invalide'
+  }
+  
   return dateObj.toLocaleDateString('fr-FR', {
     year: 'numeric',
     month: 'long',
     day: 'numeric'
   })
+}
+
+export function safeFormatDate(date: string | Date | null | undefined, fallback = '-'): string {
+  if (!date) return fallback
+  
+  try {
+    const dateObj = typeof date === 'string' ? new Date(date) : date
+    if (isNaN(dateObj.getTime())) return fallback
+    
+    return dateObj.toLocaleDateString('fr-FR')
+  } catch {
+    return fallback
+  }
+}
+
+export function safeFormatDateTime(date: string | Date | null | undefined, fallback = '-'): string {
+  if (!date) return fallback
+  
+  try {
+    const dateObj = typeof date === 'string' ? new Date(date) : date
+    if (isNaN(dateObj.getTime())) return fallback
+    
+    return dateObj.toLocaleString('fr-FR')
+  } catch {
+    return fallback
+  }
 }
 
 export function formatCurrency(amount: number): string {
