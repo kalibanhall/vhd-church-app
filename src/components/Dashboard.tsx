@@ -172,7 +172,7 @@ export default function Dashboard() {
           onProfileClick={() => handleTabChange('profile')}
           onTabChange={handleTabChange}
           onMenuClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-          hideMenuButton={user.role === 'ADMIN'}
+          hideMenuButton={false}
         />
       </div>
 

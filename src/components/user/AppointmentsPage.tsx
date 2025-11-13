@@ -51,7 +51,7 @@ export default function AppointmentsPage() {
 
   const fetchAppointments = async () => {
     try {
-      const response = await fetch('/api/appointments', {
+      const response = await fetch('/api/appointments-proxy', {
         credentials: 'include'
       });
 
@@ -68,7 +68,7 @@ export default function AppointmentsPage() {
 
   const fetchPastors = async () => {
     try {
-      const response = await fetch('/api/appointments/pastors', {
+      const response = await fetch('/api/pastors', {
         credentials: 'include'
       });
 
@@ -83,7 +83,7 @@ export default function AppointmentsPage() {
 
   const createAppointment = async () => {
     try {
-      const response = await fetch('/api/appointments', {
+      const response = await fetch('/api/appointments-proxy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -102,9 +102,9 @@ export default function AppointmentsPage() {
     }
   };
 
-  const cancelAppointment = async (appointmentId: string) => {
+  const handleCancelAppointment = async (appointmentId: string) => {
     try {
-      const response = await fetch('/api/appointments', {
+      const response = await fetch('/api/appointments-proxy', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'

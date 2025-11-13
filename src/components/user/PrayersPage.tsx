@@ -49,7 +49,7 @@ export default function PrayersPage() {
   const fetchPrayers = async () => {
     try {
       setLoading(true)
-      let url = `/api/prayers?userId=${user?.id}`
+      let url = `/api/prayers-proxy?userId=${user?.id}`
       
       if (filter === 'my') {
         url += '&userOnly=true'
@@ -75,7 +75,7 @@ export default function PrayersPage() {
     e.preventDefault()
     
     try {
-      const response = await fetch(`/api/prayers?userId=${user?.id}`, {
+      const response = await fetch(`/api/prayers-proxy?userId=${user?.id}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -113,7 +113,7 @@ export default function PrayersPage() {
       }
 
       // L'API gère automatiquement l'ajout/suppression selon l'état actuel
-      const response = await fetch(`/api/prayers/support?prayerId=${prayerId}&userId=${user.id}`, {
+      const response = await fetch(`/api/prayers-proxy/support?prayerId=${prayerId}&userId=${user.id}`, {
         method: 'POST',
         credentials: 'include'
       })

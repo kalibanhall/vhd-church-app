@@ -112,7 +112,7 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
         headers['Authorization'] = `Bearer ${token}`;
       }
       
-      const url = loadAll ? '/api/notifications?all=true' : '/api/notifications';
+      const url = loadAll ? '/api/notifications-proxy?all=true' : '/api/notifications-proxy';
       const response = await fetch(url, {
         credentials: 'include',
         headers
@@ -141,7 +141,7 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
         headers['Authorization'] = `Bearer ${token}`;
       }
 
-      const response = await fetch('/api/notifications?unread=true', {
+      const response = await fetch('/api/notifications-proxy?unread=true', {
         credentials: 'include',
         headers
       });
@@ -165,7 +165,7 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
         headers['Authorization'] = `Bearer ${token}`;
       }
       
-      const response = await fetch('/api/notifications', {
+      const response = await fetch('/api/notifications-proxy', {
         method: 'PUT',
         headers,
         credentials: 'include',
@@ -196,7 +196,7 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
         headers['Authorization'] = `Bearer ${token}`;
       }
       
-      const response = await fetch('/api/notifications', {
+      const response = await fetch('/api/notifications-proxy', {
         method: 'PUT',
         headers,
         credentials: 'include',

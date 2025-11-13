@@ -68,7 +68,7 @@ export default function AnalyticsPage() {
       setLoading(true)
       setError(null)
       
-      const response = await fetch('/api/analytics', {
+      const response = await fetch('/api/analytics-proxy', {
         credentials: 'include'
       })
 

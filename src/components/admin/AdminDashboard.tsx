@@ -32,7 +32,7 @@ export default function AdminDashboard() {
 
   const fetchAdminStats = async () => {
     try {
-      const response = await fetch('/api/analytics', {
+      const response = await fetch('/api/analytics-proxy', {
         headers: { "Content-Type": "application/json" },
         credentials: "include"
       })

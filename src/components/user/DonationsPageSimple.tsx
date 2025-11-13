@@ -30,7 +30,7 @@ export default function DonationsPage() {
 
   const fetchDonations = async () => {
     try {
-      const response = await fetch('/api/donations', {
+      const response = await fetch('/api/donations-proxy', {
         headers: {
           'Content-Type': 'application/json'
         },
@@ -57,7 +57,7 @@ export default function DonationsPage() {
     
     try {
       // Appel API pour créer la donation
-      const response = await fetch('/api/donations', {
+      const response = await fetch('/api/donations-proxy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

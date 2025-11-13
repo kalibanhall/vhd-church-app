@@ -57,7 +57,7 @@ export default function MemberAppointments() {
   const fetchAppointments = async () => {
     try {
       setLoading(true)
-      const response = await fetch('/api/appointments/member', {
+      const response = await fetch('/api/appointments-proxy/member', {
         credentials: 'include'
       })
 
@@ -114,7 +114,7 @@ export default function MemberAppointments() {
     }
 
     try {
-      const response = await fetch('/api/appointments', {
+      const response = await fetch('/api/appointments-proxy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

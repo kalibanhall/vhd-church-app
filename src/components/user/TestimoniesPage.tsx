@@ -66,7 +66,7 @@ export default function TestimoniesPage() {
         ...(activeTab === 'all' && { status: 'approved' })
       })
 
-      const response = await fetch(`/api/testimonies?${params}`, {
+      const response = await fetch(`/api/testimonies-proxy?${params}`, {
         credentials: 'include'
       })
       if (response.ok) {
@@ -85,13 +85,13 @@ export default function TestimoniesPage() {
     if (!user?.id || !newTestimony.title || !newTestimony.content) return
 
     try {
-      const response = await fetch(`/api/testimonies?userId=${user.id}`, {
+      const response = await fetch(`/api/testimonies-proxy?userId=${user.id}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify(newTestimony)
+        body: JSON.stringify(newTestimony),
       })
 
       if (response.ok) {
@@ -110,7 +110,7 @@ export default function TestimoniesPage() {
     if (!user?.id) return
 
     try {
-      const response = await fetch(`/api/testimonies/like?userId=${user.id}&testimonyId=${testimonyId}`, {
+      const response = await fetch(`/api/testimonies-proxy/like?userId=${user.id}&testimonyId=${testimonyId}`, {
         method: 'POST',
         credentials: 'include'
       })
@@ -125,7 +125,7 @@ export default function TestimoniesPage() {
 
   const fetchComments = async (testimonyId: string) => {
     try {
-      const response = await fetch(`/api/testimonies/comments?testimonyId=${testimonyId}`, {
+      const response = await fetch(`/api/testimonies-proxy/comments?testimonyId=${testimonyId}`, {
         credentials: 'include'
       })
       if (response.ok) {
@@ -141,13 +141,13 @@ export default function TestimoniesPage() {
     if (!user?.id || !newComment.trim()) return
 
     try {
-      const response = await fetch(`/api/testimonies/comments?userId=${user.id}&testimonyId=${testimonyId}`, {
+      const response = await fetch(`/api/testimonies-proxy/comments?userId=${user.id}&testimonyId=${testimonyId}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify({ content: newComment })
+        body: JSON.stringify({ content: newComment }),
       })
 
       if (response.ok) {

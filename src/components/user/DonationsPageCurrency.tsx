@@ -124,7 +124,7 @@ const DonationsPage: React.FC = () => {
         return
       }
 
-      const response = await fetch('/api/donations', {
+      const response = await fetch('/api/donations-proxy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

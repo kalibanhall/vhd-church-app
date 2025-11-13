@@ -46,7 +46,7 @@ const DonationsPage: React.FC = () => {
 
   const fetchDonations = async () => {
     try {
-      const response = await fetch('/api/donations', {
+      const response = await fetch('/api/donations-proxy', {
         credentials: 'include' // Utiliser les cookies au lieu du localStorage
       })
 
@@ -116,7 +116,7 @@ const DonationsPage: React.FC = () => {
         return
       }
 
-      const response = await fetch('/api/donations', {
+      const response = await fetch('/api/donations-proxy', {
         method: 'POST',
         credentials: 'include', // Utiliser les cookies au lieu de Authorization header
         headers: {
