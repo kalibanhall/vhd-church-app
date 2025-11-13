@@ -9,6 +9,7 @@ import {
   AlertCircle,
   Vote
 } from 'lucide-react'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface PollOption {
   id: string
@@ -51,9 +52,7 @@ export default function PollsPage() {
 
   const loadPolls = async () => {
     try {
-      const response = await fetch('/api/polls-proxy', {
-        credentials: 'include'
-      })
+      const response = await authenticatedFetch('/api/polls-proxy')
       
       if (response.ok) {
         const data = await response.json()
@@ -77,10 +76,8 @@ export default function PollsPage() {
     setVotingFor(pollId)
     
     try {
-      const response = await fetch('/api/polls-proxy/vote', {
+      const response = await authenticatedFetch('/api/polls-proxy/vote', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ pollId, optionIds })
       })
 
@@ -133,9 +130,8 @@ export default function PollsPage() {
     }
 
     try {
-      const response = await fetch(`/api/polls-proxy/vote?pollId=${pollId}`, {
-        method: 'DELETE',
-        credentials: 'include'
+      const response = await authenticatedFetch(`/api/polls-proxy/vote?pollId=${pollId}`, {
+        method: 'DELETE'
       })
 
       if (response.ok) {

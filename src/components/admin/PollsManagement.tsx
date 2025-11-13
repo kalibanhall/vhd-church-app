@@ -16,6 +16,7 @@ import {
   XCircle,
   AlertCircle
 } from 'lucide-react'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface PollOption {
   id: string
@@ -67,9 +68,7 @@ export default function PollsManagement() {
 
   const loadPolls = async () => {
     try {
-      const response = await fetch('/api/polls-proxy?includeExpired=true', {
-        credentials: 'include'
-      })
+      const response = await authenticatedFetch('/api/polls-proxy?includeExpired=true')
       
       if (response.ok) {
         const data = await response.json()
@@ -94,10 +93,8 @@ export default function PollsManagement() {
     }
 
     try {
-      const response = await fetch('/api/polls-proxy', {
+      const response = await authenticatedFetch('/api/polls-proxy', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({
           ...formData,
           options: validOptions,
@@ -129,10 +126,8 @@ export default function PollsManagement() {
 
   const togglePollStatus = async (pollId: string, currentStatus: boolean) => {
     try {
-      const response = await fetch(`/api/polls-proxy/${pollId}`, {
+      const response = await authenticatedFetch(`/api/polls-proxy/${pollId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ isActive: !currentStatus })
       })
 
@@ -154,9 +149,8 @@ export default function PollsManagement() {
     }
 
     try {
-      const response = await fetch(`/api/polls-proxy/${pollId}`, {
-        method: 'DELETE',
-        credentials: 'include'
+      const response = await authenticatedFetch(`/api/polls-proxy/${pollId}`, {
+        method: 'DELETE'
       })
 
       if (response.ok) {

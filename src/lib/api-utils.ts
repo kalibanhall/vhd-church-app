@@ -7,7 +7,7 @@
  * =============================================================================
  */
 
-interface ApiResponse<T = any> {
+export interface ApiResponse<T = any> {
   success: boolean
   data?: T
   error?: string
@@ -153,39 +153,6 @@ export const profileAPI = {
       body: JSON.stringify(profileData)
     })
   }
-}
-
-/**
- * Hook pour utiliser les API avec gestion d'erreur automatique
- */
-import { useState } from 'react'
-
-export function useApi() {
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
-  const callAPI = async <T>(apiFunction: () => Promise<ApiResponse<T>>): Promise<T | null> => {
-    setLoading(true)
-    setError(null)
-    
-    try {
-      const result = await apiFunction()
-      
-      if (!result.success) {
-        setError(result.error || 'Erreur inconnue')
-        return null
-      }
-      
-      return result.data || null
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Erreur inattendue')
-      return null
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  return { callAPI, loading, error, setError }
 }
 
 /**

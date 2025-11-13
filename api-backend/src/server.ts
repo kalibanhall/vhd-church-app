@@ -18,6 +18,7 @@ import facialRecognitionRoutes from './routes/facialRecognition';
 import notificationsRoutes from './routes/notifications';
 import pollsRoutes from './routes/polls';
 import pastorRoutes from './routes/pastor';
+import userStatsRoutes from './routes/userStats';
 
 // Load environment variables
 dotenv.config();
@@ -106,6 +107,7 @@ app.use(`/${API_VERSION}/facial-recognition`, facialRecognitionRoutes);
 app.use(`/${API_VERSION}/notifications`, notificationsRoutes);
 app.use(`/${API_VERSION}/polls`, pollsRoutes);
 app.use(`/${API_VERSION}/pastor`, pastorRoutes);
+app.use(`/${API_VERSION}/user`, userStatsRoutes);
 
 // 404 handler
 app.use((req: Request, res: Response) => {
