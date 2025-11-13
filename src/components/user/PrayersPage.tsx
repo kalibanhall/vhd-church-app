@@ -63,7 +63,9 @@ export default function PrayersPage() {
       const response = await authenticatedFetch(url)
       if (response.ok) {
         const data = await response.json()
-        setPrayers(data)
+        // Handle both old and new response formats
+        const prayersData = data.prayers || data.data || data
+        setPrayers(Array.isArray(prayersData) ? prayersData : [])
       }
     } catch (error) {
       console.error('Erreur lors du chargement des prières:', error)

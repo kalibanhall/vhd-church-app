@@ -21,16 +21,24 @@ export async function GET(request: NextRequest) {
       },
     })
 
-    const data = await response.json()
-    
     if (!response.ok) {
+      const errorText = await response.text()
+      console.error('❌ Prayers GET error:', response.status, errorText)
       return NextResponse.json(
-        { error: data.error || 'Erreur de récupération des prières' },
+        { error: 'Erreur de récupération des prières' },
         { status: response.status }
       )
     }
 
-    return NextResponse.json(data)
+    const data = await response.json()
+    
+    // Ensure consistent array response
+    const prayers = Array.isArray(data) ? data : (data.prayers || data.data || [])
+    
+    return NextResponse.json({
+      success: true,
+      prayers: prayers
+    })
   } catch (error: any) {
     console.error('❌ Prayers GET proxy error:', error)
     return NextResponse.json(

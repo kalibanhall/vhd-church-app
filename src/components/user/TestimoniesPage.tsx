@@ -70,7 +70,9 @@ export default function TestimoniesPage() {
       const response = await authenticatedFetch(`/api/testimonies-proxy?${params}`)
       if (response.ok) {
         const data = await response.json()
-        setTestimonies(data)
+        // Handle both old and new response formats
+        const testimoniesData = data.testimonies || data.data || data
+        setTestimonies(Array.isArray(testimoniesData) ? testimoniesData : [])
       }
     } catch (error) {
       console.error('Erreur lors du chargement des témoignages:', error)

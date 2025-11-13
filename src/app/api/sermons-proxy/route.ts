@@ -25,21 +25,23 @@ export async function GET(request: NextRequest) {
       headers,
     })
 
-    const data = await response.json()
-    
-    console.log('✅ Backend preachings response:', response.status)
-
     if (!response.ok) {
+      const errorText = await response.text()
+      console.error('❌ Backend preachings error:', response.status, errorText)
       return NextResponse.json(
-        { error: data.error || 'Erreur de récupération des prédications' },
+        { error: 'Erreur de récupération des prédications' },
         { status: response.status }
       )
     }
 
+    const data = await response.json()
+    
+    console.log('✅ Backend preachings response:', response.status, 'data:', data)
+
     // Mapper data.data vers sermons pour compatibilité frontend
     return NextResponse.json({
       success: true,
-      sermons: data.data || []
+      sermons: Array.isArray(data) ? data : (data.data || data.preachings || [])
     })
   } catch (error: any) {
     console.error('❌ Sermons proxy error:', error)

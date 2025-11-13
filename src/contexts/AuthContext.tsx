@@ -129,7 +129,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       console.error('Erreur lors de la déconnexion:', error)
     } finally {
       clearAuth()
-      router.push('/auth')
+      // Utiliser replace pour éviter que le bouton retour ramène à une page authentifiée
+      router.replace('/auth')
     }
   }
 

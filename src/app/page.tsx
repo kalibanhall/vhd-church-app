@@ -24,7 +24,8 @@ export default function Home() {
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      router.push('/auth')
+      // Utiliser replace au lieu de push pour éviter les problèmes de bouton retour
+      router.replace('/auth')
     }
   }, [isAuthenticated, isLoading, router])
 

@@ -45,12 +45,29 @@ router.post('/', authenticate, async (req: Request, res: Response) => {
       });
     }
 
-    // Si c'est le descripteur principal, désactiver les autres
-    if (isPrimary) {
-      await supabase
-        .from('face_descriptors')
-        .update({ is_primary: false })
-        .eq('user_id', userId);
+    // VÉRIFICATION D'UNICITÉ: Un utilisateur ne peut enregistrer qu'une seule fois
+    const { data: existingDescriptors, error: checkError } = await supabase
+      .from('face_descriptors')
+      .select('id, created_at')
+      .eq('user_id', userId)
+      .limit(1);
+
+    if (checkError) {
+      console.error('❌ Erreur vérification:', checkError);
+      return res.status(500).json({
+        success: false,
+        error: 'Erreur lors de la vérification'
+      });
+    }
+
+    if (existingDescriptors && existingDescriptors.length > 0) {
+      console.log('⚠️ Tentative d\'enregistrement multiple pour userId:', userId);
+      return res.status(409).json({
+        success: false,
+        error: 'Visage déjà enregistré. Vous ne pouvez enregistrer qu\'une seule fois.',
+        alreadyRegistered: true,
+        registeredAt: existingDescriptors[0].created_at
+      });
     }
 
     // Insérer le nouveau descripteur
@@ -62,7 +79,7 @@ router.post('/', authenticate, async (req: Request, res: Response) => {
           descriptor: descriptor,
           photo_url: photoUrl || null,
           quality_score: qualityScore || 0.9,
-          is_primary: isPrimary !== false, // true par défaut
+          is_primary: true, // Toujours primary puisqu'il n'y en a qu'un
           created_at: new Date().toISOString()
         }
       ])

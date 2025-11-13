@@ -58,13 +58,13 @@ export default function MemberAppointments() {
   const fetchAppointments = async () => {
     try {
       setLoading(true)
-      const response = await fetch('/api/appointments-proxy/member', {
-        credentials: 'include'
-      })
+      const response = await authenticatedFetch('/api/appointments-proxy/member')
 
       if (response.ok) {
         const data = await response.json()
-        setAppointments(data.appointments || [])
+        // Handle both old and new response formats
+        const appointmentsData = data.appointments || data.data || data
+        setAppointments(Array.isArray(appointmentsData) ? appointmentsData : [])
       } else {
         console.error('Erreur lors du chargement des rendez-vous')
       }

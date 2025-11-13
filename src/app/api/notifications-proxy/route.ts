@@ -18,8 +18,15 @@ export async function GET(request: NextRequest) {
 
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('userId')
+    const unread = searchParams.get('unread')
     
-    const url = `${API_URL}/notifications${userId ? `?userId=${userId}` : ''}`
+    // Construire l'URL avec tous les paramètres
+    const params = new URLSearchParams()
+    if (userId) params.append('userId', userId)
+    if (unread) params.append('unread', unread)
+    
+    const queryString = params.toString()
+    const url = `${API_URL}/notifications${queryString ? `?${queryString}` : ''}`
 
     const response = await fetch(url, {
       method: 'GET',
