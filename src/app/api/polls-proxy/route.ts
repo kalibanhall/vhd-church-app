@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { getTokenFromRequest, createBearerToken } from '@/lib/api-utils'
 
 export async function GET(request: NextRequest) {
   try {
-    const token = request.headers.get('authorization')
+    const token = getTokenFromRequest(request)
     if (!token) {
       return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
     }
@@ -16,7 +17,7 @@ export async function GET(request: NextRequest) {
     const response = await fetch(url, {
       method: 'GET',
       headers: {
-        'Authorization': token,
+        'Authorization': createBearerToken(token),
         'Content-Type': 'application/json',
       },
     })
@@ -42,7 +43,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const token = request.headers.get('authorization')
+    const token = getTokenFromRequest(request)
     if (!token) {
       return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
     }
@@ -53,7 +54,7 @@ export async function POST(request: NextRequest) {
     const response = await fetch(`${API_URL}/polls`, {
       method: 'POST',
       headers: {
-        'Authorization': token,
+        'Authorization': createBearerToken(token),
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),

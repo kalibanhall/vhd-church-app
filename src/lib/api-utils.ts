@@ -187,3 +187,46 @@ export function useApi() {
 
   return { callAPI, loading, error, setError }
 }
+
+/**
+ * Récupère le token JWT depuis les requêtes Next.js (pour les routes API)
+ * @param request - La requête Next.js
+ * @returns Le token JWT ou null
+ */
+import { NextRequest } from 'next/server'
+
+export function getTokenFromRequest(request: NextRequest): string | null {
+  // 1. Essayer depuis le header Authorization
+  const authHeader = request.headers.get('authorization')
+  if (authHeader) {
+    // Si c'est "Bearer TOKEN", extraire le TOKEN
+    if (authHeader.startsWith('Bearer ')) {
+      return authHeader.substring(7)
+    }
+    // Sinon retourner tel quel
+    return authHeader
+  }
+
+  // 2. Essayer depuis les cookies
+  const cookieToken = request.cookies.get('auth-token')?.value
+  if (cookieToken) {
+    return cookieToken
+  }
+
+  // 3. Aucun token trouvé
+  return null
+}
+
+/**
+ * Crée un header Authorization Bearer à partir d'un token
+ * @param token - Le token JWT
+ * @returns Le header formaté "Bearer TOKEN"
+ */
+export function createBearerToken(token: string): string {
+  // Si le token commence déjà par "Bearer ", le retourner tel quel
+  if (token.startsWith('Bearer ')) {
+    return token
+  }
+  // Sinon ajouter le préfixe
+  return `Bearer ${token}`
+}

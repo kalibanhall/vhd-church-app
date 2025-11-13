@@ -49,7 +49,7 @@ const DonationsPage: React.FC = () => {
       const token = localStorage.getItem('token')
       if (!token) return
 
-      const response = await fetch('/api/donations', {
+      const response = await fetch('/api/donations-proxy', {
         headers: {
           'Authorization': `Bearer ${token}`
         }

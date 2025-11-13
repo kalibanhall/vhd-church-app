@@ -51,7 +51,7 @@ export default function PollsPage() {
 
   const loadPolls = async () => {
     try {
-      const response = await fetch('/api/polls', {
+      const response = await fetch('/api/polls-proxy', {
         credentials: 'include'
       })
       
@@ -77,7 +77,7 @@ export default function PollsPage() {
     setVotingFor(pollId)
     
     try {
-      const response = await fetch('/api/polls/vote', {
+      const response = await fetch('/api/polls-proxy/vote', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -133,7 +133,7 @@ export default function PollsPage() {
     }
 
     try {
-      const response = await fetch(`/api/polls/vote?pollId=${pollId}`, {
+      const response = await fetch(`/api/polls-proxy/vote?pollId=${pollId}`, {
         method: 'DELETE',
         credentials: 'include'
       })

@@ -67,7 +67,7 @@ export default function PollsManagement() {
 
   const loadPolls = async () => {
     try {
-      const response = await fetch('/api/polls?includeExpired=true', {
+      const response = await fetch('/api/polls-proxy?includeExpired=true', {
         credentials: 'include'
       })
       
@@ -94,7 +94,7 @@ export default function PollsManagement() {
     }
 
     try {
-      const response = await fetch('/api/polls', {
+      const response = await fetch('/api/polls-proxy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -129,7 +129,7 @@ export default function PollsManagement() {
 
   const togglePollStatus = async (pollId: string, currentStatus: boolean) => {
     try {
-      const response = await fetch(`/api/polls/${pollId}`, {
+      const response = await fetch(`/api/polls-proxy/${pollId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -154,7 +154,7 @@ export default function PollsManagement() {
     }
 
     try {
-      const response = await fetch(`/api/polls/${pollId}`, {
+      const response = await fetch(`/api/polls-proxy/${pollId}`, {
         method: 'DELETE',
         credentials: 'include'
       })
