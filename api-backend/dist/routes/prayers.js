@@ -45,13 +45,15 @@ router.get('/', async (req, res) => {
 router.post('/', auth_1.authenticate, async (req, res) => {
     try {
         const authUser = req.user;
-        const { title, description, isAnonymous } = req.body;
+        const { title, content, category, isPublic, isAnonymous } = req.body;
         const { data: prayer, error } = await supabase
             .from('prayers')
             .insert([{
                 user_id: authUser.id,
                 title,
-                description,
+                content,
+                category: category || 'GENERAL',
+                is_public: isPublic !== undefined ? isPublic : true,
                 is_anonymous: isAnonymous || false,
                 status: 'PENDING',
                 created_at: new Date().toISOString()

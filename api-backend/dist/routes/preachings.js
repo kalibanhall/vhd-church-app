@@ -16,12 +16,12 @@ const supabase = (0, supabase_js_1.createClient)(process.env.SUPABASE_URL || '',
 router.get('/', async (req, res) => {
     try {
         console.log('🎥 Récupération des prédications');
-        const { data: sermons, error } = await supabase
-            .from('sermons')
+        const { data: preachings, error } = await supabase
+            .from('preachings')
             .select('*')
             .order('created_at', { ascending: false });
         if (error) {
-            console.error('❌ Erreur récupération sermons:', error);
+            console.error('❌ Erreur récupération prédications:', error);
             return res.status(500).json({
                 success: false,
                 error: 'Erreur lors de la récupération des prédications'
@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
         }
         res.json({
             success: true,
-            data: sermons || []
+            data: preachings || []
         });
     }
     catch (error) {
@@ -46,13 +46,13 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const { data: sermon, error } = await supabase
-            .from('sermons')
+        const { data: preaching, error } = await supabase
+            .from('preachings')
             .select('*')
             .eq('id', id)
             .single();
         if (error) {
-            console.error('❌ Erreur récupération sermon:', error);
+            console.error('❌ Erreur récupération prédication:', error);
             return res.status(404).json({
                 success: false,
                 error: 'Prédication non trouvée'
@@ -60,7 +60,7 @@ router.get('/:id', async (req, res) => {
         }
         res.json({
             success: true,
-            data: sermon
+            data: preaching
         });
     }
     catch (error) {
@@ -85,8 +85,8 @@ router.post('/', auth_1.authenticate, async (req, res) => {
             });
         }
         const { title, description, videoUrl, thumbnailUrl, speaker, duration, category } = req.body;
-        const { data: sermon, error } = await supabase
-            .from('sermons')
+        const { data: preaching, error } = await supabase
+            .from('preachings')
             .insert([{
                 title,
                 description,
@@ -101,7 +101,7 @@ router.post('/', auth_1.authenticate, async (req, res) => {
             .select()
             .single();
         if (error) {
-            console.error('❌ Erreur création sermon:', error);
+            console.error('❌ Erreur création prédication:', error);
             return res.status(500).json({
                 success: false,
                 error: 'Erreur lors de la création de la prédication'
@@ -109,7 +109,7 @@ router.post('/', auth_1.authenticate, async (req, res) => {
         }
         res.status(201).json({
             success: true,
-            data: sermon
+            data: preaching
         });
     }
     catch (error) {
@@ -135,8 +135,8 @@ router.put('/:id', auth_1.authenticate, async (req, res) => {
             });
         }
         const { title, description, videoUrl, thumbnailUrl, speaker, duration, category } = req.body;
-        const { data: sermon, error } = await supabase
-            .from('sermons')
+        const { data: preaching, error } = await supabase
+            .from('preachings')
             .update({
             title,
             description,
@@ -151,7 +151,7 @@ router.put('/:id', auth_1.authenticate, async (req, res) => {
             .select()
             .single();
         if (error) {
-            console.error('❌ Erreur mise à jour sermon:', error);
+            console.error('❌ Erreur mise à jour prédication:', error);
             return res.status(500).json({
                 success: false,
                 error: 'Erreur lors de la mise à jour de la prédication'
@@ -159,7 +159,7 @@ router.put('/:id', auth_1.authenticate, async (req, res) => {
         }
         res.json({
             success: true,
-            data: sermon
+            data: preaching
         });
     }
     catch (error) {
@@ -185,11 +185,11 @@ router.delete('/:id', auth_1.authenticate, async (req, res) => {
             });
         }
         const { error } = await supabase
-            .from('sermons')
+            .from('preachings')
             .delete()
             .eq('id', id);
         if (error) {
-            console.error('❌ Erreur suppression sermon:', error);
+            console.error('❌ Erreur suppression prédication:', error);
             return res.status(500).json({
                 success: false,
                 error: 'Erreur lors de la suppression de la prédication'

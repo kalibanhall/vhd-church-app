@@ -52,7 +52,7 @@ router.get('/', async (req: Request, res: Response) => {
 router.post('/', authenticate, async (req: Request, res: Response) => {
   try {
     const authUser = (req as any).user;
-    const { title, content, isAnonymous } = req.body;
+    const { title, content, isAnonymous, category } = req.body;
 
     const { data: testimony, error } = await supabase
       .from('testimonies')
@@ -61,7 +61,9 @@ router.post('/', authenticate, async (req: Request, res: Response) => {
         title,
         content,
         is_anonymous: isAnonymous || false,
-        status: 'PENDING',
+        is_approved: false,
+        is_published: false,
+        category: category || 'GENERAL',
         created_at: new Date().toISOString()
       }])
       .select()

@@ -20,7 +20,7 @@ const supabase = createClient(
  */
 router.get('/', authenticate, async (req: Request, res: Response) => {
   try {
-    const { userId } = req.query;
+    const { userId, unread } = req.query;
     const authUserId = (req as any).user?.id;
 
     const targetUserId = userId || authUserId;
@@ -32,10 +32,17 @@ router.get('/', authenticate, async (req: Request, res: Response) => {
       });
     }
 
-    const { data: notifications, error } = await supabase
+    let query = supabase
       .from('notifications')
       .select('*')
-      .eq('user_id', targetUserId)
+      .eq('user_id', targetUserId);
+
+    // Filtrer par statut de lecture si demandé
+    if (unread === 'true') {
+      query = query.eq('read', false);
+    }
+
+    const { data: notifications, error } = await query
       .order('created_at', { ascending: false })
       .limit(50);
 

@@ -19,7 +19,7 @@ router.get('/', auth_1.authenticate, async (req, res) => {
     try {
         const includeExpired = req.query.includeExpired === 'true';
         let query = supabase
-            .from('sondages')
+            .from('polls')
             .select('*')
             .order('created_at', { ascending: false });
         // Filtrer les sondages non expirés
@@ -69,7 +69,7 @@ router.post('/', auth_1.authenticate, async (req, res) => {
         }
         // Créer le sondage
         const { data, error } = await supabase
-            .from('sondages')
+            .from('polls')
             .insert([{
                 question,
                 options,
@@ -119,7 +119,7 @@ router.put('/:id', auth_1.authenticate, async (req, res) => {
         if (multiple_choices !== undefined)
             updateData.multiple_choices = multiple_choices;
         const { data, error } = await supabase
-            .from('sondages')
+            .from('polls')
             .update(updateData)
             .eq('id', id)
             .select()
@@ -157,7 +157,7 @@ router.delete('/:id', auth_1.authenticate, async (req, res) => {
     try {
         const { id } = req.params;
         const { error } = await supabase
-            .from('sondages')
+            .from('polls')
             .delete()
             .eq('id', id);
         if (error) {
@@ -195,7 +195,7 @@ router.post('/:id/vote', auth_1.authenticate, async (req, res) => {
         }
         // Vérifier si l'utilisateur a déjà voté
         const { data: existingVote } = await supabase
-            .from('sondages_votes')
+            .from('poll_votes')
             .select('*')
             .eq('sondage_id', id)
             .eq('user_id', user_id)
@@ -208,7 +208,7 @@ router.post('/:id/vote', auth_1.authenticate, async (req, res) => {
         }
         // Enregistrer le vote
         const { data, error } = await supabase
-            .from('sondages_votes')
+            .from('poll_votes')
             .insert([{
                 sondage_id: id,
                 user_id,
@@ -245,7 +245,7 @@ router.get('/:id/results', auth_1.authenticate, async (req, res) => {
         const { id } = req.params;
         // Récupérer le sondage
         const { data: poll, error: pollError } = await supabase
-            .from('sondages')
+            .from('polls')
             .select('*')
             .eq('id', id)
             .single();
@@ -257,7 +257,7 @@ router.get('/:id/results', auth_1.authenticate, async (req, res) => {
         }
         // Récupérer les votes
         const { data: votes, error: votesError } = await supabase
-            .from('sondages_votes')
+            .from('poll_votes')
             .select('*')
             .eq('sondage_id', id);
         if (votesError) {

@@ -29,7 +29,8 @@ router.get('/:userId/stats', authenticate, async (req: Request, res: Response) =
     const requestingUser = (req as any).user;
 
     // Vérifier que l'utilisateur ne peut voir que ses propres stats (sauf admin/pastor)
-    if (requestingUser.id !== parseInt(userId) && requestingUser.role !== 'admin' && requestingUser.role !== 'pastor') {
+    if (requestingUser.id !== userId && requestingUser.role !== 'ADMIN' && requestingUser.role !== 'PASTOR') {
+      console.log(`⚠️  User ${requestingUser.id} (role: ${requestingUser.role}) tried to access stats of user ${userId}`);
       return res.status(403).json({ 
         error: 'Accès refusé',
         message: 'Vous ne pouvez voir que vos propres statistiques' 
