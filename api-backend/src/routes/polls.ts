@@ -32,7 +32,7 @@ router.get('/', authenticate, async (req: Request, res: Response) => {
     // Filtrer les sondages non expirés
     if (!includeExpired) {
       const now = new Date().toISOString();
-      query = query.gte('date_fin', now);
+      query = query.gte('expires_at', now);
     }
 
     const { data, error } = await query;
@@ -63,31 +63,36 @@ router.get('/', authenticate, async (req: Request, res: Response) => {
  */
 router.post('/', authenticate, async (req: Request, res: Response) => {
   try {
-    const { question, options, date_fin, multiple_choices } = req.body;
+    const { title, options, expires_at, allow_multiple } = req.body;
 
     // Validation
-    if (!question || !options || !Array.isArray(options) || options.length < 2) {
+    if (!title || !options || !Array.isArray(options) || options.length < 2) {
       return res.status(400).json({
         success: false,
-        error: 'Question et au moins 2 options requises'
+        error: 'Titre et au moins 2 options requises'
       });
     }
 
-    if (!date_fin) {
+    if (!expires_at) {
       return res.status(400).json({
         success: false,
         error: 'Date de fin requise'
       });
     }
 
+    const authUser = (req as any).user;
+
     // Créer le sondage
     const { data, error } = await supabase
       .from('polls')
       .insert([{
-        question,
-        options,
-        date_fin,
-        multiple_choices: multiple_choices || false,
+        title,
+        description: req.body.description || null,
+        creator_id: authUser.id,
+        expires_at,
+        allow_multiple: allow_multiple || false,
+        is_active: true,
+        is_anonymous: req.body.is_anonymous || false,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       }])
@@ -121,16 +126,16 @@ router.post('/', authenticate, async (req: Request, res: Response) => {
 router.put('/:id', authenticate, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { question, options, date_fin, multiple_choices } = req.body;
+    const { title, options, expires_at, allow_multiple } = req.body;
 
     const updateData: any = {
       updated_at: new Date().toISOString()
     };
 
-    if (question) updateData.question = question;
+    if (title) updateData.title = title;
     if (options && Array.isArray(options)) updateData.options = options;
-    if (date_fin) updateData.date_fin = date_fin;
-    if (multiple_choices !== undefined) updateData.multiple_choices = multiple_choices;
+    if (expires_at) updateData.expires_at = expires_at;
+    if (allow_multiple !== undefined) updateData.allow_multiple = allow_multiple;
 
     const { data, error } = await supabase
       .from('polls')

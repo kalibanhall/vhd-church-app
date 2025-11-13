@@ -37,11 +37,14 @@ const authenticate = async (req, res, next) => {
             // Fallback: vérifier avec JWT custom
             try {
                 const decoded = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
+                // Support both 'id' and 'userId' for backwards compatibility
+                const userId = decoded.id || decoded.userId;
                 req.user = {
-                    id: decoded.userId,
+                    id: userId,
                     email: decoded.email,
                     role: decoded.role,
                 };
+                console.log('✅ JWT custom decoded, user ID:', userId);
             }
             catch (jwtError) {
                 res.status(401).json({
@@ -58,6 +61,7 @@ const authenticate = async (req, res, next) => {
                 email: user.email,
                 role: user.user_metadata?.role || 'member',
             };
+            console.log('✅ Supabase token valid, user ID:', user.id);
         }
         next();
     }
