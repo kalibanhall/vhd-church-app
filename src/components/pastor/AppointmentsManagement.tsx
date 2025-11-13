@@ -81,9 +81,13 @@ export default function AppointmentsManagement() {
       if (response.ok) {
         const data = await response.json()
         setAppointments(data.appointments || [])
+      } else if (response.status === 404) {
+        console.log('Routes pastor non disponibles (fonctionnalité désactivée)')
+        setAppointments([])
       }
     } catch (error) {
       console.error('Erreur lors du chargement des rendez-vous:', error)
+      setAppointments([])
     } finally {
       setLoading(false)
     }
@@ -95,9 +99,29 @@ export default function AppointmentsManagement() {
       if (response.ok) {
         const data = await response.json()
         setAvailability(data.availability || [])
+      } else if (response.status === 404) {
+        console.log('Routes pastor/availability non disponibles')
+        setAvailability([])
       }
     } catch (error) {
       console.error('Erreur lors du chargement des disponibilités:', error)
+      setAvailability([])
+    }
+  }
+
+  const fetchUnavailability = async () => {
+    try {
+      const response = await authenticatedFetch('/api/pastor/unavailability')
+      if (response.ok) {
+        const data = await response.json()
+        setUnavailability(data.unavailability || [])
+      } else if (response.status === 404) {
+        console.log('Routes pastor/unavailability non disponibles')
+        setUnavailability([])
+      }
+    } catch (error) {
+      console.error('Erreur lors du chargement des indisponibilités:', error)
+      setUnavailability([])
     }
   }
 

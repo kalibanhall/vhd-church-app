@@ -37,28 +37,43 @@ export default function AdminDashboard() {
       
       if (response.ok) {
         const data = await response.json()
-        if (data.success) {
+        if (data.success && data.analytics) {
           const analytics = data.analytics
           setStats({
-            totalMembers: analytics.totalMembers,
-            activeMembers: analytics.totalMembers, // Tous les membres retournés sont actifs
-            todaysPresence: analytics.newMembersThisMonth, // Approximation
-            monthlyDonations: Math.round(analytics.totalDonationsThisMonth),
-            pendingPrayers: analytics.prayersThisMonth,
-            upcomingEvents: analytics.upcomingEvents,
-            pendingTestimonies: analytics.testimoniesThisMonth,
-            thisWeekAttendance: analytics.totalMessages // Approximation avec l'activité
+            totalMembers: analytics.totalMembers || 0,
+            activeMembers: analytics.totalMembers || 0, // Tous les membres retournés sont actifs
+            todaysPresence: analytics.newMembersThisMonth || 0, // Approximation
+            monthlyDonations: Math.round(analytics.totalDonationsThisMonth || 0),
+            pendingPrayers: analytics.prayersThisMonth || 0,
+            upcomingEvents: analytics.upcomingEvents || 0,
+            pendingTestimonies: analytics.testimoniesThisMonth || 0,
+            thisWeekAttendance: analytics.totalMessages || 0 // Approximation avec l'activité
           })
           
           // Utiliser les activités récentes de l'API
-          setRecentActivities(analytics.recentDonations.slice(0, 5).map((donation: any) => ({
-            type: 'donation',
-            description: donation.description,
-            time: new Date(donation.date).toLocaleDateString('fr-FR')
-          })))
+          if (analytics.recentDonations && Array.isArray(analytics.recentDonations)) {
+            setRecentActivities(analytics.recentDonations.slice(0, 5).map((donation: any) => ({
+              type: 'donation',
+              description: donation.description || 'Don',
+              time: new Date(donation.date).toLocaleDateString('fr-FR')
+            })))
+          }
+        } else {
+          // Données invalides
+          setStats({
+            totalMembers: 0,
+            activeMembers: 0,
+            todaysPresence: 0,
+            monthlyDonations: 0,
+            pendingPrayers: 0,
+            upcomingEvents: 0,
+            pendingTestimonies: 0,
+            thisWeekAttendance: 0
+          })
+          setRecentActivities([])
         }
       } else {
-        console.log('API analytics non disponible')
+        console.log('API analytics non disponible, status:', response.status)
         // Si l'API n'est pas disponible, ne pas afficher de données fictives
         setStats({
           totalMembers: 0,
