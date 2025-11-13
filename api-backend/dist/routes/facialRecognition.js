@@ -156,5 +156,79 @@ router.delete('/:id', auth_1.authenticate, async (req, res) => {
         });
     }
 });
+/**
+ * GET /facial-recognition/members - Récupérer les membres avec ou sans descripteurs
+ */
+router.get('/members', auth_1.authenticate, async (req, res) => {
+    try {
+        const { withFaceDescriptor, withoutFaceDescriptor } = req.query;
+        let query = supabase
+            .from('users')
+            .select('id, first_name, last_name, email, profile_image_url, role')
+            .order('first_name', { ascending: true });
+        // Filtrer selon les paramètres
+        if (withFaceDescriptor === 'true') {
+            // Récupérer les utilisateurs qui ont au moins un descripteur
+            const { data: usersWithDescriptors, error: descriptorsError } = await supabase
+                .from('face_descriptors')
+                .select('user_id')
+                .order('user_id');
+            if (descriptorsError) {
+                throw descriptorsError;
+            }
+            const userIds = [...new Set(usersWithDescriptors.map(d => d.user_id))];
+            if (userIds.length === 0) {
+                return res.json({
+                    success: true,
+                    data: [],
+                    count: 0
+                });
+            }
+            query = query.in('id', userIds);
+        }
+        else if (withoutFaceDescriptor === 'true') {
+            // Récupérer les utilisateurs qui n'ont pas de descripteur
+            const { data: usersWithDescriptors, error: descriptorsError } = await supabase
+                .from('face_descriptors')
+                .select('user_id');
+            if (descriptorsError) {
+                throw descriptorsError;
+            }
+            const userIds = [...new Set(usersWithDescriptors.map(d => d.user_id))];
+            if (userIds.length > 0) {
+                query = query.not('id', 'in', `(${userIds.join(',')})`);
+            }
+        }
+        const { data, error } = await query;
+        if (error) {
+            console.error('❌ Erreur base de données:', error);
+            return res.status(500).json({
+                success: false,
+                error: 'Erreur lors de la récupération des membres'
+            });
+        }
+        // Formater les données pour compatibilité
+        const formattedData = data?.map(user => ({
+            id: user.id,
+            nom: user.last_name,
+            prenom: user.first_name,
+            email: user.email,
+            photo_url: user.profile_image_url,
+            role: user.role
+        })) || [];
+        res.json({
+            success: true,
+            data: formattedData,
+            count: formattedData.length
+        });
+    }
+    catch (error) {
+        console.error('❌ Erreur serveur:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message || 'Erreur serveur'
+        });
+    }
+});
 exports.default = router;
 //# sourceMappingURL=facialRecognition.js.map
