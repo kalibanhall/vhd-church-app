@@ -8,6 +8,7 @@ import { Label } from '../ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { Badge } from '../ui/badge'
 import { Trash2, Send, Users, UserCheck, Bell, Calendar, Plus, Edit, Save, X } from 'lucide-react'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface NotificationTemplate {
   id: string
@@ -78,7 +79,7 @@ export default function NotificationsManagement() {
 
   const loadTemplates = async () => {
     try {
-      const response = await fetch('/api/admin/notifications/templates')
+      const response = await authenticatedFetch('/api/admin/notifications/templates')
       if (response.ok) {
         const data = await response.json()
         setTemplates(data.templates || [])

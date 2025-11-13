@@ -17,6 +17,7 @@ import {
   Users
 } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
@@ -61,18 +62,8 @@ export default function PreachingsPage() {
         setError(null)
         
         const token = localStorage.getItem('token')
-        const headers: HeadersInit = {
-          'Content-Type': 'application/json',
-        }
-        
-        if (token) {
-          headers['Authorization'] = `Bearer ${token}`
-        }
-        
         console.log('📖 Chargement des prédications...')
-        const response = await fetch('/api/sermons-proxy', {
-          headers
-        })
+        const response = await authenticatedFetch('/api/sermons-proxy')
         
         console.log('📊 Response status:', response.status)
         

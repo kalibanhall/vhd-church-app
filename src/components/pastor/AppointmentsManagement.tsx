@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Calendar, Clock, User, Check, X, MessageSquare, Plus, Minus } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface Appointment {
   id: string
@@ -76,9 +77,7 @@ export default function AppointmentsManagement() {
 
   const fetchAppointments = async () => {
     try {
-      const response = await fetch('/api/pastor/appointments', {
-        credentials: 'include'
-      })
+      const response = await authenticatedFetch('/api/pastor/appointments')
       if (response.ok) {
         const data = await response.json()
         setAppointments(data.appointments || [])
@@ -92,9 +91,7 @@ export default function AppointmentsManagement() {
 
   const fetchAvailability = async () => {
     try {
-      const response = await fetch('/api/pastor/availability', {
-        credentials: 'include'
-      })
+      const response = await authenticatedFetch('/api/pastor/availability')
       if (response.ok) {
         const data = await response.json()
         setAvailability(data.availability || [])
@@ -106,9 +103,7 @@ export default function AppointmentsManagement() {
 
   const fetchUnavailablePeriods = async () => {
     try {
-      const response = await fetch('/api/pastor/unavailability', {
-        credentials: 'include'
-      })
+      const response = await authenticatedFetch('/api/pastor/unavailability')
       if (response.ok) {
         const data = await response.json()
         setUnavailablePeriods(data.periods || [])
@@ -120,10 +115,8 @@ export default function AppointmentsManagement() {
 
   const respondToAppointment = async (appointmentId: string, status: 'CONFIRMED' | 'CANCELLED', responseMessage?: string) => {
     try {
-      const response = await fetch('/api/pastor/appointments/respond', {
+      const response = await authenticatedFetch('/api/pastor/appointments/respond', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({
           appointmentId,
           status,
@@ -148,10 +141,8 @@ export default function AppointmentsManagement() {
     try {
       console.log('Tentative d\'ajout de créneau:', newAvailability)
       
-      const response = await fetch('/api/pastor/availability', {
+      const response = await authenticatedFetch('/api/pastor/availability', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify(newAvailability)
       })
 
@@ -184,10 +175,8 @@ export default function AppointmentsManagement() {
     }
 
     try {
-      const response = await fetch('/api/pastor/unavailability', {
+      const response = await authenticatedFetch('/api/pastor/unavailability', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify(newUnavailability)
       })
 
@@ -208,9 +197,8 @@ export default function AppointmentsManagement() {
 
   const removeAvailability = async (id: string) => {
     try {
-      const response = await fetch(`/api/pastor/availability/${id}`, {
-        method: 'DELETE',
-        credentials: 'include'
+      const response = await authenticatedFetch(`/api/pastor/availability/${id}`, {
+        method: 'DELETE'
       })
 
       if (response.ok) {
@@ -225,9 +213,8 @@ export default function AppointmentsManagement() {
 
   const removeUnavailability = async (id: string) => {
     try {
-      const response = await fetch(`/api/pastor/unavailability/${id}`, {
-        method: 'DELETE',
-        credentials: 'include'
+      const response = await authenticatedFetch(`/api/pastor/unavailability/${id}`, {
+        method: 'DELETE'
       })
 
       if (response.ok) {

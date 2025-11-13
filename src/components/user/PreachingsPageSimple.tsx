@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Play, Calendar, Clock, User, Eye, Download, Volume2, X, Maximize, Minimize, Video } from 'lucide-react'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface Preaching {
   id: string
@@ -54,10 +55,7 @@ export default function PreachingsPage() {
       setIsLoading(true)
       setError(null)
       
-      const response = await fetch('/api/sermons-proxy', {
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' }
-      })
+      const response = await authenticatedFetch('/api/sermons-proxy')
 
       if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`)
@@ -105,12 +103,8 @@ export default function PreachingsPage() {
   // Fonction pour incrémenter le compteur de vues
   const incrementViewCount = async (preachingId: string) => {
     try {
-      const response = await fetch('/api/sermon-views', {
+      const response = await authenticatedFetch('/api/sermon-views', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
         body: JSON.stringify({
           sermonId: preachingId,
           action: 'view'
@@ -133,12 +127,8 @@ export default function PreachingsPage() {
   // Fonction pour tracker les téléchargements
   const trackDownload = async (preachingId: string) => {
     try {
-      await fetch('/api/sermon-views', {
+      await authenticatedFetch('/api/sermon-views', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
         body: JSON.stringify({
           sermonId: preachingId,
           action: 'download'

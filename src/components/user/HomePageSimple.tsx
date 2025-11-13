@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface Event {
   id: string
@@ -48,9 +49,7 @@ export default function HomePageSimple() {
 
   const fetchUpcomingEvents = async () => {
     try {
-      const response = await fetch('/api/events?upcoming=true&homepage=true', {
-        credentials: 'include' // Utiliser les cookies au lieu du token
-      })
+      const response = await authenticatedFetch('/api/events?upcoming=true&homepage=true')
       
       const data = await response.json()
       
@@ -75,9 +74,7 @@ export default function HomePageSimple() {
 
   const fetchPastEvents = async () => {
     try {
-      const response = await fetch('/api/events?past=true&homepage=true', {
-        credentials: 'include'
-      })
+      const response = await authenticatedFetch('/api/events?past=true&homepage=true')
       
       const data = await response.json()
       

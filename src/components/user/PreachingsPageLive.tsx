@@ -24,6 +24,7 @@ import {
   Search,
   Filter
 } from 'lucide-react'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface Sermon {
   id: string
@@ -91,10 +92,7 @@ export default function PreachingsPageLive() {
       setLoading(true)
       setError(null)
 
-      const response = await fetch('/api/sermons-proxy', {
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' }
-      })
+      const response = await authenticatedFetch('/api/sermons-proxy')
 
       if (!response.ok) {
         throw new Error(`Erreur HTTP: ${response.status}`)

@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Heart, BookOpen, Clock, CheckCircle, XCircle, Eye, User } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface Prayer {
   id: string
@@ -52,9 +53,7 @@ export default function PrayersTestimoniesValidation() {
       setLoading(true)
       
       // Récupérer les prières en attente
-      const prayersResponse = await fetch('/api/admin/validation?type=prayers', {
-        credentials: "include"
-      })
+      const prayersResponse = await authenticatedFetch('/api/admin/validation?type=prayers')
       if (prayersResponse.ok) {
         const prayersData = await prayersResponse.json()
         setPrayers(prayersData)
@@ -63,9 +62,7 @@ export default function PrayersTestimoniesValidation() {
       }
 
       // Récupérer les témoignages en attente
-      const testimoniesResponse = await fetch('/api/admin/validation?type=testimonies', {
-        credentials: "include"
-      })
+      const testimoniesResponse = await authenticatedFetch('/api/admin/validation?type=testimonies')
       if (testimoniesResponse.ok) {
         const testimoniesData = await testimoniesResponse.json()
         setTestimonies(testimoniesData)
@@ -86,9 +83,8 @@ export default function PrayersTestimoniesValidation() {
     try {
 
       // Appeler l'API pour approuver/rejeter la prière
-      const response = await fetch('/api/admin/validation/moderate', {
+      const response = await authenticatedFetch('/api/admin/validation/moderate', {
         method: 'PATCH',
-        headers: { "Content-Type": "application/json" }, credentials: "include",
         body: JSON.stringify({ 
           type: 'prayer',
           itemId: prayerId,
@@ -116,9 +112,8 @@ export default function PrayersTestimoniesValidation() {
     try {
 
       // Appeler l'API pour approuver/rejeter le témoignage
-      const response = await fetch('/api/admin/validation/moderate', {
+      const response = await authenticatedFetch('/api/admin/validation/moderate', {
         method: 'PATCH',
-        headers: { "Content-Type": "application/json" }, credentials: "include",
         body: JSON.stringify({ 
           type: 'testimony',
           itemId: testimonyId,

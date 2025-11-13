@@ -20,6 +20,7 @@ import {
   Clock,
   Baby
 } from 'lucide-react'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface ProfileProps {
   user: {
@@ -108,11 +109,12 @@ export default function ProfilePage({ user }: ProfileProps) {
         const formData = new FormData()
         formData.append('profilePhoto', file)
         
-        const token = localStorage.getItem('authToken')
+        const token = localStorage.getItem('token')
         const response = await fetch('/api/profile/photo', {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
           },
           body: formData
         })
@@ -142,13 +144,8 @@ export default function ProfilePage({ user }: ProfileProps) {
 
   const handleSaveProfile = async () => {
     try {
-      const token = localStorage.getItem('authToken')
-      const response = await fetch('/api/profile', {
+      const response = await authenticatedFetch('/api/profile', {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
         body: JSON.stringify(editData)
       })
 

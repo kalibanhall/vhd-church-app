@@ -5,6 +5,7 @@ import { Card, CardContent } from '../ui/card'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { ArrowLeft, CheckCircle, XCircle, Phone, CreditCard } from 'lucide-react'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 type PaymentProvider = 'VODACOM_MPESA' | 'AIRTEL_MONEY' | 'ORANGE_MONEY'
 
@@ -85,12 +86,8 @@ export default function MobilePaymentPortal({
 
     try {
       // Simuler l'appel API vers le provider de paiement mobile
-      const response = await fetch('/api/mobile-payment/initiate', {
+      const response = await authenticatedFetch('/api/mobile-payment/initiate', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
         body: JSON.stringify({
           amount: paymentData.amount,
           donationType: paymentData.donationType,
