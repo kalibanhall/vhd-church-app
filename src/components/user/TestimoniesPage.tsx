@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface Testimony {
   id: string
@@ -66,9 +67,7 @@ export default function TestimoniesPage() {
         ...(activeTab === 'all' && { status: 'approved' })
       })
 
-      const response = await fetch(`/api/testimonies-proxy?${params}`, {
-        credentials: 'include'
-      })
+      const response = await authenticatedFetch(`/api/testimonies-proxy?${params}`)
       if (response.ok) {
         const data = await response.json()
         setTestimonies(data)
@@ -85,12 +84,8 @@ export default function TestimoniesPage() {
     if (!user?.id || !newTestimony.title || !newTestimony.content) return
 
     try {
-      const response = await fetch(`/api/testimonies-proxy?userId=${user.id}`, {
+      const response = await authenticatedFetch(`/api/testimonies-proxy?userId=${user.id}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
         body: JSON.stringify(newTestimony),
       })
 
@@ -110,9 +105,8 @@ export default function TestimoniesPage() {
     if (!user?.id) return
 
     try {
-      const response = await fetch(`/api/testimonies-proxy/like?userId=${user.id}&testimonyId=${testimonyId}`, {
-        method: 'POST',
-        credentials: 'include'
+      const response = await authenticatedFetch(`/api/testimonies-proxy/like?userId=${user.id}&testimonyId=${testimonyId}`, {
+        method: 'POST'
       })
 
       if (response.ok) {
@@ -125,9 +119,7 @@ export default function TestimoniesPage() {
 
   const fetchComments = async (testimonyId: string) => {
     try {
-      const response = await fetch(`/api/testimonies-proxy/comments?testimonyId=${testimonyId}`, {
-        credentials: 'include'
-      })
+      const response = await authenticatedFetch(`/api/testimonies-proxy/comments?testimonyId=${testimonyId}`)
       if (response.ok) {
         const data = await response.json()
         setComments(prev => ({ ...prev, [testimonyId]: data }))
@@ -141,12 +133,8 @@ export default function TestimoniesPage() {
     if (!user?.id || !newComment.trim()) return
 
     try {
-      const response = await fetch(`/api/testimonies-proxy/comments?userId=${user.id}&testimonyId=${testimonyId}`, {
+      const response = await authenticatedFetch(`/api/testimonies-proxy/comments?userId=${user.id}&testimonyId=${testimonyId}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
         body: JSON.stringify({ content: newComment }),
       })
 

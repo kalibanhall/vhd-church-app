@@ -8,6 +8,7 @@ import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
 import { Badge } from '../ui/badge'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface Prayer {
   id: string
@@ -59,7 +60,7 @@ export default function PrayersPage() {
         url += '&status=approved'
       }
 
-      const response = await fetch(url)
+      const response = await authenticatedFetch(url)
       if (response.ok) {
         const data = await response.json()
         setPrayers(data)
@@ -75,12 +76,8 @@ export default function PrayersPage() {
     e.preventDefault()
     
     try {
-      const response = await fetch(`/api/prayers-proxy?userId=${user?.id}`, {
+      const response = await authenticatedFetch(`/api/prayers-proxy?userId=${user?.id}`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
         body: JSON.stringify(newPrayer)
       })
 
@@ -113,9 +110,8 @@ export default function PrayersPage() {
       }
 
       // L'API gère automatiquement l'ajout/suppression selon l'état actuel
-      const response = await fetch(`/api/prayers-proxy/support?prayerId=${prayerId}&userId=${user.id}`, {
-        method: 'POST',
-        credentials: 'include'
+      const response = await authenticatedFetch(`/api/prayers-proxy/support?prayerId=${prayerId}&userId=${user.id}`, {
+        method: 'POST'
       })
 
       if (response.ok) {
