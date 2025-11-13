@@ -15,6 +15,7 @@ import testimoniesRoutes from './routes/testimonies';
 import analyticsRoutes from './routes/analytics';
 import healthRoutes from './routes/health';
 import facialRecognitionRoutes from './routes/facialRecognition';
+import notificationsRoutes from './routes/notifications';
 
 // Load environment variables
 dotenv.config();
@@ -100,6 +101,7 @@ app.use(`/${API_VERSION}/prayers`, prayersRoutes);
 app.use(`/${API_VERSION}/testimonies`, testimoniesRoutes);
 app.use(`/${API_VERSION}/analytics`, analyticsRoutes);
 app.use(`/${API_VERSION}/facial-recognition`, facialRecognitionRoutes);
+app.use(`/${API_VERSION}/notifications`, notificationsRoutes);
 
 // 404 handler
 app.use((req: Request, res: Response) => {

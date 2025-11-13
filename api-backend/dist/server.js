@@ -19,6 +19,7 @@ const testimonies_1 = __importDefault(require("./routes/testimonies"));
 const analytics_1 = __importDefault(require("./routes/analytics"));
 const health_1 = __importDefault(require("./routes/health"));
 const facialRecognition_1 = __importDefault(require("./routes/facialRecognition"));
+const notifications_1 = __importDefault(require("./routes/notifications"));
 // Load environment variables
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -92,6 +93,7 @@ app.use(`/${API_VERSION}/prayers`, prayers_1.default);
 app.use(`/${API_VERSION}/testimonies`, testimonies_1.default);
 app.use(`/${API_VERSION}/analytics`, analytics_1.default);
 app.use(`/${API_VERSION}/facial-recognition`, facialRecognition_1.default);
+app.use(`/${API_VERSION}/notifications`, notifications_1.default);
 // 404 handler
 app.use((req, res) => {
     res.status(404).json({

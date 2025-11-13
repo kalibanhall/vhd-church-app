@@ -492,7 +492,8 @@ export default function UserProfile({ user }: ProfileProps) {
                   ) : (
                     <>
                       <Camera className="w-3 h-3 md:w-4 md:h-4 mr-1" />
-                      <span className="hidden md:inline">Enregistrer</span>
+                      <span className="hidden md:inline">Enregistrez votre visage</span>
+                      <span className="md:hidden">Enregistrer</span>
                       <span className="md:hidden">Photo</span>
                     </>
                   )}
