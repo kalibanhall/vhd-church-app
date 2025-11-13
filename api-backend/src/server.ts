@@ -106,7 +106,7 @@ app.use(`/${API_VERSION}/analytics`, analyticsRoutes);
 app.use(`/${API_VERSION}/facial-recognition`, facialRecognitionRoutes);
 app.use(`/${API_VERSION}/notifications`, notificationsRoutes);
 app.use(`/${API_VERSION}/polls`, pollsRoutes);
-app.use(`/${API_VERSION}/pastor`, pastorRoutes);
+// app.use(`/${API_VERSION}/pastor`, pastorRoutes); // Temporarily disabled - tables don't exist
 app.use(`/${API_VERSION}/user`, userStatsRoutes);
 
 // 404 handler
