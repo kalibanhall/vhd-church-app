@@ -1,0 +1,179 @@
+/**
+ * Routes de reconnaissance faciale
+ * @author CHRIS NGOZULU KASONGO (KalibanHall)
+ */
+
+import { Router, Request, Response } from 'express';
+import { createClient } from '@supabase/supabase-js';
+import { authenticate } from '../middleware/auth';
+
+const router = Router();
+
+// Initialize Supabase client
+const supabase = createClient(
+  process.env.SUPABASE_URL || '',
+  process.env.SUPABASE_ANON_KEY || ''
+);
+
+/**
+ * POST /facial-recognition - Enregistrer un descripteur facial
+ */
+router.post('/', authenticate, async (req: Request, res: Response) => {
+  try {
+    const { userId, descriptor, photoUrl, qualityScore, isPrimary } = req.body;
+
+    console.log('📸 Enregistrement descripteur facial:', {
+      userId,
+      descriptorLength: descriptor?.length,
+      hasPhoto: !!photoUrl,
+      qualityScore,
+      isPrimary
+    });
+
+    // Validation
+    if (!userId || !descriptor || !Array.isArray(descriptor)) {
+      return res.status(400).json({
+        success: false,
+        error: 'userId et descriptor (tableau) requis'
+      });
+    }
+
+    if (descriptor.length !== 128) {
+      return res.status(400).json({
+        success: false,
+        error: 'Le descripteur doit contenir exactement 128 valeurs'
+      });
+    }
+
+    // Si c'est le descripteur principal, désactiver les autres
+    if (isPrimary) {
+      await supabase
+        .from('face_descriptors')
+        .update({ is_primary: false })
+        .eq('user_id', userId);
+    }
+
+    // Insérer le nouveau descripteur
+    const { data, error } = await supabase
+      .from('face_descriptors')
+      .insert([
+        {
+          user_id: userId,
+          descriptor: descriptor,
+          photo_url: photoUrl || null,
+          quality_score: qualityScore || 0.9,
+          is_primary: isPrimary !== false, // true par défaut
+          created_at: new Date().toISOString()
+        }
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('❌ Erreur base de données:', error);
+      return res.status(500).json({
+        success: false,
+        error: 'Erreur lors de l\'enregistrement du descripteur',
+        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      });
+    }
+
+    console.log('✅ Descripteur facial enregistré:', data.id);
+
+    res.status(201).json({
+      success: true,
+      message: 'Descripteur facial enregistré avec succès',
+      data: {
+        id: data.id,
+        userId: data.user_id,
+        isPrimary: data.is_primary,
+        qualityScore: data.quality_score,
+        createdAt: data.created_at
+      }
+    });
+  } catch (error: any) {
+    console.error('❌ Erreur serveur:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Erreur serveur',
+      details: process.env.NODE_ENV === 'development' ? error : undefined
+    });
+  }
+});
+
+/**
+ * GET /facial-recognition - Récupérer les descripteurs d'un utilisateur
+ */
+router.get('/', authenticate, async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: 'userId requis'
+      });
+    }
+
+    const { data, error } = await supabase
+      .from('face_descriptors')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('❌ Erreur base de données:', error);
+      return res.status(500).json({
+        success: false,
+        error: 'Erreur lors de la récupération des descripteurs'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: data || [],
+      count: data?.length || 0
+    });
+  } catch (error: any) {
+    console.error('❌ Erreur serveur:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Erreur serveur'
+    });
+  }
+});
+
+/**
+ * DELETE /facial-recognition/:id - Supprimer un descripteur facial
+ */
+router.delete('/:id', authenticate, async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const { error } = await supabase
+      .from('face_descriptors')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('❌ Erreur base de données:', error);
+      return res.status(500).json({
+        success: false,
+        error: 'Erreur lors de la suppression du descripteur'
+      });
+    }
+
+    res.json({
+      success: true,
+      message: 'Descripteur supprimé avec succès'
+    });
+  } catch (error: any) {
+    console.error('❌ Erreur serveur:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Erreur serveur'
+    });
+  }
+});
+
+export default router;
