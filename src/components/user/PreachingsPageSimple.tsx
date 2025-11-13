@@ -54,8 +54,9 @@ export default function PreachingsPage() {
       setIsLoading(true)
       setError(null)
       
-      const response = await fetch('/api/preachings', {
-        credentials: 'include'
+      const response = await fetch('/api/sermons-proxy', {
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' }
       })
 
       if (!response.ok) {
