@@ -39,7 +39,7 @@ router.get('/', authenticate, async (req: Request, res: Response) => {
 
     // Filtrer par statut de lecture si demandé
     if (unread === 'true') {
-      query = query.eq('read', false);
+      query = query.eq('is_read', false);
     }
 
     const { data: notifications, error } = await query
@@ -58,7 +58,7 @@ router.get('/', authenticate, async (req: Request, res: Response) => {
       .from('notifications')
       .select('*', { count: 'exact', head: true })
       .eq('user_id', targetUserId)
-      .eq('read', false);
+      .eq('is_read', false);
 
     res.json({
       success: true,
@@ -93,7 +93,7 @@ router.patch('/mark-read', authenticate, async (req: Request, res: Response) => 
 
     const { error } = await supabase
       .from('notifications')
-      .update({ read: true, updated_at: new Date().toISOString() })
+      .update({ is_read: true, updated_at: new Date().toISOString() })
       .in('id', notificationIds)
       .eq('user_id', targetUserId);
 
@@ -128,7 +128,7 @@ router.patch('/:id', authenticate, async (req: Request, res: Response) => {
 
     const { error } = await supabase
       .from('notifications')
-      .update({ read: true, updated_at: new Date().toISOString() })
+      .update({ is_read: true, updated_at: new Date().toISOString() })
       .eq('id', id)
       .eq('user_id', authUserId);
 

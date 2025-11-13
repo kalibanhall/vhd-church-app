@@ -30,7 +30,7 @@ router.get('/', auth_1.authenticate, async (req, res) => {
             .eq('user_id', targetUserId);
         // Filtrer par statut de lecture si demandé
         if (unread === 'true') {
-            query = query.eq('read', false);
+            query = query.eq('is_read', false);
         }
         const { data: notifications, error } = await query
             .order('created_at', { ascending: false })
@@ -46,7 +46,7 @@ router.get('/', auth_1.authenticate, async (req, res) => {
             .from('notifications')
             .select('*', { count: 'exact', head: true })
             .eq('user_id', targetUserId)
-            .eq('read', false);
+            .eq('is_read', false);
         res.json({
             success: true,
             data: notifications || [],
@@ -77,7 +77,7 @@ router.patch('/mark-read', auth_1.authenticate, async (req, res) => {
         }
         const { error } = await supabase
             .from('notifications')
-            .update({ read: true, updated_at: new Date().toISOString() })
+            .update({ is_read: true, updated_at: new Date().toISOString() })
             .in('id', notificationIds)
             .eq('user_id', targetUserId);
         if (error) {
@@ -109,7 +109,7 @@ router.patch('/:id', auth_1.authenticate, async (req, res) => {
         const authUserId = req.user?.id;
         const { error } = await supabase
             .from('notifications')
-            .update({ read: true, updated_at: new Date().toISOString() })
+            .update({ is_read: true, updated_at: new Date().toISOString() })
             .eq('id', id)
             .eq('user_id', authUserId);
         if (error) {
