@@ -15,10 +15,22 @@ const supabase = (0, supabase_js_1.createClient)(process.env.SUPABASE_URL || '',
  */
 router.get('/', async (req, res) => {
     try {
-        const { data: prayers, error } = await supabase
+        const { status, userId, userOnly } = req.query;
+        let query = supabase
             .from('prayers')
-            .select('*')
-            .order('created_at', { ascending: false });
+            .select('*');
+        // Filtrer par statut si demandé
+        if (status) {
+            query = query.eq('status', String(status).toUpperCase());
+        }
+        // Filtrer par utilisateur si demandé
+        if (userId) {
+            query = query.eq('user_id', userId);
+        }
+        else if (userOnly === 'true' && req.user?.id) {
+            query = query.eq('user_id', req.user.id);
+        }
+        const { data: prayers, error } = await query.order('created_at', { ascending: false });
         if (error) {
             console.error('❌ Erreur récupération prières:', error);
             return res.status(500).json({

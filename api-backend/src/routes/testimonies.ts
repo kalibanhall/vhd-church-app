@@ -20,10 +20,29 @@ const supabase = createClient(
  */
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const { data: testimonies, error } = await supabase
+    const { status, userId, userOnly } = req.query;
+
+    let query = supabase
       .from('testimonies')
-      .select('*')
-      .order('created_at', { ascending: false });
+      .select('*');
+
+    // Filtrer par statut si demandé (pending = is_approved false)
+    if (status) {
+      if (String(status).toLowerCase() === 'pending') {
+        query = query.eq('is_approved', false);
+      } else if (String(status).toLowerCase() === 'approved') {
+        query = query.eq('is_approved', true);
+      }
+    }
+
+    // Filtrer par utilisateur si demandé
+    if (userId) {
+      query = query.eq('user_id', userId);
+    } else if (userOnly === 'true' && (req as any).user?.id) {
+      query = query.eq('user_id', (req as any).user.id);
+    }
+
+    const { data: testimonies, error } = await query.order('created_at', { ascending: false });
 
     if (error) {
       console.error('❌ Erreur récupération témoignages:', error);

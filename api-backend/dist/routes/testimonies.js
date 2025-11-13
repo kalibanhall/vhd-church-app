@@ -15,10 +15,27 @@ const supabase = (0, supabase_js_1.createClient)(process.env.SUPABASE_URL || '',
  */
 router.get('/', async (req, res) => {
     try {
-        const { data: testimonies, error } = await supabase
+        const { status, userId, userOnly } = req.query;
+        let query = supabase
             .from('testimonies')
-            .select('*')
-            .order('created_at', { ascending: false });
+            .select('*');
+        // Filtrer par statut si demandé (pending = is_approved false)
+        if (status) {
+            if (String(status).toLowerCase() === 'pending') {
+                query = query.eq('is_approved', false);
+            }
+            else if (String(status).toLowerCase() === 'approved') {
+                query = query.eq('is_approved', true);
+            }
+        }
+        // Filtrer par utilisateur si demandé
+        if (userId) {
+            query = query.eq('user_id', userId);
+        }
+        else if (userOnly === 'true' && req.user?.id) {
+            query = query.eq('user_id', req.user.id);
+        }
+        const { data: testimonies, error } = await query.order('created_at', { ascending: false });
         if (error) {
             console.error('❌ Erreur récupération témoignages:', error);
             return res.status(500).json({

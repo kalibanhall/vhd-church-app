@@ -20,10 +20,25 @@ const supabase = createClient(
  */
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const { data: prayers, error } = await supabase
+    const { status, userId, userOnly } = req.query;
+
+    let query = supabase
       .from('prayers')
-      .select('*')
-      .order('created_at', { ascending: false });
+      .select('*');
+
+    // Filtrer par statut si demandé
+    if (status) {
+      query = query.eq('status', String(status).toUpperCase());
+    }
+
+    // Filtrer par utilisateur si demandé
+    if (userId) {
+      query = query.eq('user_id', userId);
+    } else if (userOnly === 'true' && (req as any).user?.id) {
+      query = query.eq('user_id', (req as any).user.id);
+    }
+
+    const { data: prayers, error } = await query.order('created_at', { ascending: false });
 
     if (error) {
       console.error('❌ Erreur récupération prières:', error);
