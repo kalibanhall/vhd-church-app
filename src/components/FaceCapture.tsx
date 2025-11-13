@@ -113,26 +113,57 @@ export default function FaceCapture({
   }, [isModelLoaded, mode, existingDescriptor]);
 
   const capturePhoto = async () => {
-    if (!videoRef.current || !canvasRef.current) return;
+    if (!videoRef.current || !canvasRef.current) {
+      setError('Caméra non initialisée. Veuillez recharger la page.');
+      return;
+    }
 
     try {
+      setError('Détection du visage en cours...');
+      
+      // Options de détection plus permissives
+      const options = new faceapi.TinyFaceDetectorOptions({
+        inputSize: 512,  // Augmenté pour meilleure détection
+        scoreThreshold: 0.3  // Plus permissif (0.5 par défaut)
+      });
+
       const detection = await faceapi
-        .detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions())
+        .detectSingleFace(videoRef.current, options)
         .withFaceLandmarks()
         .withFaceDescriptor();
 
       if (!detection) {
-        setError('Aucun visage détecté. Positionnez-vous face à la caméra.');
+        setError('❌ Aucun visage détecté. Assurez-vous que:\n• Votre visage est bien éclairé\n• Vous regardez la caméra\n• Vous êtes à environ 50cm de l\'écran');
         return;
       }
+
+      // Vérifier la qualité de la détection
+      if (detection.detection.score < 0.4) {
+        setError('⚠️ Détection de faible qualité. Améliorez l\'éclairage et rapprochez-vous légèrement.');
+        return;
+      }
+
+      setError('✅ Visage détecté ! Traitement en cours...');
 
       // Capturer l'image
       const canvas = document.createElement('canvas');
       canvas.width = videoRef.current.videoWidth;
       canvas.height = videoRef.current.videoHeight;
       const ctx = canvas.getContext('2d');
-      ctx?.drawImage(videoRef.current, 0, 0);
-      const imageData = canvas.toDataURL('image/jpeg', 0.8);
+      
+      if (!ctx) {
+        setError('Erreur de contexte canvas. Réessayez.');
+        return;
+      }
+      
+      ctx.drawImage(videoRef.current, 0, 0);
+      const imageData = canvas.toDataURL('image/jpeg', 0.9);  // Qualité augmentée
+
+      console.log('📸 Descripteur capturé:', {
+        descriptorLength: detection.descriptor.length,
+        detectionScore: detection.detection.score,
+        imageSizeKB: Math.round(imageData.length / 1024)
+      });
 
       // Retourner le descripteur et l'image
       if (onFaceDetected) {
@@ -140,8 +171,9 @@ export default function FaceCapture({
       }
 
       setError('');
-    } catch (err) {
-      setError('Erreur lors de la capture. Réessayez.');
+    } catch (err: any) {
+      console.error('❌ Erreur capture:', err);
+      setError(`Erreur lors de la capture: ${err.message || 'Erreur inconnue'}. Réessayez.`);
     }
   };
 
@@ -159,8 +191,20 @@ export default function FaceCapture({
   return (
     <div className="space-y-4">
       {error && (
-        <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-          <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+        <div className={`border rounded-lg p-4 ${
+          error.includes('✅') 
+            ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
+            : error.includes('⚠️')
+            ? 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800'
+            : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+        }`}>
+          <p className={`text-sm whitespace-pre-line ${
+            error.includes('✅') 
+              ? 'text-green-600 dark:text-green-400'
+              : error.includes('⚠️')
+              ? 'text-yellow-600 dark:text-yellow-400'
+              : 'text-red-600 dark:text-red-400'
+          }`}>{error}</p>
         </div>
       )}
 

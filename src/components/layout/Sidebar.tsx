@@ -139,6 +139,9 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
     ? isInAdminSpace || activeTab === 'pastor-appointments'
     : activeTab === 'pastor-appointments'
 
+  // Pour les ADMIN, la sidebar est toujours visible (non repliable)
+  const shouldBeVisible = userRole === 'ADMIN' ? true : !isCollapsed
+
   // Gérer le clic sur un élément du menu avec auto-repli
   const handleMenuItemClick = (itemId: string) => {
     onTabChange(itemId)
@@ -157,7 +160,7 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
       )}
       
       <aside className={`fixed left-0 top-14 md:top-16 h-[calc(100vh-3.5rem)] md:h-[calc(100vh-4rem)] bg-gradient-to-b from-blue-900 to-blue-800 text-white z-40 flex flex-col transition-all duration-300 ease-in-out w-64 ${
-        isCollapsed ? '-translate-x-full' : 'translate-x-0'
+        shouldBeVisible ? 'translate-x-0' : '-translate-x-full'
       }`}>
         {/* Header avec Logo - Padding réduit */}
         <div className="p-2 md:p-3 border-b border-blue-700">
@@ -176,23 +179,25 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
               <h1 className="text-xs md:text-sm font-bold text-white leading-tight">Ministères VHD</h1>
               <p className="text-blue-200 text-xs hidden md:block">{getSpaceTitle()}</p>
             </div>
-            {/* Bouton de fermeture sidebar */}
-            <button
-              onClick={onToggleCollapse}
-              className="text-blue-200 hover:text-white p-1 rounded transition-colors ml-2"
-              title="Masquer le menu"
-            >
-              <X className="h-4 w-4" />
-            </button>
+            {/* Bouton de fermeture sidebar - Caché pour les ADMIN */}
+            {userRole !== 'ADMIN' && (
+              <button
+                onClick={onToggleCollapse}
+                className="text-blue-200 hover:text-white p-1 rounded transition-colors ml-2"
+                title="Masquer le menu"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
           </div>
         </div>
 
       {/* Navigation - Padding réduit */}
       <nav className="flex-1 p-2 md:p-4 overflow-y-auto scrollbar-hide">
         <ul className="space-y-2">
-          {/* Menu utilisateur normal - Affiché pour tous, y compris les ADMIN */}
-          {/* Les ADMIN voient le menu normal + leur menu admin en bas */}
-          {userMenuItems.map((item) => {
+          {/* Menu utilisateur normal - Affiché UNIQUEMENT pour les non-ADMIN */}
+          {/* Les ADMIN voient UNIQUEMENT leur menu admin */}
+          {userRole !== 'ADMIN' && userMenuItems.map((item) => {
             const Icon = item.icon
             return (
               <li key={item.id}>
