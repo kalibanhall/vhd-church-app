@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { 
   User, 
   Mail, 
@@ -36,10 +36,23 @@ interface ProfileProps {
   }
 }
 
+interface UserStats {
+  donations: number
+  appointments: number
+  prayers: number
+  testimonies: number
+}
+
 export default function UserProfile({ user }: ProfileProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [showFacialEnrollment, setShowFacialEnrollment] = useState(false)
   const [hasFaceData, setHasFaceData] = useState(false)
+  const [userStats, setUserStats] = useState<UserStats>({
+    donations: 0,
+    appointments: 0,
+    prayers: 0,
+    testimonies: 0
+  })
   const [editData, setEditData] = useState({
     firstName: user.firstName || '',
     lastName: user.lastName || '',
@@ -56,6 +69,22 @@ export default function UserProfile({ user }: ProfileProps) {
   const [profilePhoto, setProfilePhoto] = useState(user.profileImageUrl)
   const [isUploadingPhoto, setIsUploadingPhoto] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Charger les stats réelles de l'utilisateur
+  useEffect(() => {
+    const fetchUserStats = async () => {
+      try {
+        const response = await authenticatedFetch(`/api/user-stats-proxy?userId=${user.id}`)
+        if (response.ok) {
+          const stats = await response.json()
+          setUserStats(stats)
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement des stats:', error)
+      }
+    }
+    fetchUserStats()
+  }, [user.id])
 
   const handleInputChange = (field: string, value: string) => {
     setEditData(prev => ({
@@ -540,22 +569,22 @@ export default function UserProfile({ user }: ProfileProps) {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4 mb-4 md:mb-6">
           <div className="bg-white rounded-lg shadow-sm p-3 md:p-6 text-center">
             <Heart className="w-5 h-5 md:w-8 md:h-8 text-green-500 mx-auto mb-2 md:mb-3" />
-            <div className="text-lg md:text-2xl font-bold text-green-600">12</div>
+            <div className="text-lg md:text-2xl font-bold text-green-600">{userStats.donations}</div>
             <div className="text-xs md:text-sm text-gray-600">Dons</div>
           </div>
           <div className="bg-white rounded-lg shadow-sm p-3 md:p-6 text-center">
             <Calendar className="w-5 h-5 md:w-8 md:h-8 text-blue-500 mx-auto mb-2 md:mb-3" />
-            <div className="text-lg md:text-2xl font-bold text-blue-600">3</div>
+            <div className="text-lg md:text-2xl font-bold text-blue-600">{userStats.appointments}</div>
             <div className="text-xs md:text-sm text-gray-600">RDV</div>
           </div>
           <div className="bg-white rounded-lg shadow-sm p-3 md:p-6 text-center">
             <MessageCircle className="w-5 h-5 md:w-8 md:h-8 text-purple-500 mx-auto mb-2 md:mb-3" />
-            <div className="text-lg md:text-2xl font-bold text-purple-600">8</div>
+            <div className="text-lg md:text-2xl font-bold text-purple-600">{userStats.prayers}</div>
             <div className="text-xs md:text-sm text-gray-600">Prières</div>
           </div>
           <div className="bg-white rounded-lg shadow-sm p-3 md:p-6 text-center">
             <Book className="w-5 h-5 md:w-8 md:h-8 text-orange-500 mx-auto mb-2 md:mb-3" />
-            <div className="text-lg md:text-2xl font-bold text-orange-600">5</div>
+            <div className="text-lg md:text-2xl font-bold text-orange-600">{userStats.testimonies}</div>
             <div className="text-xs md:text-sm text-gray-600">Témoignages</div>
           </div>
         </div>
