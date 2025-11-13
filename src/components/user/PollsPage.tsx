@@ -10,6 +10,7 @@ import {
   Vote
 } from 'lucide-react'
 import { authenticatedFetch } from '@/lib/auth-fetch'
+import { safeFormatDate } from '@/lib/utils'
 
 interface PollOption {
   id: string
@@ -215,7 +216,7 @@ export default function PollsPage() {
                       {poll.expiresAt && (
                         <span className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
-                          Expire le {new Date(poll.expiresAt).toLocaleDateString('fr-FR')}
+                          Expire le {safeFormatDate(poll.expiresAt)}
                         </span>
                       )}
                     </div>
@@ -373,7 +374,7 @@ export default function PollsPage() {
                       </span>
                       <span className="flex items-center gap-1">
                         <Calendar className="w-4 h-4" />
-                        Expiré le {poll.expiresAt ? new Date(poll.expiresAt).toLocaleDateString('fr-FR') : 'N/A'}
+                        Expiré le {safeFormatDate(poll.expiresAt, 'N/A')}
                       </span>
                     </div>
                   </div>
