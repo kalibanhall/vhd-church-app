@@ -88,12 +88,8 @@ export default function Dashboard() {
   // Les stats sont maintenant gérées directement dans chaque composant via leurs APIs respectives
 
   const renderCurrentPage = () => {
-    // Restriction ADMIN : uniquement accès au dashboard admin
-    if (user?.role === 'ADMIN' && !adminOnlyTabs.includes(activeTab) && activeTab !== 'pastor-appointments' && activeTab !== 'facial-enrollment' && activeTab !== 'facial-attendance' && activeTab !== 'profile') {
-      // Rediriger vers le dashboard admin
-      setActiveTab('admin')
-      return <AdminDashboard />
-    }
+    // L'ADMIN peut maintenant accéder à toutes les pages via la sidebar
+    // Pas de restriction de navigation pour permettre l'accès aux modules admin
 
     switch (activeTab) {
       case 'home':

@@ -190,9 +190,9 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
       {/* Navigation - Padding réduit */}
       <nav className="flex-1 p-2 md:p-4 overflow-y-auto scrollbar-hide">
         <ul className="space-y-2">
-          {/* Menu utilisateur normal - Affiché UNIQUEMENT pour les non-ADMIN */}
-          {/* Les ADMIN ne voient QUE leur dashboard admin */}
-          {userRole !== 'ADMIN' && userMenuItems.map((item) => {
+          {/* Menu utilisateur normal - Affiché pour tous, y compris les ADMIN */}
+          {/* Les ADMIN voient le menu normal + leur menu admin en bas */}
+          {userMenuItems.map((item) => {
             const Icon = item.icon
             return (
               <li key={item.id}>
