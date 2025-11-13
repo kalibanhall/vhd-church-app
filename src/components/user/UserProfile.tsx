@@ -155,8 +155,18 @@ export default function UserProfile({ user }: ProfileProps) {
 
   const handleFaceDetected = async (descriptor: Float32Array, imageData: string) => {
     try {
-      const response = await authenticatedFetch('/api/facial-recognition/descriptors', {
+      console.log('📸 Envoi du descripteur facial au serveur...', {
+        descriptorLength: descriptor.length,
+        userId: user.id
+      })
+
+      const token = localStorage.getItem('token')
+      const response = await fetch('/api/facial-recognition-proxy', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
           userId: user.id,
           descriptor: Array.from(descriptor),
@@ -166,17 +176,19 @@ export default function UserProfile({ user }: ProfileProps) {
         })
       })
 
+      const data = await response.json()
+      console.log('📡 Réponse du serveur:', response.status, data)
+
       if (response.ok) {
-        toast.success('Visage enregistré avec succès!')
+        toast.success('✅ Visage enregistré avec succès!')
         setShowFacialEnrollment(false)
         setHasFaceData(true)
       } else {
-        const error = await response.json()
-        toast.error(error.error || 'Erreur lors de l\'enregistrement du visage')
+        toast.error(data.error || 'Erreur lors de l\'enregistrement du visage')
       }
     } catch (error) {
-      console.error('Erreur:', error)
-      toast.error('Erreur lors de l\'enregistrement du visage')
+      console.error('❌ Erreur:', error)
+      toast.error('Erreur de connexion au serveur')
     }
   }
 
