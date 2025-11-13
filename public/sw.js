@@ -42,6 +42,12 @@ self.addEventListener('activate', (event) => {
 
 // Stratégie de cache : Network First, fallback to Cache
 self.addEventListener('fetch', (event) => {
+  // Ne pas mettre en cache les requêtes POST, PUT, DELETE, PATCH
+  if (event.request.method !== 'GET') {
+    event.respondWith(fetch(event.request));
+    return;
+  }
+
   event.respondWith(
     fetch(event.request)
       .then((response) => {

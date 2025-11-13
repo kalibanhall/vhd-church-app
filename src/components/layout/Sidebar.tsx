@@ -139,8 +139,8 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
     ? isInAdminSpace || activeTab === 'pastor-appointments'
     : activeTab === 'pastor-appointments'
 
-  // Pour les ADMIN, la sidebar est toujours visible (non repliable)
-  const shouldBeVisible = userRole === 'ADMIN' ? true : !isCollapsed
+  // La sidebar est visible/cachée selon l'état isCollapsed pour tous les utilisateurs
+  const shouldBeVisible = !isCollapsed
 
   // Gérer le clic sur un élément du menu avec auto-repli
   const handleMenuItemClick = (itemId: string) => {
@@ -162,25 +162,25 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
       <aside className={`fixed left-0 top-14 md:top-16 h-[calc(100vh-3.5rem)] md:h-[calc(100vh-4rem)] bg-gradient-to-b from-blue-900 to-blue-800 text-white z-40 flex flex-col transition-all duration-300 ease-in-out w-64 ${
         shouldBeVisible ? 'translate-x-0' : '-translate-x-full'
       }`}>
-        {/* Header avec Logo - Padding réduit */}
-        <div className="p-2 md:p-3 border-b border-blue-700">
-          <div className="flex items-center justify-between">
-            <div className="text-center flex-1">
-              {/* Logo VHD - Taille réduite */}
-              <div className="mb-1 md:mb-2 flex justify-center">
-                <Image
-                  src="/images/logos/vhd-logo.jpg"
-                  alt="Logo VHD"
-                  width={40}
-                  height={40}
-                  className="md:w-[50px] md:h-[50px] rounded-full border border-blue-300 object-cover"
-                />
+        {/* Header avec Logo - Affiché pour tous sauf ADMIN */}
+        {userRole !== 'ADMIN' && (
+          <div className="p-2 md:p-3 border-b border-blue-700">
+            <div className="flex items-center justify-between">
+              <div className="text-center flex-1">
+                {/* Logo VHD - Taille réduite */}
+                <div className="mb-1 md:mb-2 flex justify-center">
+                  <Image
+                    src="/images/logos/vhd-logo.jpg"
+                    alt="Logo VHD"
+                    width={40}
+                    height={40}
+                    className="md:w-[50px] md:h-[50px] rounded-full border border-blue-300 object-cover"
+                  />
+                </div>
+                <h1 className="text-xs md:text-sm font-bold text-white leading-tight">Ministères VHD</h1>
+                <p className="text-blue-200 text-xs hidden md:block">{getSpaceTitle()}</p>
               </div>
-              <h1 className="text-xs md:text-sm font-bold text-white leading-tight">Ministères VHD</h1>
-              <p className="text-blue-200 text-xs hidden md:block">{getSpaceTitle()}</p>
-            </div>
-            {/* Bouton de fermeture sidebar - Caché pour les ADMIN */}
-            {userRole !== 'ADMIN' && (
+              {/* Bouton de fermeture sidebar */}
               <button
                 onClick={onToggleCollapse}
                 className="text-blue-200 hover:text-white p-1 rounded transition-colors ml-2"
@@ -188,9 +188,9 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
               >
                 <X className="h-4 w-4" />
               </button>
-            )}
+            </div>
           </div>
-        </div>
+        )}
 
       {/* Navigation - Padding réduit */}
       <nav className="flex-1 p-2 md:p-4 overflow-y-auto scrollbar-hide">
