@@ -20,6 +20,8 @@ export async function GET(request: NextRequest) {
     const queryString = searchParams.toString()
     const url = queryString ? `${API_URL}/members?${queryString}` : `${API_URL}/members`
 
+    console.log('🔍 GET /api/admin/users - Calling backend:', url)
+
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -28,20 +30,32 @@ export async function GET(request: NextRequest) {
       },
     })
 
-    const data = await response.json()
-
+    console.log('📊 Backend response status:', response.status)
+    
     if (!response.ok) {
+      const errorText = await response.text()
+      console.error('❌ Backend error:', errorText)
       return NextResponse.json(
-        { error: data.error || 'Erreur de récupération des utilisateurs' },
+        { error: errorText || 'Erreur de récupération des utilisateurs' },
         { status: response.status }
       )
     }
 
-    return NextResponse.json(data)
+    const data = await response.json()
+    console.log('✅ Data received:', { count: data?.users?.length || data?.data?.length || 0 })
+
+    // Normaliser la réponse - le backend peut retourner {users: []} ou {data: []} ou []
+    const users = data.users || data.data || data || []
+    
+    return NextResponse.json({ 
+      success: true,
+      users: Array.isArray(users) ? users : [],
+      data: Array.isArray(users) ? users : []
+    })
   } catch (error) {
-    console.error('Erreur admin/users:', error)
+    console.error('❌ Erreur admin/users GET:', error)
     return NextResponse.json(
-      { error: 'Erreur serveur lors de la récupération des utilisateurs' },
+      { error: 'Erreur serveur lors de la récupération des utilisateurs', details: String(error) },
       { status: 500 }
     )
   }

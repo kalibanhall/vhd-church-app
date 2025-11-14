@@ -140,7 +140,7 @@ export default function MembersManagement() {
 
     setAddLoading(true)
     try {
-      const response = await authenticatedFetch('/api/admin/users/create', {
+      const response = await authenticatedFetch('/api/admin/users', {
         method: 'POST',
         body: JSON.stringify({
           ...newMember,
@@ -164,7 +164,7 @@ export default function MembersManagement() {
         setShowAddModal(false)
         // Refresh members list
         await fetchMembers()
-        alert(`✅ Membre ${responseData.user.firstName} ${responseData.user.lastName} ajouté avec succès !`)
+        alert(`✅ Membre ${responseData.user?.firstName || ''} ${responseData.user?.lastName || ''} ajouté avec succès !`)
       } else {
         const errorData = await response.json()
         console.error('Erreur serveur:', errorData)

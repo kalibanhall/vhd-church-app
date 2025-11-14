@@ -14,6 +14,8 @@ export async function GET(request: NextRequest) {
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://vhd-church-api.onrender.com/v1'
     const url = queryString ? `${API_URL}/polls?${queryString}` : `${API_URL}/polls`
     
+    console.log('🔍 GET /api/polls-proxy - Calling:', url)
+    
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -22,20 +24,31 @@ export async function GET(request: NextRequest) {
       },
     })
 
-    const data = await response.json()
-    
+    console.log('📊 Polls response status:', response.status)
+
     if (!response.ok) {
+      const errorText = await response.text()
+      console.error('❌ Polls backend error:', errorText)
       return NextResponse.json(
-        { error: data.error || 'Erreur de récupération des sondages' },
+        { error: errorText || 'Erreur de récupération des sondages', polls: [] },
         { status: response.status }
       )
     }
 
-    return NextResponse.json(data)
+    const data = await response.json()
+    console.log('✅ Polls data received:', { count: data?.polls?.length || data?.length || 0 })
+    
+    // Normaliser la réponse
+    const polls = data.polls || data || []
+    
+    return NextResponse.json({ 
+      success: true,
+      polls: Array.isArray(polls) ? polls : []
+    })
   } catch (error: any) {
     console.error('❌ Polls GET proxy error:', error)
     return NextResponse.json(
-      { error: 'Erreur de connexion au serveur' },
+      { error: 'Erreur de connexion au serveur', polls: [] },
       { status: 500 }
     )
   }

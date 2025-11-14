@@ -20,6 +20,7 @@ export default function AuthPage() {
     firstName: '',
     lastName: '',
     phone: '',
+    role: 'FIDELE', // Role par défaut
     rememberMe: false
   })
   const [loading, setLoading] = useState(false)
@@ -131,12 +132,22 @@ export default function AuthPage() {
     }
   }
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }))
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target
+    
+    // Handle checkbox separately
+    if (type === 'checkbox') {
+      const checked = (e.target as HTMLInputElement).checked
+      setFormData(prev => ({
+        ...prev,
+        [name]: checked
+      }))
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }))
+    }
   }
 
   return (
@@ -256,6 +267,26 @@ export default function AuthPage() {
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     placeholder="+243 900 000 000"
                   />
+                </div>
+
+                <div>
+                  <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-2">
+                    Je souhaite m&apos;inscrire comme
+                  </label>
+                  <select
+                    id="role"
+                    name="role"
+                    value={formData.role}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  >
+                    <option value="FIDELE">👤 Fidèle (Membre de l&apos;église)</option>
+                    <option value="OUVRIER">⚙️ Ouvrier (Serviteur dans l&apos;église)</option>
+                    <option value="PASTOR">🙏 Pasteur</option>
+                  </select>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Note : Les comptes Pasteur et Admin nécessitent une validation
+                  </p>
                 </div>
               </>
             )}
@@ -398,7 +429,7 @@ export default function AuthPage() {
               onClick={() => {
                 setIsLogin(!isLogin)
                 setError('')
-                setFormData({ email: '', password: '', confirmPassword: '', firstName: '', lastName: '', phone: '', rememberMe: false })
+                setFormData({ email: '', password: '', confirmPassword: '', firstName: '', lastName: '', phone: '', role: 'FIDELE', rememberMe: false })
               }}
               className="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors"
             >
