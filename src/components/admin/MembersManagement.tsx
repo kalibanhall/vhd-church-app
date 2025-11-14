@@ -1,5 +1,6 @@
 import { Search, User, Mail, Phone, Trash2, Plus, X, Eye, EyeOff } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface Member {
   id: string;
@@ -44,16 +45,18 @@ export default function MembersManagement() {
 
   const fetchMembers = async () => {
     try {
-      const response = await fetch('/api/admin/users', {
-        headers: { "Content-Type": "application/json" }, credentials: "include"
-      })
+      const response = await authenticatedFetch('/api/admin/users')
       
       const data = await response.json()
       if (response.ok) {
-        setMembers(data.users || [])
+        setMembers(data.users || data.data || [])
+      } else {
+        console.error('Erreur chargement membres:', response.status, data)
+        setMembers([])
       }
     } catch (error) {
       console.error('Erreur:', error)
+      setMembers([])
     } finally {
       setLoading(false)
     }
@@ -62,9 +65,8 @@ export default function MembersManagement() {
   const handleRoleChange = async (userId: string, newRole: string) => {
     setUpdateLoading(userId)
     try {
-      const response = await fetch('/api/admin/users/manage', {
+      const response = await authenticatedFetch('/api/admin/users/manage', {
         method: 'PATCH',
-        headers: { "Content-Type": "application/json" }, credentials: "include",
         body: JSON.stringify({
           userId,
           role: newRole
@@ -93,9 +95,8 @@ export default function MembersManagement() {
 
     setUpdateLoading(userId)
     try {
-      const response = await fetch('/api/admin/users/manage', {
+      const response = await authenticatedFetch('/api/admin/users/manage', {
         method: 'DELETE',
-        headers: { "Content-Type": "application/json" }, credentials: "include",
         body: JSON.stringify({
           userId
         })
@@ -139,14 +140,8 @@ export default function MembersManagement() {
 
     setAddLoading(true)
     try {
-      if (!token) {
-        alert('Token d\'authentification manquant. Veuillez vous reconnecter.')
-        return
-      }
-
-      const response = await fetch('/api/admin/users/create', {
+      const response = await authenticatedFetch('/api/admin/users/create', {
         method: 'POST',
-        headers: { "Content-Type": "application/json" }, credentials: "include",
         body: JSON.stringify({
           ...newMember,
           maritalStatus: 'SINGLE'

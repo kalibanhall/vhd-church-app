@@ -103,13 +103,17 @@ export default function NotificationsManagement() {
 
   const loadUsers = async () => {
     try {
-      const response = await fetch('/api/admin/users')
+      const response = await authenticatedFetch('/api/admin/users')
       if (response.ok) {
         const data = await response.json()
-        setUsers(data.users || [])
+        setUsers(data.users || data.data || [])
+      } else {
+        console.log('Impossible de charger les utilisateurs, status:', response.status)
+        setUsers([])
       }
     } catch (error) {
       console.error('Erreur lors du chargement des utilisateurs:', error)
+      setUsers([])
     }
   }
 
