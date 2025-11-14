@@ -1,7 +1,7 @@
 'use client'
 
-import { useState
-import { authenticatedFetch } from '@/lib/auth-fetch', useEffect } from 'react'
+import { useState, useEffect } from 'react'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface Donation {
   id: string
@@ -31,12 +31,7 @@ export default function DonationsPage() {
 
   const fetchDonations = async () => {
     try {
-      const response = await fetch('/api/donations-proxy', {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include'
-      })
+      const response = await authenticatedFetch('/api/donations-proxy')
 
       if (response.ok) {
         const data = await response.json()
@@ -58,12 +53,11 @@ export default function DonationsPage() {
     
     try {
       // Appel API pour créer la donation
-      const response = await fetch('/api/donations-proxy', {
+      const response = await authenticatedFetch('/api/donations-proxy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        credentials: 'include',
         body: JSON.stringify({
           amount: parseFloat(amount),
           donationType,

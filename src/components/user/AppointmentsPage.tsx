@@ -53,9 +53,7 @@ export default function AppointmentsPage() {
 
   const fetchAppointments = async () => {
     try {
-      const response = await fetch('/api/appointments-proxy', {
-        credentials: 'include'
-      });
+      const response = await authenticatedFetch('/api/appointments-proxy');
 
       if (response.ok) {
         const data = await response.json();
@@ -70,9 +68,7 @@ export default function AppointmentsPage() {
 
   const fetchPastors = async () => {
     try {
-      const response = await fetch('/api/pastors', {
-        credentials: 'include'
-      });
+      const response = await authenticatedFetch('/api/pastors');
 
       if (response.ok) {
         const data = await response.json();
@@ -85,12 +81,11 @@ export default function AppointmentsPage() {
 
   const createAppointment = async () => {
     try {
-      const response = await fetch('/api/appointments-proxy', {
+      const response = await authenticatedFetch('/api/appointments-proxy', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        credentials: 'include',
         body: JSON.stringify(formData)
       });
 
@@ -106,12 +101,11 @@ export default function AppointmentsPage() {
 
   const handleCancelAppointment = async (appointmentId: string) => {
     try {
-      const response = await fetch('/api/appointments-proxy', {
+      const response = await authenticatedFetch('/api/appointments-proxy', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
-        credentials: 'include',
         body: JSON.stringify({ appointmentId, status: 'CANCELLED' })
       });
 

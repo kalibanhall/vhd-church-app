@@ -25,6 +25,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface Channel {
   id: string
@@ -131,9 +132,7 @@ const ChatPageReal: React.FC = () => {
   // Charger les canaux
   const loadChannels = async () => {
     try {
-      const response = await fetch('/api/chat', {
-        headers: { "Content-Type": "application/json" }, credentials: "include"
-      })
+      const response = await authenticatedFetch('/api/chat')
 
       if (response.ok) {
         const channelsData = await response.json()
@@ -154,9 +153,9 @@ const ChatPageReal: React.FC = () => {
     if (!newChannelName.trim()) return
 
     try {
-      const response = await fetch('/api/chat', {
+      const response = await authenticatedFetch('/api/chat', {
         method: 'POST',
-        headers: { "Content-Type": "application/json" }, credentials: "include",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: 'create_channel',
           name: newChannelName.trim(),
@@ -191,9 +190,9 @@ const ChatPageReal: React.FC = () => {
     }
 
     try {
-      const response = await fetch('/api/chat', {
+      const response = await authenticatedFetch('/api/chat', {
         method: 'POST',
-        headers: { "Content-Type": "application/json" }, credentials: "include",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: 'remove_member',
           channelId,
@@ -225,9 +224,9 @@ const ChatPageReal: React.FC = () => {
     }
 
     try {
-      const response = await fetch('/api/chat', {
+      const response = await authenticatedFetch('/api/chat', {
         method: 'POST',
-        headers: { "Content-Type": "application/json" }, credentials: "include",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: 'delete_channel',
           channelId
@@ -260,9 +259,9 @@ const ChatPageReal: React.FC = () => {
     }
 
     try {
-      const response = await fetch('/api/chat', {
+      const response = await authenticatedFetch('/api/chat', {
         method: 'POST',
-        headers: { "Content-Type": "application/json" }, credentials: "include",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: 'toggle_restricted',
           channelId,
@@ -327,10 +326,7 @@ const ChatPageReal: React.FC = () => {
     if (!isChannelAdmin(selectedChannel!)) return
     
     try {
-      const response = await fetch(`/api/chat/expiration?channelId=${channelId}`, {
-        headers: { "Content-Type": "application/json" }, 
-        credentials: "include"
-      })
+      const response = await authenticatedFetch(`/api/chat/expiration?channelId=${channelId}`)
 
       if (response.ok) {
         const data = await response.json()
@@ -345,10 +341,9 @@ const ChatPageReal: React.FC = () => {
     if (!selectedChannel || !isChannelAdmin(selectedChannel)) return
 
     try {
-      const response = await fetch('/api/chat/expiration', {
+      const response = await authenticatedFetch('/api/chat/expiration', {
         method: 'POST',
-        headers: { "Content-Type": "application/json" }, 
-        credentials: "include",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           channelId: selectedChannel.id,
           ...expirationConfig
@@ -371,9 +366,7 @@ const ChatPageReal: React.FC = () => {
   // Charger les utilisateurs en ligne
   const loadOnlineUsers = async () => {
     try {
-      const response = await fetch('/api/chat?onlineUsers=true', {
-        headers: { "Content-Type": "application/json" }, credentials: "include"
-      })
+      const response = await authenticatedFetch('/api/chat?onlineUsers=true')
 
       if (response.ok) {
         const users = await response.json()
@@ -388,9 +381,7 @@ const ChatPageReal: React.FC = () => {
   // Charger les messages d'un canal
   const loadChannelMessages = async (channel: Channel) => {
     try {
-      const response = await fetch(`/api/chat?channelId=${channel.id}&withMessages=true`, {
-        headers: { "Content-Type": "application/json" }, credentials: "include"
-      })
+      const response = await authenticatedFetch(`/api/chat?channelId=${channel.id}&withMessages=true`)
 
       if (response.ok) {
         const channelData = await response.json()
@@ -418,9 +409,9 @@ const ChatPageReal: React.FC = () => {
 
     setSending(true)
     try {
-      const response = await fetch('/api/chat', {
+      const response = await authenticatedFetch('/api/chat', {
         method: 'POST',
-        headers: { "Content-Type": "application/json" }, credentials: "include",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: 'send_message',
           channelId: selectedChannel.id,
@@ -457,9 +448,9 @@ const ChatPageReal: React.FC = () => {
   // Ajouter une réaction
   const addReaction = async (messageId: string, emoji: string) => {
     try {
-      const response = await fetch('/api/chat', {
+      const response = await authenticatedFetch('/api/chat', {
         method: 'PUT',
-        headers: { "Content-Type": "application/json" }, credentials: "include",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           action: 'add_reaction',
           messageId,
@@ -1163,3 +1154,4 @@ const ChatPageReal: React.FC = () => {
 }
 
 export default ChatPageReal
+

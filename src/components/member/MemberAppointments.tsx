@@ -78,9 +78,7 @@ export default function MemberAppointments() {
   const fetchAvailablePastors = async () => {
     try {
       setLoadingPastors(true)
-      const response = await fetch('/api/pastors/available', {
-        credentials: 'include'
-      })
+      const response = await authenticatedFetch('/api/pastors/available')
 
       if (response.ok) {
         const data = await response.json()
@@ -115,10 +113,9 @@ export default function MemberAppointments() {
     }
 
     try {
-      const response = await fetch('/api/appointments-proxy', {
+      const response = await authenticatedFetch('/api/appointments-proxy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify(newAppointment)
       })
 

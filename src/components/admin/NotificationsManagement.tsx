@@ -91,7 +91,7 @@ export default function NotificationsManagement() {
 
   const loadNotifications = async () => {
     try {
-      const response = await fetch('/api/admin/notifications/history')
+      const response = await authenticatedFetch('/api/admin/notifications/history')
       if (response.ok) {
         const data = await response.json()
         setNotifications(data.notifications || [])
@@ -125,7 +125,7 @@ export default function NotificationsManagement() {
 
     setLoading(true)
     try {
-      const response = await fetch('/api/admin/notifications/send', {
+      const response = await authenticatedFetch('/api/admin/notifications/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(sendForm)
@@ -168,7 +168,7 @@ export default function NotificationsManagement() {
       
       const method = editingTemplate ? 'PUT' : 'POST'
 
-      const response = await fetch(url, {
+      const response = await authenticatedFetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(templateForm)
@@ -201,7 +201,7 @@ export default function NotificationsManagement() {
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce template ?')) return
 
     try {
-      const response = await fetch(`/api/admin/notifications/templates/${id}`, {
+      const response = await authenticatedFetch(`/api/admin/notifications/templates/${id}`, {
         method: 'DELETE'
       })
 
@@ -239,7 +239,7 @@ export default function NotificationsManagement() {
   const handleCheckBirthdays = async () => {
     setLoading(true)
     try {
-      const response = await fetch('/api/admin/notifications/auto')
+      const response = await authenticatedFetch('/api/admin/notifications/auto')
       if (response.ok) {
         const data = await response.json()
         alert(`${data.birthdaysToday} anniversaire(s) aujourd'hui. ${data.notificationsSent} notification(s) envoyée(s)`)

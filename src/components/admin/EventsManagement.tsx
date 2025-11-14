@@ -5,6 +5,7 @@ import { Button } from "../ui/button"
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card"
 import { Badge } from "../ui/badge"
 import { Plus, Calendar, MapPin, Users, Clock, Edit2, Trash2, Link, Video, Music, Image, User, Eye } from 'lucide-react'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface Event {
   id: string
@@ -100,9 +101,7 @@ export default function EventsManagement() {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch('/api/events', {
-        credentials: 'include'
-      })
+      const response = await authenticatedFetch('/api/events')
       if (response.ok) {
         const data = await response.json()
         setEvents(data.events || [])
@@ -116,9 +115,7 @@ export default function EventsManagement() {
 
   const fetchPastors = async () => {
     try {
-      const response = await fetch('/api/pastors', {
-        credentials: 'include'
-      })
+      const response = await authenticatedFetch('/api/pastors')
       if (response.ok) {
         const data = await response.json()
         setPastors(data.pastors || [])
@@ -130,9 +127,7 @@ export default function EventsManagement() {
 
   const fetchPreachings = async () => {
     try {
-      const response = await fetch('/api/preachings', {
-        credentials: 'include'
-      })
+      const response = await authenticatedFetch('/api/preachings')
       if (response.ok) {
         const data = await response.json()
         setPreachings(data.preachings || [])
@@ -153,12 +148,11 @@ export default function EventsManagement() {
         ? { ...formData, id: editingEvent.id }
         : formData
 
-      const response = await fetch(url, {
+      const response = await authenticatedFetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json'
         },
-        credentials: 'include',
         body: JSON.stringify(requestData)
       })
 
@@ -247,12 +241,11 @@ export default function EventsManagement() {
       const url = editingPreaching ? `/api/preachings/${editingPreaching.id}` : '/api/preachings'
       const method = editingPreaching ? 'PUT' : 'POST'
 
-      const response = await fetch(url, {
+      const response = await authenticatedFetch(url, {
         method,
         headers: {
           'Content-Type': 'application/json'
         },
-        credentials: 'include', // Utiliser les cookies
         body: JSON.stringify(sermonData)
       })
 
@@ -467,9 +460,8 @@ export default function EventsManagement() {
     }
 
     try {
-      const response = await fetch(`/api/preachings/${preachingId}`, {
-        method: 'DELETE',
-        credentials: 'include'
+      const response = await authenticatedFetch(`/api/preachings/${preachingId}`, {
+        method: 'DELETE'
       })
 
       if (response.ok) {
@@ -529,12 +521,11 @@ export default function EventsManagement() {
   const handleDelete = async (id: string) => {
     if (confirm('Êtes-vous sûr de vouloir supprimer cet événement ?')) {
       try {
-        const response = await fetch(`/api/events?id=${id}`, {
+        const response = await authenticatedFetch(`/api/events?id=${id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json'
-          },
-          credentials: 'include'
+          }
         })
 
         if (response.ok) {
