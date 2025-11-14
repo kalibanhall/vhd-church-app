@@ -36,12 +36,30 @@ export async function GET(request: NextRequest) {
 
     const data = await response.json()
     
-    console.log('✅ Backend preachings response:', response.status, 'data:', data)
+    console.log('✅ Backend preachings response:', response.status, 'data sample:', data?.slice?.(0, 1) || data)
+
+    // Normaliser les données du backend pour le frontend
+    let sermons = Array.isArray(data) ? data : (data.data || data.preachings || [])
+    
+    // Mapper les champs pour assurer la compatibilité
+    sermons = sermons.map((sermon: any) => ({
+      ...sermon,
+      // Normaliser le nom du pasteur
+      pastor_name: sermon.pastor_name || sermon.pastorName || sermon.pastor?.name || sermon.pastor?.firstName + ' ' + sermon.pastor?.lastName || '',
+      // Normaliser la date
+      sermon_date: sermon.sermon_date || sermon.sermonDate || sermon.date || sermon.preachingDate || new Date().toISOString(),
+      // Normaliser les autres champs
+      media_type: sermon.media_type || sermon.mediaType || sermon.type || 'TEXT',
+      media_url: sermon.media_url || sermon.mediaUrl || sermon.videoUrl || sermon.audioUrl || '',
+      thumbnail_url: sermon.thumbnail_url || sermon.thumbnailUrl || '',
+      view_count: sermon.view_count ?? sermon.viewCount ?? 0,
+      is_published: sermon.is_published ?? sermon.isPublished ?? true
+    }))
 
     // Mapper data.data vers sermons pour compatibilité frontend
     return NextResponse.json({
       success: true,
-      sermons: Array.isArray(data) ? data : (data.data || data.preachings || [])
+      sermons: sermons
     })
   } catch (error: any) {
     console.error('❌ Sermons proxy error:', error)

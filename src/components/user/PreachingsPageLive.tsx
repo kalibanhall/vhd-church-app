@@ -25,6 +25,7 @@ import {
   Filter
 } from 'lucide-react'
 import { authenticatedFetch } from '@/lib/auth-fetch'
+import { safeFormatDate } from '@/lib/utils'
 
 interface Sermon {
   id: string
@@ -137,12 +138,20 @@ export default function PreachingsPageLive() {
   }
 
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return new Intl.DateTimeFormat('fr-FR', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    }).format(date)
+    if (!dateString) return 'Date non disponible'
+    
+    try {
+      const date = new Date(dateString)
+      if (isNaN(date.getTime())) return 'Date non disponible'
+      
+      return new Intl.DateTimeFormat('fr-FR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      }).format(date)
+    } catch (error) {
+      return 'Date non disponible'
+    }
   }
 
   const formatDuration = (minutes?: number) => {
@@ -356,7 +365,7 @@ function SermonCard({ sermon, onPlay, isLive }: SermonCardProps) {
 
         {/* Métadonnées */}
         <div className="space-y-2 text-sm text-gray-500">
-          {sermon.pastor_name && (
+          {sermon.pastor_name && sermon.pastor_name.trim() !== '' && (
             <div className="flex items-center gap-2">
               <User className="h-4 w-4" />
               <span>{sermon.pastor_name}</span>
@@ -365,7 +374,7 @@ function SermonCard({ sermon, onPlay, isLive }: SermonCardProps) {
 
           <div className="flex items-center gap-2">
             <Calendar className="h-4 w-4" />
-            <span>{new Date(sermon.sermon_date).toLocaleDateString('fr-FR')}</span>
+            <span>{safeFormatDate(sermon.sermon_date, 'Date non disponible')}</span>
           </div>
 
           {sermon.duration && (

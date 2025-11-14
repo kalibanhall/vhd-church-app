@@ -43,10 +43,18 @@ interface UserStats {
   testimonies: number
 }
 
+interface RecentActivity {
+  type: 'donation' | 'appointment' | 'prayer' | 'testimony'
+  description: string
+  date: string
+  color: string
+}
+
 export default function UserProfile({ user }: ProfileProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [showFacialEnrollment, setShowFacialEnrollment] = useState(false)
   const [hasFaceData, setHasFaceData] = useState(false)
+  const [recentActivities, setRecentActivities] = useState<RecentActivity[]>([])
   const [userStats, setUserStats] = useState<UserStats>({
     donations: 0,
     appointments: 0,
@@ -78,6 +86,47 @@ export default function UserProfile({ user }: ProfileProps) {
         if (response.ok) {
           const stats = await response.json()
           setUserStats(stats)
+          
+          // Générer des activités récentes basées sur les stats réelles
+          const activities: RecentActivity[] = []
+          
+          if (stats.donations > 0) {
+            activities.push({
+              type: 'donation',
+              description: 'Don effectué',
+              date: 'Récemment',
+              color: 'green'
+            })
+          }
+          
+          if (stats.appointments > 0) {
+            activities.push({
+              type: 'appointment',
+              description: 'Rendez-vous confirmé',
+              date: 'Récemment',
+              color: 'blue'
+            })
+          }
+          
+          if (stats.prayers > 0) {
+            activities.push({
+              type: 'prayer',
+              description: 'Prière soumise',
+              date: 'Récemment',
+              color: 'purple'
+            })
+          }
+          
+          if (stats.testimonies > 0) {
+            activities.push({
+              type: 'testimony',
+              description: 'Témoignage partagé',
+              date: 'Récemment',
+              color: 'orange'
+            })
+          }
+          
+          setRecentActivities(activities.slice(0, 3)) // Garder les 3 dernières
         }
       } catch (error) {
         console.error('Erreur lors du chargement des stats:', error)
@@ -638,27 +687,23 @@ export default function UserProfile({ user }: ProfileProps) {
               Activité récente
             </h2>
             <div className="space-y-3 md:space-y-4">
-              <div className="flex items-start space-x-2 md:space-x-3">
-                <div className="w-2 h-2 bg-green-500 rounded-full mt-1.5 md:mt-2"></div>
-                <div>
-                  <p className="text-xs md:text-sm font-medium text-gray-900">Don effectué</p>
-                  <p className="text-xs text-gray-500">Il y a 2 jours</p>
+              {recentActivities.length > 0 ? (
+                recentActivities.map((activity, index) => (
+                  <div key={index} className="flex items-start space-x-2 md:space-x-3">
+                    <div className={`w-2 h-2 bg-${activity.color}-500 rounded-full mt-1.5 md:mt-2`}></div>
+                    <div>
+                      <p className="text-xs md:text-sm font-medium text-gray-900">{activity.description}</p>
+                      <p className="text-xs text-gray-500">{activity.date}</p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-4">
+                  <Clock className="w-8 h-8 text-gray-300 mx-auto mb-2" />
+                  <p className="text-xs md:text-sm text-gray-500">Aucune activité récente</p>
+                  <p className="text-xs text-gray-400">Vos actions apparaîtront ici</p>
                 </div>
-              </div>
-              <div className="flex items-start space-x-2 md:space-x-3">
-                <div className="w-2 h-2 bg-blue-500 rounded-full mt-1.5 md:mt-2"></div>
-                <div>
-                  <p className="text-xs md:text-sm font-medium text-gray-900">RDV confirmé</p>
-                  <p className="text-xs text-gray-500">Il y a 3 jours</p>
-                </div>
-              </div>
-              <div className="flex items-start space-x-2 md:space-x-3">
-                <div className="w-2 h-2 bg-purple-500 rounded-full mt-1.5 md:mt-2"></div>
-                <div>
-                  <p className="text-xs md:text-sm font-medium text-gray-900">Prière soumise</p>
-                  <p className="text-xs text-gray-500">Il y a 1 semaine</p>
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
