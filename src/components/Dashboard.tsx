@@ -37,6 +37,15 @@ import PrayersTestimoniesValidation from './admin/PrayersTestimoniesValidation'
 import NotificationsManagement from './admin/NotificationsManagement'
 import AppointmentsManagement from './pastor/AppointmentsManagement'
 import MemberAppointments from './member/MemberAppointments'
+import VolunteerPage from './user/VolunteerPage'
+import VolunteerManagement from './admin/VolunteerManagement'
+import ActivitiesPage from './user/ActivitiesPage'
+import ActivitiesManagement from './admin/ActivitiesManagement'
+import TrainingPage from './user/TrainingPage'
+import BiblePage from './user/BiblePage'
+import NotesPage from './user/NotesPage'
+import HelpRequestPage from './user/HelpRequestPage'
+import HelpRequestsManagement from './admin/HelpRequestsManagement'
 
 // Suppression des imports mockés - utilisation des API réelles
 
@@ -64,7 +73,7 @@ export default function Dashboard() {
   }, [user?.role, activeTab])
   
   // Vérifier si on est dans l'espace admin (cohérent avec Sidebar.tsx)
-  const adminOnlyTabs = ['admin', 'analytics', 'members', 'events', 'polls-admin', 'notifications', 'validate-testimonies']
+  const adminOnlyTabs = ['admin', 'analytics', 'members', 'events', 'polls-admin', 'notifications', 'validate-testimonies', 'volunteer-admin', 'activities-admin', 'help-requests-admin']
   const isInAdminSpace = adminOnlyTabs.includes(activeTab)
   
   // Fonction pour gérer le changement d'onglet avec auto-repli
@@ -123,6 +132,36 @@ export default function Dashboard() {
       
       case 'chat':
         return <ChatPageReal />
+      
+      case 'volunteer':
+        return <VolunteerPage />
+      
+      case 'volunteer-admin':
+        return <VolunteerManagement />
+      
+      case 'activities':
+        return <ActivitiesPage />
+      
+      case 'activities-admin':
+        return <ActivitiesManagement />
+      
+      case 'training':
+        return <TrainingPage />
+      
+      case 'bible':
+        return <BiblePage />
+      
+      case 'notes':
+        return <NotesPage />
+      
+      case 'notes':
+        return <NotesPage />
+      
+      case 'help':
+        return <HelpRequestPage />
+      
+      case 'help-requests-admin':
+        return <HelpRequestsManagement />
       
       case 'admin':
         return <AdminDashboard />

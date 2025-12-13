@@ -40,7 +40,12 @@ import {
   Vote,
   Bell,
   ScanFace,
-  UserCog
+  UserCog,
+  HeartHandshake,
+  GraduationCap,
+  BookMarked,
+  FileText,
+  HelpCircle
 } from 'lucide-react'
 
 /**
@@ -69,9 +74,15 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
     { id: 'home', label: 'Accueil', icon: Home },
     { id: 'sermons', label: 'Prédications', icon: Video },
     { id: 'donations', label: 'Soutien à l\'œuvre', icon: DollarSign },
+    { id: 'volunteer', label: 'Servir', icon: HeartHandshake },
     { id: 'appointments', label: 'Rendez-vous', icon: Calendar },
+    { id: 'activities', label: 'Activités', icon: Calendar },
+    { id: 'training', label: 'Formations', icon: GraduationCap },
+    { id: 'bible', label: 'Bible', icon: BookMarked },
+    { id: 'notes', label: 'Notes', icon: FileText },
     { id: 'polls', label: 'Sondages', icon: Vote },
     { id: 'prayers', label: 'Prières', icon: Heart },
+    { id: 'help', label: 'Besoin d\'aide', icon: HelpCircle },
     { id: 'testimonies', label: 'Témoignages', icon: BookOpen },
     { id: 'chat', label: 'Discussion', icon: MessageCircle },
   ]
@@ -94,6 +105,9 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
         { id: 'analytics', label: 'Analytics', icon: BarChart3 },
         { id: 'members', label: 'Gestion des membres', icon: Users },
         { id: 'events', label: 'Gestion d\'événements', icon: Calendar },
+        { id: 'activities-admin', label: 'Gestion activités', icon: Calendar },
+        { id: 'volunteer-admin', label: 'Gestion bénévoles', icon: HeartHandshake },
+        { id: 'help-requests-admin', label: 'Demandes d\'aide', icon: HelpCircle },
         { id: 'polls-admin', label: 'Gestion des sondages', icon: Vote },
         { id: 'notifications', label: 'Gestion des notifications', icon: Bell },
         { id: 'validate-testimonies', label: 'Validation témoignages', icon: CheckCircle },
@@ -131,7 +145,7 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
   }
   
   // Vérifier si on est dans l'espace admin
-  const adminOnlyTabs = ['admin', 'analytics', 'members', 'events', 'polls-admin', 'notifications', 'validate-testimonies']
+  const adminOnlyTabs = ['admin', 'analytics', 'members', 'events', 'polls-admin', 'notifications', 'validate-testimonies', 'activities-admin', 'volunteer-admin', 'help-requests-admin']
   const isInAdminSpace = adminOnlyTabs.includes(activeTab)
   
   // Vérifier si on est dans l'espace de travail spécialisé (admin ou pasteur)

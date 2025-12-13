@@ -19,6 +19,11 @@ import notificationsRoutes from './routes/notifications';
 import pollsRoutes from './routes/polls';
 import pastorRoutes from './routes/pastor';
 import userStatsRoutes from './routes/userStats';
+import activitiesRoutes from './routes/activities';
+import volunteersRoutes from './routes/volunteers';
+import trainingRoutes from './routes/training';
+import notesRoutes from './routes/notes';
+import helpRequestsRoutes from './routes/helpRequests';
 
 // Load environment variables
 dotenv.config();
@@ -108,6 +113,11 @@ app.use(`/${API_VERSION}/notifications`, notificationsRoutes);
 app.use(`/${API_VERSION}/polls`, pollsRoutes);
 // app.use(`/${API_VERSION}/pastor`, pastorRoutes); // Temporarily disabled - tables don't exist
 app.use(`/${API_VERSION}/user`, userStatsRoutes);
+app.use(`/${API_VERSION}/activities`, activitiesRoutes);
+app.use(`/${API_VERSION}/volunteers`, volunteersRoutes);
+app.use(`/${API_VERSION}/training`, trainingRoutes);
+app.use(`/${API_VERSION}/notes`, notesRoutes);
+app.use(`/${API_VERSION}/help-requests`, helpRequestsRoutes);
 
 // 404 handler
 app.use((req: Request, res: Response) => {
