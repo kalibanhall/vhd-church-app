@@ -1,16 +1,18 @@
 /**
  * Route API pour l'upload de fichiers (vidéos, audios, images)
- * Utilise Supabase Storage pour stocker les fichiers
+ * Proxy vers le backend Render ou stockage local
  * @author CHRIS NGOZULU KASONGO (KalibanHall)
  */
 
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { writeFile, mkdir } from 'fs/promises'
+import { existsSync } from 'fs'
+import path from 'path'
 
 // Taille maximale des fichiers par type (en bytes)
 const MAX_FILE_SIZES = {
-  video: 500 * 1024 * 1024,    // 500MB pour les vidéos
-  audio: 100 * 1024 * 1024,    // 100MB pour les audios
+  video: 100 * 1024 * 1024,    // 100MB pour les vidéos
+  audio: 50 * 1024 * 1024,     // 50MB pour les audios
   thumbnail: 10 * 1024 * 1024,  // 10MB pour les images
   image: 10 * 1024 * 1024       // 10MB pour les images
 }
@@ -23,25 +25,7 @@ const ACCEPTED_TYPES = {
   image: ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
 }
 
-// Noms des buckets Supabase Storage
-const BUCKETS = {
-  video: 'videos',
-  audio: 'audios', 
-  thumbnail: 'thumbnails',
-  image: 'images'
-}
-
-// Fonction pour créer le client Supabase à la demande
-function getSupabaseClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-  
-  if (!supabaseUrl || !supabaseServiceKey) {
-    throw new Error('Variables Supabase manquantes')
-  }
-  
-  return createClient(supabaseUrl, supabaseServiceKey)
-}
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://vhd-church-api.onrender.com/v1'
 
 export async function POST(request: NextRequest) {
   try {
@@ -100,108 +84,95 @@ export async function POST(request: NextRequest) {
     const randomId = Math.random().toString(36).substring(2, 15)
     const sanitizedName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_')
     const fileName = `${timestamp}_${randomId}_${sanitizedName}`
-    
-    // Déterminer le bucket
-    const bucket = BUCKETS[fileType as keyof typeof BUCKETS] || 'files'
 
-    console.log(`📂 Upload vers bucket: ${bucket}, fichier: ${fileName}`)
-
-    // Convertir le fichier en ArrayBuffer puis en Uint8Array pour Supabase
-    const arrayBuffer = await file.arrayBuffer()
-    const fileBuffer = new Uint8Array(arrayBuffer)
-
-    // Créer le client Supabase
-    let supabase
+    // Essayer d'abord le backend Render
     try {
-      supabase = getSupabaseClient()
-    } catch (configError) {
-      console.error('❌ Configuration Supabase manquante:', configError)
-      // En développement, simuler l'URL
-      const simulatedUrl = `/uploads/${bucket}/${fileName}`
-      console.log('🔧 Mode fallback: génération d\'une URL simulée')
+      console.log('🔄 Tentative d\'upload vers le backend Render...')
+      
+      const backendFormData = new FormData()
+      backendFormData.append('file', file)
+      backendFormData.append('type', fileType)
+      
+      const backendResponse = await fetch(`${API_URL}/upload`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: backendFormData
+      })
+
+      if (backendResponse.ok) {
+        const result = await backendResponse.json()
+        console.log('✅ Upload backend réussi:', result)
+        return NextResponse.json({
+          success: true,
+          url: result.url || result.fileUrl || result.path,
+          fileName: result.fileName || fileName,
+          size: file.size,
+          type: file.type
+        })
+      } else {
+        console.log('⚠️ Backend upload failed, using fallback...')
+      }
+    } catch (backendError) {
+      console.log('⚠️ Backend non disponible, utilisation du fallback local')
+    }
+
+    // Fallback: Stockage local dans /public/uploads
+    try {
+      const uploadsDir = path.join(process.cwd(), 'public', 'uploads', fileType + 's')
+      
+      // Créer le dossier s'il n'existe pas
+      if (!existsSync(uploadsDir)) {
+        await mkdir(uploadsDir, { recursive: true })
+      }
+
+      // Écrire le fichier
+      const arrayBuffer = await file.arrayBuffer()
+      const buffer = Buffer.from(arrayBuffer)
+      const filePath = path.join(uploadsDir, fileName)
+      
+      await writeFile(filePath, buffer)
+      
+      // URL publique
+      const publicUrl = `/uploads/${fileType}s/${fileName}`
+      
+      console.log(`✅ Fichier sauvegardé localement: ${publicUrl}`)
+      
       return NextResponse.json({
         success: true,
-        url: simulatedUrl,
+        url: publicUrl,
         fileName: fileName,
         size: file.size,
         type: file.type,
-        bucket: bucket,
-        warning: 'URL simulée (Supabase non configuré)'
+        storage: 'local'
       })
-    }
-
-    // Vérifier si le bucket existe, sinon le créer
-    try {
-      const { data: buckets } = await supabase.storage.listBuckets()
-      const bucketExists = buckets?.some(b => b.name === bucket)
+    } catch (localError) {
+      console.error('❌ Erreur stockage local:', localError)
       
-      if (!bucketExists) {
-        console.log(`📦 Création du bucket: ${bucket}`)
-        const { error: createError } = await supabase.storage.createBucket(bucket, {
-          public: true,
-          fileSizeLimit: maxSize,
-          allowedMimeTypes: acceptedTypes
-        })
+      // Dernier recours: retourner une URL data base64 pour les petits fichiers (images)
+      if (file.size < 5 * 1024 * 1024 && fileType === 'thumbnail') {
+        const arrayBuffer = await file.arrayBuffer()
+        const base64 = Buffer.from(arrayBuffer).toString('base64')
+        const dataUrl = `data:${file.type};base64,${base64}`
         
-        if (createError && !createError.message.includes('already exists')) {
-          console.error(`❌ Erreur création bucket: ${createError.message}`)
-          throw createError
-        }
-      }
-    } catch (bucketError) {
-      console.log('⚠️ Vérification bucket ignorée (peut déjà exister)')
-    }
-
-    // Upload vers Supabase Storage
-    const { data, error: uploadError } = await supabase.storage
-      .from(bucket)
-      .upload(fileName, fileBuffer, {
-        contentType: file.type,
-        upsert: true,
-        cacheControl: '3600'
-      })
-
-    if (uploadError) {
-      console.error('❌ Erreur upload Supabase:', uploadError)
-      
-      // Fallback: simuler une URL pour le développement/test
-      if (process.env.NODE_ENV === 'development') {
-        console.log('🔧 Mode développement: génération d\'une URL simulée')
-        const simulatedUrl = `https://example.com/uploads/${bucket}/${fileName}`
+        console.log('✅ Fichier converti en base64')
+        
         return NextResponse.json({
           success: true,
-          url: simulatedUrl,
+          url: dataUrl,
           fileName: fileName,
           size: file.size,
           type: file.type,
-          bucket: bucket,
-          warning: 'URL simulée (mode développement)'
+          storage: 'base64'
         })
       }
       
       return NextResponse.json(
-        { error: `Erreur lors de l'upload: ${uploadError.message}` },
+        { error: 'Impossible de stocker le fichier. Veuillez utiliser une URL externe (YouTube, etc.)' },
         { status: 500 }
       )
     }
-
-    // Générer l'URL publique
-    const { data: publicUrlData } = supabase.storage
-      .from(bucket)
-      .getPublicUrl(fileName)
-
-    const publicUrl = publicUrlData.publicUrl
-
-    console.log(`✅ Upload réussi: ${publicUrl}`)
-
-    return NextResponse.json({
-      success: true,
-      url: publicUrl,
-      fileName: fileName,
-      size: file.size,
-      type: file.type,
-      bucket: bucket
-    })
 
   } catch (error: any) {
     console.error('💥 Erreur générale upload:', error)
