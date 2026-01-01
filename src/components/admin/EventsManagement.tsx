@@ -365,10 +365,16 @@ export default function EventsManagement() {
         reject(new Error(`Upload ${type} annulé`))
       })
 
+      // Récupérer le token d'authentification
+      const token = localStorage.getItem('token') || localStorage.getItem('auth-token')
+      
       // Démarrer l'upload
       setUploadStatus(prev => ({ ...prev, [type]: 'Upload en cours...' }))
       xhr.open('POST', '/api/upload')
-      xhr.setRequestHeader('credentials', 'include')
+      xhr.withCredentials = true
+      if (token) {
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`)
+      }
       xhr.send(formData)
     })
   }
