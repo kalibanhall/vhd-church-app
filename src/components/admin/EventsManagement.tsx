@@ -88,7 +88,11 @@ export default function EventsManagement() {
     audioFile: null as File | null,
     thumbnailFile: null as File | null,
     preachingType: 'VIDEO' as 'AUDIO' | 'VIDEO' | 'LIVE',
-    liveUrl: ''
+    liveUrl: '',
+    // URLs externes (YouTube, Vimeo, etc.)
+    videoUrl: '',
+    audioUrl: '',
+    thumbnailUrl: ''
   })
 
   useEffect(() => {
@@ -224,16 +228,37 @@ export default function EventsManagement() {
         isPublished: true
       }
 
-      // Ajouter les URLs seulement si elles existent (nouveaux uploads ou création)
-      if (videoUrl) sermonData.videoUrl = videoUrl
-      if (audioUrl) sermonData.audioUrl = audioUrl
-      if (thumbnailUrl) sermonData.thumbnailUrl = thumbnailUrl
-
-      // Si c'est une modification, conserver les URLs existantes si pas de nouveaux fichiers
-      if (editingPreaching) {
-        if (!videoUrl && editingPreaching.videoUrl) sermonData.videoUrl = editingPreaching.videoUrl
-        if (!audioUrl && editingPreaching.audioUrl) sermonData.audioUrl = editingPreaching.audioUrl
-        if (!thumbnailUrl && editingPreaching.thumbnailUrl) sermonData.thumbnailUrl = editingPreaching.thumbnailUrl
+      // Priorité: fichier uploadé > URL externe > URL existante (en modification)
+      // Vidéo
+      if (videoUrl) {
+        sermonData.videoUrl = videoUrl
+      } else if (preachingData.videoUrl) {
+        sermonData.videoUrl = preachingData.videoUrl
+      } else if (editingPreaching?.videoUrl) {
+        sermonData.videoUrl = editingPreaching.videoUrl
+      }
+      
+      // Audio
+      if (audioUrl) {
+        sermonData.audioUrl = audioUrl
+      } else if (preachingData.audioUrl) {
+        sermonData.audioUrl = preachingData.audioUrl
+      } else if (editingPreaching?.audioUrl) {
+        sermonData.audioUrl = editingPreaching.audioUrl
+      }
+      
+      // Thumbnail
+      if (thumbnailUrl) {
+        sermonData.thumbnailUrl = thumbnailUrl
+      } else if (preachingData.thumbnailUrl) {
+        sermonData.thumbnailUrl = preachingData.thumbnailUrl
+      } else if (editingPreaching?.thumbnailUrl) {
+        sermonData.thumbnailUrl = editingPreaching.thumbnailUrl
+      }
+      
+      // URL Live
+      if (preachingData.preachingType === 'LIVE' && preachingData.liveUrl) {
+        sermonData.liveUrl = preachingData.liveUrl
       }
 
       console.log('📤 Envoi des données de prédication:', sermonData)
@@ -379,7 +404,10 @@ export default function EventsManagement() {
       audioFile: null,
       thumbnailFile: null,
       preachingType: 'VIDEO',
-      liveUrl: ''
+      liveUrl: '',
+      videoUrl: '',
+      audioUrl: '',
+      thumbnailUrl: ''
     })
     setEditingPreaching(null)
   }
@@ -438,17 +466,32 @@ export default function EventsManagement() {
   }
 
   const handleEditPreaching = (preaching: any) => {
+    // Safely extract date from various possible field names
+    const dateStr = preaching.sermonDate || preaching.preachingDate || preaching.date || ''
+    let formattedDate = ''
+    if (dateStr) {
+      try {
+        const d = new Date(dateStr)
+        if (!isNaN(d.getTime())) {
+          formattedDate = d.toISOString().split('T')[0]
+        }
+      } catch { /* ignore */ }
+    }
+    
     setPreachingData({
-      title: preaching.title,
-      preacher: preaching.preacher,
-      date: preaching.sermonDate.split('T')[0],
+      title: preaching.title || '',
+      preacher: preaching.pastorName || preaching.preacher || '',
+      date: formattedDate,
       description: preaching.description || '',
       bibleVerses: preaching.bibleVerses || '',
       videoFile: null,
       audioFile: null,
       thumbnailFile: null,
-      preachingType: preaching.sermonType,
-      liveUrl: preaching.liveUrl || ''
+      preachingType: preaching.sermonType || preaching.preachingType || 'VIDEO',
+      liveUrl: preaching.liveUrl || '',
+      videoUrl: preaching.videoUrl || '',
+      audioUrl: preaching.audioUrl || '',
+      thumbnailUrl: preaching.thumbnailUrl || ''
     })
     setEditingPreaching(preaching)
     setShowPreachingForm(true)
@@ -653,7 +696,7 @@ export default function EventsManagement() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium mb-2 flex items-center gap-2">
+                      <label className="text-sm font-medium mb-2 flex items-center gap-2">
                         <User className="h-4 w-4" />
                         Animé par (Pasteur)
                       </label>
@@ -940,19 +983,26 @@ export default function EventsManagement() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600 mb-2">
                               <div className="flex items-center gap-1">
                                 <User className="w-4 h-4" />
-                                <span>{preaching.pastorName}</span>
+                                <span>{preaching.pastorName || preaching.preacher || 'Non défini'}</span>
                               </div>
                               <div className="flex items-center gap-1">
                                 <Calendar className="w-4 h-4" />
-                                <span>{new Date(preaching.preachingDate).toLocaleDateString('fr-FR')}</span>
+                                <span>{(() => {
+                                  const dateStr = preaching.sermonDate || preaching.preachingDate || preaching.date
+                                  if (!dateStr) return 'Date non définie'
+                                  try {
+                                    const d = new Date(dateStr)
+                                    return isNaN(d.getTime()) ? 'Date invalide' : d.toLocaleDateString('fr-FR')
+                                  } catch { return 'Date invalide' }
+                                })()}</span>
                               </div>
                               <div className="flex items-center gap-1">
                                 <Eye className="w-4 h-4" />
-                                <span>{preaching.viewCount} vues</span>
+                                <span>{preaching.viewCount || 0} vues</span>
                               </div>
                               <div className="flex items-center gap-1">
                                 <Clock className="w-4 h-4" />
-                                <span>{preaching.duration}</span>
+                                <span>{preaching.duration || '-'}</span>
                               </div>
                             </div>
 
@@ -1088,45 +1138,100 @@ export default function EventsManagement() {
                     />
                   </div>
 
-                  {/* Upload des fichiers */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">
+                  {/* Upload des fichiers OU URLs externes */}
+                  <div className="space-y-4">
+                    <h4 className="text-sm font-semibold text-gray-700 border-b pb-2">
+                      📁 Fichiers médias (upload ou URL)
+                    </h4>
+                    
+                    {/* Section Vidéo */}
+                    <div className="bg-red-50 p-4 rounded-lg border border-red-100">
+                      <label className="block text-sm font-medium mb-2 text-red-700">
                         <Video className="w-4 h-4 inline mr-1" />
-                        Fichier Vidéo (optionnel)
+                        Vidéo
                       </label>
-                      <input
-                        type="file"
-                        accept="video/*"
-                        onChange={(e) => handleFileChange(e, 'video')}
-                        className="w-full p-2 border rounded-md"
-                      />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-xs text-gray-600 mb-1 block">Uploader un fichier</label>
+                          <input
+                            type="file"
+                            accept="video/*"
+                            onChange={(e) => handleFileChange(e, 'video')}
+                            className="w-full p-2 border rounded-md text-sm bg-white"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs text-gray-600 mb-1 block">OU coller une URL (YouTube, Vimeo...)</label>
+                          <input
+                            type="url"
+                            value={preachingData.videoUrl}
+                            onChange={(e) => setPreachingData({...preachingData, videoUrl: e.target.value})}
+                            className="w-full p-2 border rounded-md text-sm"
+                            placeholder="https://youtube.com/watch?v=..."
+                          />
+                        </div>
+                      </div>
                     </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-2">
+                    
+                    {/* Section Audio */}
+                    <div className="bg-green-50 p-4 rounded-lg border border-green-100">
+                      <label className="block text-sm font-medium mb-2 text-green-700">
                         <Music className="w-4 h-4 inline mr-1" />
-                        Fichier Audio (optionnel)
+                        Audio
                       </label>
-                      <input
-                        type="file"
-                        accept="audio/*"
-                        onChange={(e) => handleFileChange(e, 'audio')}
-                        className="w-full p-2 border rounded-md"
-                      />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-xs text-gray-600 mb-1 block">Uploader un fichier</label>
+                          <input
+                            type="file"
+                            accept="audio/*"
+                            onChange={(e) => handleFileChange(e, 'audio')}
+                            className="w-full p-2 border rounded-md text-sm bg-white"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs text-gray-600 mb-1 block">OU coller une URL (SoundCloud, etc.)</label>
+                          <input
+                            type="url"
+                            value={preachingData.audioUrl}
+                            onChange={(e) => setPreachingData({...preachingData, audioUrl: e.target.value})}
+                            className="w-full p-2 border rounded-md text-sm"
+                            placeholder="https://soundcloud.com/..."
+                          />
+                        </div>
+                      </div>
                     </div>
-
-                    <div>
-                      <label className="block text-sm font-medium mb-2">
+                    
+                    {/* Section Thumbnail */}
+                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                      <label className="block text-sm font-medium mb-2 text-blue-700">
                         <Image className="w-4 h-4 inline mr-1" />
-                        Image de couverture (optionnel)
+                        Image de couverture
                       </label>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => handleFileChange(e, 'thumbnail')}
-                        className="w-full p-2 border rounded-md"
-                      />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                          <label className="text-xs text-gray-600 mb-1 block">Uploader une image</label>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleFileChange(e, 'thumbnail')}
+                            className="w-full p-2 border rounded-md text-sm bg-white"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs text-gray-600 mb-1 block">OU coller une URL d'image</label>
+                          <input
+                            type="url"
+                            value={preachingData.thumbnailUrl}
+                            onChange={(e) => setPreachingData({...preachingData, thumbnailUrl: e.target.value})}
+                            className="w-full p-2 border rounded-md text-sm"
+                            placeholder="https://example.com/image.jpg"
+                          />
+                        </div>
+                      </div>
+                      <p className="text-xs text-gray-500 mt-2">
+                        💡 Si vous uploadez une vidéo, la miniature sera générée automatiquement
+                      </p>
                     </div>
                   </div>
 

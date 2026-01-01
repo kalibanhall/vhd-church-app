@@ -107,6 +107,7 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
         { id: 'events', label: 'Gestion d\'événements', icon: Calendar },
         { id: 'activities-admin', label: 'Gestion activités', icon: Calendar },
         { id: 'volunteer-admin', label: 'Gestion bénévoles', icon: HeartHandshake },
+        { id: 'training-admin', label: 'Gestion formations', icon: GraduationCap },
         { id: 'help-requests-admin', label: 'Demandes d\'aide', icon: HelpCircle },
         { id: 'polls-admin', label: 'Gestion des sondages', icon: Vote },
         { id: 'notifications', label: 'Gestion des notifications', icon: Bell },
@@ -145,7 +146,7 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
   }
   
   // Vérifier si on est dans l'espace admin
-  const adminOnlyTabs = ['admin', 'analytics', 'members', 'events', 'polls-admin', 'notifications', 'validate-testimonies', 'activities-admin', 'volunteer-admin', 'help-requests-admin']
+  const adminOnlyTabs = ['admin', 'analytics', 'members', 'events', 'polls-admin', 'notifications', 'validate-testimonies', 'activities-admin', 'volunteer-admin', 'help-requests-admin', 'training-admin']
   const isInAdminSpace = adminOnlyTabs.includes(activeTab)
   
   // Vérifier si on est dans l'espace de travail spécialisé (admin ou pasteur)

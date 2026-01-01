@@ -189,13 +189,22 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get('category')
 
     if (type === 'courses') {
-      let filteredCourses = courses.filter(c => c.isPublished)
+      const isAdmin = searchParams.get('admin') === 'true'
+      let filteredCourses = isAdmin ? courses : courses.filter(c => c.isPublished)
       if (category) {
         filteredCourses = filteredCourses.filter(c => c.category === category)
       }
       return NextResponse.json({ 
         courses: filteredCourses,
         total: filteredCourses.length 
+      })
+    }
+
+    if (type === 'enrollments') {
+      // Admin: récupérer toutes les inscriptions
+      return NextResponse.json({ 
+        enrollments: enrollments,
+        total: enrollments.length 
       })
     }
 
@@ -288,6 +297,79 @@ export async function POST(request: NextRequest) {
       }, { status: 201 })
     }
 
+    // Admin: Créer un nouveau cours
+    if (action === 'create') {
+      const { title, description, category, level, duration, instructor, imageUrl, isPublished, lessons } = body
+      
+      const newCourse: Course = {
+        id: `course_${Date.now()}`,
+        title,
+        description,
+        category: category || 'FOUNDATIONS',
+        level: level || 'BEGINNER',
+        duration: duration || '4 semaines',
+        instructor: instructor || '',
+        imageUrl: imageUrl || '',
+        isPublished: isPublished || false,
+        enrolledCount: 0,
+        createdAt: new Date().toISOString(),
+        lessons: (lessons || []).map((lesson: any, index: number) => ({
+          id: `lesson_${Date.now()}_${index}`,
+          courseId: `course_${Date.now()}`,
+          title: lesson.title,
+          content: lesson.content,
+          videoUrl: lesson.videoUrl || '',
+          duration: lesson.duration || '',
+          order: index + 1
+        }))
+      }
+
+      courses.push(newCourse)
+
+      return NextResponse.json({
+        success: true,
+        message: 'Formation créée avec succès',
+        course: newCourse
+      }, { status: 201 })
+    }
+
+    // Admin: Mettre à jour un cours
+    if (action === 'update') {
+      const { courseId: updateCourseId, title, description, category, level, duration, instructor, imageUrl, isPublished, lessons } = body
+      
+      const courseIndex = courses.findIndex(c => c.id === updateCourseId)
+      if (courseIndex === -1) {
+        return NextResponse.json({ error: 'Cours non trouvé' }, { status: 404 })
+      }
+
+      courses[courseIndex] = {
+        ...courses[courseIndex],
+        title: title || courses[courseIndex].title,
+        description: description || courses[courseIndex].description,
+        category: category || courses[courseIndex].category,
+        level: level || courses[courseIndex].level,
+        duration: duration || courses[courseIndex].duration,
+        instructor: instructor !== undefined ? instructor : courses[courseIndex].instructor,
+        imageUrl: imageUrl !== undefined ? imageUrl : courses[courseIndex].imageUrl,
+        isPublished: isPublished !== undefined ? isPublished : courses[courseIndex].isPublished,
+        lessons: lessons ? lessons.map((lesson: any, index: number) => ({
+          id: lesson.id || `lesson_${Date.now()}_${index}`,
+          courseId: updateCourseId,
+          title: lesson.title,
+          content: lesson.content,
+          videoUrl: lesson.videoUrl || '',
+          duration: lesson.duration || '',
+          order: index + 1
+        })) : courses[courseIndex].lessons
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: 'Formation mise à jour',
+        course: courses[courseIndex]
+      })
+    }
+
     if (action === 'complete-lesson') {
       // Trouver l'inscription
       const enrollmentIndex = enrollments.findIndex(
@@ -332,6 +414,78 @@ export async function POST(request: NextRequest) {
     console.error('❌ Training POST proxy error:', error)
     return NextResponse.json(
       { error: 'Erreur lors de l\'opération' },
+      { status: 500 }
+    )
+  }
+}
+/**
+ * PUT - Mettre à jour un cours (publier/dépublier)
+ */
+export async function PUT(request: NextRequest) {
+  try {
+    const token = request.headers.get('authorization')
+    if (!token) {
+      return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
+    }
+
+    const body = await request.json()
+    const { courseId, isPublished } = body
+
+    const courseIndex = courses.findIndex(c => c.id === courseId)
+    if (courseIndex === -1) {
+      return NextResponse.json({ error: 'Cours non trouvé' }, { status: 404 })
+    }
+
+    courses[courseIndex].isPublished = isPublished
+
+    return NextResponse.json({
+      success: true,
+      message: isPublished ? 'Formation publiée' : 'Formation dépubliée',
+      course: courses[courseIndex]
+    })
+
+  } catch (error: any) {
+    console.error('❌ Training PUT proxy error:', error)
+    return NextResponse.json(
+      { error: 'Erreur lors de la mise à jour' },
+      { status: 500 }
+    )
+  }
+}
+
+/**
+ * DELETE - Supprimer un cours
+ */
+export async function DELETE(request: NextRequest) {
+  try {
+    const token = request.headers.get('authorization')
+    if (!token) {
+      return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
+    }
+
+    const body = await request.json()
+    const { courseId } = body
+
+    const courseIndex = courses.findIndex(c => c.id === courseId)
+    if (courseIndex === -1) {
+      return NextResponse.json({ error: 'Cours non trouvé' }, { status: 404 })
+    }
+
+    // Supprimer le cours
+    courses.splice(courseIndex, 1)
+
+    // Supprimer les inscriptions associées
+    enrollments = enrollments.filter(e => e.courseId !== courseId)
+
+    return NextResponse.json({
+      success: true,
+      message: 'Formation supprimée avec succès'
+    })
+
+  } catch (error: any) {
+    console.error('❌ Training DELETE proxy error:', error)
+    return NextResponse.json(
+      { error: 'Erreur lors de la suppression' },
       { status: 500 }
     )
   }
