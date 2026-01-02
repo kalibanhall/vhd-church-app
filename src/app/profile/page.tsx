@@ -331,14 +331,23 @@ export default function ProfilePage() {
                 Membre depuis le {user?.membershipDate || 'N/A'}
               </div>
               
-              {/* Bouton éditer profil */}
-              <button
-                onClick={() => setIsEditing(true)}
-                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                <Edit3 size={16} className="mr-2" />
-                Modifier le profil
-              </button>
+              {/* Boutons d'actions */}
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  <Edit3 size={16} className="mr-2" />
+                  Modifier le profil
+                </button>
+                <button
+                  onClick={() => router.push('/facial-profile')}
+                  className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg hover:from-purple-700 hover:to-indigo-700 transition-colors"
+                >
+                  <Scan size={16} className="mr-2" />
+                  Reconnaissance Faciale
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -239,3 +239,84 @@ export async function GET(request: NextRequest) {
     )
   }
 }
+
+// DELETE - Supprimer les données faciales de l'utilisateur
+export async function DELETE(request: NextRequest) {
+  try {
+    const authHeader = request.headers.get('authorization')
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return NextResponse.json(
+        { success: false, error: 'Non autorisé' },
+        { status: 401 }
+      )
+    }
+
+    const token = authHeader.split(' ')[1]
+    const user = verifyToken(token)
+    
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: 'Token invalide' },
+        { status: 401 }
+      )
+    }
+
+    // Initialiser Supabase
+    const supabase = getSupabaseClient()
+
+    // Récupérer le membre associé
+    const { data: userData } = await supabase
+      .from('users')
+      .select('membre_id')
+      .eq('id', user.userId)
+      .single()
+
+    if (userData?.membre_id) {
+      // Supprimer le descripteur facial du membre
+      const { error: updateError } = await supabase
+        .from('membres')
+        .update({
+          face_descriptor: null,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', userData.membre_id)
+
+      if (updateError) {
+        console.error('Erreur suppression:', updateError)
+        return NextResponse.json(
+          { success: false, error: 'Erreur lors de la suppression' },
+          { status: 500 }
+        )
+      }
+    } else {
+      // Supprimer depuis la table users
+      const { error: updateError } = await supabase
+        .from('users')
+        .update({
+          face_descriptor: null,
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', user.userId)
+
+      if (updateError) {
+        console.error('Erreur suppression:', updateError)
+        return NextResponse.json(
+          { success: false, error: 'Erreur lors de la suppression' },
+          { status: 500 }
+        )
+      }
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: 'Données faciales supprimées avec succès'
+    })
+
+  } catch (error) {
+    console.error('Erreur API facial DELETE:', error)
+    return NextResponse.json(
+      { success: false, error: 'Erreur serveur' },
+      { status: 500 }
+    )
+  }
+}
