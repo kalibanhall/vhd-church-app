@@ -14,16 +14,8 @@ import {
   X,
   Upload,
   Scan,
-  CheckCircle2,
-  AlertCircle
+  CheckCircle2
 } from 'lucide-react';
-import dynamic from 'next/dynamic';
-
-// Import dynamique du composant de capture faciale (côté client uniquement)
-const FaceCaptureAdvanced = dynamic(
-  () => import('@/components/FaceCaptureAdvanced'),
-  { ssr: false, loading: () => <div className="flex items-center justify-center p-8"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" /></div> }
-);
 
 interface User {
   id: string;
@@ -61,9 +53,6 @@ export default function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [showFacialModal, setShowFacialModal] = useState(false);
-  const [facialStatus, setFacialStatus] = useState<'idle' | 'capturing' | 'processing' | 'success' | 'error'>('idle');
-  const [facialMessage, setFacialMessage] = useState('');
 
   // États pour l'édition
   const [editData, setEditData] = useState({
@@ -286,19 +275,10 @@ export default function ProfilePage() {
                 )}
               </div>
               
-              {/* Bouton caméra pour reconnaissance faciale */}
-              <button 
-                onClick={() => setShowFacialModal(true)}
-                className="absolute bottom-0 right-0 w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full flex items-center justify-center shadow-lg hover:from-blue-700 hover:to-indigo-700 transition-all"
-                title="Reconnaissance Faciale"
-              >
-                <Scan size={20} />
-              </button>
-              
-              {/* Badge de statut facial */}
+              {/* Badge de statut facial - vert si visage enregistré */}
               {user?.face_descriptor && (
-                <div className="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center border-2 border-white shadow">
-                  <CheckCircle2 size={14} className="text-white" />
+                <div className="absolute bottom-0 right-0 w-8 h-8 bg-green-500 rounded-full flex items-center justify-center border-2 border-white shadow">
+                  <CheckCircle2 size={16} className="text-white" />
                 </div>
               )}
               
@@ -504,178 +484,6 @@ export default function ProfilePage() {
           </div>
         </div>
       )}
-
-      {/* Modal Reconnaissance Faciale */}
-      {showFacialModal && (
-        <FacialEnrollmentModal 
-          user={user}
-          onClose={() => {
-            setShowFacialModal(false);
-            setFacialStatus('idle');
-            setFacialMessage('');
-          }}
-          onSuccess={(photoUrl) => {
-            if (user) {
-              setUser({ ...user, face_descriptor: [1], profilePhoto: photoUrl || user.profilePhoto });
-            }
-            setShowFacialModal(false);
-            setFacialStatus('idle');
-          }}
-        />
-      )}
-    </div>
-  );
-}
-
-// Composant Modal pour l'enregistrement facial
-interface FacialModalProps {
-  user: User | null;
-  onClose: () => void;
-  onSuccess: (photoUrl?: string) => void;
-}
-
-function FacialEnrollmentModal({ user, onClose, onSuccess }: FacialModalProps) {
-  const [status, setStatus] = useState<'ready' | 'capturing' | 'processing' | 'success' | 'error'>('ready');
-  const [message, setMessage] = useState('');
-
-  const handleCapture = async (captures: { descriptor: Float32Array; imageData: string; quality: number }[]) => {
-    if (!user || captures.length === 0) return;
-
-    setStatus('processing');
-    setMessage('Enregistrement en cours...');
-
-    try {
-      // Calculer le descripteur moyen
-      const avgDescriptor = new Float32Array(128);
-      for (const capture of captures) {
-        for (let i = 0; i < 128; i++) {
-          avgDescriptor[i] += capture.descriptor[i] / captures.length;
-        }
-      }
-
-      // Utiliser la meilleure capture pour la photo
-      const bestCapture = captures.reduce((best, current) => 
-        current.quality > best.quality ? current : best
-      );
-
-      // Appel API pour sauvegarder
-      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-      
-      const response = await fetch('/api/profile/facial', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          descriptor: Array.from(avgDescriptor),
-          imageData: bestCapture.imageData
-        })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setStatus('success');
-        setMessage('Visage enregistré avec succès!');
-        
-        setTimeout(() => {
-          onSuccess(data.photoUrl);
-        }, 1500);
-      } else {
-        throw new Error('Erreur lors de la sauvegarde');
-      }
-    } catch (error) {
-      console.error('Erreur:', error);
-      setStatus('error');
-      setMessage('Erreur lors de l\'enregistrement. Réessayez.');
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50">
-      <div className="bg-gray-900 rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="sticky top-0 bg-gray-900 p-4 border-b border-gray-800 flex items-center justify-between z-10">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-600/20 rounded-lg">
-              <Scan className="h-6 w-6 text-blue-400" />
-            </div>
-            <div>
-              <h2 className="text-lg font-bold text-white">Reconnaissance Faciale</h2>
-              <p className="text-sm text-gray-400">
-                {user?.face_descriptor ? 'Modifier votre visage enregistré' : 'Enregistrer votre visage'}
-              </p>
-            </div>
-          </div>
-          <button 
-            onClick={onClose}
-            className="p-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
-          >
-            <X size={24} />
-          </button>
-        </div>
-
-        {/* Contenu */}
-        <div className="p-4">
-          {status === 'success' ? (
-            <div className="py-12 text-center">
-              <div className="w-20 h-20 mx-auto mb-4 bg-green-500 rounded-full flex items-center justify-center">
-                <CheckCircle2 className="h-12 w-12 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Enregistrement réussi!</h3>
-              <p className="text-gray-400">{message}</p>
-            </div>
-          ) : status === 'error' ? (
-            <div className="py-12 text-center">
-              <div className="w-20 h-20 mx-auto mb-4 bg-red-500 rounded-full flex items-center justify-center">
-                <AlertCircle className="h-12 w-12 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Erreur</h3>
-              <p className="text-gray-400 mb-4">{message}</p>
-              <button
-                onClick={() => setStatus('ready')}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                Réessayer
-              </button>
-            </div>
-          ) : status === 'processing' ? (
-            <div className="py-12 text-center">
-              <div className="w-20 h-20 mx-auto mb-4 relative">
-                <div className="absolute inset-0 bg-blue-500/20 rounded-full animate-ping" />
-                <div className="relative w-full h-full bg-blue-600 rounded-full flex items-center justify-center">
-                  <Scan className="h-10 w-10 text-white animate-pulse" />
-                </div>
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2">Traitement...</h3>
-              <p className="text-gray-400">{message}</p>
-            </div>
-          ) : (
-            <>
-              {/* Info box */}
-              {user?.face_descriptor && (
-                <div className="mb-4 p-4 bg-green-900/30 border border-green-800 rounded-xl">
-                  <div className="flex items-center gap-2 text-green-400">
-                    <CheckCircle2 className="h-5 w-5" />
-                    <span className="font-medium">Visage déjà enregistré</span>
-                  </div>
-                  <p className="text-green-300/70 text-sm mt-1">
-                    Vous pouvez capturer un nouveau visage pour remplacer l&apos;ancien.
-                  </p>
-                </div>
-              )}
-
-              {/* Composant de capture */}
-              <FaceCaptureAdvanced 
-                mode="enrollment"
-                onCapture={handleCapture}
-                minCaptureCount={3}
-                requiredQuality={0.7}
-              />
-            </>
-          )}
-        </div>
-      </div>
     </div>
   );
 }
