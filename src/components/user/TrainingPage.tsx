@@ -196,7 +196,8 @@ const TrainingPage: React.FC = () => {
 
       const data = await response.json()
       if (response.ok) {
-        setMessage({ type: 'success', text: '🎉 Inscription réussie ! Commencez votre formation.' })
+        // Message adapté pour la validation admin
+        setMessage({ type: 'success', text: '📩 Demande d\'inscription envoyée ! Elle sera validée par un administrateur.' })
         fetchMyEnrollments()
         fetchCourses()
         setShowCourseModal(false)

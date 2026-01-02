@@ -15,6 +15,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { authenticatedFetch } from '@/lib/auth-fetch'
 import {
   HelpCircle,
   Plus,
@@ -39,6 +40,14 @@ import {
   Eye,
   EyeOff
 } from 'lucide-react'
+
+// Interface pour les paramètres
+interface AppSettings {
+  emergency_phone: string
+  emergency_email: string
+  contact_phone: string
+  contact_email: string
+}
 
 // Types
 interface HelpRequest {
@@ -81,6 +90,14 @@ const HelpRequestPage: React.FC = () => {
   const [showNewForm, setShowNewForm] = useState(false)
   const [selectedRequest, setSelectedRequest] = useState<HelpRequest | null>(null)
   
+  // État pour les paramètres de contact
+  const [appSettings, setAppSettings] = useState<AppSettings>({
+    emergency_phone: '+243 83 23 13 105',
+    emergency_email: 'contact@vhd.com',
+    contact_phone: '+243 83 23 13 105',
+    contact_email: 'contact@vhd.com'
+  })
+  
   // États du formulaire
   const [formType, setFormType] = useState<HelpRequest['type']>('spiritual')
   const [formTitle, setFormTitle] = useState('')
@@ -92,47 +109,76 @@ const HelpRequestPage: React.FC = () => {
   const [formEmail, setFormEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
-  // Charger les demandes
+  // Charger les demandes et les paramètres
   useEffect(() => {
     loadRequests()
+    loadSettings()
   }, [])
 
-  const loadRequests = () => {
+  // Charger les paramètres de contact depuis l'API
+  const loadSettings = async () => {
+    try {
+      const response = await authenticatedFetch('/api/settings-proxy?category=contact')
+      if (response.ok) {
+        const data = await response.json()
+        if (data.settings) {
+          const settingsMap: Record<string, string> = {}
+          data.settings.forEach((s: { key: string, value: string }) => {
+            settingsMap[s.key] = s.value
+          })
+          setAppSettings(prev => ({
+            ...prev,
+            emergency_phone: settingsMap['emergency_phone'] || prev.emergency_phone,
+            emergency_email: settingsMap['emergency_email'] || prev.emergency_email,
+            contact_phone: settingsMap['contact_phone'] || prev.contact_phone,
+            contact_email: settingsMap['contact_email'] || prev.contact_email
+          }))
+        }
+      }
+    } catch (error) {
+      console.error('Erreur chargement paramètres:', error)
+    }
+  }
+
+  const loadRequests = async () => {
     setIsLoading(true)
     
-    // Charger depuis localStorage
+    // D'abord essayer de charger depuis l'API
+    try {
+      const userId = localStorage.getItem('userId') || ''
+      if (userId) {
+        const response = await authenticatedFetch(`/api/help-requests-proxy?userId=${userId}`)
+        if (response.ok) {
+          const data = await response.json()
+          if (data.requests && data.requests.length > 0) {
+            setRequests(data.requests)
+            setIsLoading(false)
+            return
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Erreur API help requests:', error)
+    }
+    
+    // Fallback: Charger depuis localStorage
     const saved = localStorage.getItem('help_requests')
     if (saved) {
       try {
         const allRequests = JSON.parse(saved)
-        // Filtrer les demandes de l'utilisateur courant (simulation)
-        const userId = localStorage.getItem('userId') || 'user_1'
-        setRequests(allRequests.filter((r: HelpRequest) => r.userId === userId))
+        // Filtrer les demandes de l'utilisateur courant
+        const userId = localStorage.getItem('userId') || ''
+        if (userId) {
+          setRequests(allRequests.filter((r: HelpRequest) => r.userId === userId))
+        } else {
+          setRequests([])
+        }
       } catch {
         setRequests([])
       }
     } else {
-      // Données de démonstration
-      const demoRequests: HelpRequest[] = [
-        {
-          id: 'help_1',
-          userId: localStorage.getItem('userId') || 'user_1',
-          type: 'spiritual',
-          title: 'Besoin de prière pour ma famille',
-          description: 'Ma famille traverse une période difficile. J\'aimerais que des frères et sœurs prient avec nous.',
-          urgency: 'medium',
-          status: 'in_progress',
-          isAnonymous: false,
-          contactPreference: 'phone',
-          phone: '06 12 34 56 78',
-          createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-          updatedAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-          assignedTo: 'Diacre Jean',
-          response: 'Un groupe de prière a été formé pour vous accompagner. Le Diacre Jean vous contactera.'
-        }
-      ]
-      setRequests(demoRequests)
-      saveAllRequests(demoRequests)
+      // Pas de données de démonstration - liste vide
+      setRequests([])
     }
     
     setIsLoading(false)
@@ -151,7 +197,7 @@ const HelpRequestPage: React.FC = () => {
     setIsSubmitting(true)
 
     try {
-      const userId = localStorage.getItem('userId') || 'user_1'
+      const userId = localStorage.getItem('userId') || ''
       const now = new Date().toISOString()
 
       const newRequest: HelpRequest = {
@@ -606,13 +652,13 @@ const HelpRequestPage: React.FC = () => {
           Si vous avez une urgence immédiate, contactez directement le secrétariat de l&apos;église :
         </p>
         <div className="flex flex-wrap gap-4">
-          <a href="tel:+33123456789" className="flex items-center gap-2 text-red-700 hover:underline">
+          <a href={`tel:${appSettings.emergency_phone.replace(/\s/g, '')}`} className="flex items-center gap-2 text-red-700 hover:underline">
             <Phone className="h-4 w-4" />
-            01 23 45 67 89
+            {appSettings.emergency_phone}
           </a>
-          <a href="mailto:urgence@eglise.org" className="flex items-center gap-2 text-red-700 hover:underline">
+          <a href={`mailto:${appSettings.emergency_email}`} className="flex items-center gap-2 text-red-700 hover:underline">
             <Mail className="h-4 w-4" />
-            urgence@eglise.org
+            {appSettings.emergency_email}
           </a>
         </div>
       </div>

@@ -47,6 +47,7 @@ import BiblePage from './user/BiblePage'
 import NotesPage from './user/NotesPage'
 import HelpRequestPage from './user/HelpRequestPage'
 import HelpRequestsManagement from './admin/HelpRequestsManagement'
+import SettingsManagement from './admin/SettingsManagement'
 
 // Suppression des imports mockés - utilisation des API réelles
 
@@ -74,7 +75,7 @@ export default function Dashboard() {
   }, [user?.role, activeTab])
   
   // Vérifier si on est dans l'espace admin (cohérent avec Sidebar.tsx)
-  const adminOnlyTabs = ['admin', 'analytics', 'members', 'events', 'polls-admin', 'notifications', 'validate-testimonies', 'volunteer-admin', 'activities-admin', 'help-requests-admin', 'training-admin']
+  const adminOnlyTabs = ['admin', 'analytics', 'members', 'events', 'polls-admin', 'notifications', 'validate-testimonies', 'volunteer-admin', 'activities-admin', 'help-requests-admin', 'training-admin', 'settings-admin']
   const isInAdminSpace = adminOnlyTabs.includes(activeTab)
   
   // Fonction pour gérer le changement d'onglet avec auto-repli
@@ -187,6 +188,9 @@ export default function Dashboard() {
 
       case 'notifications':
         return <NotificationsManagement />
+      
+      case 'settings-admin':
+        return <SettingsManagement />
       
       case 'pastor-appointments':
         return <AppointmentsManagement />

@@ -32,7 +32,11 @@ import {
   UserCheck,
   UserX,
   Eye,
-  X
+  X,
+  Plus,
+  Edit3,
+  Trash2,
+  Save
 } from 'lucide-react'
 
 // Types
@@ -85,6 +89,22 @@ const VolunteerManagement: React.FC = () => {
   // Modal détail
   const [selectedRegistration, setSelectedRegistration] = useState<VolunteerRegistration | null>(null)
   const [showDetailModal, setShowDetailModal] = useState(false)
+  
+  // Modal création/édition équipe
+  const [showTeamModal, setShowTeamModal] = useState(false)
+  const [selectedTeam, setSelectedTeam] = useState<ServiceTeam | null>(null)
+  const [teamForm, setTeamForm] = useState({
+    name: '',
+    code: '',
+    description: '',
+    icon: '🤝',
+    maxMembers: '',
+    schedule: '',
+    isActive: true
+  })
+
+  // Icônes disponibles
+  const availableIcons = ['🤝', '🎵', '📖', '🎬', '👶', '🎸', '📢', '🙏', '💒', '🎤', '👥', '✨', '🌟', '💪']
 
   // Statistiques calculées
   const stats = {
@@ -185,6 +205,139 @@ const VolunteerManagement: React.FC = () => {
     }
   }
 
+  // Ouvrir modal création équipe
+  const openCreateTeamModal = () => {
+    setSelectedTeam(null)
+    setTeamForm({
+      name: '',
+      code: '',
+      description: '',
+      icon: '🤝',
+      maxMembers: '',
+      schedule: '',
+      isActive: true
+    })
+    setShowTeamModal(true)
+  }
+
+  // Ouvrir modal édition équipe
+  const openEditTeamModal = (team: ServiceTeam) => {
+    setSelectedTeam(team)
+    setTeamForm({
+      name: team.name,
+      code: team.code,
+      description: team.description,
+      icon: team.icon,
+      maxMembers: team.maxMembers?.toString() || '',
+      schedule: team.schedule || '',
+      isActive: team.isActive
+    })
+    setShowTeamModal(true)
+  }
+
+  // Sauvegarder équipe
+  const handleSaveTeam = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!teamForm.name || !teamForm.code || !teamForm.description) {
+      setMessage({ type: 'error', text: 'Veuillez remplir tous les champs obligatoires' })
+      return
+    }
+
+    setProcessing('team')
+    try {
+      const payload = {
+        action: selectedTeam ? 'update-team' : 'create-team',
+        teamId: selectedTeam?.id,
+        ...teamForm,
+        maxMembers: teamForm.maxMembers ? parseInt(teamForm.maxMembers) : null
+      }
+
+      const response = await authenticatedFetch('/api/volunteer-proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+
+      if (response.ok) {
+        setMessage({ 
+          type: 'success', 
+          text: selectedTeam ? '✅ Équipe modifiée avec succès' : '✅ Équipe créée avec succès'
+        })
+        setShowTeamModal(false)
+        fetchData()
+      } else {
+        const data = await response.json()
+        setMessage({ type: 'error', text: data.error || 'Erreur lors de la sauvegarde' })
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Erreur de connexion au serveur' })
+    } finally {
+      setProcessing(null)
+    }
+  }
+
+  // Supprimer équipe
+  const handleDeleteTeam = async (teamId: string) => {
+    if (!confirm('Êtes-vous sûr de vouloir supprimer cette équipe ? Cette action est irréversible.')) return
+
+    setProcessing(teamId)
+    try {
+      const response = await authenticatedFetch('/api/volunteer-proxy', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ teamId })
+      })
+
+      if (response.ok) {
+        setMessage({ type: 'success', text: '✅ Équipe supprimée' })
+        fetchData()
+      } else {
+        const data = await response.json()
+        setMessage({ type: 'error', text: data.error || 'Erreur lors de la suppression' })
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Erreur de connexion au serveur' })
+    } finally {
+      setProcessing(null)
+    }
+  }
+      try {
+        const user = JSON.parse(userStr)
+        approvedBy = `${user.firstName} ${user.lastName}`
+      } catch {}
+    }
+
+    try {
+      const response = await authenticatedFetch('/api/volunteer-proxy', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          registrationId,
+          status: newStatus,
+          approvedBy
+        })
+      })
+
+      if (response.ok) {
+        setMessage({ 
+          type: 'success', 
+          text: newStatus === 'APPROVED' 
+            ? '✅ Inscription approuvée avec succès' 
+            : '❌ Inscription refusée'
+        })
+        fetchData()
+        setShowDetailModal(false)
+      } else {
+        const data = await response.json()
+        setMessage({ type: 'error', text: data.error || 'Erreur lors de la mise à jour' })
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Erreur de connexion au serveur' })
+    } finally {
+      setProcessing(null)
+    }
+  }
+
   // Badge de statut
   const StatusBadge = ({ status }: { status: string }) => {
     const configs: Record<string, { bg: string, text: string, icon: React.ReactNode }> = {
@@ -219,6 +372,13 @@ const VolunteerManagement: React.FC = () => {
           <h1 className="text-2xl font-bold text-gray-900">Gestion des Bénévoles</h1>
           <p className="text-gray-500">Gérez les équipes de service et validez les inscriptions</p>
         </div>
+        <button
+          onClick={openCreateTeamModal}
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          <Plus className="h-4 w-4" />
+          Nouvelle Équipe
+        </button>
       </div>
 
       {/* Message */}
@@ -302,17 +462,66 @@ const VolunteerManagement: React.FC = () => {
       {/* Aperçu des équipes */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
         <h2 className="font-semibold text-gray-900 mb-4">Équipes de service</h2>
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-          {teams.map(team => (
-            <div key={team.id} className="p-3 bg-gray-50 rounded-lg text-center">
-              <span className="text-2xl">{team.icon}</span>
-              <p className="font-medium text-sm text-gray-900 mt-1">{team.name.replace("Équipe ", "").replace("d'", "")}</p>
-              <p className="text-xs text-gray-500">
-                {team.currentMembers}{team.maxMembers ? `/${team.maxMembers}` : ''} membres
-              </p>
-            </div>
-          ))}
-        </div>
+        {teams.length === 0 ? (
+          <div className="text-center py-8">
+            <Users className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-500 mb-4">Aucune équipe créée pour le moment</p>
+            <button
+              onClick={openCreateTeamModal}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              <Plus className="h-4 w-4" />
+              Créer votre première équipe
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {teams.map(team => (
+              <div key={team.id} className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <span className="text-3xl">{team.icon}</span>
+                    <div>
+                      <p className="font-medium text-gray-900">{team.name}</p>
+                      <p className="text-xs text-gray-500">
+                        {team.currentMembers}{team.maxMembers ? `/${team.maxMembers}` : ''} membres
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => openEditTeamModal(team)}
+                      className="p-1.5 text-gray-400 hover:text-blue-600 rounded hover:bg-blue-50"
+                      title="Modifier"
+                    >
+                      <Edit3 className="h-4 w-4" />
+                    </button>
+                    <button
+                      onClick={() => handleDeleteTeam(team.id)}
+                      disabled={processing === team.id}
+                      className="p-1.5 text-gray-400 hover:text-red-600 rounded hover:bg-red-50 disabled:opacity-50"
+                      title="Supprimer"
+                    >
+                      {processing === team.id ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+                {team.description && (
+                  <p className="text-xs text-gray-500 mt-2 line-clamp-2">{team.description}</p>
+                )}
+                {!team.isActive && (
+                  <span className="inline-block mt-2 text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded">
+                    Inactive
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Filtres et recherche */}
@@ -557,6 +766,169 @@ const VolunteerManagement: React.FC = () => {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal création/édition équipe */}
+      {showTeamModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white rounded-t-2xl">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-xl font-bold">
+                    {selectedTeam ? 'Modifier l\'équipe' : 'Nouvelle équipe'}
+                  </h2>
+                  <p className="text-white/80">Configurez les détails de l&apos;équipe</p>
+                </div>
+                <button
+                  onClick={() => setShowTeamModal(false)}
+                  className="text-white/80 hover:text-white p-1"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+            </div>
+
+            {/* Formulaire */}
+            <form onSubmit={handleSaveTeam} className="p-6 space-y-4">
+              {/* Icône */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Icône de l&apos;équipe
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {availableIcons.map(icon => (
+                    <button
+                      key={icon}
+                      type="button"
+                      onClick={() => setTeamForm({ ...teamForm, icon })}
+                      className={`text-2xl p-2 rounded-lg transition-colors ${
+                        teamForm.icon === icon 
+                          ? 'bg-blue-100 ring-2 ring-blue-500' 
+                          : 'hover:bg-gray-100'
+                      }`}
+                    >
+                      {icon}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Nom */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Nom de l&apos;équipe *
+                </label>
+                <input
+                  type="text"
+                  value={teamForm.name}
+                  onChange={(e) => setTeamForm({ ...teamForm, name: e.target.value })}
+                  placeholder="Ex: Équipe d'Accueil"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+
+              {/* Code */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Code *
+                </label>
+                <input
+                  type="text"
+                  value={teamForm.code}
+                  onChange={(e) => setTeamForm({ ...teamForm, code: e.target.value.toUpperCase() })}
+                  placeholder="Ex: ACCUEIL"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+                <p className="text-xs text-gray-500 mt-1">Code unique pour identifier l&apos;équipe</p>
+              </div>
+
+              {/* Description */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Description *
+                </label>
+                <textarea
+                  value={teamForm.description}
+                  onChange={(e) => setTeamForm({ ...teamForm, description: e.target.value })}
+                  placeholder="Décrivez les responsabilités de cette équipe..."
+                  rows={3}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  required
+                />
+              </div>
+
+              {/* Nombre max de membres */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Nombre maximum de membres
+                </label>
+                <input
+                  type="number"
+                  value={teamForm.maxMembers}
+                  onChange={(e) => setTeamForm({ ...teamForm, maxMembers: e.target.value })}
+                  placeholder="Illimité si vide"
+                  min="1"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {/* Horaire */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Horaire typique
+                </label>
+                <input
+                  type="text"
+                  value={teamForm.schedule}
+                  onChange={(e) => setTeamForm({ ...teamForm, schedule: e.target.value })}
+                  placeholder="Ex: Dimanche 8h-12h"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              {/* Statut actif */}
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="isActive"
+                  checked={teamForm.isActive}
+                  onChange={(e) => setTeamForm({ ...teamForm, isActive: e.target.checked })}
+                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                />
+                <label htmlFor="isActive" className="text-sm text-gray-700">
+                  Équipe active (visible pour les inscriptions)
+                </label>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3 pt-4 border-t border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => setShowTeamModal(false)}
+                  className="flex-1 py-3 px-4 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50"
+                >
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  disabled={processing === 'team'}
+                  className="flex-1 py-3 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  {processing === 'team' ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Save className="h-4 w-4" />
+                  )}
+                  {selectedTeam ? 'Modifier' : 'Créer'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

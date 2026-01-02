@@ -66,7 +66,7 @@ interface Course {
 
 interface Enrollment {
   id: string
-  oderId: string
+  userId: string
   userName: string
   userEmail: string
   courseId: string
@@ -75,7 +75,7 @@ interface Enrollment {
   completedLessons: string[]
   startedAt: string
   completedAt?: string
-  status: 'IN_PROGRESS' | 'COMPLETED' | 'ABANDONED'
+  status: 'PENDING' | 'APPROVED' | 'IN_PROGRESS' | 'COMPLETED' | 'REJECTED' | 'ABANDONED'
 }
 
 interface Message {
@@ -145,6 +145,7 @@ const TrainingManagement: React.FC = () => {
     totalCourses: courses.length,
     publishedCourses: courses.filter(c => c.isPublished).length,
     totalEnrollments: enrollments.length,
+    pendingEnrollments: enrollments.filter(e => e.status === 'PENDING').length,
     completedEnrollments: enrollments.filter(e => e.status === 'COMPLETED').length
   }
 
@@ -380,6 +381,37 @@ const TrainingManagement: React.FC = () => {
     }
   }
 
+  // Valider ou rejeter une inscription
+  const handleEnrollmentAction = async (enrollmentId: string, action: 'approve' | 'reject') => {
+    try {
+      const response = await authenticatedFetch('/api/training-proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'validate-enrollment',
+          enrollmentId,
+          decision: action
+        })
+      })
+
+      const data = await response.json()
+      
+      if (response.ok) {
+        setMessage({ 
+          type: 'success', 
+          text: action === 'approve' 
+            ? '✅ Inscription approuvée avec succès' 
+            : '❌ Inscription refusée'
+        })
+        loadData()
+      } else {
+        setMessage({ type: 'error', text: data.error || 'Erreur lors de la validation' })
+      }
+    } catch (error) {
+      setMessage({ type: 'error', text: 'Erreur de connexion au serveur' })
+    }
+  }
+
   // Badge de niveau
   const LevelBadge = ({ level }: { level: string }) => {
     const config = levels.find(l => l.value === level) || levels[0]
@@ -433,7 +465,7 @@ const TrainingManagement: React.FC = () => {
       )}
 
       {/* Statistiques */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
           <div className="flex items-center gap-3">
             <div className="bg-blue-100 p-2 rounded-lg">
@@ -469,11 +501,24 @@ const TrainingManagement: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Pending enrollments with notification badge */}
+        <div className={`rounded-xl p-4 shadow-sm border ${stats.pendingEnrollments > 0 ? 'bg-amber-50 border-amber-200' : 'bg-white border-gray-100'}`}>
+          <div className="flex items-center gap-3">
+            <div className={`p-2 rounded-lg ${stats.pendingEnrollments > 0 ? 'bg-amber-200' : 'bg-amber-100'}`}>
+              <Clock className={`h-5 w-5 ${stats.pendingEnrollments > 0 ? 'text-amber-700' : 'text-amber-600'}`} />
+            </div>
+            <div>
+              <p className={`text-2xl font-bold ${stats.pendingEnrollments > 0 ? 'text-amber-700' : 'text-gray-900'}`}>{stats.pendingEnrollments}</p>
+              <p className="text-xs text-gray-500">En attente</p>
+            </div>
+          </div>
+        </div>
         
         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="bg-amber-100 p-2 rounded-lg">
-              <Award className="h-5 w-5 text-amber-600" />
+            <div className="bg-emerald-100 p-2 rounded-lg">
+              <Award className="h-5 w-5 text-emerald-600" />
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-900">{stats.completedEnrollments}</p>
@@ -630,46 +675,122 @@ const TrainingManagement: React.FC = () => {
       )}
 
       {activeTab === 'enrollments' && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-          {enrollments.length === 0 ? (
-            <div className="text-center py-12">
-              <Users className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-              <p className="text-gray-500">Aucune inscription pour le moment</p>
-            </div>
-          ) : (
-            <div className="divide-y divide-gray-100">
-              {enrollments.map(enrollment => (
-                <div key={enrollment.id} className="p-4 hover:bg-gray-50">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="bg-purple-100 p-2 rounded-full">
-                        <Users className="h-5 w-5 text-purple-600" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-gray-900">{enrollment.userName}</p>
-                        <p className="text-sm text-gray-500">{enrollment.courseName}</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="flex items-center gap-2">
-                        <div className="w-24 bg-gray-200 rounded-full h-2">
-                          <div 
-                            className="bg-blue-600 h-2 rounded-full" 
-                            style={{ width: `${enrollment.progress}%` }}
-                          />
+        <div className="space-y-4">
+          {/* Inscriptions en attente */}
+          {stats.pendingEnrollments > 0 && (
+            <div className="bg-amber-50 rounded-xl shadow-sm border border-amber-200 overflow-hidden">
+              <div className="p-4 bg-amber-100 border-b border-amber-200">
+                <h3 className="font-semibold text-amber-800 flex items-center gap-2">
+                  <Clock className="h-5 w-5" />
+                  Inscriptions en attente de validation ({stats.pendingEnrollments})
+                </h3>
+              </div>
+              <div className="divide-y divide-amber-100">
+                {enrollments.filter(e => e.status === 'PENDING').map(enrollment => (
+                  <div key={enrollment.id} className="p-4 hover:bg-amber-50/50">
+                    <div className="flex items-center justify-between flex-wrap gap-4">
+                      <div className="flex items-center gap-4">
+                        <div className="bg-amber-200 p-2 rounded-full">
+                          <Users className="h-5 w-5 text-amber-700" />
                         </div>
-                        <span className="text-sm font-medium text-gray-700">{enrollment.progress}%</span>
+                        <div>
+                          <p className="font-medium text-gray-900">{enrollment.userName}</p>
+                          <p className="text-sm text-gray-600">{enrollment.userEmail}</p>
+                          <p className="text-sm text-amber-700 font-medium">{enrollment.courseName}</p>
+                          <p className="text-xs text-gray-500">
+                            Demandé le {new Date(enrollment.startedAt).toLocaleDateString('fr-FR')}
+                          </p>
+                        </div>
                       </div>
-                      <p className="text-xs text-gray-500 mt-1">
-                        {enrollment.status === 'COMPLETED' ? '✅ Terminé' : 
-                         enrollment.status === 'ABANDONED' ? '❌ Abandonné' : '📚 En cours'}
-                      </p>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handleEnrollmentAction(enrollment.id, 'approve')}
+                          className="flex items-center gap-1 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm"
+                        >
+                          <CheckCircle className="h-4 w-4" />
+                          Approuver
+                        </button>
+                        <button
+                          onClick={() => handleEnrollmentAction(enrollment.id, 'reject')}
+                          className="flex items-center gap-1 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
+                        >
+                          <X className="h-4 w-4" />
+                          Refuser
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           )}
+
+          {/* Toutes les inscriptions */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="p-4 bg-gray-50 border-b border-gray-100">
+              <h3 className="font-semibold text-gray-700">Toutes les inscriptions</h3>
+            </div>
+            {enrollments.filter(e => e.status !== 'PENDING').length === 0 ? (
+              <div className="text-center py-12">
+                <Users className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-500">Aucune inscription validée pour le moment</p>
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-100">
+                {enrollments.filter(e => e.status !== 'PENDING').map(enrollment => (
+                  <div key={enrollment.id} className="p-4 hover:bg-gray-50">
+                    <div className="flex items-center justify-between flex-wrap gap-4">
+                      <div className="flex items-center gap-4">
+                        <div className={`p-2 rounded-full ${
+                          enrollment.status === 'COMPLETED' ? 'bg-green-100' :
+                          enrollment.status === 'REJECTED' ? 'bg-red-100' :
+                          enrollment.status === 'ABANDONED' ? 'bg-gray-100' :
+                          'bg-purple-100'
+                        }`}>
+                          <Users className={`h-5 w-5 ${
+                            enrollment.status === 'COMPLETED' ? 'text-green-600' :
+                            enrollment.status === 'REJECTED' ? 'text-red-600' :
+                            enrollment.status === 'ABANDONED' ? 'text-gray-600' :
+                            'text-purple-600'
+                          }`} />
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-900">{enrollment.userName}</p>
+                          <p className="text-sm text-gray-500">{enrollment.courseName}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        {enrollment.status === 'APPROVED' || enrollment.status === 'IN_PROGRESS' || enrollment.status === 'COMPLETED' ? (
+                          <div className="flex items-center gap-2">
+                            <div className="w-24 bg-gray-200 rounded-full h-2">
+                              <div 
+                                className="bg-blue-600 h-2 rounded-full" 
+                                style={{ width: `${enrollment.progress}%` }}
+                              />
+                            </div>
+                            <span className="text-sm font-medium text-gray-700">{enrollment.progress}%</span>
+                          </div>
+                        ) : null}
+                        <p className={`text-xs mt-1 font-medium ${
+                          enrollment.status === 'COMPLETED' ? 'text-green-600' :
+                          enrollment.status === 'REJECTED' ? 'text-red-600' :
+                          enrollment.status === 'ABANDONED' ? 'text-gray-600' :
+                          enrollment.status === 'APPROVED' ? 'text-blue-600' :
+                          'text-purple-600'
+                        }`}>
+                          {enrollment.status === 'COMPLETED' ? '✅ Terminé' : 
+                           enrollment.status === 'REJECTED' ? '❌ Refusé' :
+                           enrollment.status === 'ABANDONED' ? '🚫 Abandonné' :
+                           enrollment.status === 'APPROVED' ? '✓ Approuvé' :
+                           '📚 En cours'}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       )}
 

@@ -114,7 +114,8 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
         { id: 'validate-testimonies', label: 'Validation témoignages', icon: CheckCircle },
         { id: 'pastor-appointments', label: 'Gestion rendez-vous', icon: UserCheck },
         { id: 'facial-enrollment', label: 'Enregistrement facial', icon: UserCog },
-        { id: 'facial-attendance', label: 'Pointage facial', icon: ScanFace }
+        { id: 'facial-attendance', label: 'Pointage facial', icon: ScanFace },
+        { id: 'settings-admin', label: 'Réglages', icon: Settings }
       ]
 
   // Détermine si l'utilisateur a des privilèges d'administration
@@ -146,7 +147,7 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
   }
   
   // Vérifier si on est dans l'espace admin
-  const adminOnlyTabs = ['admin', 'analytics', 'members', 'events', 'polls-admin', 'notifications', 'validate-testimonies', 'activities-admin', 'volunteer-admin', 'help-requests-admin', 'training-admin']
+  const adminOnlyTabs = ['admin', 'analytics', 'members', 'events', 'polls-admin', 'notifications', 'validate-testimonies', 'activities-admin', 'volunteer-admin', 'help-requests-admin', 'training-admin', 'settings-admin']
   const isInAdminSpace = adminOnlyTabs.includes(activeTab)
   
   // Vérifier si on est dans l'espace de travail spécialisé (admin ou pasteur)

@@ -111,95 +111,22 @@ const NotesPage: React.FC = () => {
   const loadNotes = () => {
     setIsLoading(true)
     
-    // Charger depuis localStorage
+    // Charger depuis localStorage uniquement - pas de données de démo
     const savedNotes = localStorage.getItem('user_notes')
     if (savedNotes) {
       try {
         setNotes(JSON.parse(savedNotes))
       } catch {
-        setNotes(getDefaultNotes())
+        // En cas d'erreur, commencer avec une liste vide
+        setNotes([])
       }
     } else {
-      // Notes par défaut pour démonstration
-      const defaultNotes = getDefaultNotes()
-      setNotes(defaultNotes)
-      localStorage.setItem('user_notes', JSON.stringify(defaultNotes))
+      // Pas de données de démonstration - commencer avec une liste vide
+      setNotes([])
     }
     
     setIsLoading(false)
   }
-
-  const getDefaultNotes = (): Note[] => [
-    {
-      id: 'note_1',
-      title: 'La puissance de la foi',
-      content: `Prédication du Pasteur sur Hébreux 11:1-6
-
-Points clés:
-- La foi est l'assurance des choses qu'on espère
-- Sans la foi, il est impossible de plaire à Dieu
-- La foi en action: exemples d'Abraham et de Moïse
-
-Application personnelle:
-- Prier avec plus de confiance
-- Méditer sur les promesses de Dieu
-- Agir en croyant que Dieu répond`,
-      type: 'sermon',
-      sermonTitle: 'La puissance de la foi',
-      preacher: 'Pasteur Jean',
-      date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-      lastModified: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-      tags: ['foi', 'hébreux', 'confiance'],
-      isFavorite: true
-    },
-    {
-      id: 'note_2',
-      title: 'Étude sur les Psaumes',
-      content: `Psaume 23 - L'Éternel est mon berger
-
-Versets clés:
-- v.1: "Je ne manquerai de rien"
-- v.4: "Ta houlette et ton bâton me rassurent"
-- v.6: "Le bonheur et la grâce m'accompagneront"
-
-Réflexions:
-- Dieu pourvoit à tous mes besoins
-- Même dans les moments difficiles, Il est là
-- Sa bonté me suit tous les jours`,
-      type: 'bible_study',
-      date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-      lastModified: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-      tags: ['psaumes', 'provision', 'protection'],
-      isFavorite: false
-    },
-    {
-      id: 'note_3',
-      title: 'Prière du matin',
-      content: `Routine de prière quotidienne:
-
-1. Louange (5 min)
-   - Remercier Dieu pour la nouvelle journée
-   - Chanter un cantique
-
-2. Confession (5 min)
-   - Reconnaître mes faiblesses
-   - Demander pardon
-
-3. Intercession (10 min)
-   - Prier pour ma famille
-   - Prier pour l'église
-   - Prier pour le pays
-
-4. Méditation (10 min)
-   - Lire un passage biblique
-   - Écouter la voix de Dieu`,
-      type: 'personal',
-      date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-      lastModified: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
-      tags: ['prière', 'routine', 'quotidien'],
-      isFavorite: true
-    }
-  ]
 
   const saveNotes = (updatedNotes: Note[]) => {
     setNotes(updatedNotes)

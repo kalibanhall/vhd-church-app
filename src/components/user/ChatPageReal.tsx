@@ -489,9 +489,21 @@ const ChatPageReal: React.FC = () => {
     loadOnlineUsers()
     
     // Recharger les utilisateurs en ligne toutes les 30 secondes
-    const interval = setInterval(loadOnlineUsers, 30000)
-    return () => clearInterval(interval)
+    const onlineInterval = setInterval(loadOnlineUsers, 30000)
+    return () => clearInterval(onlineInterval)
   }, [])
+
+  // Polling automatique des messages (actualisation toutes les 5 secondes)
+  useEffect(() => {
+    if (!selectedChannel) return
+    
+    const messageInterval = setInterval(() => {
+      // Recharger les messages silencieusement sans perturber l'interface
+      loadChannelMessages(selectedChannel)
+    }, 5000)
+    
+    return () => clearInterval(messageInterval)
+  }, [selectedChannel?.id])
 
   // Auto-scroll quand de nouveaux messages arrivent
   useEffect(() => {

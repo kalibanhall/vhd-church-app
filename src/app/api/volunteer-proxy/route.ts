@@ -7,24 +7,17 @@
  * GitHub: https://github.com/KalibanHall
  * 
  * Description: API pour gérer les équipes de service et les inscriptions
- * des bénévoles dans l'église.
+ * des bénévoles dans l'église. Les équipes sont créées par l'admin et les
+ * demandes d'inscription sont validées par l'admin.
  * 
- * Équipes disponibles:
- * - Accueil (WELCOME)
- * - Louange/Musique (WORSHIP)
- * - Technique/Son (TECH)
- * - Enfants/École du dimanche (CHILDREN)
- * - Intercession (INTERCESSION)
- * - Protocole (PROTOCOL)
- * - Média/Communication (MEDIA)
- * - Nettoyage (CLEANING)
- * - Sécurité (SECURITY)
- * - Restauration (CATERING)
+ * Aucune donnée n'est prédéfinie - tout est créé via le backoffice admin.
  * 
  * =============================================================================
  */
 
 import { NextRequest, NextResponse } from 'next/server'
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://vhd-api-backend.onrender.com/api/v1'
 
 // Types pour les équipes de service
 interface ServiceTeam {
@@ -58,131 +51,9 @@ interface VolunteerRegistration {
   approvedBy?: string
 }
 
-// Données simulées des équipes de service (en attendant le backend)
-const serviceTeams: ServiceTeam[] = [
-  {
-    id: '1',
-    name: 'Équipe d\'Accueil',
-    code: 'WELCOME',
-    description: 'Accueillir chaleureusement les fidèles et visiteurs à l\'entrée de l\'église',
-    icon: '👋',
-    maxMembers: 20,
-    currentMembers: 12,
-    schedule: 'Dimanche 8h30 - 13h00',
-    isActive: true,
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: '2',
-    name: 'Équipe de Louange',
-    code: 'WORSHIP',
-    description: 'Conduire l\'assemblée dans la louange et l\'adoration par la musique',
-    icon: '🎵',
-    maxMembers: 15,
-    currentMembers: 8,
-    schedule: 'Répétitions: Samedi 15h | Service: Dimanche 9h',
-    isActive: true,
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: '3',
-    name: 'Équipe Technique',
-    code: 'TECH',
-    description: 'Gérer le son, la vidéo et les équipements techniques pendant les services',
-    icon: '🎛️',
-    maxMembers: 10,
-    currentMembers: 5,
-    schedule: 'Dimanche 8h00 - 13h30',
-    isActive: true,
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: '4',
-    name: 'École du Dimanche',
-    code: 'CHILDREN',
-    description: 'Enseigner et encadrer les enfants pendant le culte',
-    icon: '👶',
-    maxMembers: 15,
-    currentMembers: 7,
-    schedule: 'Dimanche 10h00 - 12h00',
-    isActive: true,
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: '5',
-    name: 'Équipe d\'Intercession',
-    code: 'INTERCESSION',
-    description: 'Prier pour l\'église, les membres et les besoins de la communauté',
-    icon: '🙏',
-    maxMembers: 30,
-    currentMembers: 18,
-    schedule: 'Mercredi 18h | Dimanche 8h',
-    isActive: true,
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: '6',
-    name: 'Protocole',
-    code: 'PROTOCOL',
-    description: 'Assurer l\'ordre et le bon déroulement des cérémonies',
-    icon: '🎩',
-    maxMembers: 12,
-    currentMembers: 6,
-    schedule: 'Dimanche 9h00 - 13h00',
-    isActive: true,
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: '7',
-    name: 'Média & Communication',
-    code: 'MEDIA',
-    description: 'Gérer les réseaux sociaux, photos, vidéos et communication de l\'église',
-    icon: '📱',
-    maxMembers: 8,
-    currentMembers: 4,
-    schedule: 'Flexible',
-    isActive: true,
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: '8',
-    name: 'Équipe de Nettoyage',
-    code: 'CLEANING',
-    description: 'Maintenir la propreté et l\'ordre des locaux de l\'église',
-    icon: '🧹',
-    maxMembers: 15,
-    currentMembers: 9,
-    schedule: 'Samedi 8h | Dimanche après le culte',
-    isActive: true,
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: '9',
-    name: 'Sécurité',
-    code: 'SECURITY',
-    description: 'Assurer la sécurité des fidèles et des locaux',
-    icon: '🛡️',
-    maxMembers: 10,
-    currentMembers: 6,
-    schedule: 'Tous les services',
-    isActive: true,
-    createdAt: new Date().toISOString()
-  },
-  {
-    id: '10',
-    name: 'Restauration',
-    code: 'CATERING',
-    description: 'Préparer et servir les repas lors des événements spéciaux',
-    icon: '🍽️',
-    maxMembers: 20,
-    currentMembers: 11,
-    schedule: 'Événements spéciaux',
-    isActive: true,
-    createdAt: new Date().toISOString()
-  }
-]
-
-// Stockage temporaire des inscriptions (en mémoire)
+// Stockage en mémoire - Commencer avec des tableaux vides
+// Les équipes sont créées par l'admin
+let serviceTeams: ServiceTeam[] = []
 let volunteerRegistrations: VolunteerRegistration[] = []
 
 /**
@@ -196,31 +67,57 @@ export async function GET(request: NextRequest) {
     }
 
     const { searchParams } = new URL(request.url)
-    const type = searchParams.get('type') || 'teams' // 'teams' | 'registrations' | 'my-registrations'
+    const type = searchParams.get('type') || 'teams'
     const userId = searchParams.get('userId')
     const teamId = searchParams.get('teamId')
     const status = searchParams.get('status')
 
+    // Essayer de récupérer depuis le backend
+    try {
+      const backendUrl = new URL(`${API_BASE_URL}/volunteers/${type}`)
+      if (userId) backendUrl.searchParams.set('userId', userId)
+      if (teamId) backendUrl.searchParams.set('teamId', teamId)
+      if (status) backendUrl.searchParams.set('status', status)
+
+      const response = await fetch(backendUrl.toString(), {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        cache: 'no-store'
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        // Mettre à jour le cache local
+        if (data.teams) serviceTeams = data.teams
+        if (data.registrations) volunteerRegistrations = data.registrations
+        return NextResponse.json(data)
+      }
+    } catch {
+      console.log('Backend non disponible, utilisation du cache local')
+    }
+
+    // Fallback: données locales
     if (type === 'teams') {
-      // Retourner toutes les équipes actives
       const activeTeams = serviceTeams.filter(team => team.isActive)
       return NextResponse.json({ 
         teams: activeTeams,
-        total: activeTeams.length 
+        total: activeTeams.length,
+        source: 'local'
       })
     }
 
     if (type === 'my-registrations' && userId) {
-      // Retourner les inscriptions de l'utilisateur
       const userRegistrations = volunteerRegistrations.filter(r => r.userId === userId)
       return NextResponse.json({ 
         registrations: userRegistrations,
-        total: userRegistrations.length 
+        total: userRegistrations.length,
+        source: 'local'
       })
     }
 
     if (type === 'registrations') {
-      // Admin: retourner toutes les inscriptions avec filtres optionnels
       let filteredRegistrations = [...volunteerRegistrations]
       
       if (teamId) {
@@ -230,15 +127,24 @@ export async function GET(request: NextRequest) {
         filteredRegistrations = filteredRegistrations.filter(r => r.status === status)
       }
 
+      // Trier par date de création (plus récent en premier)
+      filteredRegistrations.sort((a, b) => 
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+
       return NextResponse.json({ 
         registrations: filteredRegistrations,
-        total: filteredRegistrations.length 
+        total: filteredRegistrations.length,
+        source: 'local'
       })
     }
 
-    return NextResponse.json({ teams: serviceTeams })
+    return NextResponse.json({ 
+      teams: serviceTeams.filter(t => t.isActive),
+      source: 'local'
+    })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Volunteer GET proxy error:', error)
     return NextResponse.json(
       { error: 'Erreur de connexion au serveur' },
@@ -248,7 +154,7 @@ export async function GET(request: NextRequest) {
 }
 
 /**
- * POST - Créer une nouvelle inscription à une équipe
+ * POST - S'inscrire à une équipe ou créer une équipe (admin)
  */
 export async function POST(request: NextRequest) {
   try {
@@ -258,69 +164,163 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { userId, userName, userEmail, teamId, availability, experience, motivation } = body
+    const { action } = body
 
-    // Validation des champs requis
-    if (!userId || !teamId) {
-      return NextResponse.json(
-        { error: 'userId et teamId sont requis' },
-        { status: 400 }
+    // Essayer d'envoyer au backend
+    try {
+      const response = await fetch(`${API_BASE_URL}/volunteers`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        body: JSON.stringify(body)
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        return NextResponse.json(data, { status: 201 })
+      }
+    } catch {
+      console.log('Backend non disponible, traitement local')
+    }
+
+    // Fallback: traitement local
+
+    // Inscription d'un membre à une équipe
+    if (action === 'register' || !action) {
+      const { userId, userName, userEmail, teamId, availability, experience, motivation } = body
+
+      // Vérifier si l'équipe existe
+      const team = serviceTeams.find(t => t.id === teamId)
+      if (!team) {
+        return NextResponse.json(
+          { error: 'Équipe non trouvée' },
+          { status: 404 }
+        )
+      }
+
+      // Vérifier si déjà inscrit
+      const existingRegistration = volunteerRegistrations.find(
+        r => r.userId === userId && r.teamId === teamId && r.status !== 'REJECTED'
       )
+      if (existingRegistration) {
+        return NextResponse.json(
+          { error: 'Vous êtes déjà inscrit ou avez une demande en cours pour cette équipe' },
+          { status: 400 }
+        )
+      }
+
+      // Créer l'inscription (en attente de validation admin)
+      const newRegistration: VolunteerRegistration = {
+        id: `volreg_${Date.now()}`,
+        userId,
+        userName: userName || 'Membre',
+        userEmail: userEmail || '',
+        teamId,
+        teamName: team.name,
+        status: 'PENDING', // En attente de validation
+        availability: availability || [],
+        experience: experience || '',
+        motivation: motivation || '',
+        createdAt: new Date().toISOString()
+      }
+
+      volunteerRegistrations.push(newRegistration)
+
+      return NextResponse.json({
+        success: true,
+        message: 'Demande d\'inscription envoyée. Elle sera validée par un administrateur.',
+        registration: newRegistration
+      }, { status: 201 })
     }
 
-    // Vérifier si l'équipe existe
-    const team = serviceTeams.find(t => t.id === teamId)
-    if (!team) {
-      return NextResponse.json(
-        { error: 'Équipe non trouvée' },
-        { status: 404 }
-      )
+    // Admin: Créer une nouvelle équipe
+    if (action === 'create-team') {
+      const { name, code, description, icon, maxMembers, schedule, leaderId, leaderName } = body
+
+      // Vérifier si le code existe déjà
+      if (serviceTeams.find(t => t.code === code)) {
+        return NextResponse.json(
+          { error: 'Une équipe avec ce code existe déjà' },
+          { status: 400 }
+        )
+      }
+
+      const newTeam: ServiceTeam = {
+        id: `team_${Date.now()}`,
+        name,
+        code: code || name.toUpperCase().replace(/\s+/g, '_').substring(0, 20),
+        description: description || '',
+        icon: icon || '👥',
+        maxMembers: maxMembers || undefined,
+        currentMembers: 0,
+        schedule: schedule || '',
+        leaderId: leaderId || undefined,
+        leaderName: leaderName || undefined,
+        isActive: true,
+        createdAt: new Date().toISOString()
+      }
+
+      serviceTeams.push(newTeam)
+
+      return NextResponse.json({
+        success: true,
+        message: 'Équipe créée avec succès',
+        team: newTeam
+      }, { status: 201 })
     }
 
-    // Vérifier si l'utilisateur n'est pas déjà inscrit à cette équipe
-    const existingRegistration = volunteerRegistrations.find(
-      r => r.userId === userId && r.teamId === teamId && r.status !== 'REJECTED'
-    )
-    if (existingRegistration) {
-      return NextResponse.json(
-        { error: 'Vous êtes déjà inscrit à cette équipe' },
-        { status: 400 }
-      )
+    // Admin: Mettre à jour une équipe (via POST avec action)
+    if (action === 'update-team') {
+      const { teamId, name, code, description, icon, maxMembers, schedule, isActive } = body
+
+      const teamIndex = serviceTeams.findIndex(t => t.id === teamId)
+      if (teamIndex === -1) {
+        return NextResponse.json({ error: 'Équipe non trouvée' }, { status: 404 })
+      }
+
+      // Vérifier si le nouveau code est déjà utilisé par une autre équipe
+      if (code && code !== serviceTeams[teamIndex].code) {
+        if (serviceTeams.find(t => t.code === code && t.id !== teamId)) {
+          return NextResponse.json(
+            { error: 'Une équipe avec ce code existe déjà' },
+            { status: 400 }
+          )
+        }
+      }
+
+      serviceTeams[teamIndex] = {
+        ...serviceTeams[teamIndex],
+        ...(name && { name }),
+        ...(code && { code }),
+        ...(description !== undefined && { description }),
+        ...(icon && { icon }),
+        ...(maxMembers !== undefined && { maxMembers: maxMembers || undefined }),
+        ...(schedule !== undefined && { schedule }),
+        ...(isActive !== undefined && { isActive })
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: 'Équipe mise à jour avec succès',
+        team: serviceTeams[teamIndex]
+      })
     }
 
-    // Créer la nouvelle inscription
-    const newRegistration: VolunteerRegistration = {
-      id: `reg_${Date.now()}`,
-      userId,
-      userName: userName || 'Utilisateur',
-      userEmail: userEmail || '',
-      teamId,
-      teamName: team.name,
-      status: 'PENDING',
-      availability: availability || [],
-      experience: experience || '',
-      motivation: motivation || '',
-      createdAt: new Date().toISOString()
-    }
+    return NextResponse.json({ error: 'Action non reconnue' }, { status: 400 })
 
-    volunteerRegistrations.push(newRegistration)
-
-    return NextResponse.json({
-      message: 'Inscription enregistrée avec succès',
-      registration: newRegistration
-    }, { status: 201 })
-
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('❌ Volunteer POST proxy error:', error)
     return NextResponse.json(
-      { error: 'Erreur lors de l\'inscription' },
+      { error: 'Erreur lors de l\'opération' },
       { status: 500 }
     )
   }
 }
 
 /**
- * PUT - Mettre à jour le statut d'une inscription (Admin/Responsable)
+ * PUT - Mettre à jour une inscription (approbation/rejet) ou une équipe
  */
 export async function PUT(request: NextRequest) {
   try {
@@ -330,45 +330,87 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { registrationId, status, approvedBy } = body
+    const { registrationId, teamId, status, approvedBy } = body
 
-    if (!registrationId || !status) {
-      return NextResponse.json(
-        { error: 'registrationId et status sont requis' },
-        { status: 400 }
-      )
-    }
+    // Essayer d'envoyer au backend
+    try {
+      const response = await fetch(`${API_BASE_URL}/volunteers`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        body: JSON.stringify(body)
+      })
 
-    // Trouver et mettre à jour l'inscription
-    const registrationIndex = volunteerRegistrations.findIndex(r => r.id === registrationId)
-    if (registrationIndex === -1) {
-      return NextResponse.json(
-        { error: 'Inscription non trouvée' },
-        { status: 404 }
-      )
-    }
-
-    volunteerRegistrations[registrationIndex] = {
-      ...volunteerRegistrations[registrationIndex],
-      status,
-      approvedAt: status === 'APPROVED' ? new Date().toISOString() : undefined,
-      approvedBy: approvedBy || undefined
-    }
-
-    // Si approuvé, incrémenter le compteur de membres de l'équipe
-    if (status === 'APPROVED') {
-      const teamIndex = serviceTeams.findIndex(t => t.id === volunteerRegistrations[registrationIndex].teamId)
-      if (teamIndex !== -1) {
-        serviceTeams[teamIndex].currentMembers += 1
+      if (response.ok) {
+        const data = await response.json()
+        return NextResponse.json(data)
       }
+    } catch {
+      console.log('Backend non disponible, traitement local')
     }
 
-    return NextResponse.json({
-      message: `Inscription ${status === 'APPROVED' ? 'approuvée' : 'rejetée'} avec succès`,
-      registration: volunteerRegistrations[registrationIndex]
-    })
+    // Mise à jour d'une inscription (validation admin)
+    if (registrationId) {
+      const registrationIndex = volunteerRegistrations.findIndex(r => r.id === registrationId)
+      if (registrationIndex === -1) {
+        return NextResponse.json({ error: 'Inscription non trouvée' }, { status: 404 })
+      }
 
-  } catch (error: any) {
+      if (status) {
+        volunteerRegistrations[registrationIndex].status = status
+        
+        if (status === 'APPROVED') {
+          volunteerRegistrations[registrationIndex].approvedAt = new Date().toISOString()
+          volunteerRegistrations[registrationIndex].approvedBy = approvedBy || 'Admin'
+          
+          // Incrémenter le nombre de membres de l'équipe
+          const teamIndex = serviceTeams.findIndex(t => t.id === volunteerRegistrations[registrationIndex].teamId)
+          if (teamIndex !== -1) {
+            serviceTeams[teamIndex].currentMembers += 1
+          }
+        }
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: status === 'APPROVED' ? 'Inscription approuvée' : 'Inscription rejetée',
+        registration: volunteerRegistrations[registrationIndex]
+      })
+    }
+
+    // Mise à jour d'une équipe
+    if (teamId) {
+      const teamIndex = serviceTeams.findIndex(t => t.id === teamId)
+      if (teamIndex === -1) {
+        return NextResponse.json({ error: 'Équipe non trouvée' }, { status: 404 })
+      }
+
+      const { name, description, icon, maxMembers, schedule, leaderId, leaderName, isActive } = body
+
+      serviceTeams[teamIndex] = {
+        ...serviceTeams[teamIndex],
+        ...(name && { name }),
+        ...(description !== undefined && { description }),
+        ...(icon && { icon }),
+        ...(maxMembers !== undefined && { maxMembers }),
+        ...(schedule !== undefined && { schedule }),
+        ...(leaderId !== undefined && { leaderId }),
+        ...(leaderName !== undefined && { leaderName }),
+        ...(isActive !== undefined && { isActive })
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: 'Équipe mise à jour',
+        team: serviceTeams[teamIndex]
+      })
+    }
+
+    return NextResponse.json({ error: 'Paramètres manquants' }, { status: 400 })
+
+  } catch (error: unknown) {
     console.error('❌ Volunteer PUT proxy error:', error)
     return NextResponse.json(
       { error: 'Erreur lors de la mise à jour' },
@@ -378,7 +420,7 @@ export async function PUT(request: NextRequest) {
 }
 
 /**
- * DELETE - Annuler une inscription
+ * DELETE - Supprimer une équipe ou annuler une inscription
  */
 export async function DELETE(request: NextRequest) {
   try {
@@ -387,42 +429,76 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Non authentifié' }, { status: 401 })
     }
 
-    const { searchParams } = new URL(request.url)
-    const registrationId = searchParams.get('registrationId')
+    const body = await request.json()
+    const { teamId, registrationId } = body
 
-    if (!registrationId) {
-      return NextResponse.json(
-        { error: 'registrationId est requis' },
-        { status: 400 }
-      )
-    }
+    // Essayer d'envoyer au backend
+    try {
+      const response = await fetch(`${API_BASE_URL}/volunteers`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        body: JSON.stringify(body)
+      })
 
-    const registrationIndex = volunteerRegistrations.findIndex(r => r.id === registrationId)
-    if (registrationIndex === -1) {
-      return NextResponse.json(
-        { error: 'Inscription non trouvée' },
-        { status: 404 }
-      )
-    }
-
-    // Si l'inscription était approuvée, décrémenter le compteur
-    if (volunteerRegistrations[registrationIndex].status === 'APPROVED') {
-      const teamIndex = serviceTeams.findIndex(t => t.id === volunteerRegistrations[registrationIndex].teamId)
-      if (teamIndex !== -1 && serviceTeams[teamIndex].currentMembers > 0) {
-        serviceTeams[teamIndex].currentMembers -= 1
+      if (response.ok) {
+        const data = await response.json()
+        return NextResponse.json(data)
       }
+    } catch {
+      console.log('Backend non disponible, traitement local')
     }
 
-    volunteerRegistrations.splice(registrationIndex, 1)
+    // Supprimer une équipe
+    if (teamId) {
+      const teamIndex = serviceTeams.findIndex(t => t.id === teamId)
+      if (teamIndex === -1) {
+        return NextResponse.json({ error: 'Équipe non trouvée' }, { status: 404 })
+      }
 
-    return NextResponse.json({
-      message: 'Inscription annulée avec succès'
-    })
+      // Supprimer l'équipe
+      serviceTeams.splice(teamIndex, 1)
 
-  } catch (error: any) {
+      // Supprimer les inscriptions associées
+      volunteerRegistrations = volunteerRegistrations.filter(r => r.teamId !== teamId)
+
+      return NextResponse.json({
+        success: true,
+        message: 'Équipe supprimée avec succès'
+      })
+    }
+
+    // Annuler/supprimer une inscription
+    if (registrationId) {
+      const registrationIndex = volunteerRegistrations.findIndex(r => r.id === registrationId)
+      if (registrationIndex === -1) {
+        return NextResponse.json({ error: 'Inscription non trouvée' }, { status: 404 })
+      }
+
+      // Si l'inscription était approuvée, décrémenter le compteur
+      if (volunteerRegistrations[registrationIndex].status === 'APPROVED') {
+        const teamIndex = serviceTeams.findIndex(t => t.id === volunteerRegistrations[registrationIndex].teamId)
+        if (teamIndex !== -1 && serviceTeams[teamIndex].currentMembers > 0) {
+          serviceTeams[teamIndex].currentMembers -= 1
+        }
+      }
+
+      volunteerRegistrations.splice(registrationIndex, 1)
+
+      return NextResponse.json({
+        success: true,
+        message: 'Inscription supprimée'
+      })
+    }
+
+    return NextResponse.json({ error: 'Paramètres manquants' }, { status: 400 })
+
+  } catch (error: unknown) {
     console.error('❌ Volunteer DELETE proxy error:', error)
     return NextResponse.json(
-      { error: 'Erreur lors de l\'annulation' },
+      { error: 'Erreur lors de la suppression' },
       { status: 500 }
     )
   }
