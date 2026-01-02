@@ -301,42 +301,6 @@ const VolunteerManagement: React.FC = () => {
       setProcessing(null)
     }
   }
-      try {
-        const user = JSON.parse(userStr)
-        approvedBy = `${user.firstName} ${user.lastName}`
-      } catch {}
-    }
-
-    try {
-      const response = await authenticatedFetch('/api/volunteer-proxy', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          registrationId,
-          status: newStatus,
-          approvedBy
-        })
-      })
-
-      if (response.ok) {
-        setMessage({ 
-          type: 'success', 
-          text: newStatus === 'APPROVED' 
-            ? '✅ Inscription approuvée avec succès' 
-            : '❌ Inscription refusée'
-        })
-        fetchData()
-        setShowDetailModal(false)
-      } else {
-        const data = await response.json()
-        setMessage({ type: 'error', text: data.error || 'Erreur lors de la mise à jour' })
-      }
-    } catch (error) {
-      setMessage({ type: 'error', text: 'Erreur de connexion au serveur' })
-    } finally {
-      setProcessing(null)
-    }
-  }
 
   // Badge de statut
   const StatusBadge = ({ status }: { status: string }) => {
