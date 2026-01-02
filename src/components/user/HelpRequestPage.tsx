@@ -16,6 +16,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { authenticatedFetch } from '@/lib/auth-fetch'
+import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import {
   HelpCircle,
   Plus,
@@ -309,11 +310,7 @@ const HelpRequestPage: React.FC = () => {
   }
 
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-rose-600" />
-      </div>
-    )
+    return <LoadingSpinner size="md" text="Chargement des demandes d'aide..." />
   }
 
   return (

@@ -16,6 +16,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { authenticatedFetch } from '@/lib/auth-fetch'
+import LoadingSpinner, { InlineLoader } from '@/components/ui/LoadingSpinner'
 import {
   Calendar,
   Clock,
@@ -272,11 +273,7 @@ const ActivitiesPage: React.FC = () => {
   }
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-      </div>
-    )
+    return <LoadingSpinner size="md" text="Chargement des activités..." />
   }
 
   return (

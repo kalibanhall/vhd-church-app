@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { authenticatedFetch } from '@/lib/auth-fetch'
+import LoadingSpinner from '@/components/ui/LoadingSpinner'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { 
   Users, DollarSign, Calendar, TrendingUp, Heart, BookOpen, 
@@ -90,13 +91,7 @@ export default function AnalyticsPage() {
   }
 
   if (loading) {
-    return (
-      <div className="p-6">
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-        </div>
-      </div>
-    )
+    return <LoadingSpinner size="md" text="Chargement des statistiques..." />
   }
 
   if (error) {

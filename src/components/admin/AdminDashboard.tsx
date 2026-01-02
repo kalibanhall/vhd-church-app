@@ -1,6 +1,7 @@
 import { Users, DollarSign, Calendar, Heart, TrendingUp } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { authenticatedFetch } from '@/lib/auth-fetch'
+import LoadingSpinner from '@/components/ui/LoadingSpinner'
 
 interface AdminStats {
   totalMembers: number;
@@ -107,11 +108,7 @@ export default function AdminDashboard() {
   }
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
-      </div>
-    )
+    return <LoadingSpinner size="lg" text="Chargement du tableau de bord..." />
   }
   const statCards = [
     {

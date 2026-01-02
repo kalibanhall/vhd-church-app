@@ -62,6 +62,7 @@ interface NotificationsPanelProps {
 export default function NotificationsPanel({ className = '' }: NotificationsPanelProps) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [unreadMessages, setUnreadMessages] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showPermissionBanner, setShowPermissionBanner] = useState(false);
@@ -103,6 +104,26 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
       fetchUnreadCount();
     }
   }, [isOpen]);
+
+  // Charger le compteur de messages non lus
+  useEffect(() => {
+    const fetchUnreadMessages = async () => {
+      try {
+        const response = await authenticatedFetch('/api/chat-proxy?type=unread-count');
+        if (response.ok) {
+          const data = await response.json();
+          setUnreadMessages(data.unreadCount || 0);
+        }
+      } catch (error) {
+        console.error('Erreur chargement messages non lus:', error);
+      }
+    };
+    
+    fetchUnreadMessages();
+    // Polling toutes les 30 secondes
+    const interval = setInterval(fetchUnreadMessages, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   const fetchNotifications = async (loadAll = false) => {
     setLoading(true);
@@ -248,6 +269,9 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
     return date.toLocaleDateString('fr-FR');
   };
 
+  // Total des notifications (notifications + messages non lus)
+  const totalUnread = unreadCount + unreadMessages;
+
   return (
     <div className={`relative ${className}`} ref={panelRef}>
       {/* Bouton de notifications */}
@@ -255,43 +279,56 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
         onClick={() => setIsOpen(!isOpen)}
         className="relative p-2 text-gray-600 hover:text-blue-600 transition-colors rounded-lg hover:bg-gray-100"
       >
-        <Bell className="h-6 w-6" />
-        {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
-            {unreadCount > 9 ? '9+' : unreadCount}
+        <Bell className="h-5 w-5 md:h-6 md:w-6" />
+        {totalUnread > 0 && (
+          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 md:h-5 md:w-5 flex items-center justify-center font-medium">
+            {totalUnread > 9 ? '9+' : totalUnread}
           </span>
         )}
       </button>
 
       {/* Panel déroulant - Centré sur mobile, à droite sur desktop */}
       {isOpen && (
-        <div className="fixed sm:absolute right-0 sm:right-0 top-16 sm:top-full left-0 sm:left-auto mt-0 sm:mt-2 w-full sm:w-80 md:w-96 bg-white rounded-none sm:rounded-lg shadow-xl border-t sm:border border-gray-200 z-50 max-h-[calc(100vh-4rem)] sm:max-h-80 md:max-h-96 flex flex-col">
+        <div className="fixed sm:absolute right-0 sm:right-0 top-14 md:top-16 sm:top-full left-0 sm:left-auto mt-0 sm:mt-2 w-full sm:w-80 md:w-96 bg-white rounded-none sm:rounded-lg shadow-xl border-t sm:border border-gray-200 z-50 max-h-[calc(100vh-4rem)] sm:max-h-80 md:max-h-96 flex flex-col">
           {/* Header du panel */}
-          <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200">
-            <h3 className="text-base sm:text-lg font-semibold text-gray-900">
+          <div className="flex items-center justify-between p-2.5 sm:p-4 border-b border-gray-200">
+            <h3 className="text-sm sm:text-lg font-semibold text-gray-900">
               Notifications
-              {unreadCount > 0 && (
-                <span className="ml-2 text-xs sm:text-sm bg-red-100 text-red-600 px-2 py-0.5 sm:py-1 rounded-full">
-                  {unreadCount} non lue{unreadCount > 1 ? 's' : ''}
+              {totalUnread > 0 && (
+                <span className="ml-1.5 sm:ml-2 text-xs bg-red-100 text-red-600 px-1.5 sm:px-2 py-0.5 rounded-full">
+                  {totalUnread}
                 </span>
               )}
             </h3>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center gap-2">
+              {/* Lien vers messages */}
+              {unreadMessages > 0 && (
+                <button
+                  onClick={() => {
+                    setIsOpen(false);
+                    router.push('/?tab=chat');
+                  }}
+                  className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 bg-blue-50 px-2 py-1 rounded-full"
+                >
+                  <MessageCircle size={12} />
+                  <span>{unreadMessages} msg</span>
+                </button>
+              )}
               {unreadCount > 0 && (
                 <button
                   onClick={markAllAsRead}
-                  className="text-sm text-blue-600 hover:text-blue-800 flex items-center space-x-1"
+                  className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
                   title="Marquer tout comme lu"
                 >
-                  <CheckCircle2 size={16} />
-                  <span>Tout lire</span>
+                  <CheckCircle2 size={14} />
+                  <span className="hidden sm:inline">Tout lire</span>
                 </button>
               )}
               <button
                 onClick={() => setIsOpen(false)}
                 className="text-gray-400 hover:text-gray-600"
               >
-                <X size={20} />
+                <X size={18} />
               </button>
             </div>
           </div>

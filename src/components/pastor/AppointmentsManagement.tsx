@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Calendar, Clock, User, Check, X, MessageSquare, Plus, Minus } from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
 import { authenticatedFetch } from '@/lib/auth-fetch'
+import LoadingSpinner from '@/components/ui/LoadingSpinner'
 
 interface Appointment {
   id: string
@@ -286,13 +287,7 @@ export default function AppointmentsManagement() {
   }
 
   if (loading) {
-    return (
-      <div className="p-6">
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-        </div>
-      </div>
-    )
+    return <LoadingSpinner size="md" text="Chargement des rendez-vous..." />
   }
 
   return (
