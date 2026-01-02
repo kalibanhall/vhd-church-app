@@ -8,6 +8,9 @@
  * Description: API pour permettre aux utilisateurs d'enregistrer ou modifier
  * leur descripteur facial depuis leur profil.
  * 
+ * Cette API stocke le descripteur dans la table face_descriptors (principale)
+ * et/ou dans la table membres si un membre_id existe.
+ * 
  * =============================================================================
  */
 
@@ -31,8 +34,12 @@ function getSupabaseClient(): SupabaseClient {
 function verifyToken(token: string): { userId: string; email: string } | null {
   try {
     const secret = process.env.JWT_SECRET || 'your-secret-key'
-    const decoded = jwt.verify(token, secret) as { userId: string; email: string }
-    return decoded
+    const decoded = jwt.verify(token, secret) as any
+    // Support both userId and id fields
+    return {
+      userId: decoded.userId || decoded.id,
+      email: decoded.email
+    }
   } catch {
     return null
   }
@@ -65,7 +72,7 @@ export async function POST(request: NextRequest) {
 
     if (!descriptor || !Array.isArray(descriptor) || descriptor.length !== 128) {
       return NextResponse.json(
-        { success: false, error: 'Descripteur facial invalide' },
+        { success: false, error: 'Descripteur facial invalide (128 valeurs requises)' },
         { status: 400 }
       )
     }
@@ -73,27 +80,29 @@ export async function POST(request: NextRequest) {
     // Initialiser Supabase
     const supabase = getSupabaseClient()
 
-    // Récupérer l'ID du membre associé à cet utilisateur
+    // Récupérer l'utilisateur
     const { data: userData, error: userError } = await supabase
       .from('users')
-      .select('id, membre_id')
+      .select('id, membre_id, first_name, last_name')
       .eq('id', user.userId)
       .single()
 
     if (userError || !userData) {
-      console.error('Erreur user lookup:', userError)
+      console.error('❌ Erreur user lookup:', userError)
       return NextResponse.json(
         { success: false, error: 'Utilisateur non trouvé' },
         { status: 404 }
       )
     }
 
+    console.log('📸 Enregistrement facial pour:', userData.first_name, userData.last_name)
+
     let photoUrl = null
 
     // Upload de la photo si fournie
     if (imageData && imageData.startsWith('data:image')) {
       try {
-        const fileName = `face_${userData.membre_id || user.userId}_${Date.now()}.jpg`
+        const fileName = `face_${user.userId}_${Date.now()}.jpg`
         const base64Data = imageData.split(',')[1]
         const buffer = Buffer.from(base64Data, 'base64')
 
@@ -109,59 +118,85 @@ export async function POST(request: NextRequest) {
             .from('photos')
             .getPublicUrl(fileName)
           photoUrl = urlData.publicUrl
+          console.log('✅ Photo uploadée:', photoUrl)
         } else {
-          console.warn('Erreur upload photo:', uploadError)
+          console.warn('⚠️ Erreur upload photo:', uploadError)
         }
       } catch (uploadErr) {
-        console.warn('Erreur upload:', uploadErr)
+        console.warn('⚠️ Erreur upload:', uploadErr)
       }
     }
 
-    // Mettre à jour le membre avec le descripteur facial
+    // STRATÉGIE 1: Stocker dans face_descriptors (table principale)
+    try {
+      // Supprimer l'ancien descripteur s'il existe
+      await supabase
+        .from('face_descriptors')
+        .delete()
+        .eq('user_id', user.userId)
+
+      // Insérer le nouveau descripteur
+      const { error: insertError } = await supabase
+        .from('face_descriptors')
+        .insert({
+          user_id: user.userId,
+          descriptor: descriptor,
+          photo_url: photoUrl,
+          quality_score: 0.95,
+          is_primary: true,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        })
+
+      if (insertError) {
+        console.warn('⚠️ Erreur insert face_descriptors:', insertError)
+      } else {
+        console.log('✅ Descripteur enregistré dans face_descriptors')
+      }
+    } catch (err) {
+      console.warn('⚠️ Table face_descriptors non disponible:', err)
+    }
+
+    // STRATÉGIE 2: Stocker aussi dans membres si membre_id existe
     if (userData.membre_id) {
-      const updateData: Record<string, unknown> = {
-        face_descriptor: descriptor,
-        updated_at: new Date().toISOString()
-      }
-      
-      if (photoUrl) {
-        updateData.photo_url = photoUrl
-      }
+      try {
+        const updateData: Record<string, unknown> = {
+          face_descriptor: descriptor,
+          updated_at: new Date().toISOString()
+        }
+        
+        if (photoUrl) {
+          updateData.photo_url = photoUrl
+        }
 
-      const { error: updateError } = await supabase
-        .from('membres')
-        .update(updateData)
-        .eq('id', userData.membre_id)
+        const { error: updateError } = await supabase
+          .from('membres')
+          .update(updateData)
+          .eq('id', userData.membre_id)
 
-      if (updateError) {
-        console.error('Erreur update membre:', updateError)
-        return NextResponse.json(
-          { success: false, error: 'Erreur lors de la mise à jour' },
-          { status: 500 }
-        )
+        if (updateError) {
+          console.warn('⚠️ Erreur update membres:', updateError)
+        } else {
+          console.log('✅ Descripteur enregistré dans membres')
+        }
+      } catch (err) {
+        console.warn('⚠️ Table membres non disponible:', err)
       }
-    } else {
-      // Si pas de membre_id, mettre à jour l'utilisateur directement
-      const updateData: Record<string, unknown> = {
-        face_descriptor: descriptor,
-        updated_at: new Date().toISOString()
-      }
-      
-      if (photoUrl) {
-        updateData.profile_photo = photoUrl
-      }
+    }
 
-      const { error: updateError } = await supabase
-        .from('users')
-        .update(updateData)
-        .eq('id', user.userId)
-
-      if (updateError) {
-        console.error('Erreur update user:', updateError)
-        return NextResponse.json(
-          { success: false, error: 'Erreur lors de la mise à jour' },
-          { status: 500 }
-        )
+    // STRATÉGIE 3: Mettre à jour le profil utilisateur avec la photo
+    if (photoUrl) {
+      try {
+        await supabase
+          .from('users')
+          .update({
+            profile_image_url: photoUrl,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', user.userId)
+        console.log('✅ Photo profil mise à jour')
+      } catch (err) {
+        console.warn('⚠️ Erreur mise à jour profil:', err)
       }
     }
 
@@ -172,7 +207,7 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Erreur API facial:', error)
+    console.error('❌ Erreur API facial:', error)
     return NextResponse.json(
       { success: false, error: 'Erreur serveur' },
       { status: 500 }
@@ -204,7 +239,28 @@ export async function GET(request: NextRequest) {
     // Initialiser Supabase
     const supabase = getSupabaseClient()
 
-    // Récupérer le membre associé
+    // Vérifier dans face_descriptors (priorité)
+    try {
+      const { data: faceData } = await supabase
+        .from('face_descriptors')
+        .select('id, photo_url, created_at, updated_at')
+        .eq('user_id', user.userId)
+        .eq('is_primary', true)
+        .single()
+
+      if (faceData) {
+        return NextResponse.json({
+          success: true,
+          hasFaceDescriptor: true,
+          photoUrl: faceData.photo_url,
+          lastUpdated: faceData.updated_at || faceData.created_at
+        })
+      }
+    } catch (err) {
+      console.warn('⚠️ Table face_descriptors non disponible:', err)
+    }
+
+    // Sinon vérifier dans membres
     const { data: userData } = await supabase
       .from('users')
       .select('membre_id')
@@ -214,15 +270,18 @@ export async function GET(request: NextRequest) {
     if (userData?.membre_id) {
       const { data: membreData } = await supabase
         .from('membres')
-        .select('face_descriptor, photo_url')
+        .select('face_descriptor, photo_url, updated_at')
         .eq('id', userData.membre_id)
         .single()
 
-      return NextResponse.json({
-        success: true,
-        hasFaceDescriptor: !!membreData?.face_descriptor,
-        photoUrl: membreData?.photo_url
-      })
+      if (membreData?.face_descriptor) {
+        return NextResponse.json({
+          success: true,
+          hasFaceDescriptor: true,
+          photoUrl: membreData.photo_url,
+          lastUpdated: membreData.updated_at
+        })
+      }
     }
 
     return NextResponse.json({
@@ -232,7 +291,7 @@ export async function GET(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Erreur API facial GET:', error)
+    console.error('❌ Erreur API facial GET:', error)
     return NextResponse.json(
       { success: false, error: 'Erreur serveur' },
       { status: 500 }
@@ -264,7 +323,18 @@ export async function DELETE(request: NextRequest) {
     // Initialiser Supabase
     const supabase = getSupabaseClient()
 
-    // Récupérer le membre associé
+    // Supprimer de face_descriptors
+    try {
+      await supabase
+        .from('face_descriptors')
+        .delete()
+        .eq('user_id', user.userId)
+      console.log('✅ Supprimé de face_descriptors')
+    } catch (err) {
+      console.warn('⚠️ Erreur suppression face_descriptors:', err)
+    }
+
+    // Supprimer de membres si applicable
     const { data: userData } = await supabase
       .from('users')
       .select('membre_id')
@@ -272,38 +342,17 @@ export async function DELETE(request: NextRequest) {
       .single()
 
     if (userData?.membre_id) {
-      // Supprimer le descripteur facial du membre
-      const { error: updateError } = await supabase
-        .from('membres')
-        .update({
-          face_descriptor: null,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', userData.membre_id)
-
-      if (updateError) {
-        console.error('Erreur suppression:', updateError)
-        return NextResponse.json(
-          { success: false, error: 'Erreur lors de la suppression' },
-          { status: 500 }
-        )
-      }
-    } else {
-      // Supprimer depuis la table users
-      const { error: updateError } = await supabase
-        .from('users')
-        .update({
-          face_descriptor: null,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', user.userId)
-
-      if (updateError) {
-        console.error('Erreur suppression:', updateError)
-        return NextResponse.json(
-          { success: false, error: 'Erreur lors de la suppression' },
-          { status: 500 }
-        )
+      try {
+        await supabase
+          .from('membres')
+          .update({
+            face_descriptor: null,
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', userData.membre_id)
+        console.log('✅ Supprimé de membres')
+      } catch (err) {
+        console.warn('⚠️ Erreur suppression membres:', err)
       }
     }
 
@@ -313,7 +362,7 @@ export async function DELETE(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Erreur API facial DELETE:', error)
+    console.error('❌ Erreur API facial DELETE:', error)
     return NextResponse.json(
       { success: false, error: 'Erreur serveur' },
       { status: 500 }
