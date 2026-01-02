@@ -8,17 +8,40 @@ import { SplashScreen } from './SplashScreen';
 export function ClientProviders({ children }: { children: React.ReactNode }) {
   const [showSplash, setShowSplash] = useState(true);
 
-  // Enregistrement du Service Worker pour PWA
+  // Enregistrement du Service Worker pour PWA avec mise à jour forcée
   useEffect(() => {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
-        .register('/sw.js')
+        .register('/sw.js', { updateViaCache: 'none' })
         .then((registration) => {
           console.log('✅ Service Worker enregistré:', registration.scope);
+          
+          // Vérifier les mises à jour immédiatement
+          registration.update();
+          
+          // Écouter les mises à jour
+          registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            if (newWorker) {
+              console.log('🔄 Nouvelle version du Service Worker détectée');
+              newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                  console.log('📦 Nouvelle version prête - Rechargement...');
+                  // Forcer le rechargement pour appliquer la mise à jour
+                  window.location.reload();
+                }
+              });
+            }
+          });
         })
         .catch((error) => {
           console.error('❌ Erreur Service Worker:', error);
         });
+      
+      // Écouter les messages du Service Worker
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        console.log('🔄 Service Worker mis à jour');
+      });
     }
 
     // Masquer le splash screen après le chargement

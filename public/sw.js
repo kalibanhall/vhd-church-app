@@ -1,13 +1,17 @@
 /**
  * Service Worker - VHD Church App PWA
  * @author CHRIS NGOZULU KASONGO (KalibanHall)
+ * @version 2.0.0 - Mise à jour reconnaissance faciale
  */
 
-const CACHE_NAME = 'vhd-church-v1';
+const CACHE_VERSION = '2.0.0';
+const CACHE_NAME = `vhd-church-v${CACHE_VERSION}`;
 const urlsToCache = [
   '/',
   '/auth',
   '/offline',
+  '/profile',
+  '/facial-profile',
 ];
 
 // Installation du Service Worker
@@ -25,18 +29,22 @@ self.addEventListener('install', (event) => {
 
 // Activation du Service Worker
 self.addEventListener('activate', (event) => {
-  console.log('✅ Service Worker activé');
+  console.log('✅ Service Worker v' + CACHE_VERSION + ' activé');
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
-          if (cacheName !== CACHE_NAME) {
+          // Supprimer TOUS les caches qui ne correspondent pas à la version actuelle
+          if (cacheName !== CACHE_NAME && cacheName.startsWith('vhd-church')) {
             console.log('🗑️ Suppression ancien cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
-    }).then(() => self.clients.claim())
+    }).then(() => {
+      console.log('🔄 Service Worker prend le contrôle');
+      return self.clients.claim();
+    })
   );
 });
 

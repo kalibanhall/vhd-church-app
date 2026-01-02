@@ -2,6 +2,7 @@
   "name": "VHD Church App - Ministère des Vaillants Hommes de David",
   "short_name": "VHD Church",
   "description": "Application de gestion d'église - Ministère des Vaillants Hommes de David",
+  "version": "2.0.0",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#1e40af",
