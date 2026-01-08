@@ -25,6 +25,24 @@ import trainingRoutes from './routes/training';
 import notesRoutes from './routes/notes';
 import helpRequestsRoutes from './routes/helpRequests';
 
+// New feature routes - Added by KalibanHall
+import newsRoutes from './routes/news';
+import alertsRoutes from './routes/alerts';
+import prayerCellsRoutes from './routes/prayerCells';
+import servicesRoutes from './routes/services';
+import followupRoutes from './routes/followup';
+import questionsRoutes from './routes/questions';
+import conflictsRoutes from './routes/conflicts';
+import abuseReportsRoutes from './routes/abuseReports';
+import mutualHelpRoutes from './routes/mutualHelp';
+import marketplaceRoutes from './routes/marketplace';
+import libraryRoutes from './routes/library';
+import audiobooksRoutes from './routes/audiobooks';
+import musicRoutes from './routes/music';
+import songbookRoutes from './routes/songbook';
+import galleryRoutes from './routes/gallery';
+import transportRoutes from './routes/transport';
+
 // Load environment variables
 dotenv.config();
 
@@ -118,6 +136,24 @@ app.use(`/${API_VERSION}/volunteers`, volunteersRoutes);
 app.use(`/${API_VERSION}/training`, trainingRoutes);
 app.use(`/${API_VERSION}/notes`, notesRoutes);
 app.use(`/${API_VERSION}/help-requests`, helpRequestsRoutes);
+
+// New feature routes - Added by KalibanHall
+app.use(`/${API_VERSION}/news`, newsRoutes);
+app.use(`/${API_VERSION}/alerts`, alertsRoutes);
+app.use(`/${API_VERSION}/prayer-cells`, prayerCellsRoutes);
+app.use(`/${API_VERSION}/services`, servicesRoutes);
+app.use(`/${API_VERSION}/followup`, followupRoutes);
+app.use(`/${API_VERSION}/questions`, questionsRoutes);
+app.use(`/${API_VERSION}/conflicts`, conflictsRoutes);
+app.use(`/${API_VERSION}/abuse-reports`, abuseReportsRoutes);
+app.use(`/${API_VERSION}/mutual-help`, mutualHelpRoutes);
+app.use(`/${API_VERSION}/marketplace`, marketplaceRoutes);
+app.use(`/${API_VERSION}/library`, libraryRoutes);
+app.use(`/${API_VERSION}/audiobooks`, audiobooksRoutes);
+app.use(`/${API_VERSION}/music`, musicRoutes);
+app.use(`/${API_VERSION}/songbook`, songbookRoutes);
+app.use(`/${API_VERSION}/gallery`, galleryRoutes);
+app.use(`/${API_VERSION}/transport`, transportRoutes);
 
 // 404 handler
 app.use((req: Request, res: Response) => {
