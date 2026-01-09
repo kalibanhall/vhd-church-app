@@ -263,96 +263,132 @@ const BiblePage: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-amber-600 to-orange-600 rounded-2xl p-6 text-white">
-        <h1 className="text-2xl md:text-3xl font-bold mb-2">📖 La Bible</h1>
-        <p className="text-amber-100">
-          &laquo;Ta parole est une lampe à mes pieds, et une lumière sur mon sentier&raquo; - Psaume 119:105
-        </p>
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-orange-50 pb-20">
+      {/* Header avec gradient */}
+      <div className="bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 px-4 py-8 pb-12">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="bg-white/20 rounded-xl p-3">
+              <BookOpen className="h-8 w-8 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-white">La Bible</h1>
+              <p className="text-amber-100 text-sm">
+                &laquo;Ta parole est une lampe à mes pieds&raquo;
+              </p>
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-3 gap-3 mt-6">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+              <div className="text-2xl font-bold text-white">{favorites.length}</div>
+              <div className="text-xs text-amber-100">Favoris</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+              <div className="text-2xl font-bold text-white">{myPlans.length}</div>
+              <div className="text-xs text-amber-100">Plans actifs</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+              <div className="text-2xl font-bold text-white">66</div>
+              <div className="text-xs text-amber-100">Livres</div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Contenu principal */}
+      <div className="max-w-4xl mx-auto px-4 -mt-6 space-y-6">
 
       {/* Message */}
       {message && (
-        <div className={`p-4 rounded-lg flex items-center gap-2 ${
+        <div className={`p-4 rounded-xl flex items-center gap-2 shadow-sm ${
           message.type === 'success' ? 'bg-green-50 text-green-800 border border-green-200' :
           message.type === 'error' ? 'bg-red-50 text-red-800 border border-red-200' :
           'bg-blue-50 text-blue-800 border border-blue-200'
         }`}>
           <span>{message.text}</span>
-          <button onClick={() => setMessage(null)} className="ml-auto">
+          <button onClick={() => setMessage(null)} className="ml-auto hover:bg-white/50 rounded-full p-1">
             <X className="h-4 w-4" />
           </button>
         </div>
       )}
 
       {/* Tabs */}
-      <div className="flex gap-2 overflow-x-auto pb-2 border-b border-gray-200">
-        <button
-          onClick={() => setActiveTab('verse')}
-          className={`px-4 py-2 font-medium whitespace-nowrap transition-colors ${
-            activeTab === 'verse'
-              ? 'text-amber-600 border-b-2 border-amber-600'
-              : 'text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          <Sparkles className="h-4 w-4 inline mr-2" />
-          Verset du jour
-        </button>
-        <button
-          onClick={() => setActiveTab('read')}
-          className={`px-4 py-2 font-medium whitespace-nowrap transition-colors ${
-            activeTab === 'read'
-              ? 'text-amber-600 border-b-2 border-amber-600'
-              : 'text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          <BookOpen className="h-4 w-4 inline mr-2" />
-          Lire
-        </button>
-        <button
-          onClick={() => setActiveTab('plans')}
-          className={`px-4 py-2 font-medium whitespace-nowrap transition-colors ${
-            activeTab === 'plans'
-              ? 'text-amber-600 border-b-2 border-amber-600'
-              : 'text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          <Calendar className="h-4 w-4 inline mr-2" />
-          Plans de lecture
-          {myPlans.length > 0 && (
-            <span className="ml-2 bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded-full">
-              {myPlans.length}
-            </span>
-          )}
-        </button>
-        <button
-          onClick={() => setActiveTab('favorites')}
-          className={`px-4 py-2 font-medium whitespace-nowrap transition-colors ${
-            activeTab === 'favorites'
-              ? 'text-amber-600 border-b-2 border-amber-600'
-              : 'text-gray-500 hover:text-gray-700'
-          }`}
-        >
-          <Star className="h-4 w-4 inline mr-2" />
-          Favoris
-          {favorites.length > 0 && (
-            <span className="ml-2 bg-amber-100 text-amber-800 text-xs px-2 py-0.5 rounded-full">
-              {favorites.length}
-            </span>
-          )}
-        </button>
+      <div className="bg-white rounded-xl shadow-sm p-2">
+        <div className="flex gap-1 overflow-x-auto">
+          <button
+            onClick={() => setActiveTab('verse')}
+            className={`flex-1 px-3 py-2.5 rounded-lg font-medium transition-all flex items-center justify-center gap-1.5 text-sm ${
+              activeTab === 'verse'
+                ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
+                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            <Sparkles className="h-4 w-4" />
+            <span className="hidden sm:inline">Verset</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('read')}
+            className={`flex-1 px-3 py-2.5 rounded-lg font-medium transition-all flex items-center justify-center gap-1.5 text-sm ${
+              activeTab === 'read'
+                ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
+                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            <BookOpen className="h-4 w-4" />
+            <span className="hidden sm:inline">Lire</span>
+          </button>
+          <button
+            onClick={() => setActiveTab('plans')}
+            className={`flex-1 px-3 py-2.5 rounded-lg font-medium transition-all flex items-center justify-center gap-1.5 text-sm ${
+              activeTab === 'plans'
+                ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
+                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            <Calendar className="h-4 w-4" />
+            <span className="hidden sm:inline">Plans</span>
+            {myPlans.length > 0 && (
+              <span className={`text-xs px-1.5 py-0.5 rounded-full ${
+                activeTab === 'plans' ? 'bg-white/20' : 'bg-amber-100 text-amber-800'
+              }`}>
+                {myPlans.length}
+              </span>
+            )}
+          </button>
+          <button
+            onClick={() => setActiveTab('favorites')}
+            className={`flex-1 px-3 py-2.5 rounded-lg font-medium transition-all flex items-center justify-center gap-1.5 text-sm ${
+              activeTab === 'favorites'
+                ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
+                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            <Star className="h-4 w-4" />
+            <span className="hidden sm:inline">Favoris</span>
+            {favorites.length > 0 && (
+              <span className={`text-xs px-1.5 py-0.5 rounded-full ${
+                activeTab === 'favorites' ? 'bg-white/20' : 'bg-amber-100 text-amber-800'
+              }`}>
+                {favorites.length}
+              </span>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Contenu */}
       {activeTab === 'verse' && verseOfDay && (
         <div className="space-y-6">
           {/* Verset du jour */}
-          <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border border-amber-200">
+          <div className="bg-white rounded-2xl p-6 shadow-sm border border-amber-100">
             <div className="flex items-center gap-2 text-amber-600 mb-4">
-              <Sparkles className="h-5 w-5" />
+              <div className="bg-amber-100 rounded-lg p-2">
+                <Sparkles className="h-5 w-5" />
+              </div>
               <span className="font-medium">Verset du jour</span>
-              <span className="text-sm text-amber-500">
+              <span className="text-sm text-amber-500 ml-auto">
                 {new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' })}
               </span>
             </div>
@@ -366,20 +402,20 @@ const BiblePage: React.FC = () => {
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={() => saveFavorite(verseOfDay)}
-                className="flex items-center gap-2 px-4 py-2 bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200 transition-colors"
+                className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-xl hover:from-amber-700 hover:to-orange-700 transition-all shadow-md"
               >
                 <Star className="h-4 w-4" />
                 Favoris
               </button>
               <button
                 onClick={() => copyVerse(verseOfDay)}
-                className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+                className="flex items-center gap-2 px-4 py-2.5 bg-white text-gray-700 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors"
               >
                 <Copy className="h-4 w-4" />
                 Copier
               </button>
               <button
-                className="flex items-center gap-2 px-4 py-2 bg-white text-gray-700 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+                className="flex items-center gap-2 px-4 py-2.5 bg-white text-gray-700 rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors"
               >
                 <Share2 className="h-4 w-4" />
                 Partager
@@ -553,7 +589,7 @@ const BiblePage: React.FC = () => {
                           </div>
                           <button
                             onClick={() => completeReading(plan.id, plan.currentDay)}
-                            className="px-4 py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700"
+                            className="px-4 py-2 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-xl text-sm font-medium hover:from-amber-700 hover:to-orange-700 shadow-md transition-all"
                           >
                             <CheckCircle className="h-4 w-4 inline mr-1" />
                             Terminé
@@ -586,7 +622,7 @@ const BiblePage: React.FC = () => {
                       </div>
                       <button
                         onClick={() => startPlan(plan.id)}
-                        className="w-full py-2 bg-amber-600 text-white rounded-lg text-sm font-medium hover:bg-amber-700"
+                        className="w-full py-2.5 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-xl text-sm font-medium hover:from-amber-700 hover:to-orange-700 shadow-md transition-all"
                       >
                         Commencer ce plan
                       </button>
@@ -602,8 +638,8 @@ const BiblePage: React.FC = () => {
       {activeTab === 'favorites' && (
         <div>
           {favorites.length === 0 ? (
-            <div className="text-center py-12 bg-gray-50 rounded-xl">
-              <Star className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+            <div className="text-center py-12 bg-white rounded-xl shadow-sm">
+              <Star className="h-12 w-12 text-amber-200 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun favori</h3>
               <p className="text-gray-500">
                 Ajoutez des versets à vos favoris pour les retrouver ici
@@ -617,10 +653,10 @@ const BiblePage: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <span className="text-amber-600 font-medium">{verse.reference}</span>
                     <div className="flex gap-2">
-                      <button onClick={() => copyVerse(verse)} className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100">
+                      <button onClick={() => copyVerse(verse)} className="p-2 text-gray-400 hover:text-gray-600 rounded-xl hover:bg-gray-100 transition-colors">
                         <Copy className="h-4 w-4" />
                       </button>
-                      <button onClick={() => removeFavorite(verse.reference)} className="p-2 text-gray-400 hover:text-red-500 rounded-lg hover:bg-red-50">
+                      <button onClick={() => removeFavorite(verse.reference)} className="p-2 text-gray-400 hover:text-red-500 rounded-xl hover:bg-red-50 transition-colors">
                         <X className="h-4 w-4" />
                       </button>
                     </div>
@@ -631,6 +667,14 @@ const BiblePage: React.FC = () => {
           )}
         </div>
       )}
+
+      {/* Info bottom */}
+      <div className="bg-gradient-to-r from-amber-100 to-orange-100 rounded-xl p-4 text-center">
+        <p className="text-amber-800 text-sm italic">
+          &quot;Sonde-moi, ô Dieu, et connais mon cœur !&quot; - Psaume 139:23
+        </p>
+      </div>
+      </div>
     </div>
   )
 }

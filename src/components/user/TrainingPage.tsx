@@ -265,111 +265,106 @@ const TrainingPage: React.FC = () => {
   }
 
   if (loading) {
-    return <LoadingSpinner size="md" text="Chargement des formations..." />
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-teal-50">
+        <div className="flex flex-col items-center justify-center min-h-[60vh]">
+          <div className="bg-emerald-100 rounded-full p-4 mb-4">
+            <Loader2 className="h-8 w-8 text-emerald-600 animate-spin" />
+          </div>
+          <p className="text-emerald-700 font-medium">Chargement des formations...</p>
+          <div className="mt-6 space-y-3 w-full max-w-md px-4">
+            <div className="h-20 bg-white/60 rounded-xl animate-pulse" />
+            <div className="h-32 bg-white/60 rounded-xl animate-pulse" />
+            <div className="h-32 bg-white/60 rounded-xl animate-pulse" />
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-6 text-white">
-        <h1 className="text-2xl md:text-3xl font-bold mb-2">🎓 Formations</h1>
-        <p className="text-emerald-100">
-          Développez votre foi et vos compétences avec nos parcours de formation
-        </p>
+    <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-teal-50 pb-20">
+      {/* Header avec gradient */}
+      <div className="bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 px-4 py-8 pb-12">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="bg-white/20 rounded-xl p-3">
+              <GraduationCap className="h-8 w-8 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-white">Formations</h1>
+              <p className="text-emerald-100">
+                Développez votre foi et vos compétences
+              </p>
+            </div>
+          </div>
+
+          {/* Stats dans le header */}
+          <div className="grid grid-cols-4 gap-3 mt-6">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+              <div className="text-2xl font-bold text-white">{stats.enrolled}</div>
+              <div className="text-xs text-emerald-100">Inscrits</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+              <div className="text-2xl font-bold text-white">{stats.inProgress}</div>
+              <div className="text-xs text-emerald-100">En cours</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+              <div className="text-2xl font-bold text-white">{stats.completed}</div>
+              <div className="text-xs text-emerald-100">Terminés</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+              <div className="text-2xl font-bold text-white">{stats.totalProgress}%</div>
+              <div className="text-xs text-emerald-100">Progression</div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Contenu principal */}
+      <div className="max-w-4xl mx-auto px-4 -mt-6 space-y-6">
 
       {/* Message */}
       {message && (
-        <div className={`p-4 rounded-lg flex items-center gap-2 ${
+        <div className={`p-4 rounded-xl flex items-center gap-2 shadow-sm ${
           message.type === 'success' ? 'bg-green-50 text-green-800 border border-green-200' :
           message.type === 'error' ? 'bg-red-50 text-red-800 border border-red-200' :
           'bg-blue-50 text-blue-800 border border-blue-200'
         }`}>
           <span>{message.text}</span>
-          <button onClick={() => setMessage(null)} className="ml-auto">
+          <button onClick={() => setMessage(null)} className="ml-auto hover:bg-white/50 rounded-full p-1">
             <X className="h-4 w-4" />
           </button>
         </div>
       )}
 
-      {/* Stats personnelles */}
-      {myEnrollments.length > 0 && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-            <div className="flex items-center gap-3">
-              <div className="bg-blue-100 p-2 rounded-lg">
-                <BookOpen className="h-5 w-5 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{stats.enrolled}</p>
-                <p className="text-xs text-gray-500">Cours inscrits</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-            <div className="flex items-center gap-3">
-              <div className="bg-yellow-100 p-2 rounded-lg">
-                <Target className="h-5 w-5 text-yellow-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{stats.inProgress}</p>
-                <p className="text-xs text-gray-500">En cours</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-            <div className="flex items-center gap-3">
-              <div className="bg-green-100 p-2 rounded-lg">
-                <Trophy className="h-5 w-5 text-green-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{stats.completed}</p>
-                <p className="text-xs text-gray-500">Terminés</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
-            <div className="flex items-center gap-3">
-              <div className="bg-purple-100 p-2 rounded-lg">
-                <BarChart className="h-5 w-5 text-purple-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{stats.totalProgress}%</p>
-                <p className="text-xs text-gray-500">Progression</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Tabs */}
-      <div className="flex gap-2 border-b border-gray-200">
+      <div className="bg-white rounded-xl shadow-sm p-2 flex gap-2">
         <button
           onClick={() => setActiveTab('catalog')}
-          className={`px-4 py-2 font-medium transition-colors ${
+          className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
             activeTab === 'catalog'
-              ? 'text-emerald-600 border-b-2 border-emerald-600'
-              : 'text-gray-500 hover:text-gray-700'
+              ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md'
+              : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
           }`}
         >
-          <GraduationCap className="h-4 w-4 inline mr-2" />
-          Catalogue des formations
+          <GraduationCap className="h-4 w-4" />
+          Catalogue
         </button>
         <button
           onClick={() => setActiveTab('my-courses')}
-          className={`px-4 py-2 font-medium transition-colors ${
+          className={`flex-1 px-4 py-2.5 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
             activeTab === 'my-courses'
-              ? 'text-emerald-600 border-b-2 border-emerald-600'
-              : 'text-gray-500 hover:text-gray-700'
+              ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md'
+              : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
           }`}
         >
-          <BookOpen className="h-4 w-4 inline mr-2" />
+          <BookOpen className="h-4 w-4" />
           Mes formations
           {myEnrollments.length > 0 && (
-            <span className="ml-2 bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full">
+            <span className={`text-xs px-2 py-0.5 rounded-full ${
+              activeTab === 'my-courses' ? 'bg-white/20' : 'bg-emerald-100 text-emerald-800'
+            }`}>
               {myEnrollments.length}
             </span>
           )}
@@ -380,26 +375,32 @@ const TrainingPage: React.FC = () => {
       {activeTab === 'catalog' ? (
         <div className="space-y-4">
           {/* Filtres par catégorie */}
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setFilterCategory('')}
-              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                filterCategory === '' ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Tous
-            </button>
-            {Object.entries(categoryLabels).map(([cat, label]) => (
+          <div className="bg-white rounded-xl shadow-sm p-4">
+            <div className="flex flex-wrap gap-2">
               <button
-                key={cat}
-                onClick={() => setFilterCategory(cat)}
-                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                  filterCategory === cat ? 'bg-emerald-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                onClick={() => setFilterCategory('')}
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                  filterCategory === '' 
+                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                {label}
+                Tous
               </button>
-            ))}
+              {Object.entries(categoryLabels).map(([cat, label]) => (
+                <button
+                  key={cat}
+                  onClick={() => setFilterCategory(cat)}
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                    filterCategory === cat 
+                      ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Grille des cours */}
@@ -458,12 +459,12 @@ const TrainingPage: React.FC = () => {
                     {/* Bouton */}
                     <div className="mt-4">
                       {enrollment ? (
-                        <button className="w-full py-2 bg-emerald-100 text-emerald-700 rounded-lg font-medium flex items-center justify-center gap-2">
+                        <button className="w-full py-2.5 bg-emerald-100 text-emerald-700 rounded-xl font-medium flex items-center justify-center gap-2 hover:bg-emerald-200 transition-colors">
                           <Play className="h-4 w-4" />
                           Continuer
                         </button>
                       ) : (
-                        <button className="w-full py-2 bg-emerald-600 text-white rounded-lg font-medium flex items-center justify-center gap-2">
+                        <button className="w-full py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-medium flex items-center justify-center gap-2 shadow-md hover:from-emerald-700 hover:to-teal-700 transition-all">
                           S&apos;inscrire
                           <ChevronRight className="h-4 w-4" />
                         </button>
@@ -679,7 +680,7 @@ const TrainingPage: React.FC = () => {
                   <button
                     onClick={() => handleEnroll(selectedCourse.id)}
                     disabled={enrolling}
-                    className="w-full py-3 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-medium hover:from-emerald-700 hover:to-teal-700 disabled:opacity-50 flex items-center justify-center gap-2 shadow-md transition-all"
                   >
                     {enrolling ? (
                       <Loader2 className="h-5 w-5 animate-spin" />
@@ -723,7 +724,7 @@ const TrainingPage: React.FC = () => {
                 
                 {/* Placeholder pour vidéo */}
                 {selectedLesson.videoUrl && (
-                  <div className="bg-gray-100 rounded-lg p-8 text-center my-4">
+                  <div className="bg-gray-100 rounded-xl p-8 text-center my-4">
                     <Play className="h-12 w-12 text-gray-400 mx-auto mb-2" />
                     <p className="text-gray-500">Vidéo de la leçon</p>
                   </div>
@@ -734,7 +735,7 @@ const TrainingPage: React.FC = () => {
               <div className="flex gap-3">
                 <button
                   onClick={() => setShowLessonModal(false)}
-                  className="flex-1 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50"
+                  className="flex-1 py-3 border border-gray-300 rounded-xl font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                 >
                   Fermer
                 </button>
@@ -742,7 +743,7 @@ const TrainingPage: React.FC = () => {
                   <button
                     onClick={() => handleCompleteLesson(selectedCourse.id, selectedLesson.id)}
                     disabled={completingLesson}
-                    className="flex-1 py-3 bg-emerald-600 text-white rounded-lg font-medium hover:bg-emerald-700 disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="flex-1 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-medium hover:from-emerald-700 hover:to-teal-700 disabled:opacity-50 flex items-center justify-center gap-2 shadow-md transition-all"
                   >
                     {completingLesson ? (
                       <Loader2 className="h-5 w-5 animate-spin" />
@@ -759,6 +760,14 @@ const TrainingPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Info bottom */}
+      <div className="bg-gradient-to-r from-emerald-100 to-teal-100 rounded-xl p-4 text-center">
+        <p className="text-emerald-800 text-sm italic">
+          &quot;Étudie pour te présenter devant Dieu comme un homme éprouvé.&quot; - 2 Timothée 2:15
+        </p>
+      </div>
+      </div>
     </div>
   )
 }

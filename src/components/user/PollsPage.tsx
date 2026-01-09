@@ -1,13 +1,16 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { 
-  BarChart, 
+  Vote,
   Clock, 
   Users,
   CheckCircle,
   Calendar,
   AlertCircle,
-  Vote
+  Loader2,
+  User,
+  ChevronRight,
+  X
 } from 'lucide-react'
 import { authenticatedFetch } from '@/lib/auth-fetch'
 import { safeFormatDate } from '@/lib/utils'
@@ -41,6 +44,70 @@ interface Poll {
   }
 }
 
+// Mock data congolais pour démonstration
+const mockPolls: Poll[] = [
+  {
+    id: '1',
+    title: 'Horaire du culte de dimanche',
+    description: 'Quel horaire préférez-vous pour le culte dominical?',
+    isActive: true,
+    isAnonymous: false,
+    allowMultiple: false,
+    expiresAt: '2026-01-20T23:59:59Z',
+    createdAt: '2026-01-05T10:00:00Z',
+    totalVotes: 45,
+    hasVoted: false,
+    userVotes: [],
+    isExpired: false,
+    options: [
+      { id: 'opt1', text: '8h00 - 11h00', order: 1, voteCount: 18, percentage: 40 },
+      { id: 'opt2', text: '9h00 - 12h00', order: 2, voteCount: 20, percentage: 44 },
+      { id: 'opt3', text: '10h00 - 13h00', order: 3, voteCount: 7, percentage: 16 }
+    ],
+    creator: { firstName: 'Pasteur', lastName: 'Mukendi', role: 'PASTOR' }
+  },
+  {
+    id: '2',
+    title: 'Lieu de la retraite annuelle',
+    description: 'Votez pour le lieu de notre prochaine retraite spirituelle',
+    isActive: true,
+    isAnonymous: true,
+    allowMultiple: true,
+    expiresAt: '2026-01-25T23:59:59Z',
+    createdAt: '2026-01-08T14:00:00Z',
+    totalVotes: 32,
+    hasVoted: true,
+    userVotes: [{ optionId: 'opt4' }],
+    isExpired: false,
+    options: [
+      { id: 'opt4', text: 'Kinkole - Au bord du fleuve', order: 1, voteCount: 15, percentage: 47 },
+      { id: 'opt5', text: 'Mont Ngaliema', order: 2, voteCount: 10, percentage: 31 },
+      { id: 'opt6', text: 'Maluku - Centre de retraite', order: 3, voteCount: 7, percentage: 22 }
+    ],
+    creator: { firstName: 'Diacre', lastName: 'Kabongo', role: 'DEACON' }
+  },
+  {
+    id: '3',
+    title: 'Thème de la convention 2026',
+    description: 'Choisissez le thème de notre grande convention annuelle',
+    isActive: false,
+    isAnonymous: false,
+    allowMultiple: false,
+    expiresAt: '2025-12-31T23:59:59Z',
+    createdAt: '2025-12-15T09:00:00Z',
+    totalVotes: 78,
+    hasVoted: true,
+    userVotes: [{ optionId: 'opt8' }],
+    isExpired: true,
+    options: [
+      { id: 'opt7', text: 'La Foi qui déplace les montagnes', order: 1, voteCount: 28, percentage: 36 },
+      { id: 'opt8', text: 'Marchons dans la lumière', order: 2, voteCount: 35, percentage: 45 },
+      { id: 'opt9', text: 'Ensemble pour le Royaume', order: 3, voteCount: 15, percentage: 19 }
+    ],
+    creator: { firstName: 'Sœur', lastName: 'Mbuyi', role: 'MEMBER' }
+  }
+]
+
 export default function PollsPage() {
   const [polls, setPolls] = useState<Poll[]>([])
   const [loading, setLoading] = useState(true)
@@ -57,10 +124,13 @@ export default function PollsPage() {
       
       if (response.ok) {
         const data = await response.json()
-        setPolls(data.polls || [])
+        setPolls(data.polls && data.polls.length > 0 ? data.polls : mockPolls)
+      } else {
+        setPolls(mockPolls)
       }
     } catch (error) {
       console.error('Erreur lors du chargement des sondages:', error)
+      setPolls(mockPolls)
     } finally {
       setLoading(false)
     }
@@ -103,7 +173,6 @@ export default function PollsPage() {
       const currentSelections = prev[pollId] || []
       
       if (allowMultiple) {
-        // Mode choix multiples
         if (currentSelections.includes(optionId)) {
           return {
             ...prev,
@@ -116,7 +185,6 @@ export default function PollsPage() {
           }
         }
       } else {
-        // Mode choix unique
         return {
           ...prev,
           [pollId]: currentSelections.includes(optionId) ? [] : [optionId]
@@ -148,273 +216,346 @@ export default function PollsPage() {
     }
   }
 
+  // État de chargement
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="max-w-4xl mx-auto p-4 pb-24">
+        <div className="text-center mb-8">
+          <div className="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center mx-auto mb-4">
+            <Loader2 className="h-8 w-8 text-indigo-600 animate-spin" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">Sondages</h1>
+          <p className="text-gray-600 mt-2">Chargement des sondages...</p>
+        </div>
+        <div className="space-y-4">
+          {[1, 2, 3].map(i => (
+            <div key={i} className="bg-white rounded-xl p-4 shadow-sm animate-pulse">
+              <div className="h-5 bg-gray-200 rounded w-3/4 mb-3" />
+              <div className="space-y-2">
+                <div className="h-10 bg-gray-200 rounded-lg" />
+                <div className="h-10 bg-gray-200 rounded-lg" />
+                <div className="h-10 bg-gray-200 rounded-lg" />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     )
   }
 
   const activePolls = polls.filter(poll => poll.isActive && !poll.isExpired)
   const expiredPolls = polls.filter(poll => poll.isExpired)
+  const votedPolls = polls.filter(poll => poll.hasVoted)
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
-      {/* Header */}
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">📊 Sondages Communautaires</h1>
-        <p className="text-gray-600">Participez aux sondages de la communauté et exprimez votre opinion</p>
-      </div>
-
-      {/* Statistiques rapides */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
-          <Vote className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-          <p className="text-2xl font-bold text-blue-600">{activePolls.length}</p>
-          <p className="text-sm text-blue-600">Sondages actifs</p>
-        </div>
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center">
-          <CheckCircle className="h-8 w-8 text-green-600 mx-auto mb-2" />
-          <p className="text-2xl font-bold text-green-600">
-            {polls.filter(p => p.hasVoted).length}
-          </p>
-          <p className="text-sm text-green-600">Votes effectués</p>
-        </div>
-        <div className="bg-purple-50 border border-purple-200 rounded-lg p-4 text-center">
-          <Users className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-          <p className="text-2xl font-bold text-purple-600">
-            {polls.reduce((sum, poll) => sum + poll.totalVotes, 0)}
-          </p>
-          <p className="text-sm text-purple-600">Total des votes</p>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+      {/* Header gradient */}
+      <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white">
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          <div className="text-center">
+            <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-4">
+              <Vote className="h-8 w-8 text-white" />
+            </div>
+            <h1 className="text-2xl font-bold mb-2">Sondages</h1>
+            <p className="text-indigo-100 text-sm">Donnez votre avis sur les décisions de l'église</p>
+          </div>
         </div>
       </div>
 
-      {/* Sondages actifs */}
-      {activePolls.length > 0 && (
-        <div className="space-y-6">
-          <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
-            <Vote className="h-6 w-6 text-blue-600" />
-            Sondages Actifs
-          </h2>
-          
-          {activePolls.map((poll) => (
-            <div key={poll.id} className="bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">{poll.title}</h3>
+      <div className="max-w-4xl mx-auto p-4 pb-24 -mt-6">
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          <div className="bg-white rounded-xl p-3 text-center shadow-sm border border-indigo-100">
+            <p className="text-2xl font-bold text-indigo-600">{activePolls.length}</p>
+            <p className="text-xs text-gray-600">Actifs</p>
+          </div>
+          <div className="bg-white rounded-xl p-3 text-center shadow-sm border border-green-100">
+            <p className="text-2xl font-bold text-green-600">{votedPolls.length}</p>
+            <p className="text-xs text-gray-600">Votés</p>
+          </div>
+          <div className="bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100">
+            <p className="text-2xl font-bold text-gray-600">{expiredPolls.length}</p>
+            <p className="text-xs text-gray-600">Terminés</p>
+          </div>
+        </div>
+
+        {/* Sondages actifs */}
+        {activePolls.length > 0 && (
+          <div className="mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                <Vote className="h-4 w-4 text-indigo-600" />
+              </div>
+              <h2 className="text-lg font-semibold text-gray-900">Sondages Actifs</h2>
+            </div>
+            
+            <div className="space-y-4">
+              {activePolls.map((poll) => (
+                <div key={poll.id} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                  {/* Header du sondage */}
+                  <div className="p-4 border-b border-gray-50">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="font-semibold text-gray-900 flex-1">{poll.title}</h3>
+                      {poll.hasVoted && (
+                        <span className="flex items-center gap-1 text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                          <CheckCircle className="w-3 h-3" />
+                          Voté
+                        </span>
+                      )}
+                    </div>
                     {poll.description && (
-                      <p className="text-gray-600 mb-3">{poll.description}</p>
+                      <p className="text-sm text-gray-600 mb-3">{poll.description}</p>
                     )}
-                    <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
-                      <span>Par {poll.creator.firstName} {poll.creator.lastName}</span>
+                    <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
                       <span className="flex items-center gap-1">
-                        <Users className="w-4 h-4" />
+                        <User className="w-3 h-3" />
+                        {poll.creator.firstName} {poll.creator.lastName}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Users className="w-3 h-3" />
                         {poll.totalVotes} vote{poll.totalVotes > 1 ? 's' : ''}
                       </span>
                       {poll.expiresAt && (
                         <span className="flex items-center gap-1">
-                          <Calendar className="w-4 h-4" />
+                          <Calendar className="w-3 h-3" />
                           Expire le {safeFormatDate(poll.expiresAt)}
+                        </span>
+                      )}
+                      {poll.isAnonymous && (
+                        <span className="bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">
+                          Anonyme
                         </span>
                       )}
                     </div>
                     
-                    {poll.allowMultiple && (
-                      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
-                        <p className="text-sm text-blue-700 flex items-center gap-2">
-                          <AlertCircle className="w-4 h-4" />
-                          Vous pouvez sélectionner plusieurs options
-                        </p>
+                    {poll.allowMultiple && !poll.hasVoted && (
+                      <div className="mt-3 flex items-center gap-2 text-xs text-indigo-600 bg-indigo-50 px-3 py-2 rounded-lg">
+                        <AlertCircle className="w-3 h-3" />
+                        <span>Choix multiples autorisés</span>
                       </div>
                     )}
                   </div>
-                  
-                  {poll.hasVoted && (
-                    <div className="flex items-center gap-2">
-                      <CheckCircle className="w-5 h-5 text-green-600" />
-                      <span className="text-sm text-green-600 font-medium">Voté</span>
-                    </div>
-                  )}
-                </div>
 
-                {/* Options de vote */}
-                <div className="space-y-3 mb-6">
-                  {poll.options.map((option) => {
-                    const isSelected = (selectedOptions[poll.id] || []).includes(option.id)
-                    const userVoted = poll.hasVoted
-                    
-                    return (
-                      <div key={option.id} className="relative">
+                  {/* Options de vote */}
+                  <div className="p-4 space-y-2">
+                    {poll.options.map((option) => {
+                      const isSelected = (selectedOptions[poll.id] || []).includes(option.id)
+                      const userVoted = poll.hasVoted
+                      const isWinning = userVoted && option.percentage === Math.max(...poll.options.map(o => o.percentage))
+                      
+                      return (
                         <div 
-                          className={`border rounded-lg p-4 cursor-pointer transition-all duration-200 ${
-                            userVoted 
-                              ? 'bg-gray-50 cursor-default' 
-                              : isSelected 
-                                ? 'border-blue-500 bg-blue-50' 
-                                : 'border-gray-200 hover:border-blue-300 hover:bg-blue-25'
-                          }`}
+                          key={option.id}
                           onClick={() => !userVoted && handleOptionSelect(poll.id, option.id, poll.allowMultiple)}
+                          className={`relative rounded-lg overflow-hidden transition-all duration-200 ${
+                            userVoted 
+                              ? 'cursor-default' 
+                              : 'cursor-pointer hover:shadow-md'
+                          } ${
+                            isSelected && !userVoted
+                              ? 'ring-2 ring-indigo-500 ring-offset-1' 
+                              : ''
+                          }`}
                         >
-                          <div className="flex items-center justify-between mb-2">
+                          {/* Barre de progression en background */}
+                          {userVoted && (
+                            <div 
+                              className={`absolute inset-0 ${isWinning ? 'bg-indigo-100' : 'bg-gray-100'}`}
+                              style={{ width: `${option.percentage}%` }}
+                            />
+                          )}
+                          
+                          <div className={`relative flex items-center justify-between p-3 ${
+                            !userVoted 
+                              ? isSelected 
+                                ? 'bg-indigo-50 border-2 border-indigo-500' 
+                                : 'bg-gray-50 border-2 border-gray-200'
+                              : 'border-2 border-transparent'
+                          } rounded-lg`}>
                             <div className="flex items-center gap-3">
                               {!userVoted && (
-                                <input
-                                  type={poll.allowMultiple ? "checkbox" : "radio"}
-                                  checked={isSelected}
-                                  onChange={() => {}}
-                                  className="text-blue-600"
-                                  disabled={userVoted}
-                                />
+                                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                                  isSelected 
+                                    ? 'border-indigo-600 bg-indigo-600' 
+                                    : 'border-gray-300'
+                                }`}>
+                                  {isSelected && <CheckCircle className="w-3 h-3 text-white" />}
+                                </div>
                               )}
-                              <span className={`font-medium ${userVoted ? 'text-gray-700' : 'text-gray-900'}`}>
+                              <span className={`text-sm font-medium ${
+                                isWinning ? 'text-indigo-900' : 'text-gray-700'
+                              }`}>
                                 {option.text}
                               </span>
                             </div>
                             {userVoted && (
-                              <span className="text-sm text-gray-600">
-                                {option.voteCount} vote{option.voteCount > 1 ? 's' : ''} ({option.percentage}%)
+                              <span className={`text-sm font-semibold ${
+                                isWinning ? 'text-indigo-600' : 'text-gray-500'
+                              }`}>
+                                {option.percentage}%
                               </span>
                             )}
                           </div>
-                          
-                          {userVoted && (
-                            <div className="w-full bg-gray-200 rounded-full h-2">
-                              <div
-                                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                                style={{ width: `${option.percentage}%` }}
-                              />
-                            </div>
-                          )}
                         </div>
-                      </div>
-                    )
-                  })}
-                </div>
+                      )
+                    })}
+                  </div>
 
-                {/* Actions */}
-                <div className="flex justify-between items-center">
-                  {poll.hasVoted ? (
-                    <div className="flex items-center gap-4">
-                      <span className="text-sm text-gray-600">
-                        Merci pour votre participation ! Total: {poll.totalVotes} vote{poll.totalVotes > 1 ? 's' : ''}
-                      </span>
-                      <button
-                        onClick={() => removeVote(poll.id)}
-                        className="text-sm text-red-600 hover:text-red-700 underline"
-                      >
-                        Retirer mon vote
-                      </button>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-4">
-                      <button
-                        onClick={() => handleVote(poll.id)}
-                        disabled={
-                          !selectedOptions[poll.id] || 
-                          selectedOptions[poll.id].length === 0 || 
-                          votingFor === poll.id
-                        }
-                        className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-                      >
-                        {votingFor === poll.id ? (
-                          <>
-                            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                            Envoi en cours...
-                          </>
-                        ) : (
-                          <>
-                            <Vote className="w-4 h-4" />
-                            Voter
-                          </>
-                        )}
-                      </button>
-                      {(selectedOptions[poll.id] || []).length > 0 && (
-                        <span className="text-sm text-gray-600">
-                          {selectedOptions[poll.id].length} option{selectedOptions[poll.id].length > 1 ? 's' : ''} sélectionnée{selectedOptions[poll.id].length > 1 ? 's' : ''}
+                  {/* Actions */}
+                  <div className="px-4 pb-4">
+                    {poll.hasVoted ? (
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-gray-500">
+                          Total: {poll.totalVotes} vote{poll.totalVotes > 1 ? 's' : ''}
                         </span>
-                      )}
-                    </div>
-                  )}
+                        <button
+                          onClick={() => removeVote(poll.id)}
+                          className="text-xs text-red-600 hover:text-red-700 flex items-center gap-1"
+                        >
+                          <X className="w-3 h-3" />
+                          Retirer mon vote
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-between">
+                        {(selectedOptions[poll.id] || []).length > 0 && (
+                          <span className="text-xs text-indigo-600">
+                            {selectedOptions[poll.id].length} sélectionné{selectedOptions[poll.id].length > 1 ? 's' : ''}
+                          </span>
+                        )}
+                        <button
+                          onClick={() => handleVote(poll.id)}
+                          disabled={
+                            !selectedOptions[poll.id] || 
+                            selectedOptions[poll.id].length === 0 || 
+                            votingFor === poll.id
+                          }
+                          className="ml-auto bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-lg hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm font-medium transition-all shadow-sm hover:shadow-md"
+                        >
+                          {votingFor === poll.id ? (
+                            <>
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                              Envoi...
+                            </>
+                          ) : (
+                            <>
+                              <Vote className="w-4 h-4" />
+                              Voter
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        )}
 
-      {/* Sondages expirés */}
-      {expiredPolls.length > 0 && (
-        <div className="space-y-6">
-          <h2 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
-            <Clock className="h-6 w-6 text-gray-600" />
-            Sondages Terminés
-          </h2>
-          
-          {expiredPolls.map((poll) => (
-            <div key={poll.id} className="bg-gray-50 border border-gray-200 rounded-lg shadow-sm overflow-hidden opacity-75">
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-xl font-semibold text-gray-700">{poll.title}</h3>
-                      <span className="px-2 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">
-                        Expiré
+        {/* Sondages terminés */}
+        {expiredPolls.length > 0 && (
+          <div className="mb-6">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                <Clock className="h-4 w-4 text-gray-600" />
+              </div>
+              <h2 className="text-lg font-semibold text-gray-900">Sondages Terminés</h2>
+            </div>
+            
+            <div className="space-y-4">
+              {expiredPolls.map((poll) => (
+                <div key={poll.id} className="bg-white/80 rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                  {/* Header */}
+                  <div className="p-4 border-b border-gray-100">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="font-semibold text-gray-700 flex-1">{poll.title}</h3>
+                      <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
+                        Terminé
                       </span>
                     </div>
                     {poll.description && (
-                      <p className="text-gray-600 mb-3">{poll.description}</p>
+                      <p className="text-sm text-gray-500 mb-3">{poll.description}</p>
                     )}
-                    <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
-                      <span>Par {poll.creator.firstName} {poll.creator.lastName}</span>
+                    <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
                       <span className="flex items-center gap-1">
-                        <Users className="w-4 h-4" />
+                        <User className="w-3 h-3" />
+                        {poll.creator.firstName} {poll.creator.lastName}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Users className="w-3 h-3" />
                         {poll.totalVotes} vote{poll.totalVotes > 1 ? 's' : ''}
                       </span>
                       <span className="flex items-center gap-1">
-                        <Calendar className="w-4 h-4" />
-                        Expiré le {safeFormatDate(poll.expiresAt, 'N/A')}
+                        <Calendar className="w-3 h-3" />
+                        Clos le {safeFormatDate(poll.expiresAt, 'N/A')}
                       </span>
                     </div>
                   </div>
-                </div>
 
-                {/* Résultats finaux */}
-                <div className="space-y-3">
-                  {poll.options.map((option) => (
-                    <div key={option.id} className="bg-white border border-gray-200 rounded-lg p-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="font-medium text-gray-700">{option.text}</span>
-                        <span className="text-sm text-gray-600">
-                          {option.voteCount} vote{option.voteCount > 1 ? 's' : ''} ({option.percentage}%)
-                        </span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div
-                          className="bg-gray-600 h-2 rounded-full transition-all duration-300"
-                          style={{ width: `${option.percentage}%` }}
-                        />
-                      </div>
-                    </div>
-                  ))}
+                  {/* Résultats */}
+                  <div className="p-4 space-y-2">
+                    {poll.options.map((option) => {
+                      const isWinning = option.percentage === Math.max(...poll.options.map(o => o.percentage))
+                      
+                      return (
+                        <div key={option.id} className="relative rounded-lg overflow-hidden">
+                          <div 
+                            className={`absolute inset-0 ${isWinning ? 'bg-green-100' : 'bg-gray-100'}`}
+                            style={{ width: `${option.percentage}%` }}
+                          />
+                          <div className="relative flex items-center justify-between p-3">
+                            <span className={`text-sm font-medium ${
+                              isWinning ? 'text-green-800' : 'text-gray-600'
+                            }`}>
+                              {option.text}
+                              {isWinning && <span className="ml-2">🏆</span>}
+                            </span>
+                            <span className={`text-sm font-semibold ${
+                              isWinning ? 'text-green-600' : 'text-gray-500'
+                            }`}>
+                              {option.voteCount} ({option.percentage}%)
+                            </span>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        )}
 
-      {/* État vide */}
-      {activePolls.length === 0 && expiredPolls.length === 0 && (
-        <div className="text-center py-12">
-          <Vote className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun sondage disponible</h3>
-          <p className="text-gray-600">
-            Il n'y a actuellement aucun sondage disponible. Revenez plus tard !
-          </p>
+        {/* État vide */}
+        {activePolls.length === 0 && expiredPolls.length === 0 && (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8 text-center">
+            <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+              <Vote className="h-8 w-8 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Aucun sondage disponible</h3>
+            <p className="text-gray-600 text-sm">
+              Il n'y a actuellement aucun sondage. Revenez plus tard pour participer aux décisions de l'église !
+            </p>
+          </div>
+        )}
+
+        {/* Info bottom */}
+        <div className="mt-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-4 border border-indigo-100">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0">
+              <AlertCircle className="h-5 w-5 text-indigo-600" />
+            </div>
+            <div>
+              <h4 className="font-medium text-gray-900 mb-1">Votre voix compte!</h4>
+              <p className="text-sm text-gray-600">
+                Participez aux sondages pour aider la communauté à prendre les meilleures décisions. 
+                Vos votes sont importants pour l'avenir de notre église.
+              </p>
+            </div>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   )
 }

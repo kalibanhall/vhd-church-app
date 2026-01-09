@@ -273,22 +273,64 @@ const ActivitiesPage: React.FC = () => {
   }
 
   if (loading) {
-    return <LoadingSpinner size="md" text="Chargement des activités..." />
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-cyan-50 to-teal-50">
+        <div className="flex flex-col items-center justify-center min-h-[60vh]">
+          <div className="bg-cyan-100 rounded-full p-4 mb-4">
+            <Loader2 className="h-8 w-8 text-cyan-600 animate-spin" />
+          </div>
+          <p className="text-cyan-700 font-medium">Chargement des activités...</p>
+          <div className="mt-6 space-y-3 w-full max-w-md px-4">
+            <div className="h-20 bg-white/60 rounded-xl animate-pulse" />
+            <div className="h-32 bg-white/60 rounded-xl animate-pulse" />
+            <div className="h-32 bg-white/60 rounded-xl animate-pulse" />
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl p-6 text-white">
-        <h1 className="text-2xl md:text-3xl font-bold mb-2">📅 Activités de l&apos;Église</h1>
-        <p className="text-indigo-100">
-          Découvrez et participez aux événements de notre communauté
-        </p>
+    <div className="min-h-screen bg-gradient-to-b from-cyan-50 to-teal-50 pb-20">
+      {/* Header avec gradient */}
+      <div className="bg-gradient-to-r from-cyan-600 via-teal-600 to-cyan-700 px-4 py-8 pb-12">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-center gap-4 mb-4">
+            <div className="bg-white/20 rounded-xl p-3">
+              <Calendar className="h-8 w-8 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl md:text-3xl font-bold text-white">Activités de l&apos;Église</h1>
+              <p className="text-cyan-100">
+                Découvrez et participez aux événements de notre communauté
+              </p>
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-3 gap-3 mt-6">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+              <div className="text-2xl font-bold text-white">{upcomingEvents.length}</div>
+              <div className="text-xs text-cyan-100">À venir</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+              <div className="text-2xl font-bold text-white">{myRegistrations.length}</div>
+              <div className="text-xs text-cyan-100">Inscriptions</div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+              <div className="text-2xl font-bold text-white">{pastEvents.length}</div>
+              <div className="text-xs text-cyan-100">Passés</div>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Contenu principal */}
+      <div className="max-w-4xl mx-auto px-4 -mt-6 space-y-6">
 
       {/* Message */}
       {message && (
-        <div className={`p-4 rounded-lg flex items-center gap-2 ${
+        <div className={`p-4 rounded-xl flex items-center gap-2 shadow-sm ${
           message.type === 'success' ? 'bg-green-50 text-green-800 border border-green-200' :
           message.type === 'error' ? 'bg-red-50 text-red-800 border border-red-200' :
           'bg-blue-50 text-blue-800 border border-blue-200'
@@ -297,57 +339,63 @@ const ActivitiesPage: React.FC = () => {
           {message.type === 'error' && <XCircle className="h-5 w-5" />}
           {message.type === 'info' && <Info className="h-5 w-5" />}
           <span>{message.text}</span>
-          <button onClick={() => setMessage(null)} className="ml-auto">
+          <button onClick={() => setMessage(null)} className="ml-auto hover:bg-white/50 rounded-full p-1">
             <X className="h-4 w-4" />
           </button>
         </div>
       )}
 
       {/* Contrôles */}
-      <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-        {/* Filtres */}
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => setFilterType('')}
-            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-              filterType === '' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-          >
-            Tous
-          </button>
-          {Object.entries(eventTypeLabels).map(([type, label]) => (
+      <div className="bg-white rounded-xl shadow-sm p-4">
+        <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
+          {/* Filtres */}
+          <div className="flex flex-wrap gap-2">
             <button
-              key={type}
-              onClick={() => setFilterType(type)}
-              className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                filterType === type ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              onClick={() => setFilterType('')}
+              className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                filterType === '' 
+                  ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-md' 
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              {label}
+              Tous
             </button>
-          ))}
-        </div>
+            {Object.entries(eventTypeLabels).map(([type, label]) => (
+              <button
+                key={type}
+                onClick={() => setFilterType(type)}
+                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                  filterType === type 
+                    ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-md' 
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
 
-        {/* Basculer vue */}
-        <div className="flex bg-gray-100 rounded-lg p-1">
-          <button
-            onClick={() => setViewMode('list')}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              viewMode === 'list' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600'
-            }`}
-          >
-            <CalendarDays className="h-4 w-4 inline mr-1" />
-            Liste
-          </button>
-          <button
-            onClick={() => setViewMode('calendar')}
-            className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-              viewMode === 'calendar' ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600'
-            }`}
-          >
-            <Calendar className="h-4 w-4 inline mr-1" />
-            Calendrier
-          </button>
+          {/* Basculer vue */}
+          <div className="flex bg-gray-100 rounded-xl p-1">
+            <button
+              onClick={() => setViewMode('list')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                viewMode === 'list' ? 'bg-white text-cyan-600 shadow-sm' : 'text-gray-600 hover:text-gray-800'
+              }`}
+            >
+              <CalendarDays className="h-4 w-4 inline mr-1" />
+              Liste
+            </button>
+            <button
+              onClick={() => setViewMode('calendar')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                viewMode === 'calendar' ? 'bg-white text-cyan-600 shadow-sm' : 'text-gray-600 hover:text-gray-800'
+              }`}
+            >
+              <Calendar className="h-4 w-4 inline mr-1" />
+              Calendrier
+            </button>
+          </div>
         </div>
       </div>
 
@@ -456,18 +504,18 @@ const ActivitiesPage: React.FC = () => {
           <div className="flex items-center justify-between mb-6">
             <button
               onClick={() => navigateMonth('prev')}
-              className="p-2 hover:bg-gray-100 rounded-lg"
+              className="p-2 hover:bg-cyan-50 rounded-xl transition-colors"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-5 w-5 text-cyan-600" />
             </button>
-            <h2 className="text-xl font-bold text-gray-900">
+            <h2 className="text-xl font-bold text-gray-900 capitalize">
               {currentMonth.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}
             </h2>
             <button
               onClick={() => navigateMonth('next')}
-              className="p-2 hover:bg-gray-100 rounded-lg"
+              className="p-2 hover:bg-cyan-50 rounded-xl transition-colors"
             >
-              <ChevronRight className="h-5 w-5" />
+              <ChevronRight className="h-5 w-5 text-cyan-600" />
             </button>
           </div>
 
@@ -484,7 +532,7 @@ const ActivitiesPage: React.FC = () => {
           <div className="grid grid-cols-7 gap-1">
             {getDaysInMonth(currentMonth).map((day, index) => {
               if (!day) {
-                return <div key={`empty-${index}`} className="h-24 bg-gray-50 rounded-lg" />
+                return <div key={`empty-${index}`} className="h-24 bg-gray-50 rounded-xl" />
               }
 
               const dayEvents = getEventsForDay(day)
@@ -493,11 +541,11 @@ const ActivitiesPage: React.FC = () => {
               return (
                 <div
                   key={day.toISOString()}
-                  className={`h-24 p-1 rounded-lg border ${
-                    isToday ? 'border-blue-500 bg-blue-50' : 'border-gray-100 hover:bg-gray-50'
+                  className={`h-24 p-1 rounded-xl border transition-all ${
+                    isToday ? 'border-cyan-500 bg-cyan-50 shadow-sm' : 'border-gray-100 hover:bg-gray-50 hover:border-gray-200'
                   }`}
                 >
-                  <div className={`text-sm font-medium mb-1 ${isToday ? 'text-blue-600' : 'text-gray-700'}`}>
+                  <div className={`text-sm font-medium mb-1 ${isToday ? 'text-cyan-600' : 'text-gray-700'}`}>
                     {day.getDate()}
                   </div>
                   <div className="space-y-0.5 overflow-hidden">
@@ -506,7 +554,7 @@ const ActivitiesPage: React.FC = () => {
                       return (
                         <div
                           key={event.id}
-                          className={`text-xs px-1 py-0.5 rounded truncate cursor-pointer ${colors.bg} ${colors.text}`}
+                          className={`text-xs px-1 py-0.5 rounded-lg truncate cursor-pointer ${colors.bg} ${colors.text}`}
                           onClick={() => {
                             setSelectedEvent(event)
                             setShowEventModal(true)
@@ -601,16 +649,16 @@ const ActivitiesPage: React.FC = () => {
                     </span>
                     <button
                       onClick={() => handleCancelRegistration(selectedEvent.id)}
-                      className="text-red-600 hover:text-red-700 text-sm"
+                      className="text-red-600 hover:text-red-700 text-sm hover:underline"
                     >
-                      Annuler
+                      Annuler l&apos;inscription
                     </button>
                   </div>
                 ) : (
                   <button
                     onClick={() => handleRegisterEvent(selectedEvent.id)}
                     disabled={registering}
-                    className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="w-full py-3 bg-gradient-to-r from-cyan-600 to-teal-600 text-white rounded-xl font-medium hover:from-cyan-700 hover:to-teal-700 disabled:opacity-50 flex items-center justify-center gap-2 shadow-md transition-all"
                   >
                     {registering ? (
                       <Loader2 className="h-5 w-5 animate-spin" />
@@ -627,6 +675,14 @@ const ActivitiesPage: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Info bottom */}
+      <div className="bg-gradient-to-r from-cyan-100 to-teal-100 rounded-xl p-4 text-center">
+        <p className="text-cyan-800 text-sm italic">
+          &quot;Là où deux ou trois sont assemblés en mon nom, je suis au milieu d&apos;eux.&quot; - Matthieu 18:20
+        </p>
+      </div>
+      </div>
     </div>
   )
 }

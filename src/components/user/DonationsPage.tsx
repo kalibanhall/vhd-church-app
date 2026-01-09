@@ -1,6 +1,10 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+import { 
+  Gift, DollarSign, CreditCard, Smartphone, Building, Clock, CheckCircle, 
+  X, Heart, TrendingUp, Calendar, Loader2, Wallet, Gift as GiftIcon
+} from 'lucide-react'
 import { authenticatedFetch } from '@/lib/auth-fetch'
 
 interface Donation {
@@ -21,25 +25,36 @@ interface Message {
 }
 
 const DonationsPage: React.FC = () => {
-  // États du formulaire
   const [selectedAmount, setSelectedAmount] = useState('')
   const [customAmount, setCustomAmount] = useState('')
   const [currency, setCurrency] = useState<'USD' | 'CDF'>('CDF')
   const [donationType, setDonationType] = useState('FREEWILL')
-  const [paymentMethod, setPaymentMethod] = useState('CARD')
+  const [paymentMethod, setPaymentMethod] = useState('MOBILE_MONEY')
   const [projectName, setProjectName] = useState('')
   const [notes, setNotes] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [initialLoading, setInitialLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
   const [message, setMessage] = useState<Message | null>(null)
-
-  // États des données
   const [donations, setDonations] = useState<Donation[]>([])
 
-  // Montants prédéfinis par devise
   const predefinedAmounts = {
-    USD: [5, 10, 20, 50, 100],
-    CDF: [5000, 10000, 20000, 50000, 100000]
+    USD: [5, 10, 20, 50, 100, 200],
+    CDF: [5000, 10000, 20000, 50000, 100000, 200000]
   }
+
+  const donationTypes = [
+    { id: 'OFFERING', label: 'Offrande', description: 'Don libre pour l\'œuvre', icon: Gift },
+    { id: 'TITHE', label: 'Dîme', description: 'Consécration du dixième', icon: TrendingUp },
+    { id: 'FREEWILL', label: 'Libéralité', description: 'Don selon votre cœur', icon: Heart },
+    { id: 'PROJECT', label: 'Projet', description: 'Construction du temple', icon: Building },
+  ]
+
+  const paymentMethods = [
+    { id: 'MOBILE_MONEY', label: 'Mobile Money', description: 'M-Pesa, Airtel Money, Orange', icon: Smartphone },
+    { id: 'CARD', label: 'Carte bancaire', description: 'Visa, Mastercard', icon: CreditCard },
+    { id: 'BANK_TRANSFER', label: 'Virement', description: 'Rawbank, Equity BCDC', icon: Building },
+    { id: 'CASH', label: 'Espèces', description: 'Au secrétariat', icon: Wallet },
+  ]
 
   useEffect(() => {
     fetchDonations()
@@ -47,26 +62,26 @@ const DonationsPage: React.FC = () => {
 
   const fetchDonations = async () => {
     try {
+      setInitialLoading(true)
       const response = await authenticatedFetch('/api/donations-proxy')
 
       if (response.ok) {
         const data = await response.json()
         setDonations(data.donations || [])
-      } else {
-        console.error('Erreur récupération donations:', response.status)
       }
     } catch (error) {
       console.error('Erreur lors de la récupération des donations:', error)
+    } finally {
+      setInitialLoading(false)
     }
   }
 
-  // Fonctions helper pour les labels
   const getDonationTypeLabel = (type: string) => {
     const types: Record<string, string> = {
       'OFFERING': 'Offrande',
       'TITHE': 'Dîme',
       'FREEWILL': 'Libéralité',
-      'PROJECT': 'Projet construction',
+      'PROJECT': 'Projet',
       'BUILDING': 'Bâtiment',
       'OTHER': 'Autre'
     }
@@ -76,7 +91,7 @@ const DonationsPage: React.FC = () => {
   const getPaymentMethodLabel = (method: string) => {
     const methods: Record<string, string> = {
       'CARD': 'Carte bancaire',
-      'BANK_TRANSFER': 'Virement bancaire',
+      'BANK_TRANSFER': 'Virement',
       'MOBILE_MONEY': 'Mobile Money',
       'CASH': 'Espèces',
       'CHECK': 'Chèque'
@@ -84,32 +99,29 @@ const DonationsPage: React.FC = () => {
     return methods[method] || method
   }
 
-  // Fonction pour rediriger vers Mobile Money si nécessaire
-  const redirectToMobilePayment = (amount: string, currency: string) => {
+  const redirectToMobilePayment = (amount: string, curr: string) => {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams({
         amount: amount.toString(),
-        currency: currency,
+        currency: curr,
         purpose: donationType || 'OFFERING'
-      });
-      window.location.href = `/mobile-payment?${params.toString()}`;
+      })
+      window.location.href = `/mobile-payment?${params.toString()}`
     }
-  };
+  }
 
   const handleDonationSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
+    setSubmitting(true)
     setMessage(null)
 
     try {
-      // Calculer le montant final
       const finalAmount = selectedAmount === 'custom' ? customAmount : selectedAmount
 
       if (!finalAmount || parseFloat(finalAmount) <= 0) {
         throw new Error('Veuillez sélectionner un montant valide')
       }
 
-      // Si Mobile Money est sélectionné, rediriger vers la page de paiement
       if (paymentMethod === 'MOBILE_MONEY') {
         redirectToMobilePayment(finalAmount, currency)
         return
@@ -130,13 +142,12 @@ const DonationsPage: React.FC = () => {
       if (response.ok) {
         const newDonation = await response.json()
         setDonations([newDonation, ...donations])
-        setMessage({ type: 'success', text: `Don de ${finalAmount} ${currency} enregistré avec succès ! Merci pour votre générosité.` })
+        setMessage({ type: 'success', text: `Don de ${finalAmount} ${currency === 'CDF' ? 'FC' : '$'} enregistré avec succès ! Que Dieu vous bénisse.` })
         
-        // Réinitialiser le formulaire
         setSelectedAmount('')
         setCustomAmount('')
         setDonationType('FREEWILL')
-        setPaymentMethod('CARD')
+        setPaymentMethod('MOBILE_MONEY')
         setProjectName('')
         setNotes('')
       } else {
@@ -145,7 +156,7 @@ const DonationsPage: React.FC = () => {
     } catch (error) {
       setMessage({ type: 'error', text: 'Erreur lors de l\'enregistrement du don. Veuillez réessayer.' })
     } finally {
-      setLoading(false)
+      setSubmitting(false)
     }
   }
 
@@ -155,290 +166,360 @@ const DonationsPage: React.FC = () => {
       const date = new Date(dateString)
       if (isNaN(date.getTime())) return '-'
       return date.toLocaleDateString('fr-FR', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
       })
     } catch {
       return '-'
     }
   }
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'COMPLETED':
-        return <span className="px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">✓ Complété</span>
-      case 'PENDING':
-        return <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">⏳ En attente</span>
-      case 'FAILED':
-        return <span className="px-2 py-1 bg-red-100 text-red-800 text-xs rounded-full">✗ Échoué</span>
-      default:
-        return <span className="px-2 py-1 bg-gray-100 text-gray-800 text-xs rounded-full">{status}</span>
-    }
+  const formatAmount = (amount: number, curr: string) => {
+    if (curr === 'USD') return `$${amount.toLocaleString()}`
+    return `${amount.toLocaleString()} FC`
+  }
+
+  const getTotalDonations = () => {
+    return donations.filter(d => d.status === 'COMPLETED').reduce((sum, d) => {
+      if (d.currency === 'CDF') return sum + d.amount
+      return sum + (d.amount * 2800)
+    }, 0)
+  }
+
+  // Loading state
+  if (initialLoading) {
+    return (
+      <div className="max-w-4xl mx-auto p-4 pb-24">
+        <div className="text-center mb-8">
+          <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+            <Loader2 className="h-8 w-8 text-green-600 animate-spin" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">Soutien à l'Œuvre</h1>
+          <p className="text-gray-600 mt-2">Chargement...</p>
+        </div>
+        <div className="space-y-4">
+          {[1, 2, 3].map(i => (
+            <div key={i} className="bg-white rounded-xl p-6 shadow-sm animate-pulse">
+              <div className="h-6 bg-gray-200 rounded w-1/3 mb-4" />
+              <div className="grid grid-cols-2 gap-3">
+                <div className="h-20 bg-gray-200 rounded-xl" />
+                <div className="h-20 bg-gray-200 rounded-xl" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
   }
 
   return (
-    <div className="space-y-6">
-      {/* Message */}
-      {message && (
-        <div className={`p-4 rounded-lg ${
-          message.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-        }`}>
-          {message.text}
+    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
+      {/* Header gradient */}
+      <div className="bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white">
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          <div className="text-center">
+            <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-4">
+              <Heart className="h-8 w-8 text-white" />
+            </div>
+            <h1 className="text-2xl font-bold mb-2">Soutien à l'Œuvre</h1>
+            <p className="text-green-100 text-sm">Participez à la mission de l'église VHD</p>
+          </div>
         </div>
-      )}
-
-      {/* Interface moderne de soutien */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
-        <form onSubmit={handleDonationSubmit} className="space-y-8">
-          {/* Type de soutien */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Type de soutien</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div 
-                className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                  donationType === 'OFFERING' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
-                }`}
-                onClick={() => setDonationType('OFFERING')}
-              >
-                <h4 className="font-medium">Offrande</h4>
-                <p className="text-sm text-gray-500">Don libre pour soutenir l'œuvre</p>
-              </div>
-              
-              <div 
-                className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                  donationType === 'TITHE' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
-                }`}
-                onClick={() => setDonationType('TITHE')}
-              >
-                <h4 className="font-medium">Dîme</h4>
-                <p className="text-sm text-gray-500">Consécration du dixième</p>
-              </div>
-              
-              <div 
-                className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                  donationType === 'FREEWILL' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
-                }`}
-                onClick={() => setDonationType('FREEWILL')}
-              >
-                <h4 className="font-medium">Libéralité</h4>
-                <p className="text-sm text-gray-500">Don spécial selon le cœur</p>
-              </div>
-              
-              <div 
-                className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                  donationType === 'PROJECT' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
-                }`}
-                onClick={() => setDonationType('PROJECT')}
-              >
-                <h4 className="font-medium">Projet construction</h4>
-                <p className="text-sm text-gray-500">Contribution aux projets d'infrastructure</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Montant avec devises */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Montant</h3>
-            
-            {/* Sélecteur de devise */}
-            <div className="flex gap-2 mb-4">
-              <button
-                type="button"
-                className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                  currency === 'USD' 
-                    ? 'bg-blue-500 text-white' 
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-                onClick={() => {
-                  setCurrency('USD')
-                  setSelectedAmount('')
-                  setCustomAmount('')
-                }}
-              >
-                USD ($)
-              </button>
-              <button
-                type="button"
-                className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                  currency === 'CDF' 
-                    ? 'bg-blue-500 text-white' 
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
-                onClick={() => {
-                  setCurrency('CDF')
-                  setSelectedAmount('')
-                  setCustomAmount('')
-                }}
-              >
-                CDF (FC)
-              </button>
-            </div>
-
-            {/* Boutons de montant prédéfinis */}
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mb-4">
-              {predefinedAmounts[currency].map((amount) => (
-                <button
-                  key={amount}
-                  type="button"
-                  className={`p-3 border-2 rounded-lg font-medium transition-all ${
-                    selectedAmount === amount.toString() 
-                      ? 'border-blue-500 bg-blue-50 text-blue-600' 
-                      : 'border-gray-200 hover:border-gray-300'
-                  }`}
-                  onClick={() => {
-                    setSelectedAmount(amount.toString())
-                    setCustomAmount('')
-                  }}
-                >
-                  {currency === 'USD' ? `$${amount}` : `${amount} FC`}
-                </button>
-              ))}
-              <button
-                type="button"
-                className={`p-3 border-2 rounded-lg font-medium transition-all ${
-                  selectedAmount === 'custom' 
-                    ? 'border-blue-500 bg-blue-50 text-blue-600' 
-                    : 'border-gray-200 hover:border-gray-300'
-                }`}
-                onClick={() => setSelectedAmount('custom')}
-              >
-                Autre
-              </button>
-            </div>
-            
-            {selectedAmount === 'custom' && (
-              <input
-                type="number"
-                placeholder={`Montant personnalisé en ${currency}`}
-                value={customAmount}
-                onChange={(e) => setCustomAmount(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-            )}
-          </div>
-
-          {/* Mode de paiement */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Mode de paiement</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div 
-                className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                  paymentMethod === 'CARD' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
-                }`}
-                onClick={() => setPaymentMethod('CARD')}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="font-medium">Carte bancaire</h4>
-                    <p className="text-sm text-gray-500">Visa, Mastercard</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div 
-                className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                  paymentMethod === 'MOBILE_MONEY' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
-                }`}
-                onClick={() => setPaymentMethod('MOBILE_MONEY')}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-gray-100 rounded flex items-center justify-center">
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="font-medium">Mobile Money</h4>
-                    <p className="text-sm text-gray-500">Orange Money, Airtel Money</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Résumé */}
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <h3 className="text-lg font-semibold mb-4">Résumé</h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span>Type :</span>
-                <span>{getDonationTypeLabel(donationType)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Montant :</span>
-                <span>{currency === 'USD' ? '$' : ''}{selectedAmount === 'custom' ? customAmount || '0' : selectedAmount || '0'}{currency === 'CDF' ? ' FC' : ''}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Méthode :</span>
-                <span>{getPaymentMethodLabel(paymentMethod)}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Bouton de soumission */}
-          <button
-            type="submit"
-            disabled={loading || (!selectedAmount && !customAmount)}
-            className="w-full bg-blue-600 text-white py-4 px-6 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
-          >
-            {loading ? (
-              <>
-                <svg className="animate-spin -ml-1 mr-3 h-5 w-5" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Traitement...
-              </>
-            ) : (
-              <>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-                Envoyer le don
-              </>
-            )}
-          </button>
-        </form>
       </div>
 
-      {/* Historique des donations */}
-      {donations.length > 0 && (
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">📋 Historique des donations</h2>
-          <div className="space-y-4">
-            {donations.slice(0, 5).map((donation) => (
-              <div key={donation.id} className="p-4 border border-gray-200 rounded-lg">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <h3 className="font-medium text-gray-900">
-                      {donation.currency === 'USD' ? '$' : ''}{donation.amount}{donation.currency === 'CDF' ? ' FC' : ''} - {getDonationTypeLabel(donation.donationType)}
-                    </h3>
-                    <p className="text-sm text-gray-500">{getPaymentMethodLabel(donation.paymentMethod)}</p>
-                    {donation.notes && (
-                      <p className="text-sm text-gray-600 mt-1">💭 {donation.notes}</p>
+      <div className="max-w-4xl mx-auto p-4 pb-24 -mt-6">
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          <div className="bg-green-50 border border-green-100 rounded-xl p-3 text-center">
+            <p className="text-xl font-bold text-green-600">{donations.filter(d => d.status === 'COMPLETED').length}</p>
+            <p className="text-xs text-gray-600">Dons validés</p>
+          </div>
+          <div className="bg-yellow-50 border border-yellow-100 rounded-xl p-3 text-center">
+            <p className="text-xl font-bold text-yellow-600">{donations.filter(d => d.status === 'PENDING').length}</p>
+            <p className="text-xs text-gray-600">En attente</p>
+          </div>
+          <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-3 text-center">
+            <p className="text-xl font-bold text-emerald-600">{getTotalDonations().toLocaleString()}</p>
+            <p className="text-xs text-gray-600">Total (FC)</p>
+          </div>
+        </div>
+
+        {/* Message */}
+        {message && (
+          <div className={`p-4 rounded-xl mb-6 flex items-center gap-3 ${
+            message.type === 'success' 
+              ? 'bg-green-100 text-green-800 border border-green-200' 
+              : 'bg-red-100 text-red-800 border border-red-200'
+          }`}>
+            {message.type === 'success' ? (
+              <CheckCircle className="h-5 w-5 flex-shrink-0" />
+            ) : (
+              <X className="h-5 w-5 flex-shrink-0" />
+            )}
+            <p className="text-sm">{message.text}</p>
+          </div>
+        )}
+
+        {/* Formulaire de don */}
+        <div className="bg-white rounded-2xl shadow-xl p-6 mb-6">
+          <form onSubmit={handleDonationSubmit} className="space-y-6">
+            {/* Type de soutien */}
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <Gift className="h-5 w-5 text-green-600" />
+                Type de soutien
+              </h3>
+              <div className="grid grid-cols-2 gap-3">
+                {donationTypes.map((type) => {
+                  const Icon = type.icon
+                  return (
+                    <button
+                      key={type.id}
+                      type="button"
+                      onClick={() => setDonationType(type.id)}
+                      className={`p-4 rounded-xl border-2 text-left transition-all ${
+                        donationType === type.id 
+                          ? 'border-green-500 bg-green-50' 
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                          donationType === type.id ? 'bg-green-100' : 'bg-gray-100'
+                        }`}>
+                          <Icon className={`h-5 w-5 ${
+                            donationType === type.id ? 'text-green-600' : 'text-gray-500'
+                          }`} />
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-900">{type.label}</p>
+                          <p className="text-xs text-gray-500">{type.description}</p>
+                        </div>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Devise */}
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <DollarSign className="h-5 w-5 text-green-600" />
+                Devise
+              </h3>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => { setCurrency('CDF'); setSelectedAmount(''); setCustomAmount(''); }}
+                  className={`flex-1 py-3 rounded-xl font-medium transition-all ${
+                    currency === 'CDF' 
+                      ? 'bg-green-600 text-white shadow-lg' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  🇨🇩 Francs Congolais (FC)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setCurrency('USD'); setSelectedAmount(''); setCustomAmount(''); }}
+                  className={`flex-1 py-3 rounded-xl font-medium transition-all ${
+                    currency === 'USD' 
+                      ? 'bg-green-600 text-white shadow-lg' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  🇺🇸 Dollars (USD)
+                </button>
+              </div>
+            </div>
+
+            {/* Montant */}
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Montant</h3>
+              <div className="grid grid-cols-3 gap-3 mb-4">
+                {predefinedAmounts[currency].map((amount) => (
+                  <button
+                    key={amount}
+                    type="button"
+                    onClick={() => { setSelectedAmount(amount.toString()); setCustomAmount(''); }}
+                    className={`py-4 rounded-xl font-bold transition-all ${
+                      selectedAmount === amount.toString() 
+                        ? 'bg-green-600 text-white shadow-lg scale-105' 
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}
+                  >
+                    {currency === 'USD' ? `$${amount}` : `${amount.toLocaleString()} FC`}
+                  </button>
+                ))}
+              </div>
+              
+              <div className="relative">
+                <input
+                  type="number"
+                  placeholder={`Montant personnalisé en ${currency === 'CDF' ? 'FC' : 'USD'}`}
+                  value={customAmount}
+                  onChange={(e) => { setCustomAmount(e.target.value); setSelectedAmount('custom'); }}
+                  className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 text-lg"
+                />
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">
+                  {currency === 'CDF' ? 'FC' : 'USD'}
+                </span>
+              </div>
+            </div>
+
+            {/* Mode de paiement */}
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <CreditCard className="h-5 w-5 text-green-600" />
+                Mode de paiement
+              </h3>
+              <div className="grid grid-cols-2 gap-3">
+                {paymentMethods.map((method) => {
+                  const Icon = method.icon
+                  return (
+                    <button
+                      key={method.id}
+                      type="button"
+                      onClick={() => setPaymentMethod(method.id)}
+                      className={`p-4 rounded-xl border-2 text-left transition-all ${
+                        paymentMethod === method.id 
+                          ? 'border-green-500 bg-green-50' 
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Icon className={`h-5 w-5 ${
+                          paymentMethod === method.id ? 'text-green-600' : 'text-gray-500'
+                        }`} />
+                        <div>
+                          <p className="font-medium text-gray-900">{method.label}</p>
+                          <p className="text-xs text-gray-500">{method.description}</p>
+                        </div>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+
+            {/* Notes */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Message (optionnel)
+              </label>
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder="Un message pour accompagner votre don..."
+                rows={3}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
+              />
+            </div>
+
+            {/* Résumé */}
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border border-green-100">
+              <h4 className="font-semibold text-gray-900 mb-3">Résumé</h4>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Type :</span>
+                  <span className="font-medium">{getDonationTypeLabel(donationType)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Montant :</span>
+                  <span className="font-bold text-green-600 text-lg">
+                    {formatAmount(
+                      parseFloat(selectedAmount === 'custom' ? customAmount || '0' : selectedAmount || '0'),
+                      currency
                     )}
-                    <p className="text-xs text-gray-400 mt-2">📅 {formatDate(donation.createdAt)}</p>
-                  </div>
-                  <div className="text-right">
-                    {getStatusBadge(donation.status)}
-                  </div>
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Méthode :</span>
+                  <span className="font-medium">{getPaymentMethodLabel(paymentMethod)}</span>
                 </div>
               </div>
-            ))}
-          </div>
-          {donations.length > 5 && (
-            <p className="text-sm text-gray-500 text-center mt-4">
-              ... et {donations.length - 5} autre{donations.length - 5 > 1 ? 's' : ''} donation{donations.length - 5 > 1 ? 's' : ''}
-            </p>
-          )}
+            </div>
+
+            {/* Bouton submit */}
+            <button
+              type="submit"
+              disabled={submitting || (!selectedAmount && !customAmount)}
+              className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-4 px-6 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:from-green-700 hover:to-emerald-700 transition-all flex items-center justify-center gap-3 shadow-lg"
+            >
+              {submitting ? (
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Traitement en cours...
+                </>
+              ) : (
+                <>
+                  <Heart className="h-5 w-5" />
+                  Faire mon don
+                </>
+              )}
+            </button>
+          </form>
         </div>
-      )}
+
+        {/* Historique */}
+        {donations.length > 0 && (
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <Calendar className="h-5 w-5 text-green-600" />
+              Mes dons récents
+            </h2>
+            <div className="space-y-3">
+              {donations.slice(0, 5).map((donation) => (
+                <div key={donation.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                      donation.status === 'COMPLETED' ? 'bg-green-100' :
+                      donation.status === 'PENDING' ? 'bg-yellow-100' : 'bg-red-100'
+                    }`}>
+                      {donation.status === 'COMPLETED' ? (
+                        <CheckCircle className="h-5 w-5 text-green-600" />
+                      ) : donation.status === 'PENDING' ? (
+                        <Clock className="h-5 w-5 text-yellow-600" />
+                      ) : (
+                        <X className="h-5 w-5 text-red-600" />
+                      )}
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">
+                        {formatAmount(donation.amount, donation.currency)}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {getDonationTypeLabel(donation.donationType)} • {formatDate(donation.createdAt)}
+                      </p>
+                    </div>
+                  </div>
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                    donation.status === 'COMPLETED' ? 'bg-green-100 text-green-700' :
+                    donation.status === 'PENDING' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'
+                  }`}>
+                    {donation.status === 'COMPLETED' ? 'Validé' :
+                     donation.status === 'PENDING' ? 'En attente' : 'Échoué'}
+                  </span>
+                </div>
+              ))}
+            </div>
+            {donations.length > 5 && (
+              <p className="text-center text-sm text-gray-500 mt-4">
+                Et {donations.length - 5} autre{donations.length - 5 > 1 ? 's' : ''} don{donations.length - 5 > 1 ? 's' : ''}
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Info bottom */}
+        <div className="mt-6 bg-gradient-to-r from-green-100 to-emerald-100 rounded-xl p-4 text-center">
+          <p className="text-sm text-green-800">
+            💚 « Celui qui sème généreusement moissonnera aussi avec abondance » - 2 Corinthiens 9:6
+          </p>
+        </div>
+      </div>
     </div>
   )
 }

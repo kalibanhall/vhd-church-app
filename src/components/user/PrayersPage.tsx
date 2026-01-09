@@ -1,13 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Heart, Plus, Clock, CheckCircle, X, Send, Eye, AlertCircle, User, Calendar } from 'lucide-react'
+import { 
+  Heart, Plus, Clock, CheckCircle, X, Send, AlertCircle, User, Calendar,
+  Loader2, HeartPulse, Users, Flame, Filter
+} from 'lucide-react'
 import { useAuth } from '../../contexts/AuthContext'
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
-import { Button } from '../ui/button'
-import { Input } from '../ui/input'
-import { Textarea } from '../ui/textarea'
-import { Badge } from '../ui/badge'
 import { authenticatedFetch } from '@/lib/auth-fetch'
 import { safeFormatDate } from '@/lib/utils'
 
@@ -28,12 +26,23 @@ interface Prayer {
   hasUserPrayed?: boolean
 }
 
+const categories = [
+  { id: 'GENERAL', label: 'Général', color: 'blue' },
+  { id: 'HEALTH', label: 'Santé', color: 'red' },
+  { id: 'FAMILY', label: 'Famille', color: 'pink' },
+  { id: 'WORK', label: 'Travail', color: 'green' },
+  { id: 'STUDIES', label: 'Études', color: 'purple' },
+  { id: 'CHURCH', label: 'Église', color: 'indigo' },
+  { id: 'NATION', label: 'Nation', color: 'yellow' },
+]
+
 export default function PrayersPage() {
   const { user } = useAuth()
   const [prayers, setPrayers] = useState<Prayer[]>([])
   const [loading, setLoading] = useState(true)
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [filter, setFilter] = useState<'all' | 'my' | 'pending'>('all')
+  const [submitting, setSubmitting] = useState(false)
   const [newPrayer, setNewPrayer] = useState({
     title: '',
     content: '',
@@ -64,7 +73,6 @@ export default function PrayersPage() {
       const response = await authenticatedFetch(url)
       if (response.ok) {
         const data = await response.json()
-        // Handle both old and new response formats
         const prayersData = data.prayers || data.data || data
         setPrayers(Array.isArray(prayersData) ? prayersData : [])
       }
@@ -77,6 +85,7 @@ export default function PrayersPage() {
 
   const handleCreatePrayer = async (e: React.FormEvent) => {
     e.preventDefault()
+    setSubmitting(true)
     
     try {
       const response = await authenticatedFetch(`/api/prayers-proxy?userId=${user?.id}`, {
@@ -94,74 +103,65 @@ export default function PrayersPage() {
         })
         setShowCreateForm(false)
         fetchPrayers()
-        alert('Votre intention de prière a été soumise pour validation')
-      } else {
-        const error = await response.json()
-        alert('Erreur: ' + error.error)
       }
     } catch (error) {
       console.error('Erreur lors de la création:', error)
-      alert('Erreur lors de la soumission')
+    } finally {
+      setSubmitting(false)
     }
   }
 
-  const handlePrayForIntention = async (prayerId: string, currentStatus: boolean) => {
-    try {
-      if (!user?.id) {
-        alert('Vous devez être connecté pour prier pour cette intention')
-        return
-      }
+  const handlePrayForIntention = async (prayerId: string) => {
+    if (!user?.id) return
 
-      // L'API gère automatiquement l'ajout/suppression selon l'état actuel
+    try {
       const response = await authenticatedFetch(`/api/prayers-proxy/support?prayerId=${prayerId}&userId=${user.id}`, {
         method: 'POST'
       })
 
       if (response.ok) {
-        const result = await response.json()
-        console.log(result.message)
-        
-        // Rafraîchir la liste pour mettre à jour l'état
         fetchPrayers()
-      } else {
-        const error = await response.json()
-        console.error('Erreur:', error.error)
-        alert('Erreur lors de l\'action de prière')
       }
     } catch (error) {
       console.error('Erreur lors de l\'action de prière:', error)
-      alert('Erreur de connexion')
     }
   }
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'PENDING':
-        return <Badge className="bg-yellow-100 text-yellow-800"><Clock className="h-3 w-3 mr-1" />En attente</Badge>
-      case 'APPROVED':
-        return <Badge className="bg-green-100 text-green-800"><CheckCircle className="h-3 w-3 mr-1" />Approuvé</Badge>
-      case 'REJECTED':
-        return <Badge className="bg-red-100 text-red-800"><X className="h-3 w-3 mr-1" />Rejeté</Badge>
-      default:
-        return null
-    }
+  const getCategoryInfo = (cat: string) => {
+    return categories.find(c => c.id === cat) || categories[0]
   }
 
   if (!user) {
-    return <div className="p-6 text-center">Veuillez vous connecter pour voir les intentions de prière.</div>
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 flex items-center justify-center">
+        <div className="text-center p-8">
+          <HeartPulse className="h-16 w-16 text-amber-400 mx-auto mb-4" />
+          <p className="text-gray-600">Connectez-vous pour voir les intentions de prière</p>
+        </div>
+      </div>
+    )
   }
 
   if (loading) {
     return (
-      <div className="p-6 max-w-6xl mx-auto">
-        <div className="animate-pulse space-y-4">
-          {[1,2,3].map(i => (
-            <Card key={i} className="h-48">
-              <CardContent className="p-6">
-                <div className="h-4 bg-gray-200 rounded mb-4"></div>
-                <div className="h-20 bg-gray-200 rounded"></div>
-              </CardContent>
-            </Card>
+      <div className="max-w-4xl mx-auto p-4 pb-24">
+        <div className="text-center mb-8">
+          <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mx-auto mb-4">
+            <Loader2 className="h-8 w-8 text-amber-600 animate-spin" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900">Sujets de Prière</h1>
+          <p className="text-gray-600 mt-2">Chargement des intentions...</p>
+        </div>
+        <div className="space-y-4">
+          {[1, 2, 3].map(i => (
+            <div key={i} className="bg-white rounded-xl p-4 shadow-sm animate-pulse">
+              <div className="h-5 bg-gray-200 rounded w-3/4 mb-3" />
+              <div className="h-16 bg-gray-200 rounded mb-3" />
+              <div className="flex gap-2">
+                <div className="h-8 bg-gray-200 rounded w-20" />
+                <div className="h-8 bg-gray-200 rounded w-24" />
+              </div>
+            </div>
           ))}
         </div>
       </div>
@@ -169,195 +169,283 @@ export default function PrayersPage() {
   }
 
   return (
-    <div className="p-2 md:p-4 lg:p-6 max-w-6xl mx-auto">
-      {/* Header - Compact mobile */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 md:mb-6 gap-3">
-        <div>
-          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900">Intentions de prière</h1>
-          <p className="text-xs md:text-sm lg:text-base text-gray-600 mt-1 md:mt-2">Partagez vos besoins de prière</p>
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-red-50">
+      {/* Header gradient */}
+      <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white">
+        <div className="max-w-4xl mx-auto px-4 py-8">
+          <div className="text-center">
+            <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-4">
+              <HeartPulse className="h-8 w-8 text-white" />
+            </div>
+            <h1 className="text-2xl font-bold mb-2">Sujets de Prière</h1>
+            <p className="text-amber-100 text-sm">Partagez vos besoins, priez pour les autres</p>
+          </div>
         </div>
-        <Button 
-          onClick={() => setShowCreateForm(true)}
-          className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-xs md:text-sm py-2 md:py-2.5"
-        >
-          <Plus className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-2" />
-          Nouvelle
-        </Button>
       </div>
 
-      {/* Filtres - Grid responsive */}
-      <div className="grid grid-cols-3 gap-2 md:flex md:gap-3 mb-4 md:mb-6">
-        <Button
-          variant={filter === 'all' ? 'default' : 'outline'}
-          onClick={() => setFilter('all')}
-          className="text-xs md:text-sm py-2 md:py-3"
-        >
-          Toutes
-        </Button>
-        <Button
-          variant={filter === 'my' ? 'default' : 'outline'}
-          onClick={() => setFilter('my')}
-          className="text-xs md:text-sm py-2 md:py-3"
-        >
-          Miennes
-        </Button>
-        <Button
-          variant={filter === 'pending' ? 'default' : 'outline'}
-          onClick={() => setFilter('pending')}
-          className="text-xs md:text-sm py-2 md:py-3"
-        >
-          Attente
-        </Button>
-      </div>
+      <div className="max-w-4xl mx-auto p-4 pb-24 -mt-6">
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-3 mb-6">
+          <div className="bg-amber-50 border border-amber-100 rounded-xl p-3 text-center">
+            <p className="text-xl font-bold text-amber-600">{prayers.length}</p>
+            <p className="text-xs text-gray-600">Intentions</p>
+          </div>
+          <div className="bg-orange-50 border border-orange-100 rounded-xl p-3 text-center">
+            <p className="text-xl font-bold text-orange-600">
+              {prayers.reduce((sum, p) => sum + p.prayerCount, 0)}
+            </p>
+            <p className="text-xs text-gray-600">Prières</p>
+          </div>
+          <div className="bg-red-50 border border-red-100 rounded-xl p-3 text-center">
+            <p className="text-xl font-bold text-red-600">
+              {prayers.filter(p => p.isAnswered).length}
+            </p>
+            <p className="text-xs text-gray-600">Exaucées</p>
+          </div>
+        </div>
 
-      {/* Formulaire de création */}
-      {showCreateForm && (
-        <Card className="mb-6">
-          <CardHeader>
-            <CardTitle className="flex justify-between items-center">
-              Nouvelle intention de prière
-              <Button
-                variant="ghost"
-                size="sm"
+        {/* Action buttons */}
+        <div className="flex gap-3 mb-6">
+          <button
+            onClick={() => setShowCreateForm(true)}
+            className="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white py-3 rounded-xl font-medium flex items-center justify-center gap-2 shadow-lg hover:from-amber-600 hover:to-orange-600 transition-all"
+          >
+            <Plus className="h-5 w-5" />
+            Nouvelle intention
+          </button>
+        </div>
+
+        {/* Filtres */}
+        <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+          {[
+            { key: 'all', label: 'Toutes', icon: Users },
+            { key: 'my', label: 'Miennes', icon: User },
+            { key: 'pending', label: 'En attente', icon: Clock },
+          ].map(({ key, label, icon: Icon }) => (
+            <button
+              key={key}
+              onClick={() => setFilter(key as typeof filter)}
+              className={`px-4 py-2 rounded-xl font-medium flex items-center gap-2 whitespace-nowrap transition-all ${
+                filter === key
+                  ? 'bg-amber-500 text-white shadow-lg'
+                  : 'bg-white text-gray-700 border border-gray-200 hover:border-amber-300'
+              }`}
+            >
+              <Icon className="h-4 w-4" />
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {/* Formulaire de création */}
+        {showCreateForm && (
+          <div className="bg-white rounded-2xl shadow-xl p-6 mb-6 border border-amber-100">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                <Flame className="h-5 w-5 text-amber-500" />
+                Nouvelle intention de prière
+              </h3>
+              <button
                 onClick={() => setShowCreateForm(false)}
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
               >
-                <X className="h-4 w-4" />
-              </Button>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+                <X className="h-5 w-5 text-gray-500" />
+              </button>
+            </div>
+            
             <form onSubmit={handleCreatePrayer} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Titre de la prière
+                  Titre
                 </label>
-                <Input
+                <input
                   type="text"
                   value={newPrayer.title}
                   onChange={(e) => setNewPrayer(prev => ({ ...prev, title: e.target.value }))}
-                  placeholder="ex: Pour la guérison de ma famille"
+                  placeholder="Ex: Pour la guérison de ma famille"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
                   required
                 />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Catégorie
+                </label>
+                <div className="grid grid-cols-4 gap-2">
+                  {categories.map((cat) => (
+                    <button
+                      key={cat.id}
+                      type="button"
+                      onClick={() => setNewPrayer(prev => ({ ...prev, category: cat.id }))}
+                      className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                        newPrayer.category === cat.id
+                          ? `bg-${cat.color}-100 text-${cat.color}-700 border-2 border-${cat.color}-500`
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      {cat.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Détails de votre demande
                 </label>
-                <Textarea
+                <textarea
                   value={newPrayer.content}
                   onChange={(e) => setNewPrayer(prev => ({ ...prev, content: e.target.value }))}
                   placeholder="Partagez votre intention de prière..."
                   rows={4}
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500"
                   required
                 />
               </div>
 
-              <div className="flex items-center space-x-4">
-                <label className="flex items-center">
+              <div className="flex flex-wrap gap-4">
+                <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={newPrayer.isAnonymous}
                     onChange={(e) => setNewPrayer(prev => ({ ...prev, isAnonymous: e.target.checked }))}
-                    className="mr-2"
+                    className="w-4 h-4 text-amber-500 rounded focus:ring-amber-500"
                   />
-                  Publier anonymement
+                  <span className="text-sm text-gray-600">Publier anonymement</span>
                 </label>
 
-                <label className="flex items-center">
+                <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={newPrayer.isPublic}
                     onChange={(e) => setNewPrayer(prev => ({ ...prev, isPublic: e.target.checked }))}
-                    className="mr-2"
+                    className="w-4 h-4 text-amber-500 rounded focus:ring-amber-500"
                   />
-                  Visible publiquement
+                  <span className="text-sm text-gray-600">Visible publiquement</span>
                 </label>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 sm:justify-end">
-                <Button
+              <div className="flex gap-3 pt-2">
+                <button
                   type="button"
-                  variant="outline"
                   onClick={() => setShowCreateForm(false)}
-                  className="py-3 text-base"
+                  className="flex-1 py-3 border border-gray-200 rounded-xl font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                 >
                   Annuler
-                </Button>
-                <Button type="submit" className="bg-blue-600 hover:bg-blue-700 py-3 text-base">
-                  <Send className="h-4 w-4 mr-2" />
-                  Soumettre pour validation
-                </Button>
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white py-3 rounded-xl font-medium flex items-center justify-center gap-2 shadow-lg disabled:opacity-50"
+                >
+                  {submitting ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    <>
+                      <Send className="h-5 w-5" />
+                      Soumettre
+                    </>
+                  )}
+                </button>
               </div>
             </form>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Liste des prières */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {prayers.length === 0 ? (
-          <div className="col-span-2 text-center py-12">
-            <AlertCircle className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Aucune intention de prière</h3>
-            <p className="text-gray-600">
-              {filter === 'my' ? 'Vous n\'avez pas encore partagé d\'intention de prière.' : 
-               filter === 'pending' ? 'Aucune prière en attente de validation.' :
-               'Aucune intention de prière disponible.'}
-            </p>
           </div>
-        ) : (
-          prayers.map((prayer) => (
-            <Card key={prayer.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader className="pb-3">
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <CardTitle className="text-lg mb-1">{prayer.title}</CardTitle>
-                    <div className="flex items-center gap-2 text-sm text-gray-600">
-                      <User className="h-3 w-3" />
-                      <span>{prayer.isAnonymous ? 'Anonyme' : prayer.userName}</span>
-                      <Calendar className="h-3 w-3 ml-2" />
-                      <span>{safeFormatDate(prayer.prayerDate)}</span>
-                    </div>
-                  </div>
-                  {getStatusBadge(prayer.status)}
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-700 mb-4 leading-relaxed">
-                  {prayer.content}
-                </p>
-
-                {prayer.status === 'APPROVED' && (
-                  <div className="flex items-center justify-between pt-4 border-t">
-                    <div className="flex items-center space-x-1 text-sm text-gray-600">
-                      <Heart className="h-4 w-4" />
-                      <span>{prayer.prayerCount} personne{prayer.prayerCount !== 1 ? 's' : ''} pri{prayer.prayerCount !== 1 ? 'ent' : 'e'}</span>
-                    </div>
-                    <Button
-                      onClick={() => handlePrayForIntention(prayer.id, prayer.hasUserPrayed || false)}
-                      className={prayer.hasUserPrayed ? 
-                        "bg-red-100 text-red-700 hover:bg-red-200" : 
-                        "bg-red-600 text-white hover:bg-red-700"
-                      }
-                      size="sm"
-                    >
-                      <Heart className={`h-4 w-4 mr-2 ${prayer.hasUserPrayed ? 'fill-current' : ''}`} />
-                      {prayer.hasUserPrayed ? 'Je prie déjà' : 'Je prie pour cette intention'}
-                    </Button>
-                  </div>
-                )}
-
-                {prayer.status === 'PENDING' && prayer.userId === user.id && (
-                  <div className="flex items-center gap-2 pt-4 border-t text-sm text-yellow-700 bg-yellow-50 p-3 rounded-lg">
-                    <Clock className="h-4 w-4" />
-                    <span>Votre intention est en cours de validation par l'équipe pastorale</span>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          ))
         )}
+
+        {/* Liste des prières */}
+        <div className="space-y-4">
+          {prayers.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-2xl">
+              <AlertCircle className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Aucune intention de prière</h3>
+              <p className="text-gray-600 text-sm">
+                {filter === 'my' ? 'Vous n\'avez pas encore partagé d\'intention.' : 
+                 filter === 'pending' ? 'Aucune prière en attente de validation.' :
+                 'Soyez le premier à partager une intention !'}
+              </p>
+            </div>
+          ) : (
+            prayers.map((prayer) => {
+              const catInfo = getCategoryInfo(prayer.category)
+              return (
+                <div key={prayer.id} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all">
+                  <div className="p-4">
+                    {/* Header */}
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
+                          <User className="h-5 w-5 text-amber-600" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-900">
+                            {prayer.isAnonymous ? 'Anonyme' : prayer.userName}
+                          </p>
+                          <p className="text-xs text-gray-500 flex items-center gap-1">
+                            <Calendar className="h-3 w-3" />
+                            {safeFormatDate(prayer.prayerDate)}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium bg-${catInfo.color}-100 text-${catInfo.color}-700`}>
+                          {catInfo.label}
+                        </span>
+                        {prayer.status === 'PENDING' && (
+                          <span className="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full flex items-center gap-1">
+                            <Clock className="h-3 w-3" />
+                            En attente
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <h3 className="font-semibold text-gray-900 mb-2">{prayer.title}</h3>
+                    <p className="text-gray-700 text-sm leading-relaxed mb-4">
+                      {prayer.content}
+                    </p>
+
+                    {/* Actions */}
+                    {prayer.status === 'APPROVED' && (
+                      <div className="flex items-center justify-between pt-3 border-t">
+                        <div className="flex items-center gap-1 text-sm text-gray-600">
+                          <Heart className="h-4 w-4 text-red-500" />
+                          <span>{prayer.prayerCount} personne{prayer.prayerCount !== 1 ? 's' : ''} prie{prayer.prayerCount !== 1 ? 'nt' : ''}</span>
+                        </div>
+                        <button
+                          onClick={() => handlePrayForIntention(prayer.id)}
+                          className={`px-4 py-2 rounded-xl font-medium text-sm flex items-center gap-2 transition-all ${
+                            prayer.hasUserPrayed
+                              ? 'bg-red-100 text-red-700 hover:bg-red-200'
+                              : 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg hover:from-red-600 hover:to-pink-600'
+                          }`}
+                        >
+                          <Heart className={`h-4 w-4 ${prayer.hasUserPrayed ? 'fill-current' : ''}`} />
+                          {prayer.hasUserPrayed ? 'Je prie déjà' : 'Je prie'}
+                        </button>
+                      </div>
+                    )}
+
+                    {prayer.status === 'PENDING' && prayer.userId === user.id && (
+                      <div className="flex items-center gap-2 p-3 bg-yellow-50 rounded-xl text-sm text-yellow-700">
+                        <Clock className="h-4 w-4" />
+                        <span>Votre intention est en cours de validation</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )
+            })
+          )}
+        </div>
+
+        {/* Info bottom */}
+        <div className="mt-6 bg-gradient-to-r from-amber-100 to-orange-100 rounded-xl p-4 text-center">
+          <p className="text-sm text-amber-800">
+            🙏 « Priez les uns pour les autres » - Jacques 5:16
+          </p>
+        </div>
       </div>
     </div>
   )
