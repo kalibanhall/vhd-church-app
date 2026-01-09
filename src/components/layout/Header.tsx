@@ -16,10 +16,11 @@ interface HeaderProps {
   onProfileClick?: () => void;
   onTabChange?: (tab: string) => void;
   onMenuClick?: () => void;
+  onLogoutClick?: () => void;
   hideMenuButton?: boolean;
 }
 
-export default function Header({ user, onProfileClick, onTabChange, onMenuClick, hideMenuButton = false }: HeaderProps) {
+export default function Header({ user, onProfileClick, onTabChange, onMenuClick, onLogoutClick, hideMenuButton = false }: HeaderProps) {
   const { logout } = useAuth()
   const router = useRouter()
   const [searchQuery, setSearchQuery] = useState('')
@@ -175,7 +176,11 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
                   <button
                     onClick={() => {
                       setShowProfileMenu(false)
-                      setShowLogoutConfirm(true)
+                      if (onLogoutClick) {
+                        onLogoutClick()
+                      } else {
+                        setShowLogoutConfirm(true)
+                      }
                     }}
                     className="w-full px-3 md:px-4 py-2 md:py-3 text-left hover:bg-red-50 flex items-center space-x-2 md:space-x-3 text-red-600 text-sm"
                   >

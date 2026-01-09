@@ -29,6 +29,8 @@ export { ProgressBar, CircularProgress } from './ProgressBar';
 export { BarChart, LineChart, DonutChart } from './SimpleChart';
 export { EmptyState } from './EmptyState';
 export { Avatar, AvatarGroup } from './Avatar';
+export { default as LogoutConfirmModal } from './LogoutConfirmModal';
+export { default as PageWrapper, ContentCard, StatGrid, StatItem, Section, EmptyState as PageEmptyState } from './PageWrapper';
 
 // Types
 export type { ModalProps, ConfirmModalProps } from './Modal';
