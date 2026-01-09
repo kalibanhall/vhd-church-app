@@ -43,9 +43,9 @@ Ajoutez chacune de ces variables en cliquant sur **Add New** :
 | Nom de la Variable | Valeur | Environnement |
 |-------------------|--------|---------------|
 | `CHURCH_NAME` | `My Church App` | Production, Preview, Development |
-| `CHURCH_ADDRESS` | `Votre adresse` | Production, Preview, Development |
-| `CHURCH_PHONE` | `+33 1 23 45 67 89` | Production, Preview, Development |
-| `CHURCH_EMAIL` | `contact@mychurchapp.com` | Production, Preview, Development |
+| `CHURCH_ADDRESS` | `Avenue Kalemie 45, Limete, Kinshasa` | Production, Preview, Development |
+| `CHURCH_PHONE` | `+243 81 234 56 78` | Production, Preview, Development |
+| `CHURCH_EMAIL` | `contact@mychurchapp.cd` | Production, Preview, Development |
 
 ### 3. Redéployer l'Application
 

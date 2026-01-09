@@ -99,10 +99,10 @@ export default function UrgentAlertsPage() {
         'Les visites sont autorisées de 14h à 18h'
       ],
       contacts: [
-        { name: 'Pasteur David', phone: '+33 6 12 34 56 78', role: 'Coordination spirituelle' },
-        { name: 'Diacre Pierre', phone: '+33 6 98 76 54 32', role: 'Coordination logistique' }
+        { name: 'Pasteur David Mukendi', phone: '+243 81 234 56 78', role: 'Coordination spirituelle' },
+        { name: 'Diacre Pierre Kabongo', phone: '+243 99 876 54 32', role: 'Coordination logistique' }
       ],
-      location: 'Hôpital Central, Service Réanimation',
+      location: 'Clinique Ngaliema, Service Réanimation, Kinshasa',
       isActive: true,
       isAcknowledged: false,
       priority: 1,
@@ -116,11 +116,11 @@ export default function UrgentAlertsPage() {
       message: 'En raison de travaux urgents, le culte de dimanche se tiendra exceptionnellement à la salle polyvalente.',
       details: 'Une fuite d\'eau a été détectée dans le bâtiment principal. Par mesure de sécurité, nous déplaçons le culte.',
       instructions: [
-        'Nouvelle adresse : Salle polyvalente municipale, 15 rue de la Paix',
+        'Nouvelle adresse : Salle polyvalente, Avenue Kalemie 45, Limete',
         'Horaire inchangé : 10h00',
         'Parking disponible à proximité'
       ],
-      location: 'Salle polyvalente municipale',
+      location: 'Salle polyvalente VHD Limete, Kinshasa',
       affectedAreas: ['Bâtiment principal', 'Salle de prière'],
       isActive: true,
       isAcknowledged: true,

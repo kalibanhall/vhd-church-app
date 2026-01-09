@@ -325,16 +325,16 @@ export class SettingsService {
     return {
       general: {
         churchName: 'Mon Église',
-        timezone: 'Europe/Paris',
+        timezone: 'Africa/Kinshasa',
         language: 'fr',
-        currency: 'EUR',
+        currency: 'CDF',
         fiscalYearStart: 1
       },
       contact: {
         address: '',
         city: '',
         postalCode: '',
-        country: 'France',
+        country: 'RD Congo',
         email: '',
         socialMedia: {}
       },

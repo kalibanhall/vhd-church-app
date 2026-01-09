@@ -10,8 +10,8 @@ const MOCK_MY_CONFLICTS = [
     lastUpdate: new Date(Date.now() - 86400000 * 2).toISOString(),
     mediator: {
       id: '1',
-      name: 'Ancien Paul',
-      phone: '+33 6 12 34 56 78',
+      name: 'Ancien Paul Kabongo',
+      phone: '+243 99 876 54 32',
     },
     nextSession: new Date(Date.now() + 86400000 * 5).toISOString(),
     notes: 'Première session de médiation effectuée. Progrès encourageants.',

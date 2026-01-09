@@ -38,7 +38,7 @@ export default function HomePage({ user, events, sermons, stats }: HomePageProps
     {
       icon: DollarSign,
       label: 'Soutien du mois',
-      value: `${stats.monthlyDonations} €`,
+      value: `${stats.monthlyDonations.toLocaleString()} FC`,
       subtitle: 'Total collecté',
       color: 'bg-orange-500'
     }

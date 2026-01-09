@@ -364,7 +364,7 @@ export default function MarketplacePage() {
                 placeholder="Max"
                 className="w-24 px-3 py-2 border border-gray-200 rounded-lg"
               />
-              <span className="text-gray-500">€</span>
+              <span className="text-gray-500">FC</span>
             </div>
           </div>
         </div>
@@ -472,7 +472,7 @@ export default function MarketplacePage() {
               <div className={`p-3 ${viewMode === 'list' ? 'flex-1' : ''}`}>
                 <p className="font-semibold text-gray-900 line-clamp-1">{product.title}</p>
                 <p className="text-lg font-bold text-orange-600 mt-1">
-                  {product.price}€
+                  {product.price.toLocaleString()} FC
                   {product.negotiable && <span className="text-xs font-normal text-gray-500 ml-1">négociable</span>}
                 </p>
                 <div className="flex items-center gap-2 mt-2 text-xs text-gray-500">
@@ -628,7 +628,7 @@ export default function MarketplacePage() {
                   type="text"
                   value={newProduct.location}
                   onChange={(e) => setNewProduct({ ...newProduct, location: e.target.value })}
-                  placeholder="Ex: Paris 15ème"
+                  placeholder="Ex: Gombe, Kinshasa"
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500"
                 />
               </div>
@@ -678,7 +678,7 @@ export default function MarketplacePage() {
                 <div>
                   <h2 className="text-xl font-bold text-gray-900">{selectedProduct.title}</h2>
                   <p className="text-2xl font-bold text-orange-600 mt-1">
-                    {selectedProduct.price}€
+                    {selectedProduct.price.toLocaleString()} FC
                     {selectedProduct.negotiable && <span className="text-sm font-normal text-gray-500 ml-2">Prix négociable</span>}
                   </p>
                 </div>

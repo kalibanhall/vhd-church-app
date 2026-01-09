@@ -443,7 +443,7 @@ export default function LibraryPage() {
                   <span className="text-xs text-gray-400 ml-1">({book.reviews})</span>
                 </div>
                 {book.purchasable && book.price && (
-                  <p className="text-sm font-semibold text-amber-600 mt-2">{book.price.toFixed(2)}€</p>
+                  <p className="text-sm font-semibold text-amber-600 mt-2">{book.price.toLocaleString()} FC</p>
                 )}
               </div>
             </div>
@@ -532,7 +532,7 @@ export default function LibraryPage() {
               {selectedBook.purchasable && selectedBook.price && (
                 <div className="flex items-center justify-between p-3 bg-amber-50 rounded-xl">
                   <span className="text-amber-800 font-medium">Prix d'achat</span>
-                  <span className="text-2xl font-bold text-amber-600">{selectedBook.price.toFixed(2)}€</span>
+                  <span className="text-2xl font-bold text-amber-600">{selectedBook.price.toLocaleString()} FC</span>
                 </div>
               )}
             </div>

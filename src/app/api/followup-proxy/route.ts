@@ -45,9 +45,9 @@ const MOCK_MY_FOLLOWUPS = [
     typeName: 'Suivi spirituel',
     mentor: {
       id: '1',
-      name: 'Pasteur Marc',
-      phone: '+33 6 12 34 56 78',
-      email: 'marc@eglise.fr',
+      name: 'Pasteur Marc Mukendi',
+      phone: '+243 81 234 56 78',
+      email: 'marc@vhdchurch.cd',
     },
     startDate: new Date(Date.now() - 86400000 * 30).toISOString(),
     status: 'active',

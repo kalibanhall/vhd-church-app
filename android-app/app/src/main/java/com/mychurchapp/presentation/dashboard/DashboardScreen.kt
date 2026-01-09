@@ -114,7 +114,7 @@ private fun DashboardContent(
                         StatCard("Membres totaux", stats.totalMembers.toString(), Icons.Default.People, MaterialTheme.colorScheme.primary),
                         StatCard("Membres actifs", stats.activeMembers.toString(), Icons.Default.Person, MaterialTheme.colorScheme.secondary),
                         StatCard("Présence aujourd'hui", stats.todaysPresence.toString(), Icons.Default.CalendarToday, MaterialTheme.colorScheme.tertiary),
-                        StatCard("Dons du mois", "${stats.monthlyDonations}€", Icons.Default.AttachMoney, MaterialTheme.colorScheme.primary)
+                        StatCard("Dons du mois", "${stats.monthlyDonations} FC", Icons.Default.AttachMoney, MaterialTheme.colorScheme.primary)
                     )
                 ) { statCard ->
                     StatisticCard(statCard)
@@ -144,7 +144,7 @@ private fun DashboardContent(
         item {
             ModuleCard(
                 title = "Dons",
-                subtitle = "${stats.monthlyDonations}€ ce mois",
+                subtitle = "${stats.monthlyDonations} FC ce mois",
                 icon = Icons.Default.AttachMoney,
                 onClick = onNavigateToDonations
             )

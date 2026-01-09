@@ -143,7 +143,7 @@ export default function NotificationsPage() {
       id: '4',
       type: 'donation',
       title: 'Don reçu avec succès',
-      message: 'Votre don de 50€ pour le projet "Bâtiment" a été traité avec succès. Merci pour votre générosité !',
+      message: 'Votre don de 50 000 FC pour le projet "Bâtiment" a été traité avec succès. Merci pour votre générosité !',
       isRead: true,
       isImportant: false,
       actionUrl: '/donations/history',

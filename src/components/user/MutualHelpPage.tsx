@@ -528,7 +528,7 @@ export default function MutualHelpPage() {
                   type="text"
                   value={newRequest.location}
                   onChange={(e) => setNewRequest({ ...newRequest, location: e.target.value })}
-                  placeholder="Ex: Paris 15ème"
+                  placeholder="Ex: Gombe, Kinshasa"
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500"
                 />
               </div>

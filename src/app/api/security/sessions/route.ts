@@ -25,7 +25,7 @@ if (sessions.length === 0) {
         device: 'Desktop'
       },
       ipAddress: '192.168.1.1',
-      location: { country: 'France', city: 'Paris' },
+      location: { country: 'RD Congo', city: 'Kinshasa' },
       createdAt: new Date(Date.now() - 86400000).toISOString(),
       lastActive: new Date().toISOString(),
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
@@ -44,7 +44,7 @@ if (sessions.length === 0) {
         device: 'Mobile'
       },
       ipAddress: '10.0.0.1',
-      location: { country: 'France', city: 'Lyon' },
+      location: { country: 'RD Congo', city: 'Lubumbashi' },
       createdAt: new Date(Date.now() - 172800000).toISOString(),
       lastActive: new Date(Date.now() - 7200000).toISOString(),
       expiresAt: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(),

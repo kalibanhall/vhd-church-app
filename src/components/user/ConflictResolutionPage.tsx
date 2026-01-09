@@ -316,11 +316,11 @@ export default function ConflictResolutionPage() {
           Si la situation nécessite une intervention urgente, contactez directement :
         </p>
         <a
-          href="tel:+33612345678"
+          href="tel:+243812345678"
           className="flex items-center gap-2 text-blue-600 font-medium"
         >
           <Phone className="h-4 w-4" />
-          Ligne pastorale : +33 6 12 34 56 78
+          Ligne pastorale : +243 81 234 56 78
         </a>
       </div>
     </div>

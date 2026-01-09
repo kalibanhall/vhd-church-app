@@ -21,10 +21,10 @@ if (taxReceipts.length === 0) {
       id: 'receipt_1',
       receiptNumber: TaxReceiptService.generateReceiptNumber(currentYear - 1, 1),
       memberId: 'member_1',
-      memberName: 'Jean Dupont',
-      memberAddress: '123 Rue de la Paix, 75001 Paris, France',
+      memberName: 'Jean Mukendi',
+      memberAddress: 'Avenue Kalemie 45, Commune de Limete, Kinshasa, RD Congo',
       fiscalYear: currentYear - 1,
-      totalAmount: 2400,
+      totalAmount: 2400000,
       donations: [
         { date: new Date(currentYear - 1, 0, 15).toISOString(), amount: 200, type: 'Dîme' },
         { date: new Date(currentYear - 1, 1, 15).toISOString(), amount: 200, type: 'Dîme' },

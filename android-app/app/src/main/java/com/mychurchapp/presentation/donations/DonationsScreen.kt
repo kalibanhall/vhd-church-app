@@ -270,7 +270,7 @@ private fun CreateDonationDialog(
                 OutlinedTextField(
                     value = amount,
                     onValueChange = { amount = it },
-                    label = { Text("Montant (€)") },
+                    label = { Text("Montant (FC)") },
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(16.dp))

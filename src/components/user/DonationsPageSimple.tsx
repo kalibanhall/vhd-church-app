@@ -71,7 +71,7 @@ export default function DonationsPage() {
       if (response.ok) {
         const newDonation = await response.json()
         setDonations([newDonation, ...donations])
-        setMessage({ type: 'success', text: `Don de ${amount}€ enregistré avec succès ! Merci pour votre générosité.` })
+        setMessage({ type: 'success', text: `Don de ${amount} FC enregistré avec succès ! Merci pour votre générosité.` })
         
         // Réinitialiser le formulaire
         setAmount('')
@@ -147,7 +147,7 @@ export default function DonationsPage() {
             <h3 className="text-sm font-medium text-gray-500">Total de mon soutien</h3>
             <span className="text-green-500">💰</span>
           </div>
-          <div className="text-2xl font-bold text-gray-900">{totalDonations.toFixed(2)}€</div>
+          <div className="text-2xl font-bold text-gray-900">{totalDonations.toLocaleString()} FC</div>
           <p className="text-xs text-gray-500">Cette année</p>
         </div>
         
@@ -166,7 +166,7 @@ export default function DonationsPage() {
             <span className="text-purple-500">📈</span>
           </div>
           <div className="text-2xl font-bold text-gray-900">
-            {donations.length > 0 ? (totalDonations / donations.length).toFixed(2) : '0.00'}€
+            {donations.length > 0 ? Math.round(totalDonations / donations.length).toLocaleString() : '0'} FC
           </div>
           <p className="text-xs text-gray-500">Par contribution</p>
         </div>
@@ -181,7 +181,7 @@ export default function DonationsPage() {
             {/* Montant */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Montant (€) *
+                Montant (FC) *
               </label>
               <input
                 type="number"
@@ -309,7 +309,7 @@ export default function DonationsPage() {
                   </div>
                   <div className="text-right">
                     <div className="text-lg font-bold text-green-600">
-                      {donation.amount.toFixed(2)}€
+                      {donation.amount.toLocaleString()} FC
                     </div>
                     <span className={`inline-block px-2 py-1 text-xs rounded-full ${
                       donation.status === 'completed' 

@@ -91,7 +91,7 @@ export default function DonationsPage() {
       await new Promise(resolve => setTimeout(resolve, 1500))
 
       setDonations([newDonation, ...donations])
-      setMessage({ type: 'success', text: `Don de ${amount}€ enregistré avec succès ! Merci pour votre générosité.` })
+      setMessage({ type: 'success', text: `Don de ${amount} FC enregistré avec succès ! Merci pour votre générosité.` })
       
       // Réinitialiser le formulaire
       setAmount('')
@@ -161,7 +161,7 @@ export default function DonationsPage() {
             <Heart className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{totalDonated}€</div>
+            <div className="text-2xl font-bold">{totalDonated.toLocaleString()} FC</div>
             <p className="text-xs text-muted-foreground">Depuis votre inscription</p>
           </CardContent>
         </Card>
@@ -172,7 +172,7 @@ export default function DonationsPage() {
             <TrendingUp className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">50€</div>
+            <div className="text-2xl font-bold">50 000 FC</div>
             <p className="text-xs text-muted-foreground">1 donation ce mois</p>
           </CardContent>
         </Card>
@@ -195,7 +195,7 @@ export default function DonationsPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {donations.length > 0 ? Math.round(totalDonated / donations.length) : 0}€
+              {donations.length > 0 ? Math.round(totalDonated / donations.length).toLocaleString() : 0} FC
             </div>
             <p className="text-xs text-muted-foreground">Par donation</p>
           </CardContent>
@@ -217,7 +217,7 @@ export default function DonationsPage() {
           <CardContent>
             <form onSubmit={handleDonationSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="amount">Montant (€) *</Label>
+                <Label htmlFor="amount">Montant (FC) *</Label>
                 <Input
                   id="amount"
                   type="number"
@@ -234,34 +234,34 @@ export default function DonationsPage() {
                 <Button 
                   type="button"
                   variant="outline" 
-                  onClick={() => setAmount('20')}
+                  onClick={() => setAmount('5000')}
                   className="text-sm"
                 >
-                  20€
+                  5 000 FC
                 </Button>
                 <Button 
                   type="button"
                   variant="outline" 
-                  onClick={() => setAmount('50')}
+                  onClick={() => setAmount('10000')}
                   className="text-sm"
                 >
-                  50€
+                  10 000 FC
                 </Button>
                 <Button 
                   type="button"
                   variant="outline" 
-                  onClick={() => setAmount('100')}
+                  onClick={() => setAmount('25000')}
                   className="text-sm"
                 >
-                  100€
+                  25 000 FC
                 </Button>
                 <Button 
                   type="button"
                   variant="outline" 
-                  onClick={() => setAmount('200')}
+                  onClick={() => setAmount('50000')}
                   className="text-sm"
                 >
-                  200€
+                  50 000 FC
                 </Button>
               </div>
 
@@ -318,7 +318,7 @@ export default function DonationsPage() {
                 {loading ? (
                   '⏳ Traitement en cours...'
                 ) : (
-                  `🎁 Confirmer le don de ${amount || '0'}€`
+                  `🎁 Confirmer le don de ${amount || '0'} FC`
                 )}
               </Button>
             </form>
@@ -342,7 +342,7 @@ export default function DonationsPage() {
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div className="bg-blue-600 h-2 rounded-full w-3/4"></div>
                 </div>
-                <p className="text-sm text-gray-600">45,000€ collectés sur 60,000€</p>
+                <p className="text-sm text-gray-600">45 000 000 FC collectés sur 60 000 000 FC</p>
               </div>
 
               <div className="space-y-3">
@@ -353,7 +353,7 @@ export default function DonationsPage() {
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div className="bg-green-600 h-2 rounded-full w-2/5"></div>
                 </div>
-                <p className="text-sm text-gray-600">8,000€ collectés sur 20,000€</p>
+                <p className="text-sm text-gray-600">8 000 000 FC collectés sur 20 000 000 FC</p>
               </div>
 
               <div className="space-y-3">
@@ -364,7 +364,7 @@ export default function DonationsPage() {
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div className="bg-purple-600 h-2 rounded-full w-[90%]"></div>
                 </div>
-                <p className="text-sm text-gray-600">13,500€ collectés sur 15,000€</p>
+                <p className="text-sm text-gray-600">13 500 000 FC collectés sur 15 000 000 FC</p>
               </div>
             </CardContent>
           </Card>
@@ -389,7 +389,7 @@ export default function DonationsPage() {
                           <p className="text-xs text-gray-500 italic">"{donation.notes}"</p>
                         )}
                       </div>
-                      <span className="font-bold text-green-600">+{donation.amount}€</span>
+                      <span className="font-bold text-green-600">+{donation.amount.toLocaleString()} FC</span>
                     </div>
                   ))
                 ) : (

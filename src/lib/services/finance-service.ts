@@ -535,7 +535,7 @@ export class TaxReceiptService {
       totalDonations,
       taxReduction: Math.round(taxReduction * 100) / 100,
       effectiveCost: Math.round(effectiveCost * 100) / 100,
-      message: `Votre don de ${totalDonations}€ vous donne droit à une réduction d'impôt de ${Math.round(taxReduction)}€, soit un coût réel de ${Math.round(effectiveCost)}€.`
+      message: `Votre don de ${totalDonations.toLocaleString()} FC a été enregistré. Merci pour votre générosité !`
     };
   }
 
