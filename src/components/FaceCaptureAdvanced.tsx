@@ -78,6 +78,7 @@ export default function FaceCaptureAdvanced({
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const overlayRef = useRef<HTMLCanvasElement>(null)
+  const streamRef = useRef<MediaStream | null>(null)
   
   // States
   const [isLoading, setIsLoading] = useState(true)
@@ -157,6 +158,7 @@ export default function FaceCaptureAdvanced({
         
         if (videoRef.current) {
           videoRef.current.srcObject = mediaStream
+          streamRef.current = mediaStream
           setStream(mediaStream)
         }
       } catch (err) {
@@ -168,8 +170,8 @@ export default function FaceCaptureAdvanced({
     startVideo()
 
     return () => {
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop())
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(track => track.stop())
       }
     }
   }, [modelsLoaded])

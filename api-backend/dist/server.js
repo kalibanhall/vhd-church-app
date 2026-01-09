@@ -22,6 +22,28 @@ const facialRecognition_1 = __importDefault(require("./routes/facialRecognition"
 const notifications_1 = __importDefault(require("./routes/notifications"));
 const polls_1 = __importDefault(require("./routes/polls"));
 const userStats_1 = __importDefault(require("./routes/userStats"));
+const activities_1 = __importDefault(require("./routes/activities"));
+const volunteers_1 = __importDefault(require("./routes/volunteers"));
+const training_1 = __importDefault(require("./routes/training"));
+const notes_1 = __importDefault(require("./routes/notes"));
+const helpRequests_1 = __importDefault(require("./routes/helpRequests"));
+// New feature routes - Added by KalibanHall
+const news_1 = __importDefault(require("./routes/news"));
+const alerts_1 = __importDefault(require("./routes/alerts"));
+const prayerCells_1 = __importDefault(require("./routes/prayerCells"));
+const services_1 = __importDefault(require("./routes/services"));
+const followup_1 = __importDefault(require("./routes/followup"));
+const questions_1 = __importDefault(require("./routes/questions"));
+const conflicts_1 = __importDefault(require("./routes/conflicts"));
+const abuseReports_1 = __importDefault(require("./routes/abuseReports"));
+const mutualHelp_1 = __importDefault(require("./routes/mutualHelp"));
+const marketplace_1 = __importDefault(require("./routes/marketplace"));
+const library_1 = __importDefault(require("./routes/library"));
+const audiobooks_1 = __importDefault(require("./routes/audiobooks"));
+const music_1 = __importDefault(require("./routes/music"));
+const songbook_1 = __importDefault(require("./routes/songbook"));
+const gallery_1 = __importDefault(require("./routes/gallery"));
+const transport_1 = __importDefault(require("./routes/transport"));
 // Load environment variables
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -99,6 +121,28 @@ app.use(`/${API_VERSION}/notifications`, notifications_1.default);
 app.use(`/${API_VERSION}/polls`, polls_1.default);
 // app.use(`/${API_VERSION}/pastor`, pastorRoutes); // Temporarily disabled - tables don't exist
 app.use(`/${API_VERSION}/user`, userStats_1.default);
+app.use(`/${API_VERSION}/activities`, activities_1.default);
+app.use(`/${API_VERSION}/volunteers`, volunteers_1.default);
+app.use(`/${API_VERSION}/training`, training_1.default);
+app.use(`/${API_VERSION}/notes`, notes_1.default);
+app.use(`/${API_VERSION}/help-requests`, helpRequests_1.default);
+// New feature routes - Added by KalibanHall
+app.use(`/${API_VERSION}/news`, news_1.default);
+app.use(`/${API_VERSION}/alerts`, alerts_1.default);
+app.use(`/${API_VERSION}/prayer-cells`, prayerCells_1.default);
+app.use(`/${API_VERSION}/services`, services_1.default);
+app.use(`/${API_VERSION}/followup`, followup_1.default);
+app.use(`/${API_VERSION}/questions`, questions_1.default);
+app.use(`/${API_VERSION}/conflicts`, conflicts_1.default);
+app.use(`/${API_VERSION}/abuse-reports`, abuseReports_1.default);
+app.use(`/${API_VERSION}/mutual-help`, mutualHelp_1.default);
+app.use(`/${API_VERSION}/marketplace`, marketplace_1.default);
+app.use(`/${API_VERSION}/library`, library_1.default);
+app.use(`/${API_VERSION}/audiobooks`, audiobooks_1.default);
+app.use(`/${API_VERSION}/music`, music_1.default);
+app.use(`/${API_VERSION}/songbook`, songbook_1.default);
+app.use(`/${API_VERSION}/gallery`, gallery_1.default);
+app.use(`/${API_VERSION}/transport`, transport_1.default);
 // 404 handler
 app.use((req, res) => {
     res.status(404).json({

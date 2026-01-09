@@ -45,7 +45,20 @@ import {
   GraduationCap,
   BookMarked,
   FileText,
-  HelpCircle
+  HelpCircle,
+  // Nouvelles icônes pour les 16 modules
+  Newspaper,
+  AlertTriangle,
+  UserPlus,
+  Scale,
+  ShieldAlert,
+  HeartPulse,
+  ShoppingBag,
+  Library,
+  Headphones,
+  Music,
+  ImageIcon,
+  Bus
 } from 'lucide-react'
 
 /**
@@ -72,13 +85,29 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
   // ADMIN n'a PAS accès à ce menu, uniquement au dashboard admin
   const userMenuItems = [
     { id: 'home', label: 'Accueil', icon: Home },
+    { id: 'news-feed', label: 'Fil d\'actualité', icon: Newspaper },
+    { id: 'urgent-alerts', label: 'Alertes urgentes', icon: AlertTriangle },
     { id: 'sermons', label: 'Prédications', icon: Video },
     { id: 'donations', label: 'Soutien à l\'œuvre', icon: DollarSign },
     { id: 'volunteer', label: 'Servir', icon: HeartHandshake },
     { id: 'appointments', label: 'Rendez-vous', icon: Calendar },
     { id: 'activities', label: 'Activités', icon: Calendar },
+    { id: 'prayer-cell', label: 'Cellules de prière', icon: Users },
+    { id: 'serve-you', label: 'Vous servir', icon: HeartHandshake },
+    { id: 'follow-up', label: 'Être suivi', icon: UserPlus },
+    { id: 'ask-question', label: 'Poser une question', icon: HelpCircle },
+    { id: 'conflict-resolution', label: 'Résolution conflits', icon: Scale },
+    { id: 'abuse-report', label: 'Signaler un abus', icon: ShieldAlert },
+    { id: 'mutual-help', label: 'S\'entraider', icon: HeartPulse },
+    { id: 'marketplace', label: 'Acheter/Vendre', icon: ShoppingBag },
     { id: 'training', label: 'Formations', icon: GraduationCap },
     { id: 'bible', label: 'Bible', icon: BookMarked },
+    { id: 'library', label: 'Bibliothèque', icon: Library },
+    { id: 'audiobooks', label: 'Livres audio', icon: Headphones },
+    { id: 'gospel-music', label: 'Musique gospel', icon: Music },
+    { id: 'songbook', label: 'Cantiques', icon: BookOpen },
+    { id: 'photo-gallery', label: 'Galerie photos', icon: ImageIcon },
+    { id: 'transport', label: 'Navette', icon: Bus },
     { id: 'notes', label: 'Notes', icon: FileText },
     { id: 'polls', label: 'Sondages', icon: Vote },
     { id: 'prayers', label: 'Prières', icon: Heart },

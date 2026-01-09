@@ -49,6 +49,24 @@ import HelpRequestPage from './user/HelpRequestPage'
 import HelpRequestsManagement from './admin/HelpRequestsManagement'
 import SettingsManagement from './admin/SettingsManagement'
 
+// Nouveaux modules - 16 fonctionnalités ajoutées
+import NewsFeedPage from './user/NewsFeedPage'
+import UrgentAlertsPage from './user/UrgentAlertsPage'
+import PrayerCellPage from './user/PrayerCellPage'
+import ServeYouPage from './user/ServeYouPage'
+import FollowUpPage from './user/FollowUpPage'
+import AskQuestionPage from './user/AskQuestionPage'
+import ConflictResolutionPage from './user/ConflictResolutionPage'
+import AbuseReportPage from './user/AbuseReportPage'
+import MutualHelpPage from './user/MutualHelpPage'
+import MarketplacePage from './user/MarketplacePage'
+import LibraryPage from './user/LibraryPage'
+import AudiobooksPage from './user/AudiobooksPage'
+import GospelMusicPage from './user/GospelMusicPage'
+import SongbookPage from './user/SongbookPage'
+import PhotoGalleryPage from './user/PhotoGalleryPage'
+import TransportPage from './user/TransportPage'
+
 // Suppression des imports mockés - utilisation des API réelles
 
 export default function Dashboard() {
@@ -204,6 +222,55 @@ export default function Dashboard() {
         // Rediriger vers la page de pointage facial
         window.location.href = '/facial-attendance'
         return null
+      
+      // === NOUVEAUX MODULES - 16 fonctionnalités ===
+      case 'news-feed':
+        return <NewsFeedPage />
+      
+      case 'urgent-alerts':
+        return <UrgentAlertsPage />
+      
+      case 'prayer-cell':
+        return <PrayerCellPage />
+      
+      case 'serve-you':
+        return <ServeYouPage />
+      
+      case 'follow-up':
+        return <FollowUpPage />
+      
+      case 'ask-question':
+        return <AskQuestionPage />
+      
+      case 'conflict-resolution':
+        return <ConflictResolutionPage />
+      
+      case 'abuse-report':
+        return <AbuseReportPage />
+      
+      case 'mutual-help':
+        return <MutualHelpPage />
+      
+      case 'marketplace':
+        return <MarketplacePage />
+      
+      case 'library':
+        return <LibraryPage />
+      
+      case 'audiobooks':
+        return <AudiobooksPage />
+      
+      case 'gospel-music':
+        return <GospelMusicPage />
+      
+      case 'songbook':
+        return <SongbookPage />
+      
+      case 'photo-gallery':
+        return <PhotoGalleryPage />
+      
+      case 'transport':
+        return <TransportPage />
       
       default:
         return <HomePageSimple />
