@@ -62,17 +62,17 @@ export default function PreachingsPage() {
         setError(null)
         
         const token = localStorage.getItem('token')
-        console.log('📖 Chargement des prédications...')
+        console.log('[Preachings] Chargement des prédications...')
         const response = await authenticatedFetch('/api/sermons-proxy')
         
-        console.log('📊 Response status:', response.status)
+        console.log('[Preachings] Response status:', response.status)
         
         if (!response.ok) {
           throw new Error('Erreur lors du chargement des prédications')
         }
         
         const data = await response.json()
-        console.log('✅ Prédications chargées:', data)
+        console.log('[Preachings] Prédications chargées:', data)
         
         if (data.success && data.sermons) {
           // Mapper les données du backend vers le format du frontend
@@ -99,7 +99,7 @@ export default function PreachingsPage() {
           setPreachings(mappedSermons)
         }
       } catch (err: any) {
-        console.error('❌ Erreur chargement prédications:', err)
+        console.error('[Preachings] Erreur chargement prédications:', err)
         setError(err.message)
         // En cas d'erreur, utiliser des données de démonstration
         setPreachings([
@@ -171,14 +171,14 @@ export default function PreachingsPage() {
     <ResponsiveContainer maxWidth="6xl">
       <div className="py-4 md:py-8 space-y-6 md:space-y-8">
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">🎙️ Prédications de l&apos;Église</h1>
+        <h1 className="text-3xl font-bold text-[#0a0a0a] mb-2">Prédications de l&apos;Église</h1>
         <p className="text-gray-600">Écoutez la Parole de Dieu prêchée avec passion et vérité</p>
       </div>
 
       {/* Affichage du chargement */}
       {loading && (
         <div className="text-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#ffc200] mx-auto mb-4"></div>
           <p className="text-gray-600">Chargement des prédications...</p>
         </div>
       )}
@@ -188,7 +188,7 @@ export default function PreachingsPage() {
         <Card className="border-red-200 bg-red-50">
           <CardContent className="pt-6">
             <div className="text-center">
-              <p className="text-red-600 font-medium mb-2">❌ Erreur de chargement</p>
+              <p className="text-red-600 font-medium mb-2">Erreur de chargement</p>
               <p className="text-gray-600 text-sm">{error}</p>
               <p className="text-gray-500 text-sm mt-2">Affichage des prédications de démonstration</p>
             </div>
@@ -204,7 +204,7 @@ export default function PreachingsPage() {
               <div className="flex items-center space-x-4">
                 <div className="flex items-center space-x-2">
                   <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-                  <span className="text-red-700 font-semibold">🔴 EN DIRECT MAINTENANT</span>
+                  <span className="text-red-700 font-semibold">EN DIRECT MAINTENANT</span>
                 </div>
                 <div>
                   <h3 className="font-medium text-gray-900">{livePreachings[0].title}</h3>
@@ -225,7 +225,7 @@ export default function PreachingsPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total prédications</CardTitle>
-            <BookOpen className="h-4 w-4 text-blue-500" />
+            <BookOpen className="h-4 w-4 text-[#cc9b00]" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{preachings.length}</div>
@@ -247,7 +247,7 @@ export default function PreachingsPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Téléchargements</CardTitle>
-            <Download className="h-4 w-4 text-purple-500" />
+            <Download className="h-4 w-4 text-[#cc9b00]" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalDownloads}</div>
@@ -286,25 +286,25 @@ export default function PreachingsPage() {
                 variant={selectedCategory === 'all' ? 'default' : 'outline'}
                 onClick={() => setSelectedCategory('all')}
               >
-                📚 Toutes
+                Toutes
               </Button>
               <Button
                 variant={selectedCategory === 'live' ? 'default' : 'outline'}
                 onClick={() => setSelectedCategory('live')}
               >
-                🔴 Live
+                Live
               </Button>
               <Button
                 variant={selectedCategory === 'video' ? 'default' : 'outline'}
                 onClick={() => setSelectedCategory('video')}
               >
-                🎥 Vidéos
+                Vidéos
               </Button>
               <Button
                 variant={selectedCategory === 'audio' ? 'default' : 'outline'}
                 onClick={() => setSelectedCategory('audio')}
               >
-                🎵 Audio
+                Audio
               </Button>
             </div>
           </div>
@@ -358,8 +358,8 @@ export default function PreachingsPage() {
                           preaching.preachingType === 'LIVE' ? 'destructive' :
                           preaching.preachingType === 'VIDEO' ? 'default' : 'secondary'
                         }>
-                          {preaching.preachingType === 'LIVE' ? '🔴 Live' :
-                           preaching.preachingType === 'VIDEO' ? '🎥 Vidéo' : '🎵 Audio'}
+                          {preaching.preachingType === 'LIVE' ? 'Live' :
+                           preaching.preachingType === 'VIDEO' ? 'Vidéo' : 'Audio'}
                         </Badge>
                       </div>
                       
@@ -391,8 +391,8 @@ export default function PreachingsPage() {
                   </CardDescription>
                   
                   <div className="flex items-center gap-2 text-sm">
-                    <BookOpen className="h-4 w-4 text-blue-600" />
-                    <span className="font-medium text-blue-600">{preaching.bibleVerses}</span>
+                    <BookOpen className="h-4 w-4 text-[#cc9b00]" />
+                    <span className="font-medium text-[#cc9b00]">{preaching.bibleVerses}</span>
                   </div>
                 </CardHeader>
                 

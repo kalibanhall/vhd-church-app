@@ -66,11 +66,11 @@ export default function PreachingsPage() {
       if (data.success && Array.isArray(data.preachings)) {
         setPreachings(data.preachings)
       } else {
-        console.warn('Format de données inattendu:', data)
+        console.warn('[Preachings] Format de données inattendu:', data)
         setPreachings([])
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des prédications:', error)
+      console.error('[Preachings] Erreur lors du chargement des prédications:', error)
       setError(error instanceof Error ? error.message : 'Erreur inconnue')
       setPreachings([])
     } finally {
@@ -116,10 +116,10 @@ export default function PreachingsPage() {
         setPreachings(prev => prev.map(p => 
           p.id === preachingId ? { ...p, viewCount: (p.viewCount || 0) + 1 } : p
         ))
-        console.log('📊 Vue enregistrée pour prédication:', preachingId)
+        console.log('[Preachings] Vue enregistrée pour prédication:', preachingId)
       }
     } catch (error) {
-      console.error('Erreur lors de l\'incrémentation des vues:', error)
+      console.error('[Preachings] Erreur lors de l\'incrémentation des vues:', error)
     }
   }
 
@@ -134,9 +134,9 @@ export default function PreachingsPage() {
           action: 'download'
         })
       })
-      console.log('📥 Téléchargement enregistré pour prédication:', preachingId)
+      console.log('[Preachings] Téléchargement enregistré pour prédication:', preachingId)
     } catch (error) {
-      console.error('Erreur lors du tracking téléchargement:', error)
+      console.error('[Preachings] Erreur lors du tracking téléchargement:', error)
     }
   }
 
@@ -164,7 +164,7 @@ export default function PreachingsPage() {
         p.id === preaching.id ? { ...p, downloadCount: (p.downloadCount || 0) + 1 } : p
       ))
     } catch (error) {
-      console.error('Erreur lors du téléchargement:', error)
+      console.error('[Preachings] Erreur lors du téléchargement:', error)
       alert('Erreur lors du téléchargement')
     }
   }
@@ -216,7 +216,7 @@ export default function PreachingsPage() {
         day: 'numeric'
       })
     } catch (error) {
-      console.error('Erreur de formatage de date:', error)
+      console.error('[Preachings] Erreur de formatage de date:', error)
       return 'Date invalide'
     }
   }
@@ -230,11 +230,11 @@ export default function PreachingsPage() {
     return (
       <div className="container mx-auto py-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">🎙️ Prédications de l'Église</h1>
+          <h1 className="text-3xl font-bold text-[#0a0a0a] mb-4">Prédications de l'Église</h1>
           <div className="flex justify-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#ffc200]"></div>
           </div>
-          <p className="text-gray-600 mt-4">Chargement des prédications...</p>
+          <p className="text-[#666] mt-4">Chargement des prédications...</p>
         </div>
       </div>
     )
@@ -245,9 +245,9 @@ export default function PreachingsPage() {
     return (
       <div className="container mx-auto py-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">🎙️ Prédications de l'Église</h1>
+          <h1 className="text-3xl font-bold text-[#0a0a0a] mb-4">Prédications de l'Église</h1>
           <div className="bg-red-50 border border-red-200 rounded-lg p-6 max-w-md mx-auto">
-            <div className="text-red-600 text-4xl mb-4">⚠️</div>
+            <div className="text-red-600 text-4xl mb-4">!</div>
             <h3 className="text-lg font-medium text-red-800 mb-2">Erreur de chargement</h3>
             <p className="text-red-600 mb-4">{error}</p>
             <button
@@ -264,14 +264,14 @@ export default function PreachingsPage() {
 
   return (
     <div className="container mx-auto py-8 space-y-8">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">🎙️ Prédications de l'Église</h1>
-        <p className="text-gray-600">Écoutez la Parole de Dieu prêchée avec passion et vérité</p>
+      <div className="text-center bg-gradient-to-r from-[#ffc200] via-[#ffda66] to-[#fff3cc] rounded-xl p-6 shadow-church">
+        <h1 className="text-3xl font-bold text-[#0a0a0a] mb-2">Prédications de l'Église</h1>
+        <p className="text-[#666]">Écoutez la Parole de Dieu prêchée avec passion et vérité</p>
       </div>
 
       {/* Alerte Live */}
       {livePreachings.length > 0 && (
-        <div className="bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-lg p-6 shadow-lg">
+        <div className="bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-lg p-6 shadow-church">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
@@ -281,7 +281,7 @@ export default function PreachingsPage() {
               </div>
             </div>
             <button className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg transition-colors">
-              📻 Rejoindre le Live
+              Rejoindre le Live
             </button>
           </div>
         </div>
@@ -292,17 +292,17 @@ export default function PreachingsPage() {
         {/* Prédications */}
         <div 
           onClick={() => setSelectedCategory('all')}
-          className={`bg-white rounded-xl shadow-sm border p-6 cursor-pointer transition-all hover:shadow-md ${
-            selectedCategory === 'all' ? 'ring-2 ring-green-500 border-green-200' : 'border-gray-200'
+          className={`bg-white rounded-xl shadow-church border p-6 cursor-pointer transition-all hover:shadow-lg ${
+            selectedCategory === 'all' ? 'ring-2 ring-[#ffc200] border-[#ffda66]' : 'border-[rgba(201,201,201,0.3)]'
           }`}
         >
           <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-              <Play className="w-6 h-6 text-green-600" />
+            <div className="w-12 h-12 bg-[#fff3cc] rounded-xl flex items-center justify-center">
+              <Play className="w-6 h-6 text-[#cc9b00]" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Prédications</h3>
-              <p className="text-sm text-gray-500">{preachings.filter(p => p.preachingType === 'VIDEO').length} disponibles</p>
+              <h3 className="font-semibold text-[#0a0a0a]">Prédications</h3>
+              <p className="text-sm text-[#999]">{preachings.filter(p => p.preachingType === 'VIDEO').length} disponibles</p>
             </div>
           </div>
         </div>
@@ -310,17 +310,17 @@ export default function PreachingsPage() {
         {/* Événements */}
         <div 
           onClick={() => setSelectedCategory('events')}
-          className={`bg-white rounded-xl shadow-sm border p-6 cursor-pointer transition-all hover:shadow-md ${
-            selectedCategory === 'events' ? 'ring-2 ring-blue-500 border-blue-200' : 'border-gray-200'
+          className={`bg-white rounded-xl shadow-church border p-6 cursor-pointer transition-all hover:shadow-lg ${
+            selectedCategory === 'events' ? 'ring-2 ring-[#ffc200] border-[#ffda66]' : 'border-[rgba(201,201,201,0.3)]'
           }`}
         >
           <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-              <Calendar className="w-6 h-6 text-blue-600" />
+            <div className="w-12 h-12 bg-[#fff3cc] rounded-xl flex items-center justify-center">
+              <Calendar className="w-6 h-6 text-[#cc9b00]" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Événements</h3>
-              <p className="text-sm text-gray-500">{preachings.filter(p => p.event).length} à venir</p>
+              <h3 className="font-semibold text-[#0a0a0a]">Événements</h3>
+              <p className="text-sm text-[#999]">{preachings.filter(p => p.event).length} à venir</p>
             </div>
           </div>
         </div>
@@ -328,17 +328,17 @@ export default function PreachingsPage() {
         {/* Prières */}
         <div 
           onClick={() => setSelectedCategory('audio')}
-          className={`bg-white rounded-xl shadow-sm border p-6 cursor-pointer transition-all hover:shadow-md ${
-            selectedCategory === 'audio' ? 'ring-2 ring-purple-500 border-purple-200' : 'border-gray-200'
+          className={`bg-white rounded-xl shadow-church border p-6 cursor-pointer transition-all hover:shadow-lg ${
+            selectedCategory === 'audio' ? 'ring-2 ring-[#ffc200] border-[#ffda66]' : 'border-[rgba(201,201,201,0.3)]'
           }`}
         >
           <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-              <Volume2 className="w-6 h-6 text-purple-600" />
+            <div className="w-12 h-12 bg-[#fff3cc] rounded-xl flex items-center justify-center">
+              <Volume2 className="w-6 h-6 text-[#cc9b00]" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Prières</h3>
-              <p className="text-sm text-gray-500">En communion</p>
+              <h3 className="font-semibold text-[#0a0a0a]">Prières</h3>
+              <p className="text-sm text-[#999]">En communion</p>
             </div>
           </div>
         </div>
@@ -346,17 +346,17 @@ export default function PreachingsPage() {
         {/* Témoignages */}
         <div 
           onClick={() => setSelectedCategory('testimonies')}
-          className={`bg-white rounded-xl shadow-sm border p-6 cursor-pointer transition-all hover:shadow-md ${
-            selectedCategory === 'testimonies' ? 'ring-2 ring-orange-500 border-orange-200' : 'border-gray-200'
+          className={`bg-white rounded-xl shadow-church border p-6 cursor-pointer transition-all hover:shadow-lg ${
+            selectedCategory === 'testimonies' ? 'ring-2 ring-[#ffc200] border-[#ffda66]' : 'border-[rgba(201,201,201,0.3)]'
           }`}
         >
           <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
-              <Eye className="w-6 h-6 text-orange-600" />
+            <div className="w-12 h-12 bg-[#fff3cc] rounded-xl flex items-center justify-center">
+              <Eye className="w-6 h-6 text-[#cc9b00]" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">Témoignages</h3>
-              <p className="text-sm text-gray-500">Partagez votre foi</p>
+              <h3 className="font-semibold text-[#0a0a0a]">Témoignages</h3>
+              <p className="text-sm text-[#999]">Partagez votre foi</p>
             </div>
           </div>
         </div>
@@ -364,16 +364,16 @@ export default function PreachingsPage() {
 
       {/* Dernière prédication */}
       {preachings.length > 0 && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-white rounded-xl shadow-church border border-[rgba(201,201,201,0.3)] overflow-hidden">
           <div className="p-6 pb-4">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Dernière prédication</h2>
+            <h2 className="text-xl font-semibold text-[#0a0a0a] mb-6">Dernière prédication</h2>
           </div>
           
           <div className="px-6 pb-6">
             <div className="flex flex-col lg:flex-row gap-6">
               {/* Miniature vidéo */}
               <div className="lg:w-80 flex-shrink-0">
-                <div className="relative rounded-xl overflow-hidden bg-gray-900 aspect-video">
+                <div className="relative rounded-xl overflow-hidden bg-[#0a0a0a] aspect-video">
                   {preachings[0].thumbnailUrl ? (
                     <img 
                       src={preachings[0].thumbnailUrl} 
@@ -381,7 +381,7 @@ export default function PreachingsPage() {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-blue-900 to-purple-900 flex items-center justify-center">
+                    <div className="w-full h-full bg-gradient-to-br from-[#ffc200] to-[#cc9b00] flex items-center justify-center">
                       <Play className="w-12 h-12 text-white" />
                     </div>
                   )}
@@ -389,7 +389,7 @@ export default function PreachingsPage() {
                   {/* Overlay de lecture */}
                   <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer">
                     <div className="w-16 h-16 bg-white bg-opacity-90 rounded-full flex items-center justify-center">
-                      <Play className="w-6 h-6 text-gray-800 ml-1" />
+                      <Play className="w-6 h-6 text-[#0a0a0a] ml-1" />
                     </div>
                   </div>
                   
@@ -399,7 +399,7 @@ export default function PreachingsPage() {
                   </div>
                   
                   {/* Badge type */}
-                  <div className="absolute top-3 left-3 bg-blue-600 text-white text-xs px-2 py-1 rounded-full">
+                  <div className="absolute top-3 left-3 bg-[#ffc200] text-[#0a0a0a] text-xs px-2 py-1 rounded-full">
                     {preachings[0].preachingType === 'VIDEO' ? 'Vidéo' : 
                      preachings[0].preachingType === 'AUDIO' ? 'Audio' : 
                      preachings[0].preachingType === 'LIVE' ? 'Live' : 'Texte'}
@@ -410,8 +410,8 @@ export default function PreachingsPage() {
               {/* Informations */}
               <div className="flex-1 space-y-4">
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">{preachings[0].title}</h3>
-                  <div className="flex items-center space-x-4 text-gray-600 mb-3">
+                  <h3 className="text-2xl font-bold text-[#0a0a0a] mb-2">{preachings[0].title}</h3>
+                  <div className="flex items-center space-x-4 text-[#666] mb-3">
                     <div className="flex items-center space-x-1">
                       <User className="w-4 h-4" />
                       <span>Par {preachings[0].pastorName}</span>
@@ -421,20 +421,20 @@ export default function PreachingsPage() {
                       <span>{formatDate(preachings[0].sermonDate || preachings[0].preachingDate)}</span>
                     </div>
                   </div>
-                  <p className="text-gray-600 leading-relaxed mb-4">
+                  <p className="text-[#666] leading-relaxed mb-4">
                     {preachings[0].description}
                   </p>
                   
                   {preachings[0].bibleVerses && (
-                    <div className="bg-blue-50 border-l-4 border-blue-400 p-3 rounded-r-lg mb-4">
-                      <p className="text-blue-800 font-medium text-sm">📖 {preachings[0].bibleVerses}</p>
+                    <div className="bg-[#fff3cc] border-l-4 border-[#ffc200] p-3 rounded-r-lg mb-4">
+                      <p className="text-[#cc9b00] font-medium text-sm">{preachings[0].bibleVerses}</p>
                     </div>
                   )}
                 </div>
                 
                 {/* Statistiques et actions */}
-                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                  <div className="flex items-center space-x-6 text-sm text-gray-500">
+                <div className="flex items-center justify-between pt-4 border-t border-[rgba(201,201,201,0.3)]">
+                  <div className="flex items-center space-x-6 text-sm text-[#999]">
                     <div className="flex items-center space-x-1">
                       <Eye className="w-4 h-4" />
                       <span>{preachings[0].viewCount || 0} vues</span>
@@ -454,14 +454,14 @@ export default function PreachingsPage() {
                     ) : (
                       <>
                         <button 
-                          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
+                          className="bg-[#ffc200] hover:bg-[#ffda66] text-[#0a0a0a] px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors"
                           onClick={() => handlePlayPause(preachings[0].id)}
                         >
                           <Play className="w-4 h-4" />
                           <span>Suivre</span>
                         </button>
                         {(preachings[0].audioUrl || preachings[0].videoUrl) && (
-                          <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors">
+                          <button className="border border-[rgba(201,201,201,0.3)] hover:bg-[#fffefa] text-[#666] px-4 py-2 rounded-lg flex items-center space-x-2 transition-colors">
                             <Download className="w-4 h-4" />
                             <span>Télécharger</span>
                           </button>
@@ -477,7 +477,7 @@ export default function PreachingsPage() {
       )}
 
       {/* Filtres et recherche */}
-      <div className="bg-white rounded-lg border border-gray-200 p-6">
+      <div className="bg-white rounded-lg border border-[rgba(201,201,201,0.3)] p-6 shadow-church">
         <div className="flex flex-col md:flex-row gap-4 items-center">
           <div className="relative flex-1">
             <input
@@ -485,51 +485,55 @@ export default function PreachingsPage() {
               placeholder="Rechercher une prédication, pasteur, ou sujet..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-[rgba(201,201,201,0.3)] rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
             />
-            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">🔍</span>
+            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#999]">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </span>
           </div>
           
           <div className="flex gap-2">
             <button
               className={`px-4 py-2 rounded-lg border transition-colors ${
                 selectedCategory === 'all' 
-                  ? 'bg-blue-600 text-white border-blue-600' 
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                  ? 'bg-[#ffc200] text-[#0a0a0a] border-[#ffc200]' 
+                  : 'bg-white text-[#666] border-[rgba(201,201,201,0.3)] hover:bg-[#fffefa]'
               }`}
               onClick={() => setSelectedCategory('all')}
             >
-              📚 Toutes
+              Toutes
             </button>
             <button
               className={`px-4 py-2 rounded-lg border transition-colors ${
                 selectedCategory === 'live' 
-                  ? 'bg-blue-600 text-white border-blue-600' 
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                  ? 'bg-[#ffc200] text-[#0a0a0a] border-[#ffc200]' 
+                  : 'bg-white text-[#666] border-[rgba(201,201,201,0.3)] hover:bg-[#fffefa]'
               }`}
               onClick={() => setSelectedCategory('live')}
             >
-              🔴 Live
+              Live
             </button>
             <button
               className={`px-4 py-2 rounded-lg border transition-colors ${
                 selectedCategory === 'video' 
-                  ? 'bg-blue-600 text-white border-blue-600' 
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                  ? 'bg-[#ffc200] text-[#0a0a0a] border-[#ffc200]' 
+                  : 'bg-white text-[#666] border-[rgba(201,201,201,0.3)] hover:bg-[#fffefa]'
               }`}
               onClick={() => setSelectedCategory('video')}
             >
-              🎥 Vidéos
+              Vidéos
             </button>
             <button
               className={`px-4 py-2 rounded-lg border transition-colors ${
                 selectedCategory === 'audio' 
-                  ? 'bg-blue-600 text-white border-blue-600' 
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                  ? 'bg-[#ffc200] text-[#0a0a0a] border-[#ffc200]' 
+                  : 'bg-white text-[#666] border-[rgba(201,201,201,0.3)] hover:bg-[#fffefa]'
               }`}
               onClick={() => setSelectedCategory('audio')}
             >
-              🎵 Audio
+              Audio
             </button>
           </div>
         </div>
@@ -543,18 +547,18 @@ export default function PreachingsPage() {
             if (!selectedPreaching) return null
             
             return (
-              <div className="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
-                <div className="p-6 border-b border-gray-200">
+              <div className="bg-white rounded-xl shadow-church border border-[rgba(201,201,201,0.3)] overflow-hidden">
+                <div className="p-6 border-b border-[rgba(201,201,201,0.3)]">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">{selectedPreaching.title}</h3>
-                      <p className="text-sm text-gray-600">Par {selectedPreaching.pastorName}</p>
+                      <h3 className="text-lg font-semibold text-[#0a0a0a]">{selectedPreaching.title}</h3>
+                      <p className="text-sm text-[#666]">Par {selectedPreaching.pastorName}</p>
                     </div>
                     <button
                       onClick={() => setCurrentlyPlaying(null)}
-                      className="text-gray-400 hover:text-gray-600 transition-colors"
+                      className="text-[#999] hover:text-[#666] transition-colors"
                     >
-                      ✕
+                      <X className="w-5 h-5" />
                     </button>
                   </div>
                 </div>
@@ -573,14 +577,14 @@ export default function PreachingsPage() {
                       </video>
                     </div>
                   ) : selectedPreaching.audioUrl && selectedPreaching.preachingType === 'AUDIO' ? (
-                    <div className="bg-gray-50 rounded-lg p-6">
+                    <div className="bg-[#fffefa] rounded-lg p-6">
                       <div className="flex items-center space-x-4 mb-4">
-                        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                          <Volume2 className="w-8 h-8 text-blue-600" />
+                        <div className="w-16 h-16 bg-[#fff3cc] rounded-full flex items-center justify-center">
+                          <Volume2 className="w-8 h-8 text-[#cc9b00]" />
                         </div>
                         <div>
-                          <h4 className="font-medium text-gray-900">Prédication Audio</h4>
-                          <p className="text-sm text-gray-600">Cliquez pour écouter</p>
+                          <h4 className="font-medium text-[#0a0a0a]">Prédication Audio</h4>
+                          <p className="text-sm text-[#666]">Cliquez pour écouter</p>
                         </div>
                       </div>
                       <audio
@@ -593,34 +597,36 @@ export default function PreachingsPage() {
                       </audio>
                     </div>
                   ) : selectedPreaching.liveUrl ? (
-                    <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
+                    <div className="aspect-video bg-[#fffefa] rounded-lg flex items-center justify-center">
                       <div className="text-center">
-                        <div className="text-4xl mb-4">🔴</div>
-                        <p className="text-gray-600 mb-4">Stream en direct</p>
+                        <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <div className="w-4 h-4 bg-red-500 rounded-full animate-pulse"></div>
+                        </div>
+                        <p className="text-[#666] mb-4">Stream en direct</p>
                         <a
                           href={selectedPreaching.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg inline-flex items-center space-x-2 transition-colors"
                         >
-                          <span>🔴</span>
+                          <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                           <span>Regarder en direct</span>
                         </a>
                       </div>
                     </div>
                   ) : (
-                    <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
-                      <div className="text-center text-gray-500">
-                        <div className="text-4xl mb-4">📖</div>
+                    <div className="aspect-video bg-[#fffefa] rounded-lg flex items-center justify-center">
+                      <div className="text-center text-[#999]">
+                        <Play className="w-12 h-12 mx-auto mb-4" />
                         <p>Contenu non disponible</p>
                       </div>
                     </div>
                   )}
                   
                   {selectedPreaching.description && (
-                    <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-                      <h4 className="font-medium text-gray-900 mb-2">Description</h4>
-                      <p className="text-gray-700 leading-relaxed">{selectedPreaching.description}</p>
+                    <div className="mt-6 p-4 bg-[#fffefa] rounded-lg">
+                      <h4 className="font-medium text-[#0a0a0a] mb-2">Description</h4>
+                      <p className="text-[#666] leading-relaxed">{selectedPreaching.description}</p>
                     </div>
                   )}
                 </div>
@@ -633,12 +639,12 @@ export default function PreachingsPage() {
       {/* Liste des prédications */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {filteredPreachings.slice(1).map((preaching) => (
-          <div key={preaching.id} className={`bg-white rounded-xl shadow-sm border hover:shadow-md transition-all ${
-            preaching.isLive ? 'border-red-200 shadow-red-50' : 'border-gray-200'
+          <div key={preaching.id} className={`bg-white rounded-xl shadow-church border hover:shadow-lg transition-all ${
+            preaching.isLive ? 'border-red-200 shadow-red-50' : 'border-[rgba(201,201,201,0.3)]'
           } overflow-hidden group cursor-pointer`}>
             
             {/* Thumbnail */}
-            <div className="relative aspect-video bg-gradient-to-br from-gray-900 to-gray-700 overflow-hidden">
+            <div className="relative aspect-video bg-gradient-to-br from-[#0a0a0a] to-[#333] overflow-hidden">
               {preaching.thumbnailUrl ? (
                 <img 
                   src={preaching.thumbnailUrl} 
@@ -646,11 +652,11 @@ export default function PreachingsPage() {
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                 />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-blue-900 to-purple-900 flex flex-col items-center justify-center text-white">
-                  <div className="text-4xl mb-3">
-                    {preaching.preachingType === 'VIDEO' ? '🎥' : 
-                     preaching.preachingType === 'AUDIO' ? '🎵' : 
-                     preaching.preachingType === 'LIVE' ? '🔴' : '📖'}
+                <div className="w-full h-full bg-gradient-to-br from-[#ffc200] to-[#cc9b00] flex flex-col items-center justify-center text-white">
+                  <div className="mb-3">
+                    {preaching.preachingType === 'VIDEO' ? <Video className="w-10 h-10" /> : 
+                     preaching.preachingType === 'AUDIO' ? <Volume2 className="w-10 h-10" /> : 
+                     preaching.preachingType === 'LIVE' ? <div className="w-4 h-4 bg-red-500 rounded-full animate-pulse"></div> : <Play className="w-10 h-10" />}
                   </div>
                   <div className="text-center px-4">
                     <p className="text-lg font-semibold mb-1">{preaching.title}</p>
@@ -663,7 +669,7 @@ export default function PreachingsPage() {
               {/* Overlay */}
               <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
                 <div className="w-12 h-12 bg-white bg-opacity-0 group-hover:bg-opacity-90 rounded-full flex items-center justify-center transition-all duration-300">
-                  <Play className="w-5 h-5 text-gray-800 ml-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <Play className="w-5 h-5 text-[#0a0a0a] ml-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
               </div>
               
@@ -682,7 +688,7 @@ export default function PreachingsPage() {
               
               {/* Badge type */}
               {!preaching.isLive && (
-                <div className="absolute top-3 left-3 bg-white bg-opacity-90 text-gray-800 text-xs px-2 py-1 rounded-full">
+                <div className="absolute top-3 left-3 bg-white bg-opacity-90 text-[#0a0a0a] text-xs px-2 py-1 rounded-full">
                   {preaching.preachingType === 'VIDEO' ? 'Vidéo' : 
                    preaching.preachingType === 'AUDIO' ? 'Audio' : 'Texte'}
                 </div>
@@ -693,11 +699,11 @@ export default function PreachingsPage() {
             <div className="p-6">
               <div className="space-y-3">
                 <div>
-                  <h3 className="font-semibold text-gray-900 text-lg mb-2 line-clamp-2">
+                  <h3 className="font-semibold text-[#0a0a0a] text-lg mb-2 line-clamp-2">
                     {preaching.title}
                   </h3>
                   
-                  <div className="flex items-center space-x-4 text-sm text-gray-600 mb-3">
+                  <div className="flex items-center space-x-4 text-sm text-[#666] mb-3">
                     <div className="flex items-center space-x-1">
                       <User className="w-4 h-4" />
                       <span>Par {preaching.pastorName}</span>
@@ -708,21 +714,21 @@ export default function PreachingsPage() {
                     </div>
                   </div>
                   
-                  <p className="text-gray-600 text-sm line-clamp-2 mb-3">
+                  <p className="text-[#666] text-sm line-clamp-2 mb-3">
                     {preaching.description}
                   </p>
                   
                   {preaching.bibleVerses && (
-                    <div className="bg-blue-50 border-l-4 border-blue-400 p-2 rounded-r text-sm mb-3">
-                      <p className="text-blue-800">📖 {preaching.bibleVerses}</p>
+                    <div className="bg-[#fff3cc] border-l-4 border-[#ffc200] p-2 rounded-r text-sm mb-3">
+                      <p className="text-[#cc9b00]">{preaching.bibleVerses}</p>
                     </div>
                   )}
                 </div>
                 
                 {/* Informations de l'événement */}
                 {preaching.event && (
-                  <div className="bg-green-50 px-3 py-2 rounded-lg">
-                    <div className="flex items-center space-x-2 text-green-700 text-sm">
+                  <div className="bg-[#fff3cc] px-3 py-2 rounded-lg">
+                    <div className="flex items-center space-x-2 text-[#cc9b00] text-sm">
                       <Calendar className="w-4 h-4" />
                       <span>Culte: {preaching.event.title}</span>
                       {preaching.event.isLive && (
@@ -735,8 +741,8 @@ export default function PreachingsPage() {
                 )}
                 
                 {/* Actions et statistiques */}
-                <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                  <div className="flex items-center space-x-4 text-xs text-gray-500">
+                <div className="flex items-center justify-between pt-3 border-t border-[rgba(201,201,201,0.3)]">
+                  <div className="flex items-center space-x-4 text-xs text-[#999]">
                     <div className="flex items-center space-x-1">
                       <Eye className="w-3 h-3" />
                       <span>{preaching.viewCount || 0}</span>
@@ -767,12 +773,12 @@ export default function PreachingsPage() {
                     ) : (
                       <>
                         <button 
-                          className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-sm transition-colors flex items-center space-x-1"
+                          className="bg-[#ffc200] hover:bg-[#ffda66] text-[#0a0a0a] px-3 py-1.5 rounded-lg text-sm transition-colors flex items-center space-x-1"
                           onClick={() => handlePlayPause(preaching.id)}
                         >
                           {currentlyPlaying === preaching.id ? (
                             <>
-                              <div className="w-3 h-3 border border-white"></div>
+                              <div className="w-3 h-3 border border-[#0a0a0a]"></div>
                               <span>Pause</span>
                             </>
                           ) : (
@@ -786,20 +792,20 @@ export default function PreachingsPage() {
                         {/* Menu déroulant pour téléchargements */}
                         {(preaching.audioUrl || preaching.videoUrl) && (
                           <div className="relative group">
-                            <button className="border border-gray-300 hover:bg-gray-50 text-gray-700 px-3 py-1.5 rounded-lg text-sm transition-colors flex items-center space-x-1">
+                            <button className="border border-[rgba(201,201,201,0.3)] hover:bg-[#fffefa] text-[#666] px-3 py-1.5 rounded-lg text-sm transition-colors flex items-center space-x-1">
                               <Download className="w-3 h-3" />
-                              <span>⌄</span>
+                              <span>...</span>
                             </button>
                             
                             {/* Menu déroulant */}
-                            <div className="absolute right-0 mt-1 w-40 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
+                            <div className="absolute right-0 mt-1 w-40 bg-white rounded-lg shadow-church border border-[rgba(201,201,201,0.3)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-10">
                               {preaching.videoUrl && (
                                 <button
                                   onClick={(e) => {
                                     e.stopPropagation()
                                     handleDownload(preaching, 'video')
                                   }}
-                                  className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-t-lg flex items-center space-x-2"
+                                  className="w-full px-3 py-2 text-left text-sm text-[#666] hover:bg-[#fffefa] rounded-t-lg flex items-center space-x-2"
                                 >
                                   <Video className="w-3 h-3" />
                                   <span>Vidéo</span>
@@ -811,7 +817,7 @@ export default function PreachingsPage() {
                                     e.stopPropagation()
                                     handleDownload(preaching, 'audio')
                                   }}
-                                  className="w-full px-3 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 rounded-b-lg flex items-center space-x-2"
+                                  className="w-full px-3 py-2 text-left text-sm text-[#666] hover:bg-[#fffefa] rounded-b-lg flex items-center space-x-2"
                                 >
                                   <Volume2 className="w-3 h-3" />
                                   <span>Audio</span>
@@ -832,22 +838,24 @@ export default function PreachingsPage() {
 
       {filteredPreachings.length === 0 && (
         <div className="text-center py-12">
-          <div className="text-gray-300 text-6xl mb-4">📖</div>
+          <div className="w-16 h-16 bg-[#fff3cc] rounded-full flex items-center justify-center mx-auto mb-4">
+            <Play className="w-8 h-8 text-[#cc9b00]" />
+          </div>
           {preachings.length === 0 ? (
             <>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Aucune prédication disponible</h3>
-              <p className="text-gray-600">Les prédications apparaîtront ici une fois publiées.</p>
+              <h3 className="text-lg font-medium text-[#0a0a0a] mb-2">Aucune prédication disponible</h3>
+              <p className="text-[#666]">Les prédications apparaîtront ici une fois publiées.</p>
             </>
           ) : (
             <>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Aucune prédication trouvée</h3>
-              <p className="text-gray-600">Essayez de modifier vos critères de recherche ou de filtrage.</p>
+              <h3 className="text-lg font-medium text-[#0a0a0a] mb-2">Aucune prédication trouvée</h3>
+              <p className="text-[#666]">Essayez de modifier vos critères de recherche ou de filtrage.</p>
               <button
                 onClick={() => {
                   setSearchTerm('')
                   setSelectedCategory('all')
                 }}
-                className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
+                className="mt-3 bg-[#ffc200] hover:bg-[#ffda66] text-[#0a0a0a] px-4 py-2 rounded-lg transition-colors"
               >
                 Réinitialiser les filtres
               </button>
@@ -894,8 +902,8 @@ export default function PreachingsPage() {
               controls
               autoPlay
               className="w-full h-full object-contain"
-              onPlay={() => console.log('Lecture démarrée')}
-              onPause={() => console.log('Lecture en pause')}
+              onPlay={() => console.log('[Preachings] Lecture démarrée')}
+              onPause={() => console.log('[Preachings] Lecture en pause')}
             >
               Votre navigateur ne supporte pas la lecture vidéo.
             </video>
@@ -905,7 +913,7 @@ export default function PreachingsPage() {
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
                 <div className="text-white text-sm space-y-1">
                   {playingVideo.bibleVerses && (
-                    <p className="opacity-75">📖 {playingVideo.bibleVerses}</p>
+                    <p className="opacity-75">{playingVideo.bibleVerses}</p>
                   )}
                   <p className="opacity-75">
                     {formatDate(playingVideo.sermonDate || playingVideo.preachingDate)}

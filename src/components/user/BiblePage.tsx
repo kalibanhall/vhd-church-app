@@ -202,7 +202,7 @@ const BiblePage: React.FC = () => {
     const newFavorites = [...favorites, verse]
     setFavorites(newFavorites)
     localStorage.setItem('bible_favorites', JSON.stringify(newFavorites))
-    setMessage({ type: 'success', text: '⭐ Verset ajouté aux favoris' })
+    setMessage({ type: 'success', text: 'Verset ajouté aux favoris' })
   }
 
   // Retirer des favoris
@@ -216,7 +216,7 @@ const BiblePage: React.FC = () => {
   // Copier le verset
   const copyVerse = (verse: BibleVerse) => {
     navigator.clipboard.writeText(`"${verse.text}" - ${verse.reference}`)
-    setMessage({ type: 'success', text: '📋 Verset copié !' })
+    setMessage({ type: 'success', text: 'Verset copié !' })
   }
 
   // Commencer un plan de lecture
@@ -227,7 +227,7 @@ const BiblePage: React.FC = () => {
       const newPlans = [...myPlans, newPlan]
       setMyPlans(newPlans)
       localStorage.setItem('bible_plans', JSON.stringify(newPlans))
-      setMessage({ type: 'success', text: '🎉 Plan de lecture commencé !' })
+      setMessage({ type: 'success', text: 'Plan de lecture commencé !' })
     }
   }
 
@@ -249,7 +249,7 @@ const BiblePage: React.FC = () => {
     })
     setMyPlans(newPlans)
     localStorage.setItem('bible_plans', JSON.stringify(newPlans))
-    setMessage({ type: 'success', text: '✅ Lecture complétée !' })
+    setMessage({ type: 'success', text: 'Lecture complétée !' })
   }
 
   // Obtenir le nombre de chapitres d'un livre (simplifié)

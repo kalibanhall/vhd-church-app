@@ -185,7 +185,7 @@ const DonationsPage: React.FC = () => {
       )}
 
       {/* Interface moderne de soutien */}
-      <div className="bg-white rounded-lg shadow-sm p-6">
+      <div className="bg-white rounded-lg shadow-church p-6">
         <form onSubmit={handleDonationSubmit} className="space-y-8">
           {/* Type de soutien */}
           <div>
@@ -193,7 +193,7 @@ const DonationsPage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div 
                 className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                  donationType === 'OFFERING' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
+                  donationType === 'OFFERING' ? 'border-[#ffc200] bg-[#fff3cc]' : 'border-gray-200 hover:border-gray-300'
                 }`}
                 onClick={() => setDonationType('OFFERING')}
               >
@@ -203,7 +203,7 @@ const DonationsPage: React.FC = () => {
               
               <div 
                 className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                  donationType === 'TITHE' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
+                  donationType === 'TITHE' ? 'border-[#ffc200] bg-[#fff3cc]' : 'border-gray-200 hover:border-gray-300'
                 }`}
                 onClick={() => setDonationType('TITHE')}
               >
@@ -213,7 +213,7 @@ const DonationsPage: React.FC = () => {
               
               <div 
                 className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                  donationType === 'FREEWILL' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
+                  donationType === 'FREEWILL' ? 'border-[#ffc200] bg-[#fff3cc]' : 'border-gray-200 hover:border-gray-300'
                 }`}
                 onClick={() => setDonationType('FREEWILL')}
               >
@@ -223,7 +223,7 @@ const DonationsPage: React.FC = () => {
               
               <div 
                 className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                  donationType === 'PROJECT' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
+                  donationType === 'PROJECT' ? 'border-[#ffc200] bg-[#fff3cc]' : 'border-gray-200 hover:border-gray-300'
                 }`}
                 onClick={() => setDonationType('PROJECT')}
               >
@@ -243,7 +243,7 @@ const DonationsPage: React.FC = () => {
                 type="button"
                 className={`px-4 py-2 rounded-lg font-medium transition-all ${
                   currency === 'USD' 
-                    ? 'bg-blue-500 text-white' 
+                    ? 'bg-[#ffc200] text-[#0a0a0a]' 
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
                 onClick={() => {
@@ -258,7 +258,7 @@ const DonationsPage: React.FC = () => {
                 type="button"
                 className={`px-4 py-2 rounded-lg font-medium transition-all ${
                   currency === 'CDF' 
-                    ? 'bg-blue-500 text-white' 
+                    ? 'bg-[#ffc200] text-[#0a0a0a]' 
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
                 onClick={() => {
@@ -279,7 +279,7 @@ const DonationsPage: React.FC = () => {
                   type="button"
                   className={`p-3 border-2 rounded-lg font-medium transition-all ${
                     selectedAmount === amount.toString() 
-                      ? 'border-blue-500 bg-blue-50 text-blue-600' 
+                      ? 'border-[#ffc200] bg-[#fff3cc] text-[#cc9b00]' 
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                   onClick={() => {
@@ -294,7 +294,7 @@ const DonationsPage: React.FC = () => {
                 type="button"
                 className={`p-3 border-2 rounded-lg font-medium transition-all ${
                   selectedAmount === 'custom' 
-                    ? 'border-blue-500 bg-blue-50 text-blue-600' 
+                    ? 'border-[#ffc200] bg-[#fff3cc] text-[#cc9b00]' 
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
                 onClick={() => setSelectedAmount('custom')}
@@ -309,7 +309,7 @@ const DonationsPage: React.FC = () => {
                 placeholder={`Montant personnalisé en ${currency}`}
                 value={customAmount}
                 onChange={(e) => setCustomAmount(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-[#ffc200]"
               />
             )}
           </div>
@@ -320,7 +320,7 @@ const DonationsPage: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div 
                 className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                  paymentMethod === 'CARD' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
+                  paymentMethod === 'CARD' ? 'border-[#ffc200] bg-[#fff3cc]' : 'border-gray-200 hover:border-gray-300'
                 }`}
                 onClick={() => setPaymentMethod('CARD')}
               >
@@ -339,7 +339,7 @@ const DonationsPage: React.FC = () => {
               
               <div 
                 className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                  paymentMethod === 'MOBILE_MONEY' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
+                  paymentMethod === 'MOBILE_MONEY' ? 'border-[#ffc200] bg-[#fff3cc]' : 'border-gray-200 hover:border-gray-300'
                 }`}
                 onClick={() => setPaymentMethod('MOBILE_MONEY')}
               >
@@ -409,21 +409,21 @@ const DonationsPage: React.FC = () => {
 
       {/* Historique des donations */}
       {donations.length > 0 && (
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">📋 Historique des donations</h2>
+        <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-church">
+          <h2 className="text-xl font-semibold text-[#0a0a0a] mb-4">Historique des donations</h2>
           <div className="space-y-4">
             {donations.slice(0, 5).map((donation) => (
               <div key={donation.id} className="p-4 border border-gray-200 rounded-lg">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="font-medium text-gray-900">
+                    <h3 className="font-medium text-[#0a0a0a]">
                       {donation.currency === 'USD' ? '$' : ''}{donation.amount}{donation.currency === 'CDF' ? ' FC' : ''} - {getDonationTypeLabel(donation.donationType)}
                     </h3>
                     <p className="text-sm text-gray-500">{getPaymentMethodLabel(donation.paymentMethod)}</p>
                     {donation.notes && (
-                      <p className="text-sm text-gray-600 mt-1">💭 {donation.notes}</p>
+                      <p className="text-sm text-gray-600 mt-1">{donation.notes}</p>
                     )}
-                    <p className="text-xs text-gray-400 mt-2">📅 {formatDate(donation.createdAt)}</p>
+                    <p className="text-xs text-gray-400 mt-2">{formatDate(donation.createdAt)}</p>
                   </div>
                   <div className="text-right">
                     {getStatusBadge(donation.status)}

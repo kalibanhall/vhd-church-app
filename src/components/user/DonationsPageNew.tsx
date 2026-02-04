@@ -133,7 +133,7 @@ export default function DonationsPage() {
   return (
     <div className="container mx-auto py-8 space-y-8">
       <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">💰 Donations & Offrandes</h1>
+        <h1 className="text-3xl font-bold text-[#0a0a0a] mb-2">Donations & Offrandes</h1>
         <p className="text-gray-600">Soutenez notre mission et contribuez à la croissance de notre communauté de foi</p>
       </div>
 
@@ -180,7 +180,7 @@ export default function DonationsPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Nombre de dons</CardTitle>
-            <CreditCard className="h-4 w-4 text-blue-500" />
+            <CreditCard className="h-4 w-4 text-[#cc9b00]" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{donations.length}</div>
@@ -191,7 +191,7 @@ export default function DonationsPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Don moyen</CardTitle>
-            <DollarSign className="h-4 w-4 text-purple-500" />
+            <DollarSign className="h-4 w-4 text-[#cc9b00]" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -272,12 +272,12 @@ export default function DonationsPage() {
                     <SelectValue placeholder="Sélectionner le type" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="OFFERING">🙏 Offrande générale</SelectItem>
-                    <SelectItem value="TITHE">📊 Dîme</SelectItem>
-                    <SelectItem value="FREEWILL">❤️ Don libre</SelectItem>
-                    <SelectItem value="PROJECT">🏗️ Projet spécifique</SelectItem>
-                    <SelectItem value="BUILDING">🏢 Bâtiment</SelectItem>
-                    <SelectItem value="OTHER">➕ Autre</SelectItem>
+                    <SelectItem value="OFFERING">Offrande générale</SelectItem>
+                    <SelectItem value="TITHE">Dîme</SelectItem>
+                    <SelectItem value="FREEWILL">Don libre</SelectItem>
+                    <SelectItem value="PROJECT">Projet spécifique</SelectItem>
+                    <SelectItem value="BUILDING">Bâtiment</SelectItem>
+                    <SelectItem value="OTHER">Autre</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -289,11 +289,11 @@ export default function DonationsPage() {
                     <SelectValue placeholder="Choisir la méthode" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="CARD">💳 Carte bancaire</SelectItem>
-                    <SelectItem value="BANK_TRANSFER">🏦 Virement bancaire</SelectItem>
-                    <SelectItem value="MOBILE_MONEY">📱 Mobile Money</SelectItem>
-                    <SelectItem value="CASH">💵 Espèces</SelectItem>
-                    <SelectItem value="CHECK">📋 Chèque</SelectItem>
+                    <SelectItem value="CARD">Carte bancaire</SelectItem>
+                    <SelectItem value="BANK_TRANSFER">Virement bancaire</SelectItem>
+                    <SelectItem value="MOBILE_MONEY">Mobile Money</SelectItem>
+                    <SelectItem value="CASH">Espèces</SelectItem>
+                    <SelectItem value="CHECK">Chèque</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -311,14 +311,14 @@ export default function DonationsPage() {
 
               <Button 
                 type="submit" 
-                className="w-full" 
+                className="w-full bg-[#ffc200] hover:bg-[#cc9b00] text-[#0a0a0a]" 
                 size="lg" 
                 disabled={loading || !amount || !donationType || !paymentMethod}
               >
                 {loading ? (
-                  '⏳ Traitement en cours...'
+                  'Traitement en cours...'
                 ) : (
-                  `🎁 Confirmer le don de ${amount || '0'} FC`
+                  `Confirmer le don de ${amount || '0'} FC`
                 )}
               </Button>
             </form>
@@ -330,39 +330,39 @@ export default function DonationsPage() {
           {/* Projets actifs */}
           <Card>
             <CardHeader>
-              <CardTitle>🎯 Projets en cours</CardTitle>
+              <CardTitle>Projets en cours</CardTitle>
               <CardDescription>Soutenez nos projets communautaires</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="font-medium">🏛️ Nouvelle salle de prière</span>
+                  <span className="font-medium">Nouvelle salle de prière</span>
                   <Badge variant="secondary">75%</Badge>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-blue-600 h-2 rounded-full w-3/4"></div>
+                  <div className="bg-[#ffc200] h-2 rounded-full w-3/4"></div>
                 </div>
                 <p className="text-sm text-gray-600">45 000 000 FC collectés sur 60 000 000 FC</p>
               </div>
 
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="font-medium">👨‍👩‍👧‍👦 Aide aux familles</span>
+                  <span className="font-medium">Aide aux familles</span>
                   <Badge variant="secondary">40%</Badge>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-green-600 h-2 rounded-full w-2/5"></div>
+                  <div className="bg-[#ffc200] h-2 rounded-full w-2/5"></div>
                 </div>
                 <p className="text-sm text-gray-600">8 000 000 FC collectés sur 20 000 000 FC</p>
               </div>
 
               <div className="space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="font-medium">🎵 Équipement audiovisuel</span>
+                  <span className="font-medium">Équipement audiovisuel</span>
                   <Badge variant="secondary">90%</Badge>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div className="bg-purple-600 h-2 rounded-full w-[90%]"></div>
+                  <div className="bg-[#ffda66] h-2 rounded-full w-[90%]"></div>
                 </div>
                 <p className="text-sm text-gray-600">13 500 000 FC collectés sur 15 000 000 FC</p>
               </div>
@@ -372,7 +372,7 @@ export default function DonationsPage() {
           {/* Historique personnel */}
           <Card>
             <CardHeader>
-              <CardTitle>📋 Mes donations récentes</CardTitle>
+              <CardTitle>Mes donations récentes</CardTitle>
               <CardDescription>Historique de vos contributions</CardDescription>
             </CardHeader>
             <CardContent>
@@ -402,7 +402,7 @@ export default function DonationsPage() {
                 
                 {donations.length > 5 && (
                   <Button variant="outline" className="w-full mt-4">
-                    📜 Voir tout l'historique ({donations.length} donations)
+                    Voir tout l'historique ({donations.length} donations)
                   </Button>
                 )}
               </div>

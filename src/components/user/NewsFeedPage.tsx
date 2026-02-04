@@ -1,6 +1,6 @@
 /**
- * NewsFeedPage - Fil d'actualité
- * Affiche les dernières actualités et annonces de l'église
+ * NewsFeedPage - Fil d'actualite
+ * Affiche les dernieres actualites et annonces de l'eglise
  * 
  * @author CHRIS NGOZULU KASONGO (KalibanHall)
  */
@@ -89,9 +89,9 @@ export default function NewsFeedPage() {
   const filters = [
     { id: 'all', label: 'Tout', icon: Newspaper },
     { id: 'announcement', label: 'Annonces', icon: Bell },
-    { id: 'event', label: 'Événements', icon: Calendar },
-    { id: 'testimony', label: 'Témoignages', icon: Heart },
-    { id: 'media', label: 'Médias', icon: Video },
+    { id: 'event', label: 'Evenements', icon: Calendar },
+    { id: 'testimony', label: 'Temoignages', icon: Heart },
+    { id: 'media', label: 'Medias', icon: Video },
   ];
 
   const fetchPosts = useCallback(async () => {
@@ -110,7 +110,7 @@ export default function NewsFeedPage() {
         setPosts(generateMockPosts());
       }
     } catch (error) {
-      console.error('Erreur chargement fil d\'actualité:', error);
+      console.error('[NewsFeed] Erreur chargement fil d\'actualite:', error);
       setPosts(generateMockPosts());
     } finally {
       setLoading(false);
@@ -126,8 +126,8 @@ export default function NewsFeedPage() {
     {
       id: '1',
       type: 'announcement',
-      title: 'Culte spécial de louange ce dimanche',
-      content: 'Rejoignez-nous ce dimanche pour un moment exceptionnel de louange et d\'adoration au Temple VHD de Kinshasa. Le pasteur Emmanuel Kasongo apportera un message spécial sur la puissance de la louange dans nos vies. N\'oubliez pas d\'inviter vos proches !',
+      title: 'Culte special de louange ce dimanche',
+      content: 'Rejoignez-nous ce dimanche pour un moment exceptionnel de louange et d\'adoration au Temple VHD de Kinshasa. Le pasteur Emmanuel Kasongo apportera un message special sur la puissance de la louange dans nos vies. N\'oubliez pas d\'inviter vos proches !',
       author: { id: '1', name: 'Pasteur Emmanuel Kasongo', role: 'Pasteur Principal', avatar: '' },
       likes: 256,
       comments: 48,
@@ -142,9 +142,9 @@ export default function NewsFeedPage() {
     {
       id: '2',
       type: 'event',
-      title: 'Retraite spirituelle à Bukavu - Inscriptions ouvertes',
-      content: 'La retraite annuelle de l\'église aura lieu du 15 au 17 février au bord du lac Kivu à Bukavu. C\'est un moment de ressourcement spirituel, de communion fraternelle et de rencontre avec Dieu. Places limitées !',
-      author: { id: '2', name: 'Équipe Événements Goma', role: 'Coordination' },
+      title: 'Retraite spirituelle a Bukavu - Inscriptions ouvertes',
+      content: 'La retraite annuelle de l\'eglise aura lieu du 15 au 17 fevrier au bord du lac Kivu a Bukavu. C\'est un moment de ressourcement spirituel, de communion fraternelle et de rencontre avec Dieu. Places limitees !',
+      author: { id: '2', name: 'Equipe Evenements Goma', role: 'Coordination' },
       media: { type: 'image', urls: ['/images/retreat.jpg'] },
       likes: 189,
       comments: 52,
@@ -160,8 +160,8 @@ export default function NewsFeedPage() {
     {
       id: '3',
       type: 'testimony',
-      title: 'Témoignage de guérison miraculeuse',
-      content: 'Gloire à Dieu ! Après 3 ans de maladie, notre sœur Marie Kasongo de Lubumbashi a été complètement guérie. Elle partage son témoignage de foi et de persévérance. Que toute la gloire revienne à notre Seigneur !',
+      title: 'Temoignage de guerison miraculeuse',
+      content: 'Gloire a Dieu ! Apres 3 ans de maladie, notre soeur Marie Kasongo de Lubumbashi a ete completement guerie. Elle partage son temoignage de foi et de perseverance. Que toute la gloire revienne a notre Seigneur !',
       author: { id: '3', name: 'Marie Kasongo', role: 'Membre - Lubumbashi' },
       likes: 345,
       comments: 87,
@@ -171,14 +171,14 @@ export default function NewsFeedPage() {
       isSaved: false,
       isPinned: false,
       createdAt: new Date(Date.now() - 172800000).toISOString(),
-      tags: ['témoignage', 'guérison', 'miracle'],
+      tags: ['temoignage', 'guerison', 'miracle'],
     },
     {
       id: '4',
       type: 'media',
-      title: 'Prédication du dimanche dernier disponible',
-      content: 'La prédication "Marcher par la foi" du Pasteur Pierre Kalonda est maintenant disponible en ligne. Retrouvez ce message puissant sur notre plateforme.',
-      author: { id: '1', name: 'Ministère Média Kinshasa', role: 'Communication' },
+      title: 'Predication du dimanche dernier disponible',
+      content: 'La predication "Marcher par la foi" du Pasteur Pierre Kalonda est maintenant disponible en ligne. Retrouvez ce message puissant sur notre plateforme.',
+      author: { id: '1', name: 'Ministere Media Kinshasa', role: 'Communication' },
       media: { type: 'video', urls: ['/videos/sermon.mp4'], thumbnail: '/images/sermon-thumb.jpg' },
       likes: 198,
       comments: 56,
@@ -188,7 +188,7 @@ export default function NewsFeedPage() {
       isSaved: false,
       isPinned: false,
       createdAt: new Date(Date.now() - 259200000).toISOString(),
-      tags: ['prédication', 'foi', 'vidéo'],
+      tags: ['predication', 'foi', 'video'],
     },
   ];
 
@@ -216,7 +216,7 @@ export default function NewsFeedPage() {
         headers: { Authorization: `Bearer ${token}` },
       });
     } catch (error) {
-      console.error('Erreur like:', error);
+      console.error('[NewsFeed] Erreur like:', error);
     }
   };
 
@@ -238,7 +238,7 @@ export default function NewsFeedPage() {
           url: `${window.location.origin}/news/${post.id}`,
         });
       } catch (error) {
-        console.error('Erreur partage:', error);
+        console.error('[NewsFeed] Erreur partage:', error);
       }
     }
   };
@@ -280,11 +280,11 @@ export default function NewsFeedPage() {
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'announcement': return 'bg-blue-100 text-blue-600';
-      case 'event': return 'bg-green-100 text-green-600';
-      case 'testimony': return 'bg-purple-100 text-purple-600';
+      case 'announcement': return 'bg-[#fff3cc] text-[#cc9b00]';
+      case 'event': return 'bg-[#fff3cc] text-[#cc9b00]';
+      case 'testimony': return 'bg-[#fff3cc] text-[#cc9b00]';
       case 'media': return 'bg-orange-100 text-orange-600';
-      default: return 'bg-gray-100 text-gray-600';
+      default: return 'bg-[#fff3cc] text-[#666]';
     }
   };
 
@@ -295,7 +295,7 @@ export default function NewsFeedPage() {
     const hours = Math.floor(diff / 3600000);
     const days = Math.floor(diff / 86400000);
 
-    if (hours < 1) return 'À l\'instant';
+    if (hours < 1) return 'A l\'instant';
     if (hours < 24) return `Il y a ${hours}h`;
     if (days < 7) return `Il y a ${days}j`;
     return date.toLocaleDateString('fr-FR');
@@ -318,20 +318,20 @@ export default function NewsFeedPage() {
     return (
       <div className="max-w-4xl mx-auto p-4 pb-24">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
-            <Loader2 className="h-8 w-8 text-blue-600 animate-spin" />
+          <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+            <Loader2 className="h-8 w-8 text-[#cc9b00] animate-spin" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Fil d'actualité</h1>
-          <p className="text-gray-600 mt-2">Chargement...</p>
+          <h1 className="text-2xl font-bold text-[#0a0a0a]">Fil d'actualite</h1>
+          <p className="text-[#666] mt-2">Chargement...</p>
         </div>
         <div className="space-y-4">
           {[1, 2, 3].map(i => (
-            <div key={i} className="bg-white rounded-xl p-4 shadow-sm animate-pulse">
+            <div key={i} className="bg-white rounded-xl p-4 shadow-church animate-pulse">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-gray-200 rounded-xl" />
+                <div className="w-12 h-12 bg-[#fff3cc] rounded-xl" />
                 <div className="flex-1 space-y-2">
-                  <div className="h-5 bg-gray-200 rounded w-3/4" />
-                  <div className="h-4 bg-gray-200 rounded w-1/2" />
+                  <div className="h-5 bg-[#fff3cc] rounded w-3/4" />
+                  <div className="h-4 bg-[#fff3cc] rounded w-1/2" />
                 </div>
               </div>
             </div>
@@ -346,13 +346,13 @@ export default function NewsFeedPage() {
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Fil d'actualité</h1>
-          <p className="text-gray-600">Restez connecté avec votre église</p>
+          <h1 className="text-2xl font-bold text-[#0a0a0a]">Fil d'actualite</h1>
+          <p className="text-[#666]">Restez connecte avec votre eglise</p>
         </div>
         <button
           onClick={handleRefresh}
           disabled={refreshing}
-          className="p-2 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 transition-colors"
+          className="p-2 bg-[#fff3cc] text-[#cc9b00] rounded-full hover:bg-[#ffda66] transition-colors"
         >
           <RefreshCw className={`h-5 w-5 ${refreshing ? 'animate-spin' : ''}`} />
         </button>
@@ -360,13 +360,13 @@ export default function NewsFeedPage() {
 
       {/* Search */}
       <div className="relative mb-4">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-[#999]" />
         <input
           type="text"
-          placeholder="Rechercher dans les actualités..."
+          placeholder="Rechercher dans les actualites..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full pl-10 pr-4 py-3 border border-[rgba(201,201,201,0.3)] rounded-xl focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
         />
       </div>
 
@@ -380,8 +380,8 @@ export default function NewsFeedPage() {
               onClick={() => setFilter(f.id)}
               className={`flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-colors ${
                 filter === f.id
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-[#ffc200] text-white'
+                  : 'bg-[#fff3cc] text-[#666] hover:bg-[#ffda66]'
               }`}
             >
               <Icon className="h-4 w-4" />
@@ -398,24 +398,24 @@ export default function NewsFeedPage() {
           return (
             <article
               key={post.id}
-              className={`bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden ${
-                post.isPinned ? 'ring-2 ring-blue-500' : ''
+              className={`bg-white rounded-2xl shadow-church border border-[rgba(201,201,201,0.3)] overflow-hidden ${
+                post.isPinned ? 'ring-2 ring-[#ffc200]' : ''
               }`}
             >
               {/* Post Header */}
               <div className="p-4">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-semibold">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#ffc200] via-[#ffda66] to-[#fff3cc] flex items-center justify-center text-white font-semibold">
                       {post.author.name.charAt(0)}
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900">{post.author.name}</p>
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
+                      <p className="font-semibold text-[#0a0a0a]">{post.author.name}</p>
+                      <div className="flex items-center gap-2 text-sm text-[#999]">
                         {post.author.role && (
-                          <span className="text-blue-600">{post.author.role}</span>
+                          <span className="text-[#cc9b00]">{post.author.role}</span>
                         )}
-                        <span>•</span>
+                        <span>-</span>
                         <Clock className="h-3 w-3" />
                         <span>{formatDate(post.createdAt)}</span>
                       </div>
@@ -423,22 +423,22 @@ export default function NewsFeedPage() {
                   </div>
                   <div className="flex items-center gap-2">
                     {post.isPinned && (
-                      <span className="px-2 py-1 bg-blue-100 text-blue-600 text-xs rounded-full">
-                        Épinglé
+                      <span className="px-2 py-1 bg-[#fff3cc] text-[#cc9b00] text-xs rounded-full">
+                        Epingle
                       </span>
                     )}
                     <span className={`p-1.5 rounded-full ${getTypeColor(post.type)}`}>
                       <TypeIcon className="h-4 w-4" />
                     </span>
-                    <button className="p-2 hover:bg-gray-100 rounded-full">
-                      <MoreHorizontal className="h-5 w-5 text-gray-400" />
+                    <button className="p-2 hover:bg-[#fff3cc] rounded-full">
+                      <MoreHorizontal className="h-5 w-5 text-[#999]" />
                     </button>
                   </div>
                 </div>
 
                 {/* Post Content */}
-                <h2 className="text-lg font-semibold text-gray-900 mb-2">{post.title}</h2>
-                <p className="text-gray-700 leading-relaxed">{post.content}</p>
+                <h2 className="text-lg font-semibold text-[#0a0a0a] mb-2">{post.title}</h2>
+                <p className="text-[#666] leading-relaxed">{post.content}</p>
 
                 {/* Tags */}
                 {post.tags && post.tags.length > 0 && (
@@ -446,7 +446,7 @@ export default function NewsFeedPage() {
                     {post.tags.map((tag, idx) => (
                       <span
                         key={idx}
-                        className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full"
+                        className="px-2 py-1 bg-[#fff3cc] text-[#666] text-xs rounded-full"
                       >
                         #{tag}
                       </span>
@@ -456,9 +456,9 @@ export default function NewsFeedPage() {
 
                 {/* Event Date */}
                 {post.eventDate && (
-                  <div className="mt-3 p-3 bg-green-50 rounded-xl flex items-center gap-3">
-                    <Calendar className="h-5 w-5 text-green-600" />
-                    <span className="text-green-700 font-medium">
+                  <div className="mt-3 p-3 bg-[#fff3cc] rounded-xl flex items-center gap-3">
+                    <Calendar className="h-5 w-5 text-[#cc9b00]" />
+                    <span className="text-[#cc9b00] font-medium">
                       {new Date(post.eventDate).toLocaleDateString('fr-FR', {
                         weekday: 'long',
                         day: 'numeric',
@@ -474,8 +474,8 @@ export default function NewsFeedPage() {
               {post.media && (
                 <div className="relative">
                   {post.media.type === 'image' && (
-                    <div className="aspect-video bg-gray-200 flex items-center justify-center">
-                      <ImageIcon className="h-12 w-12 text-gray-400" />
+                    <div className="aspect-video bg-[#fff3cc] flex items-center justify-center">
+                      <ImageIcon className="h-12 w-12 text-[#999]" />
                     </div>
                   )}
                   {post.media.type === 'video' && (
@@ -489,7 +489,7 @@ export default function NewsFeedPage() {
               )}
 
               {/* Stats */}
-              <div className="px-4 py-2 border-t border-gray-100 flex items-center justify-between text-sm text-gray-500">
+              <div className="px-4 py-2 border-t border-[rgba(201,201,201,0.3)] flex items-center justify-between text-sm text-[#999]">
                 <div className="flex items-center gap-4">
                   <span className="flex items-center gap-1">
                     <ThumbsUp className="h-4 w-4" />
@@ -504,13 +504,13 @@ export default function NewsFeedPage() {
               </div>
 
               {/* Actions */}
-              <div className="px-4 py-3 border-t border-gray-100 flex items-center justify-around">
+              <div className="px-4 py-3 border-t border-[rgba(201,201,201,0.3)] flex items-center justify-around">
                 <button
                   onClick={() => handleLike(post.id)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
                     post.isLiked
                       ? 'text-red-500 bg-red-50'
-                      : 'text-gray-600 hover:bg-gray-100'
+                      : 'text-[#666] hover:bg-[#fff3cc]'
                   }`}
                 >
                   <Heart className={`h-5 w-5 ${post.isLiked ? 'fill-current' : ''}`} />
@@ -518,14 +518,14 @@ export default function NewsFeedPage() {
                 </button>
                 <button
                   onClick={() => setShowComments(showComments === post.id ? null : post.id)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-[#666] hover:bg-[#fff3cc] transition-colors"
                 >
                   <MessageCircle className="h-5 w-5" />
                   <span className="hidden sm:inline">Commenter</span>
                 </button>
                 <button
                   onClick={() => handleShare(post)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-[#666] hover:bg-[#fff3cc] transition-colors"
                 >
                   <Share2 className="h-5 w-5" />
                   <span className="hidden sm:inline">Partager</span>
@@ -534,8 +534,8 @@ export default function NewsFeedPage() {
                   onClick={() => handleSave(post.id)}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
                     post.isSaved
-                      ? 'text-blue-500 bg-blue-50'
-                      : 'text-gray-600 hover:bg-gray-100'
+                      ? 'text-[#cc9b00] bg-[#fff3cc]'
+                      : 'text-[#666] hover:bg-[#fff3cc]'
                   }`}
                 >
                   <Bookmark className={`h-5 w-5 ${post.isSaved ? 'fill-current' : ''}`} />
@@ -545,25 +545,25 @@ export default function NewsFeedPage() {
 
               {/* Comments Section */}
               {showComments === post.id && (
-                <div className="px-4 py-3 border-t border-gray-100 bg-gray-50">
+                <div className="px-4 py-3 border-t border-[rgba(201,201,201,0.3)] bg-[#fffefa]">
                   {/* Comment Input */}
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-semibold">
+                    <div className="w-8 h-8 rounded-full bg-[#ffc200] flex items-center justify-center text-white text-sm font-semibold">
                       M
                     </div>
                     <div className="flex-1 flex items-center gap-2">
                       <input
                         type="text"
-                        placeholder="Écrire un commentaire..."
+                        placeholder="Ecrire un commentaire..."
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && handleComment(post.id)}
-                        className="flex-1 px-4 py-2 border border-gray-200 rounded-full focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="flex-1 px-4 py-2 border border-[rgba(201,201,201,0.3)] rounded-full focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
                       />
                       <button
                         onClick={() => handleComment(post.id)}
                         disabled={!newComment.trim()}
-                        className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="p-2 bg-[#ffc200] text-white rounded-full hover:bg-[#cc9b00] disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <Send className="h-4 w-4" />
                       </button>
@@ -574,25 +574,25 @@ export default function NewsFeedPage() {
                   <div className="space-y-3">
                     {(comments[post.id] || []).map((comment) => (
                       <div key={comment.id} className="flex gap-3">
-                        <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-gray-600 text-sm font-semibold">
+                        <div className="w-8 h-8 rounded-full bg-[#fff3cc] flex items-center justify-center text-[#666] text-sm font-semibold">
                           {comment.author.name.charAt(0)}
                         </div>
                         <div className="flex-1">
                           <div className="bg-white p-3 rounded-2xl">
-                            <p className="font-semibold text-sm text-gray-900">{comment.author.name}</p>
-                            <p className="text-gray-700 text-sm">{comment.content}</p>
+                            <p className="font-semibold text-sm text-[#0a0a0a]">{comment.author.name}</p>
+                            <p className="text-[#666] text-sm">{comment.content}</p>
                           </div>
-                          <div className="flex items-center gap-4 mt-1 px-3 text-xs text-gray-500">
-                            <button className="hover:text-blue-600">J'aime</button>
-                            <button className="hover:text-blue-600">Répondre</button>
+                          <div className="flex items-center gap-4 mt-1 px-3 text-xs text-[#999]">
+                            <button className="hover:text-[#cc9b00]">J'aime</button>
+                            <button className="hover:text-[#cc9b00]">Repondre</button>
                             <span>{formatDate(comment.createdAt)}</span>
                           </div>
                         </div>
                       </div>
                     ))}
                     {(!comments[post.id] || comments[post.id].length === 0) && (
-                      <p className="text-center text-gray-500 text-sm py-4">
-                        Aucun commentaire. Soyez le premier à commenter !
+                      <p className="text-center text-[#999] text-sm py-4">
+                        Aucun commentaire. Soyez le premier a commenter !
                       </p>
                     )}
                   </div>
@@ -605,8 +605,8 @@ export default function NewsFeedPage() {
 
       {filteredPosts.length === 0 && (
         <div className="text-center py-12">
-          <Newspaper className="h-16 w-16 mx-auto text-gray-300 mb-4" />
-          <p className="text-gray-500">Aucune actualité trouvée</p>
+          <Newspaper className="h-16 w-16 mx-auto text-[#999] mb-4" />
+          <p className="text-[#999]">Aucune actualite trouvee</p>
         </div>
       )}
     </div>

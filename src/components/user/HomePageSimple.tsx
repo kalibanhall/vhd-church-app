@@ -13,8 +13,8 @@ import {
   Phone, 
   Mail, 
   ChevronRight,
-  Home,
   Video,
+  BookOpen,
   Heart
 } from 'lucide-react'
 
@@ -34,86 +34,104 @@ interface Event {
   liveUrl: string
   showOnHomepage?: boolean
   eventImageUrl?: string
-  creator?: {
-    firstName: string
-    lastName: string
-    role: string
-  }
-  pastor?: {
-    id: string
-    firstName: string
-    lastName: string
-    profileImageUrl?: string
-  }
 }
 
+interface ChurchSettings {
+  churchName: string
+  churchAddress: string
+  churchPhone: string
+  churchEmail: string
+  serviceSchedule: ServiceScheduleItem[]
+}
 
+interface ServiceScheduleItem {
+  name: string
+  day: string
+  time: string
+}
 
 export default function HomePageSimple() {
   const [nextService, setNextService] = useState<Event | null>(null)
-  const [recentEvents, setRecentEvents] = useState<Event[]>([])
+  const [upcomingEvents, setUpcomingEvents] = useState<Event[]>([])
   const [pastEvents, setPastEvents] = useState<Event[]>([])
+  const [settings, setSettings] = useState<ChurchSettings | null>(null)
   const [loading, setLoading] = useState(true)
   const { user } = useAuth()
 
   useEffect(() => {
-    fetchUpcomingEvents()
-    fetchPastEvents()
+    loadData()
   }, [])
+
+  const loadData = async () => {
+    setLoading(true)
+    try {
+      await Promise.all([
+        fetchUpcomingEvents(),
+        fetchPastEvents(),
+        fetchSettings()
+      ])
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const fetchUpcomingEvents = async () => {
     try {
       const response = await authenticatedFetch('/api/events?upcoming=true&homepage=true')
-      
       const data = await response.json()
       
-      if (data.success) {
+      if (data.success && data.events) {
         const events = data.events
-        
-        // Le prochain culte (premier événement programmé)
         const nextServiceEvent = events.find((event: Event) => 
           event.eventType === 'WORSHIP_SERVICE' && 
           new Date(event.eventDate) >= new Date()
         ) || events[0]
         
-        setNextService(nextServiceEvent)
-        setRecentEvents(events.slice(0, 3))
+        setNextService(nextServiceEvent || null)
+        setUpcomingEvents(events.slice(0, 6))
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des événements:', error)
-    } finally {
-      setLoading(false)
+      console.error('[HomePage] Error loading upcoming events:', error)
     }
   }
 
   const fetchPastEvents = async () => {
     try {
       const response = await authenticatedFetch('/api/events?past=true&homepage=true')
-      
       const data = await response.json()
       
-      if (data.success) {
-        // Limiter à 3 événements passés les plus récents
+      if (data.success && data.events) {
         setPastEvents(data.events.slice(0, 3))
       }
     } catch (error) {
-      console.error('Erreur lors du chargement des événements passés:', error)
+      console.error('[HomePage] Error loading past events:', error)
     }
   }
 
-
+  const fetchSettings = async () => {
+    try {
+      const response = await authenticatedFetch('/api/settings')
+      const data = await response.json()
+      
+      if (data.success && data.settings) {
+        setSettings(data.settings)
+      }
+    } catch (error) {
+      console.error('[HomePage] Error loading settings:', error)
+    }
+  }
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     return date.toLocaleDateString('fr-FR', {
       weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+      day: 'numeric',
+      month: 'long'
     })
   }
 
   const formatTime = (timeString: string) => {
+    if (!timeString) return ''
     const time = new Date(timeString)
     return time.toLocaleTimeString('fr-FR', {
       hour: '2-digit',
@@ -122,170 +140,147 @@ export default function HomePageSimple() {
   }
 
   const getEventTypeLabel = (type: string) => {
-    const types: { [key: string]: string } = {
+    const types: Record<string, string> = {
       'WORSHIP_SERVICE': 'Culte',
-      'PRAYER_MEETING': 'Réunion de prière',
-      'BIBLE_STUDY': 'Étude biblique',
-      'YOUTH_MEETING': 'Réunion jeunes',
-      'WOMEN_MEETING': 'Réunion femmes',
-      'MEN_MEETING': 'Réunion hommes',
-      'SPECIAL_EVENT': 'Événement spécial'
+      'PRAYER_MEETING': 'Priere',
+      'BIBLE_STUDY': 'Etude biblique',
+      'YOUTH_MEETING': 'Jeunes',
+      'WOMEN_MEETING': 'Femmes',
+      'MEN_MEETING': 'Hommes',
+      'SPECIAL_EVENT': 'Evenement special'
     }
     return types[type] || type
   }
 
   if (loading) {
     return (
-      <div className="max-w-6xl mx-auto p-4 pb-24">
-        <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
-            <Loader2 className="h-8 w-8 text-blue-600 animate-spin" />
+      <div className="min-h-screen bg-[#fffefa] flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4">
+            <Loader2 className="h-16 w-16 text-[#ffc200] animate-spin" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Bienvenue au VHD</h1>
-          <p className="text-gray-600 mt-2">Chargement des événements...</p>
-        </div>
-        <div className="space-y-4">
-          {[1, 2, 3].map(i => (
-            <div key={i} className="bg-white rounded-xl p-4 shadow-sm animate-pulse">
-              <div className="flex items-start gap-4">
-                <div className="w-16 h-16 bg-gray-200 rounded-xl" />
-                <div className="flex-1 space-y-2">
-                  <div className="h-5 bg-gray-200 rounded w-3/4" />
-                  <div className="h-4 bg-gray-200 rounded w-1/2" />
-                  <div className="h-4 bg-gray-200 rounded w-2/3" />
-                </div>
-              </div>
-            </div>
-          ))}
+          <p className="text-[#999]">Chargement...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      {/* Header de bienvenue */}
-      <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white">
-        <div className="max-w-6xl mx-auto px-4 py-8 md:py-12">
+    <div className="min-h-screen bg-[#fffefa]">
+      {/* Header */}
+      <div className="bg-gradient-to-br from-[#ffc200] via-[#ffda66] to-[#fff3cc]">
+        <div className="max-w-4xl mx-auto px-4 py-8">
           <div className="text-center">
-            <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-4 shadow-lg">
-              <Home className="h-10 w-10 text-white" />
-            </div>
-            <h1 className="text-2xl md:text-3xl font-bold mb-2">
-              Bienvenue au VHD
+            <h1 className="text-2xl font-bold text-[#0a0a0a] mb-2">
+              {user ? `Bonjour, ${user.firstName}` : 'Bienvenue'}
             </h1>
-            <p className="text-blue-100 text-sm md:text-base max-w-xl mx-auto">
-              {user ? `Bonjour ${user.firstName} ! ` : ''}Nous sommes des ministères par lesquels Dieu convertit le POTENTIEL en l&apos;EXTRAORDINAIRE.
+            <p className="text-[#0a0a0a]/70 text-sm">
+              {settings?.churchName || 'VHD Church App'}
             </p>
           </div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto p-4 pb-24 -mt-6">
-        {/* Prochain Culte - Carte principale */}
+      <div className="max-w-4xl mx-auto px-4 py-6 pb-24 -mt-4">
+        {/* Prochain culte */}
         {nextService && (
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-6 border-l-4 border-indigo-500">
-            <div className="p-6">
-              <div className="flex items-start justify-between mb-4">
+          <div className="bg-white rounded-xl shadow-church border border-[rgba(201,201,201,0.3)] overflow-hidden mb-6">
+            <div className="p-4 border-b border-[rgba(201,201,201,0.3)]">
+              <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="p-3 bg-indigo-100 rounded-xl">
-                    <Calendar className="h-6 w-6 text-indigo-600" />
+                  <div className="w-10 h-10 bg-[#fff3cc] rounded-lg flex items-center justify-center">
+                    <Calendar className="h-5 w-5 text-[#cc9b00]" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold text-gray-900">Prochain Culte</h2>
-                    <p className="text-sm text-gray-500">Ne manquez pas notre prochaine célébration</p>
+                    <h2 className="font-semibold text-[#0a0a0a]">Prochain culte</h2>
+                    <p className="text-xs text-[#999]">{formatDate(nextService.eventDate)}</p>
                   </div>
                 </div>
                 {nextService.status === 'IN_PROGRESS' && (
-                  <div className="flex items-center gap-2 px-3 py-1.5 bg-red-100 text-red-700 rounded-full animate-pulse">
-                    <div className="w-2 h-2 bg-red-500 rounded-full" />
-                    <span className="text-sm font-medium">EN DIRECT</span>
+                  <span className="px-3 py-1 bg-red-100 text-red-600 rounded-full text-xs font-medium flex items-center gap-1">
+                    <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                    En direct
+                  </span>
+                )}
+              </div>
+            </div>
+            
+            <div className="p-4">
+              <h3 className="font-semibold text-[#0a0a0a] mb-3">{nextService.title}</h3>
+              
+              <div className="space-y-2 text-sm text-[#666]">
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-[#999]" />
+                  <span>{formatTime(nextService.startTime)}{nextService.endTime && ` - ${formatTime(nextService.endTime)}`}</span>
+                </div>
+                {nextService.location && (
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-4 w-4 text-[#999]" />
+                    <span>{nextService.location}</span>
+                  </div>
+                )}
+                {nextService.maxAttendees > 0 && (
+                  <div className="flex items-center gap-2">
+                    <Users className="h-4 w-4 text-[#999]" />
+                    <span>{nextService.currentAttendees || 0} / {nextService.maxAttendees} participants</span>
                   </div>
                 )}
               </div>
 
-              <h3 className="text-lg font-semibold text-indigo-900 mb-4">{nextService.title}</h3>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <Calendar className="h-5 w-5 text-gray-400" />
-                    <span className="font-medium">{formatDate(nextService.eventDate)}</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <Clock className="h-5 w-5 text-gray-400" />
-                    <span>{formatTime(nextService.startTime)}{nextService.endTime && ` - ${formatTime(nextService.endTime)}`}</span>
-                  </div>
-                  {nextService.location && (
-                    <div className="flex items-center gap-3 text-gray-700">
-                      <MapPin className="h-5 w-5 text-gray-400" />
-                      <span>{nextService.location}</span>
-                    </div>
-                  )}
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <Users className="h-5 w-5 text-gray-400" />
-                    <span>{nextService.currentAttendees} participants{nextService.maxAttendees && ` / ${nextService.maxAttendees} max`}</span>
-                  </div>
-                </div>
-
-                <div>
-                  {nextService.status === 'IN_PROGRESS' && nextService.liveUrl && (
-                    <a 
-                      href={nextService.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 w-full px-6 py-3 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-medium hover:from-red-600 hover:to-red-700 transition-all shadow-lg shadow-red-500/30"
-                    >
-                      <Play className="h-5 w-5" />
-                      Regarder en Direct
-                    </a>
-                  )}
-                  {nextService.description && (
-                    <p className="text-gray-600 mt-4 text-sm leading-relaxed">{nextService.description}</p>
-                  )}
-                </div>
-              </div>
+              {nextService.status === 'IN_PROGRESS' && nextService.liveUrl && (
+                <a 
+                  href={nextService.liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 flex items-center justify-center gap-2 w-full px-4 py-3 bg-[#ffda66] hover:bg-[#ffc200] text-[#0a0a0a] rounded-lg font-medium transition-colors"
+                >
+                  <Play className="h-5 w-5" />
+                  Regarder en direct
+                </a>
+              )}
             </div>
           </div>
         )}
-        {/* Événements récents */}
-        {recentEvents.length > 0 && (
-          <div className="mb-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Video className="h-5 w-5 text-indigo-600" />
-              Événements à venir
-            </h2>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {recentEvents.filter(event => event.id !== nextService?.id).map((event) => (
-                <div 
-                  key={`event-${event.id}`} 
-                  className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md hover:border-gray-200 transition-all cursor-pointer"
-                >
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-medium text-indigo-600 bg-indigo-50 px-2 py-1 rounded-full">
-                      {getEventTypeLabel(event.eventType)}
-                    </span>
-                    <ChevronRight className="h-4 w-4 text-gray-400" />
-                  </div>
 
-                  <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">{event.title}</h3>
-                  
-                  <div className="space-y-1.5 text-sm text-gray-500">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4" />
-                      <span>{formatDate(event.eventDate)}</span>
+        {/* Evenements a venir */}
+        {upcomingEvents.length > 0 && (
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="font-semibold text-[#0a0a0a] flex items-center gap-2">
+                <Video className="h-5 w-5 text-[#cc9b00]" />
+                Evenements a venir
+              </h2>
+              <button className="text-sm text-[#cc9b00] hover:text-[#ffc200] flex items-center gap-1">
+                Voir tout
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+            
+            <div className="space-y-3">
+              {upcomingEvents
+                .filter(event => event.id !== nextService?.id)
+                .slice(0, 3)
+                .map((event) => (
+                <div 
+                  key={event.id} 
+                  className="bg-white rounded-lg p-4 shadow-church border border-[rgba(201,201,201,0.3)] hover:border-[#ffc200]/50 transition-colors"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="w-12 h-12 bg-[#fff3cc] rounded-lg flex items-center justify-center flex-shrink-0">
+                      <BookOpen className="h-6 w-6 text-[#cc9b00]" />
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4" />
-                      <span>{formatTime(event.startTime)}</span>
-                    </div>
-                    {event.location && (
-                      <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4" />
-                        <span className="truncate">{event.location}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-xs font-medium text-[#cc9b00] bg-[#fff3cc] px-2 py-0.5 rounded">
+                          {getEventTypeLabel(event.eventType)}
+                        </span>
                       </div>
-                    )}
+                      <h3 className="font-medium text-[#0a0a0a] text-sm truncate">{event.title}</h3>
+                      <p className="text-xs text-[#999] mt-1">
+                        {formatDate(event.eventDate)} - {formatTime(event.startTime)}
+                      </p>
+                    </div>
+                    <ChevronRight className="h-5 w-5 text-[#ccc] flex-shrink-0" />
                   </div>
                 </div>
               ))}
@@ -293,88 +288,89 @@ export default function HomePageSimple() {
           </div>
         )}
 
-        {/* Pas d'événements */}
-        {!nextService && recentEvents.length === 0 && (
-          <div className="bg-white rounded-2xl shadow-lg p-8 text-center">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Calendar className="h-8 w-8 text-gray-400" />
+        {/* Pas d'evenements */}
+        {!nextService && upcomingEvents.length === 0 && (
+          <div className="bg-white rounded-xl shadow-church border border-[rgba(201,201,201,0.3)] p-8 text-center mb-6">
+            <div className="w-16 h-16 bg-[#fff3cc] rounded-full flex items-center justify-center mx-auto mb-4">
+              <Calendar className="h-8 w-8 text-[#cc9b00]" />
             </div>
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Aucun événement programmé</h2>
-            <p className="text-gray-600">Les prochains événements seront bientôt annoncés.</p>
+            <h2 className="font-semibold text-[#0a0a0a] mb-2">Aucun evenement programme</h2>
+            <p className="text-sm text-[#999]">Les prochains evenements seront bientot annonces.</p>
           </div>
         )}
 
-        {/* Section informations générales */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* Contact */}
-          <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Phone className="h-5 w-5 text-indigo-600" />
-              Nous Contacter
-            </h2>
-            <div className="space-y-3 text-sm">
-              <div className="flex items-start gap-3">
-                <MapPin className="h-5 w-5 text-gray-400 mt-0.5 flex-shrink-0" />
-                <span className="text-gray-700">24, avenue, Commune de Mont Ngafula, Kinshasa, RD Congo</span>
-              </div>
-              <div className="flex items-center gap-3">
-                <Phone className="h-5 w-5 text-gray-400 flex-shrink-0" />
-                <a href="tel:+243895360658" className="text-indigo-600 hover:underline">+243 895 360 658</a>
-              </div>
-              <div className="flex items-center gap-3">
-                <Mail className="h-5 w-5 text-gray-400 flex-shrink-0" />
-                <a href="mailto:contact@vaillantshommesdedavid.org" className="text-indigo-600 hover:underline text-xs">contact@vaillantshommesdedavid.org</a>
-              </div>
-            </div>
-          </div>
-
-          {/* Cultes précédents */}
-          {pastEvents.length > 0 && (
-            <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-              <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <Heart className="h-5 w-5 text-indigo-600" />
-                Cultes Récents
+        {/* Grille d'informations */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Horaires */}
+          {settings?.serviceSchedule && settings.serviceSchedule.length > 0 && (
+            <div className="bg-white rounded-xl p-4 shadow-church border border-[rgba(201,201,201,0.3)]">
+              <h2 className="font-semibold text-[#0a0a0a] mb-4 flex items-center gap-2">
+                <Clock className="h-5 w-5 text-[#cc9b00]" />
+                Horaires des cultes
               </h2>
               <div className="space-y-3">
-                {pastEvents.slice(0, 3).map((event) => (
-                  <div 
-                    key={event.id}
-                    className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
-                  >
-                    <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center text-white text-lg flex-shrink-0">
-                      🏛️
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="font-medium text-gray-900 text-sm truncate">{event.title}</p>
-                      <p className="text-xs text-gray-500">{formatDate(event.eventDate)}</p>
-                    </div>
+                {settings.serviceSchedule.map((schedule, index) => (
+                  <div key={index} className="p-3 bg-[#fffefa] rounded-lg border border-[rgba(201,201,201,0.2)]">
+                    <p className="font-medium text-[#0a0a0a] text-sm">{schedule.name}</p>
+                    <p className="text-xs text-[#999] mt-1">{schedule.day} - {schedule.time}</p>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Horaires */}
-          <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
-            <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-              <Clock className="h-5 w-5 text-indigo-600" />
-              Horaires Habituels
+          {/* Contact */}
+          <div className="bg-white rounded-xl p-4 shadow-church border border-[rgba(201,201,201,0.3)]">
+            <h2 className="font-semibold text-[#0a0a0a] mb-4 flex items-center gap-2">
+              <Phone className="h-5 w-5 text-[#cc9b00]" />
+              Contact
             </h2>
             <div className="space-y-3 text-sm">
-              <div className="p-2 bg-gray-50 rounded-lg">
-                <p className="font-medium text-gray-900">Culte Financièrement Prospère</p>
-                <p className="text-gray-500">Mardi 17h00 - 19h30</p>
-              </div>
-              <div className="p-2 bg-gray-50 rounded-lg">
-                <p className="font-medium text-gray-900">Culte Métamorphose</p>
-                <p className="text-gray-500">Jeudi 17h00 - 19h30</p>
-              </div>
-              <div className="p-2 bg-gray-50 rounded-lg">
-                <p className="font-medium text-gray-900">Libère ton Potentiel</p>
-                <p className="text-gray-500">Dimanche 17h00 - 19h30</p>
-              </div>
+              {settings?.churchAddress && (
+                <div className="flex items-start gap-3">
+                  <MapPin className="h-4 w-4 text-[#999] mt-0.5 flex-shrink-0" />
+                  <span className="text-[#666]">{settings.churchAddress}</span>
+                </div>
+              )}
+              {settings?.churchPhone && (
+                <div className="flex items-center gap-3">
+                  <Phone className="h-4 w-4 text-[#999] flex-shrink-0" />
+                  <a href={`tel:${settings.churchPhone}`} className="text-[#cc9b00] hover:text-[#ffc200]">
+                    {settings.churchPhone}
+                  </a>
+                </div>
+              )}
+              {settings?.churchEmail && (
+                <div className="flex items-center gap-3">
+                  <Mail className="h-4 w-4 text-[#999] flex-shrink-0" />
+                  <a href={`mailto:${settings.churchEmail}`} className="text-[#cc9b00] hover:text-[#ffc200] text-xs truncate">
+                    {settings.churchEmail}
+                  </a>
+                </div>
+              )}
             </div>
           </div>
+
+          {/* Cultes recents */}
+          {pastEvents.length > 0 && (
+            <div className="bg-white rounded-xl p-4 shadow-church border border-[rgba(201,201,201,0.3)] md:col-span-2">
+              <h2 className="font-semibold text-[#0a0a0a] mb-4 flex items-center gap-2">
+                <Heart className="h-5 w-5 text-[#cc9b00]" />
+                Cultes recents
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                {pastEvents.map((event) => (
+                  <div 
+                    key={event.id}
+                    className="p-3 bg-[#fffefa] rounded-lg border border-[rgba(201,201,201,0.2)] hover:border-[#ffc200]/50 transition-colors cursor-pointer"
+                  >
+                    <p className="font-medium text-[#0a0a0a] text-sm truncate">{event.title}</p>
+                    <p className="text-xs text-[#999] mt-1">{formatDate(event.eventDate)}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
