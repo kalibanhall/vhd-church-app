@@ -32,8 +32,8 @@ export default function Home() {
   // Afficher un spinner pendant le chargement
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen flex items-center justify-center bg-[#fffefa]">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-[#fff3cc] border-t-[#ffc200]"></div>
       </div>
     )
   }
@@ -44,7 +44,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#fffefa]">
       <Dashboard />
     </div>
   )

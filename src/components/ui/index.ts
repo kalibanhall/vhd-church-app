@@ -32,6 +32,20 @@ export { Avatar, AvatarGroup } from './Avatar';
 export { default as LogoutConfirmModal } from './LogoutConfirmModal';
 export { default as PageWrapper, ContentCard, StatGrid, StatItem, Section, EmptyState as PageEmptyState } from './PageWrapper';
 
+// MyChurchApp Design System Components (Figma)
+export { ChurchCard, VerseCard, AnnouncementCard } from './ChurchCard';
+export { ChurchTabs } from './ChurchTabs';
+export { 
+  BottomNavigation, 
+  ChurchHeader, 
+  NotificationBell, 
+  MenuButton,
+  HomeIcon,
+  CalendarIcon,
+  BibleIcon,
+  DashboardIcon
+} from './ChurchNavigation';
+
 // Types
 export type { ModalProps, ConfirmModalProps } from './Modal';
 export type { Column, DataTableProps } from './DataTable';
@@ -39,3 +53,5 @@ export type { DropdownItem } from './Dropdown';
 export type { StatCardProps } from './StatCard';
 export type { ProgressBarProps, CircularProgressProps } from './ProgressBar';
 export type { BarChartData, LineChartData, DonutChartData } from './SimpleChart';
+export type { Tab } from './ChurchTabs';
+export type { NavItem, HeaderProps, BottomNavigationProps } from './ChurchNavigation';

@@ -207,10 +207,10 @@ export default function Dashboard() {
   // Si pas d'utilisateur connecté ou app pas prête, afficher le loader
   if (!user || !isAppReady) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="min-h-screen flex items-center justify-center bg-church-bg">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 font-medium">Chargement de l&apos;application...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-church-light border-t-church-primary mx-auto mb-4"></div>
+          <p className="text-church-text-muted font-medium">Chargement de l&apos;application...</p>
         </div>
       </div>
     )
@@ -380,7 +380,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
+    <div className="flex flex-col h-screen bg-church-bg">
       {/* Modal de confirmation de déconnexion */}
       <LogoutConfirmModal
         isOpen={showLogoutModal}

@@ -756,7 +756,7 @@ export default function FacialProfilePage() {
               {/* Instructions */}
               <div className="mt-4 p-4 bg-gray-800 rounded-xl">
                 <p className="text-gray-300 text-sm">
-                  💡 <strong>Conseils :</strong> Regardez directement la caméra, dans un endroit bien éclairé, sans lunettes ni chapeau.
+                  <strong>Conseils :</strong> Regardez directement la caméra, dans un endroit bien éclairé, sans lunettes ni chapeau.
                 </p>
               </div>
             </>

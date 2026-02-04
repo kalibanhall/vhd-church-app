@@ -152,36 +152,37 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen flex">
+      {/* Panneau latéral gauche - Design MyChurchApp */}
       <div 
         className="hidden lg:flex lg:w-1/2 bg-cover bg-center bg-no-repeat relative"
         style={{ 
-          backgroundImage: 'linear-gradient(135deg, rgba(59, 130, 246, 0.85) 0%, rgba(147, 51, 234, 0.85) 100%), url(/images/logos/vhd-logo.jpg)',
+          backgroundImage: 'linear-gradient(135deg, rgba(255, 194, 0, 0.9) 0%, rgba(204, 155, 0, 0.9) 100%), url(/images/logos/vhd-logo.jpg)',
           backgroundSize: '60%',
           backgroundPosition: 'center'
         }}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/90 via-purple-900/80 to-blue-800/90"></div>
-        <div className="relative z-10 flex flex-col justify-center items-center text-white p-12 text-center">
+        <div className="absolute inset-0 bg-gradient-to-br from-[#cc9b00]/90 via-[#ffc200]/80 to-[#ffda66]/90"></div>
+        <div className="relative z-10 flex flex-col justify-center items-center text-[#0a0a0a] p-12 text-center">
           <div className="mb-8">
             <img 
               src="/images/logos/vhd-logo.jpg" 
               alt="Logo VHD" 
-              className="w-32 h-32 mx-auto mb-6 rounded-full border-4 border-white/30 shadow-2xl object-cover"
+              className="w-32 h-32 mx-auto mb-6 rounded-full border-4 border-white/50 shadow-2xl object-cover"
             />
             <h1 className="text-4xl font-bold mb-4 leading-tight">
               Ministères Vaillants<br />
-              <span className="text-yellow-300">Hommes de David</span>
+              <span className="text-white drop-shadow-md">Hommes de David</span>
             </h1>
-            <p className="text-xl font-medium mb-8 text-blue-100">
-              Où Dieu convertit le <span className="text-yellow-300 font-bold">POTENTIEL</span><br />
-              en l'<span className="text-yellow-300 font-bold">EXTRAORDINAIRE</span>
+            <p className="text-xl font-medium mb-8 text-[#0a0a0a]/80">
+              Où Dieu convertit le <span className="text-white font-bold drop-shadow-md">POTENTIEL</span><br />
+              en l'<span className="text-white font-bold drop-shadow-md">EXTRAORDINAIRE</span>
             </p>
           </div>
           
           <div className="max-w-md">
-            <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-6 border border-white/20 shadow-xl">
-              <h3 className="text-lg font-semibold mb-3"> Bienvenue dans votre espace</h3>
-              <p className="text-blue-100 text-sm leading-relaxed">
+            <div className="bg-white/30 backdrop-blur-sm rounded-xl p-6 border border-white/40 shadow-church-lg">
+              <h3 className="text-lg font-semibold mb-3">✨ Bienvenue dans votre espace</h3>
+              <p className="text-[#0a0a0a]/70 text-sm leading-relaxed">
                 Accédez à votre espace personnel pour gérer vos activités, 
                 participer aux discussions et suivre votre parcours spirituel.
               </p>
@@ -190,29 +191,30 @@ export default function AuthPage() {
         </div>
       </div>
 
-      <div className="w-full lg:w-1/2 flex items-center justify-center bg-gray-50 px-4 sm:px-6 lg:px-8">
+      {/* Panneau droit - Formulaire */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center bg-[#fffefa] px-4 sm:px-6 lg:px-8">
         <div className="max-w-md w-full space-y-8">
           <div className="text-center">
             <div className="lg:hidden mb-8">
               <img 
                 src="/images/logos/vhd-logo.jpg" 
                 alt="Logo VHD" 
-                className="w-20 h-20 mx-auto mb-4 rounded-full object-cover border-2 border-blue-200 shadow-lg"
+                className="w-20 h-20 mx-auto mb-4 rounded-full object-cover border-2 border-[#ffc200] shadow-church"
               />
             </div>
             
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            <h2 className="text-3xl font-bold text-[#0a0a0a] mb-2">
               {isLogin ? 'Connexion' : 'Inscription'}
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p className="text-[#999] mb-6">
               {isLogin ? 'Accédez à votre espace VHD' : 'Rejoignez la communauté VHD'}
             </p>
           </div>
 
           {error && (
             <div className={error.includes('réussie') 
-                ? 'bg-green-50 text-green-700 border border-green-200 p-4 rounded-lg text-center' 
-                : 'bg-red-50 text-red-700 border border-red-200 p-4 rounded-lg text-center'
+                ? 'bg-[#34a853]/10 text-[#34a853] border border-[#34a853]/20 p-4 rounded-md text-center' 
+                : 'bg-red-50 text-red-700 border border-red-200 p-4 rounded-md text-center'
             }>
               {error}
             </div>
@@ -223,7 +225,7 @@ export default function AuthPage() {
               <>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="firstName" className="block text-sm font-medium text-[#0a0a0a] mb-2">
                       Prénom
                     </label>
                     <input
@@ -233,12 +235,12 @@ export default function AuthPage() {
                       required
                       value={formData.firstName}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 bg-[#fffefa] border border-[rgba(201,201,201,0.3)] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc200] focus:border-transparent transition-all"
                       placeholder="Jean"
                     />
                   </div>
                   <div>
-                    <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
+                    <label htmlFor="lastName" className="block text-sm font-medium text-[#0a0a0a] mb-2">
                       Nom
                     </label>
                     <input
@@ -248,14 +250,14 @@ export default function AuthPage() {
                       required
                       value={formData.lastName}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 bg-[#fffefa] border border-[rgba(201,201,201,0.3)] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc200] focus:border-transparent transition-all"
                       placeholder="Dupont"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="phone" className="block text-sm font-medium text-[#0a0a0a] mb-2">
                     Téléphone
                   </label>
                   <input
@@ -264,13 +266,13 @@ export default function AuthPage() {
                     type="tel"
                     value={formData.phone}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-[#fffefa] border border-[rgba(201,201,201,0.3)] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc200] focus:border-transparent transition-all"
                     placeholder="+243 900 000 000"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label htmlFor="role" className="block text-sm font-medium text-[#0a0a0a] mb-2">
                     Je souhaite m&apos;inscrire comme
                   </label>
                   <select
@@ -278,13 +280,13 @@ export default function AuthPage() {
                     name="role"
                     value={formData.role}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-[#fffefa] border border-[rgba(201,201,201,0.3)] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc200] focus:border-transparent transition-all"
                   >
-                    <option value="FIDELE">👤 Fidèle (Membre de l&apos;église)</option>
-                    <option value="OUVRIER">⚙️ Ouvrier (Serviteur dans l&apos;église)</option>
-                    <option value="PASTOR">🙏 Pasteur</option>
+                    <option value="FIDELE">Fidèle (Membre de l&apos;église)</option>
+                    <option value="OUVRIER">Ouvrier (Serviteur dans l&apos;église)</option>
+                    <option value="PASTOR">Pasteur</option>
                   </select>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-[#999] mt-1">
                     Note : Les comptes Pasteur et Admin nécessitent une validation
                   </p>
                 </div>
@@ -292,7 +294,7 @@ export default function AuthPage() {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-[#0a0a0a] mb-2">
                 Adresse email
               </label>
               <input
@@ -303,13 +305,13 @@ export default function AuthPage() {
                 required
                 value={formData.email}
                 onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-3 bg-[#fffefa] border border-[rgba(201,201,201,0.3)] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc200] focus:border-transparent transition-all"
                 placeholder="votre.email@example.com"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-[#0a0a0a] mb-2">
                 Mot de passe
               </label>
               <div className="relative">
@@ -321,13 +323,13 @@ export default function AuthPage() {
                   required
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 pr-12 bg-[#fffefa] border border-[rgba(201,201,201,0.3)] rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc200] focus:border-transparent transition-all"
                   placeholder=""
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#999] hover:text-[#0a0a0a] transition-colors"
                   title={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
                 >
                   {showPassword ? (
@@ -341,7 +343,7 @@ export default function AuthPage() {
 
             {!isLogin && (
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-[#0a0a0a] mb-2">
                   Confirmer le mot de passe
                 </label>
                 <div className="relative">
@@ -353,17 +355,17 @@ export default function AuthPage() {
                     required
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
-                    className={`w-full px-4 py-3 pr-12 border rounded-lg focus:outline-none focus:ring-2 focus:border-transparent transition-all ${
+                    className={`w-full px-4 py-3 pr-12 bg-[#fffefa] border rounded-md focus:outline-none focus:ring-2 focus:border-transparent transition-all ${
                       formData.confirmPassword && formData.password !== formData.confirmPassword 
                         ? 'border-red-300 focus:ring-red-500 bg-red-50' 
-                        : 'border-gray-300 focus:ring-blue-500'
+                        : 'border-[rgba(201,201,201,0.3)] focus:ring-[#ffc200]'
                     }`}
                     placeholder=""
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-[#999] hover:text-[#0a0a0a] transition-colors"
                     title={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
                   >
                     {showPassword ? (
@@ -390,9 +392,9 @@ export default function AuthPage() {
                     type="checkbox"
                     checked={formData.rememberMe}
                     onChange={(e) => setFormData(prev => ({ ...prev, rememberMe: e.target.checked }))}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-[#ffc200] focus:ring-[#ffc200] border-[rgba(201,201,201,0.3)] rounded"
                   />
-                  <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-900">
+                  <label htmlFor="rememberMe" className="ml-2 block text-sm text-[#0a0a0a]">
                     Se souvenir de moi
                   </label>
                 </div>
@@ -400,7 +402,7 @@ export default function AuthPage() {
                   <button
                     type="button"
                     onClick={() => router.push('/forgot-password')}
-                    className="font-medium text-blue-600 hover:text-blue-500"
+                    className="font-medium text-[#cc9b00] hover:text-[#ffc200]"
                   >
                     Mot de passe oublié ?
                   </button>
@@ -411,11 +413,11 @@ export default function AuthPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-lg hover:from-blue-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium text-lg shadow-lg"
+              className="w-full bg-[#ffda66] text-[#0a0a0a] py-3 px-4 rounded-md hover:bg-[#ffc200] focus:outline-none focus:ring-2 focus:ring-[#ffc200] focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-semibold text-lg shadow-church"
             >
               {loading ? (
                 <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-[#0a0a0a] mr-2"></div>
                   Chargement...
                 </div>
               ) : (
@@ -431,7 +433,7 @@ export default function AuthPage() {
                 setError('')
                 setFormData({ email: '', password: '', confirmPassword: '', firstName: '', lastName: '', phone: '', role: 'FIDELE', rememberMe: false })
               }}
-              className="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors"
+              className="text-[#cc9b00] hover:text-[#ffc200] text-sm font-medium transition-colors"
             >
               {isLogin ? 'Pas de compte ? Inscrivez-vous ici' : 'Déjà un compte ? Connectez-vous ici'}
             </button>
@@ -439,9 +441,9 @@ export default function AuthPage() {
 
 
 
-          <footer className="text-center text-sm text-gray-500 pt-8 border-t border-gray-200">
-            <p className="mb-1"> 2025 Ministères Vaillants Hommes de David</p>
-            <p className="text-xs italic text-blue-600 font-medium">
+          <footer className="text-center text-sm text-[#999] pt-8 border-t border-[rgba(201,201,201,0.3)]">
+            <p className="mb-1">© 2025 Ministères Vaillants Hommes de David</p>
+            <p className="text-xs italic text-[#cc9b00] font-medium">
               Où Dieu convertit le POTENTIEL en l'EXTRAORDINAIRE
             </p>
           </footer>

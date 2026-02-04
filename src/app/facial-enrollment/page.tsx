@@ -178,7 +178,7 @@ export default function EnrollFacePageAdvanced() {
 
       if (updateError) throw updateError
 
-      toast.success('✅ Visage enregistré avec succès!')
+      toast.success('Visage enregistré avec succès!')
       setStep('success')
 
       // Actualiser la liste

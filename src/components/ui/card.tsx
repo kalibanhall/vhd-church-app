@@ -4,19 +4,32 @@ function cn(...classes: (string | undefined)[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "rounded-lg border bg-card text-card-foreground shadow-sm",
-      className
-    )}
-    {...props}
-  />
-))
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: "default" | "accent" | "highlight" | "outline"
+}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, variant = "default", ...props }, ref) => {
+    const variantClasses = {
+      default: "bg-[#fffefa] border border-[rgba(201,201,201,0.3)]",
+      accent: "bg-[#fff3cc] border-none",
+      highlight: "bg-[#fff5d5] border-none",
+      outline: "bg-transparent border border-[rgba(201,201,201,0.6)]",
+    }
+
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "rounded-md text-[#0a0a0a] shadow-sm transition-all",
+          variantClasses[variant],
+          className
+        )}
+        {...props}
+      />
+    )
+  }
+)
 Card.displayName = "Card"
 
 const CardHeader = React.forwardRef<
@@ -34,7 +47,7 @@ const CardTitle = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      "text-2xl font-semibold leading-none tracking-tight",
+      "text-lg font-semibold leading-none tracking-tight text-[#0a0a0a]",
       className
     )}
     {...props}
@@ -48,7 +61,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm text-muted-foreground", className)}
+    className={cn("text-sm text-[#999]", className)}
     {...props}
   />
 ))

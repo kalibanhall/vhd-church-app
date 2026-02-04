@@ -697,7 +697,7 @@ export default function FaceCaptureAdvanced({
       {/* Instructions */}
       <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
         <h4 className="font-medium text-blue-900 dark:text-blue-300 mb-2">
-          💡 Conseils pour une bonne capture
+          Conseils pour une bonne capture
         </h4>
         <ul className="text-sm text-blue-800 dark:text-blue-400 space-y-1">
           <li>• Positionnez votre visage dans l&apos;ovale vert</li>

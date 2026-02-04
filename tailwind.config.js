@@ -44,13 +44,32 @@ module.exports = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        // MyChurchApp Design System Colors
+        church: {
+          cream: "#fffefa",
+          gold: "#ffc200",
+          "gold-light": "#ffda66",
+          "gold-muted": "#fff3cc",
+          "gold-subtle": "#fff5d5",
+          amber: "#cc9b00",
+          dark: "#0a0a0a",
+          gray: "#999",
+          success: "#34a853",
+        },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "#ffc200",
+          foreground: "#333333",
+          light: "#ffda66",
+          muted: "#fff3cc",
+          subtle: "#fff5d5",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "#cc9b00",
+          foreground: "#ffffff",
+        },
+        success: {
+          DEFAULT: "#34a853",
+          foreground: "#ffffff",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -58,11 +77,11 @@ module.exports = {
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          foreground: "#999999",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "#fff3cc",
+          foreground: "#0a0a0a",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -72,6 +91,10 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+      },
+      boxShadow: {
+        'church': '0px 1px 7px 0px rgba(89, 68, 2, 0.2)',
+        'church-lg': '0px 2px 10px 0px rgba(89, 68, 2, 0.25)',
       },
       borderRadius: {
         lg: "var(--radius)",

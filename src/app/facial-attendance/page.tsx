@@ -178,9 +178,9 @@ export default function FacialAttendancePage() {
         
         if (result.success && !result.alreadyMarked) {
           setTodayAttendance(prev => [record, ...prev])
-          toast.success(`✅ ${bestMatch.prenom} ${bestMatch.nom} - Présence enregistrée!`)
+          toast.success(`${bestMatch.prenom} ${bestMatch.nom} - Présence enregistrée!`)
         } else if (result.alreadyMarked) {
-          toast(`${bestMatch.prenom} ${bestMatch.nom} déjà présent(e)`, { icon: '👋' })
+          toast(`${bestMatch.prenom} ${bestMatch.nom} déjà présent(e)`)
         }
 
         // Reset après 3 secondes
@@ -380,7 +380,7 @@ export default function FacialAttendancePage() {
 
             {/* Instructions */}
             <div className="bg-blue-900/30 border border-blue-500/30 rounded-2xl p-6">
-              <h4 className="text-blue-300 font-semibold mb-3">💡 Instructions</h4>
+              <h4 className="text-blue-300 font-semibold mb-3">Instructions</h4>
               <ul className="text-blue-200/80 text-sm space-y-2">
                 <li>• Placez-vous face à la caméra</li>
                 <li>• Attendez la détection automatique</li>

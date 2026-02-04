@@ -14,7 +14,7 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
       navigator.serviceWorker
         .register('/sw.js', { updateViaCache: 'none' })
         .then((registration) => {
-          console.log('✅ Service Worker enregistré:', registration.scope);
+          console.log('[SW] Service Worker enregistré:', registration.scope);
           
           // Vérifier les mises à jour immédiatement
           registration.update();
@@ -23,10 +23,10 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
           registration.addEventListener('updatefound', () => {
             const newWorker = registration.installing;
             if (newWorker) {
-              console.log('🔄 Nouvelle version du Service Worker détectée');
+              console.log('[SW] Nouvelle version détectée');
               newWorker.addEventListener('statechange', () => {
                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  console.log('📦 Nouvelle version prête - Rechargement...');
+                  console.log('[SW] Nouvelle version prête - Rechargement...');
                   // Forcer le rechargement pour appliquer la mise à jour
                   window.location.reload();
                 }
@@ -35,12 +35,12 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
           });
         })
         .catch((error) => {
-          console.error('❌ Erreur Service Worker:', error);
+          console.error('[SW] Erreur Service Worker:', error);
         });
       
       // Écouter les messages du Service Worker
       navigator.serviceWorker.addEventListener('controllerchange', () => {
-        console.log('🔄 Service Worker mis à jour');
+        console.log('[SW] Service Worker mis à jour');
       });
     }
 

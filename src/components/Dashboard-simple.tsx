@@ -69,7 +69,7 @@ export default function DashboardSimple() {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center">
-                    🙏 Prières
+                    Prières
                   </CardTitle>
                   <CardDescription>
                     Partagez vos demandes de prière

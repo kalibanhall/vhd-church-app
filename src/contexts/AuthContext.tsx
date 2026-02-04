@@ -63,17 +63,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!isClient || typeof window === 'undefined') return
     
     try {
-      console.log('🔍 AuthContext: Vérification de l\'authentification...')
+      console.log('[AuthContext] Vérification de l\'authentification...')
       
       // Récupérer le token du localStorage
       const token = localStorage.getItem('token')
       if (!token) {
-        console.log('⚠️  AuthContext: Pas de token trouvé')
+        console.log('[AuthContext] Pas de token trouvé')
         clearAuth()
         return
       }
       
-      console.log('🔑 AuthContext: Token trouvé, vérification...')
+      console.log('[AuthContext] Token trouvé, vérification...')
       
       // Utiliser la route proxy au lieu de l'appel direct
       const response = await fetch('/api/auth/me-proxy', {
@@ -84,28 +84,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       })
 
-      console.log('📊 AuthContext: Statut de auth/me:', response.status)
+      console.log('[AuthContext] Statut de auth/me:', response.status)
 
       if (response.ok) {
         const data = await response.json()
-        console.log('✅ AuthContext: Données reçues:', data)
+        console.log('[AuthContext] Données reçues:', data)
         if (data.success && data.user) {
-          console.log('👤 AuthContext: Utilisateur authentifié:', data.user.email)
+          console.log('[AuthContext] Utilisateur authentifié:', data.user.email)
           setUser(data.user)
           if (typeof window !== 'undefined') {
             localStorage.setItem('user', JSON.stringify(data.user))
           }
         } else {
-          console.log('⚠️  AuthContext: Données invalides, déconnexion')
+          console.log('[AuthContext] Données invalides, déconnexion')
           clearAuth()
         }
       } else {
         const errorData = await response.text()
-        console.log('❌ AuthContext: Erreur', response.status, ':', errorData)
+        console.log('[AuthContext] Erreur', response.status, ':', errorData)
         clearAuth()
       }
     } catch (error) {
-      console.error('💥 AuthContext: Erreur de vérification:', error)
+      console.error('[AuthContext] Erreur de vérification:', error)
       clearAuth()
     } finally {
       setIsLoading(false)

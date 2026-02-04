@@ -71,26 +71,45 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* MyChurchApp Design System - Figma Integration */
+    --background: 50 100% 99.2%; /* #fffefa - Cream white */
+    --foreground: 0 0% 4%; /* #0a0a0a - Near black */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 4%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 0 0% 4%;
+    
+    /* Primary - Golden Yellow */
+    --primary: 45 100% 50%; /* #ffc200 */
+    --primary-foreground: 0 0% 20%; /* #333 */
+    --primary-light: 47 100% 70%; /* #ffda66 */
+    --primary-muted: 47 100% 90%; /* #fff3cc */
+    --primary-subtle: 47 100% 85%; /* #fff5d5 */
+    
+    /* Secondary - Amber/Gold */
+    --secondary: 42 80% 40%; /* #cc9b00 */
+    --secondary-foreground: 0 0% 100%;
+    
+    /* Success - Green */
+    --success: 142 76% 36%; /* #34a853 */
+    --success-foreground: 0 0% 100%;
+    
+    /* Muted & Neutral */
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 60%; /* #999 */
+    --accent: 47 100% 90%;
+    --accent-foreground: 0 0% 4%;
+    
+    /* Destructive - Red */
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.75rem;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Border & Input */
+    --border: 0 0% 79% 60%; /* rgba(201,201,201,0.6) */
+    --border-subtle: 0 0% 79% 30%;
+    --input: 0 0% 90%;
+    --ring: 45 100% 50%;
+    --radius: 0.375rem; /* 6px comme Figma */
   }
 
   .dark {
@@ -125,21 +144,125 @@ body {
   }
 }
 
-/* Custom church app styles */
+/* Custom church app styles - MyChurchApp Figma Design */
 .church-gradient {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ffc200 0%, #cc9b00 100%);
 }
 
 .church-card {
-  @apply bg-white rounded-xl shadow-sm border border-gray-100;
+  @apply bg-white rounded-md shadow-sm;
+  border: 1px solid rgba(201, 201, 201, 0.3);
+}
+
+.church-card-accent {
+  @apply rounded-md;
+  background-color: #fff3cc;
+}
+
+.church-card-highlight {
+  @apply rounded-md;
+  background-color: #fff5d5;
 }
 
 .church-button-primary {
-  @apply bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors;
+  @apply text-gray-800 px-4 py-2 rounded-md font-semibold transition-all;
+  background-color: #ffda66;
+  box-shadow: 0px 1px 7px 0px rgba(89, 68, 2, 0.2);
+}
+
+.church-button-primary:hover {
+  background-color: #ffc200;
+}
+
+.church-button-secondary {
+  @apply px-4 py-2 rounded-md font-semibold uppercase text-sm transition-all;
+  color: #cc9b00;
+  background-color: rgba(255, 243, 204, 0.6);
+}
+
+.church-button-secondary:hover {
+  background-color: rgba(255, 243, 204, 0.9);
+}
+
+.church-button-outline {
+  @apply px-3 py-1.5 rounded-md font-semibold text-sm transition-all;
+  box-shadow: 0px 1px 7px 0px rgba(89, 68, 2, 0.2);
 }
 
 .church-input {
-  @apply w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  @apply w-full p-3 rounded-md focus:ring-2 focus:ring-yellow-400 focus:border-transparent;
+  border: 1px solid rgba(201, 201, 201, 0.6);
+  background-color: #fffefa;
+}
+
+.church-badge {
+  @apply px-2 py-1 rounded-md text-xs font-medium;
+}
+
+.church-badge-success {
+  @apply church-badge;
+  color: #34a853;
+  background-color: rgba(52, 168, 83, 0.1);
+}
+
+.church-badge-warning {
+  @apply church-badge;
+  color: #cc9b00;
+  background-color: rgba(255, 243, 204, 0.6);
+}
+
+.church-verse-card {
+  @apply rounded-md p-4;
+  background-color: #fff3cc;
+}
+
+.church-verse-reference {
+  @apply text-sm font-semibold;
+  color: #cc9b00;
+}
+
+/* Navigation Bottom Bar */
+.church-nav-bottom {
+  @apply fixed bottom-0 left-0 right-0 flex items-center justify-around py-3;
+  background-color: #fffefa;
+  border-top: 1px solid rgba(179, 179, 179, 0.4);
+}
+
+.church-nav-item {
+  @apply flex flex-col items-center gap-1 text-xs font-semibold;
+  color: #0a0a0a;
+}
+
+.church-nav-item.active {
+  color: #ffc200;
+}
+
+/* Tabs */
+.church-tabs {
+  @apply flex gap-2 p-1 rounded-md;
+  background-color: #fff5d5;
+}
+
+.church-tab {
+  @apply px-3 py-1.5 rounded-md text-sm font-medium transition-all;
+  color: #333;
+}
+
+.church-tab.active {
+  background-color: #ffda66;
+  box-shadow: 0px 1px 7px 0px rgba(89, 68, 2, 0.2);
+}
+
+/* Section headers */
+.church-section-title {
+  @apply text-base font-semibold;
+  color: #0a0a0a;
+}
+
+/* Page background */
+.church-page-bg {
+  background-color: #fffefa;
+  min-height: 100vh;
 }
 
 /* Hide scrollbar */
