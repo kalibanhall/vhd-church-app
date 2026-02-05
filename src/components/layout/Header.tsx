@@ -95,7 +95,7 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setShowSuggestions(true)}
                 onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                className="w-full pl-8 md:pl-10 pr-3 md:pr-4 py-1.5 md:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-8 md:pl-10 pr-3 md:pr-4 py-1.5 md:py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
               />
               
               {/* Simple Results Dropdown */}
@@ -145,11 +145,11 @@ export default function Header({ user, onProfileClick, onTabChange, onMenuClick,
                   <img 
                     src={user.profileImageUrl} 
                     alt="Photo de profil"
-                    className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover border-2 border-blue-200"
+                    className="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover border-2 border-[#ffc200]"
                   />
                 ) : (
-                  <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
-                    <User className="h-4 w-4 md:h-6 md:w-6 text-white" />
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-[#ffc200] to-[#cc9b00] rounded-full flex items-center justify-center">
+                    <User className="h-4 w-4 md:h-6 md:w-6 text-[#0a0a0a]" />
                   </div>
                 )}
                 <div className="text-left hidden md:block">

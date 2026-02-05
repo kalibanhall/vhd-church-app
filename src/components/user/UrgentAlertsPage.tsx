@@ -196,10 +196,10 @@ export default function UrgentAlertsPage() {
       default:
         return {
           icon: Info,
-          color: 'bg-blue-500',
-          bgColor: 'bg-blue-50',
-          borderColor: 'border-blue-500',
-          textColor: 'text-blue-700',
+          color: 'bg-[#ffc200]',
+          bgColor: 'bg-[#fff3cc]',
+          borderColor: 'border-[#ffc200]',
+          textColor: 'text-[#cc9b00]',
           label: 'INFO'
         };
     }
@@ -277,7 +277,7 @@ export default function UrgentAlertsPage() {
         <button
           onClick={() => setSoundEnabled(!soundEnabled)}
           className={`p-2 rounded-full transition-colors ${
-            soundEnabled ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-400'
+            soundEnabled ? 'bg-[#fff3cc] text-[#cc9b00]' : 'bg-gray-100 text-gray-400'
           }`}
         >
           {soundEnabled ? <Volume2 className="h-5 w-5" /> : <VolumeX className="h-5 w-5" />}
@@ -372,7 +372,7 @@ export default function UrgentAlertsPage() {
                     )}
                     <button
                       onClick={() => setSelectedAlert(alert)}
-                      className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700"
+                      className="flex items-center gap-1 text-sm text-[#cc9b00] hover:text-[#e6af00]"
                     >
                       Détails
                       <ChevronRight className="h-4 w-4" />
@@ -426,7 +426,7 @@ export default function UrgentAlertsPage() {
                   <ul className="space-y-2">
                     {selectedAlert.instructions.map((instruction, idx) => (
                       <li key={idx} className="flex items-start gap-2 text-gray-700">
-                        <span className="w-5 h-5 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 mt-0.5">
+                        <span className="w-5 h-5 bg-[#fff3cc] text-[#cc9b00] rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0 mt-0.5">
                           {idx + 1}
                         </span>
                         {instruction}
@@ -450,7 +450,7 @@ export default function UrgentAlertsPage() {
                           <p className="font-medium text-gray-900">{contact.name}</p>
                           <p className="text-sm text-gray-500">{contact.role}</p>
                         </div>
-                        <div className="flex items-center gap-2 text-blue-600">
+                        <div className="flex items-center gap-2 text-[#cc9b00]">
                           <Phone className="h-4 w-4" />
                           {contact.phone}
                         </div>

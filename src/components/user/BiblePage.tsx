@@ -305,7 +305,7 @@ const BiblePage: React.FC = () => {
         <div className={`p-4 rounded-xl flex items-center gap-2 shadow-sm ${
           message.type === 'success' ? 'bg-green-50 text-green-800 border border-green-200' :
           message.type === 'error' ? 'bg-red-50 text-red-800 border border-red-200' :
-          'bg-blue-50 text-blue-800 border border-blue-200'
+          'bg-[#fff3cc] text-[#cc9b00] border border-[#ffc200]'
         }`}>
           <span>{message.text}</span>
           <button onClick={() => setMessage(null)} className="ml-auto hover:bg-white/50 rounded-full p-1">

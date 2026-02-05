@@ -204,12 +204,12 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
         />
       )}
       
-      <aside className={`fixed left-0 top-14 md:top-16 h-[calc(100vh-3.5rem)] md:h-[calc(100vh-4rem)] bg-gradient-to-b from-blue-900 to-blue-800 text-white z-40 flex flex-col transition-all duration-300 ease-in-out w-64 ${
+      <aside className={`fixed left-0 top-14 md:top-16 h-[calc(100vh-3.5rem)] md:h-[calc(100vh-4rem)] bg-gradient-to-b from-[#ffc200] via-[#e6af00] to-[#cc9b00] text-[#0a0a0a] z-40 flex flex-col transition-all duration-300 ease-in-out w-64 ${
         shouldBeVisible ? 'translate-x-0' : '-translate-x-full'
       }`}>
         {/* Header avec Logo - Affiché pour tous sauf ADMIN */}
         {userRole !== 'ADMIN' && (
-          <div className="p-2 md:p-3 border-b border-blue-700">
+          <div className="p-2 md:p-3 border-b border-[#cc9b00]">
             <div className="flex items-center justify-between">
               <div className="text-center flex-1">
                 {/* Logo VHD - Taille réduite */}
@@ -219,16 +219,16 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
                     alt="Logo VHD"
                     width={40}
                     height={40}
-                    className="md:w-[50px] md:h-[50px] rounded-full border border-blue-300 object-cover"
+                    className="md:w-[50px] md:h-[50px] rounded-full border border-[#fff3cc] object-cover"
                   />
                 </div>
-                <h1 className="text-xs md:text-sm font-bold text-white leading-tight">Ministères VHD</h1>
-                <p className="text-blue-200 text-xs hidden md:block">{getSpaceTitle()}</p>
+                <h1 className="text-xs md:text-sm font-bold text-[#0a0a0a] leading-tight">Ministères VHD</h1>
+                <p className="text-[#5c4d00] text-xs hidden md:block">{getSpaceTitle()}</p>
               </div>
               {/* Bouton de fermeture sidebar */}
               <button
                 onClick={onToggleCollapse}
-                className="text-blue-200 hover:text-white p-1 rounded transition-colors ml-2"
+                className="text-[#5c4d00] hover:text-[#0a0a0a] p-1 rounded transition-colors ml-2"
                 title="Masquer le menu"
               >
                 <X className="h-4 w-4" />
@@ -250,8 +250,8 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
                   onClick={() => handleMenuItemClick(item.id)}
                   className={`w-full flex items-center justify-between px-4 py-3 text-left rounded-lg transition-colors ${
                     activeTab === item.id
-                      ? 'bg-blue-700 text-white'
-                      : 'text-blue-100 hover:bg-blue-700 hover:text-white'
+                      ? 'bg-[#0a0a0a]/20 text-[#0a0a0a] font-bold'
+                      : 'text-[#3d3200] hover:bg-[#0a0a0a]/10 hover:text-[#0a0a0a]'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
@@ -273,7 +273,7 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
             <li>
               <button
                 onClick={() => setIsDashboardOpen(!isDashboardOpen)}
-                className={`w-full flex items-center ${isCollapsed ? 'justify-center px-2' : 'justify-between px-4'} py-3 text-left rounded-lg transition-colors text-blue-100 hover:bg-blue-700 hover:text-white mt-4`}
+                className={`w-full flex items-center ${isCollapsed ? 'justify-center px-2' : 'justify-between px-4'} py-3 text-left rounded-lg transition-colors text-[#3d3200] hover:bg-[#0a0a0a]/10 hover:text-[#0a0a0a] mt-4`}
                 title={isCollapsed ? 'Tableau de Bord' : undefined}
               >
                 <div className={`flex items-center ${isCollapsed ? '' : 'space-x-3'}`}>
@@ -298,8 +298,8 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
                           onClick={() => handleMenuItemClick(subItem.id)}
                           className={`w-full flex items-center space-x-3 px-4 py-2 text-left rounded-lg transition-colors ${
                             activeTab === subItem.id
-                              ? 'bg-blue-600 text-white'
-                              : 'text-blue-200 hover:bg-blue-600 hover:text-white'
+                              ? 'bg-[#0a0a0a]/20 text-[#0a0a0a] font-bold'
+                              : 'text-[#5c4d00] hover:bg-[#0a0a0a]/10 hover:text-[#0a0a0a]'
                           }`}
                         >
                           <SubIcon className="h-4 w-4" />
@@ -318,7 +318,7 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
             <li>
               {/* Titre Tableau de Bord avec icône Settings */}
               {!isCollapsed && (
-                <div className="flex items-center justify-between px-4 py-3 text-blue-100 mb-4">
+                <div className="flex items-center justify-between px-4 py-3 text-[#3d3200] mb-4">
                   <div className="flex items-center space-x-3">
                     <Settings className="h-5 w-5" />
                     <span className="font-medium">{getDashboardTitle()}</span>
@@ -328,7 +328,7 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
                     {userRole === 'PASTOR' && activeTab === 'pastor-appointments' && (
                       <button
                         onClick={() => handleMenuItemClick('home')}
-                        className="text-blue-200 hover:text-white p-1 rounded transition-colors"
+                        className="text-[#5c4d00] hover:text-[#0a0a0a] p-1 rounded transition-colors"
                         title="Retour au menu principal"
                       >
                         <Home className="h-4 w-4" />
@@ -349,8 +349,8 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
                         onClick={() => handleMenuItemClick(subItem.id)}
                         className={`w-full flex items-center space-x-3 px-4 py-3 text-left rounded-lg transition-colors ${
                           activeTab === subItem.id
-                            ? 'bg-blue-700 text-white'
-                            : 'text-blue-100 hover:bg-blue-700 hover:text-white'
+                            ? 'bg-[#0a0a0a]/20 text-[#0a0a0a] font-bold'
+                            : 'text-[#3d3200] hover:bg-[#0a0a0a]/10 hover:text-[#0a0a0a]'
                         }`}
                         title={isCollapsed ? subItem.label : undefined}
                       >
@@ -367,8 +367,8 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
       </nav>
 
       {/* Footer */}
-      <div className="p-4 border-t border-blue-700 mt-auto">
-        <div className="text-center text-blue-200 text-sm">
+      <div className="p-4 border-t border-[#cc9b00] mt-auto">
+        <div className="text-center text-[#5c4d00] text-sm">
           <p>Version 1.0.3</p>
           <p>© 2025 My Church App</p>
         </div>

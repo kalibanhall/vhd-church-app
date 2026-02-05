@@ -294,7 +294,7 @@ export default function AudiobooksPage() {
           <p className="text-sm text-gray-500">Audiobooks</p>
         </div>
         <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">
-          <p className="text-2xl font-bold text-blue-600">{favorites.length}</p>
+          <p className="text-2xl font-bold text-[#cc9b00]">{favorites.length}</p>
           <p className="text-sm text-gray-500">Favoris</p>
         </div>
         <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">

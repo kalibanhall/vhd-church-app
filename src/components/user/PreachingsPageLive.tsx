@@ -145,7 +145,7 @@ export default function PreachingsPageLive() {
   const getMediaBadgeColor = (type: string) => {
     switch (type) {
       case 'VIDEO': return 'bg-purple-100 text-purple-700';
-      case 'AUDIO': return 'bg-blue-100 text-blue-700';
+      case 'AUDIO': return 'bg-[#fff3cc] text-[#cc9b00]';
       case 'LIVE': return 'bg-red-100 text-red-700';
       case 'TEXT': return 'bg-gray-100 text-gray-700';
       default: return 'bg-gray-100 text-gray-700';
@@ -238,7 +238,7 @@ export default function PreachingsPageLive() {
             <p className="text-xs text-gray-600">Vidéos</p>
           </div>
           <div className="bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100">
-            <p className="text-2xl font-bold text-blue-600">{audioCount}</p>
+            <p className="text-2xl font-bold text-[#cc9b00]">{audioCount}</p>
             <p className="text-xs text-gray-600">Audio</p>
           </div>
           <div className="bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100">
@@ -464,7 +464,7 @@ export default function PreachingsPageLive() {
 
                           {sermon.view_count !== undefined && sermon.view_count > 0 && (
                             <div className="flex items-center gap-1">
-                              <Eye className="h-3 w-3 text-blue-500" />
+                              <Eye className="h-3 w-3 text-[#cc9b00]" />
                               <span>{sermon.view_count} vue{sermon.view_count > 1 ? 's' : ''}</span>
                             </div>
                           )}
@@ -629,7 +629,7 @@ function MediaPlayer({ sermon, onClose, isFullscreen, onToggleFullscreen, videoR
               </div>
               {sermon.view_count !== undefined && (
                 <div className="flex items-center gap-2">
-                  <Eye className="h-4 w-4 text-blue-500" />
+                  <Eye className="h-4 w-4 text-[#cc9b00]" />
                   <span>{sermon.view_count} vues</span>
                 </div>
               )}

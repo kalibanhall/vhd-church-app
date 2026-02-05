@@ -246,7 +246,7 @@ const NotesPage: React.FC = () => {
     switch (type) {
       case 'sermon': return 'bg-purple-100 text-purple-700'
       case 'bible_study': return 'bg-amber-100 text-amber-700'
-      default: return 'bg-blue-100 text-blue-700'
+      default: return 'bg-[#fff3cc] text-[#cc9b00]'
     }
   }
 
@@ -266,9 +266,9 @@ const NotesPage: React.FC = () => {
   return (
     <div className="space-y-6 p-4 md:p-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl p-6 text-white">
+      <div className="bg-gradient-to-r from-[#ffc200] to-[#cc9b00] rounded-2xl p-6 text-[#0a0a0a]">
         <h1 className="text-2xl md:text-3xl font-bold mb-2">📝 Mes Notes</h1>
-        <p className="text-blue-100">
+        <p className="text-[#3d3200]">
           Prenez des notes pendant les prédications et gardez une trace de vos réflexions spirituelles
         </p>
       </div>
@@ -278,7 +278,7 @@ const NotesPage: React.FC = () => {
         <div className={`p-4 rounded-lg flex items-center gap-2 ${
           message.type === 'success' ? 'bg-green-50 text-green-800 border border-green-200' :
           message.type === 'error' ? 'bg-red-50 text-red-800 border border-red-200' :
-          'bg-blue-50 text-blue-800 border border-blue-200'
+          'bg-[#fff3cc] text-[#cc9b00] border border-[#ffc200]'
         }`}>
           <span>{message.text}</span>
           <button onClick={() => setMessage(null)} className="ml-auto">
@@ -302,7 +302,7 @@ const NotesPage: React.FC = () => {
           <div className="text-sm text-gray-500">Études</div>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-          <div className="text-2xl font-bold text-blue-600">{stats.personal}</div>
+          <div className="text-2xl font-bold text-[#cc9b00]">{stats.personal}</div>
           <div className="text-sm text-gray-500">Personnelles</div>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
@@ -381,7 +381,7 @@ const NotesPage: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Tags</label>
                 <div className="flex flex-wrap gap-2 mb-2">
                   {editTags.map(tag => (
-                    <span key={tag} className="flex items-center gap-1 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm">
+                    <span key={tag} className="flex items-center gap-1 px-3 py-1 bg-[#fff3cc] text-[#cc9b00] rounded-full text-sm">
                       {tag}
                       <button onClick={() => removeTag(tag)}>
                         <X className="h-3 w-3" />

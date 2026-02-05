@@ -78,8 +78,8 @@ export default function ConflictResolutionPage() {
         <p className="text-gray-600 mb-6">
           Un responsable de médiation vous contactera très prochainement pour organiser une rencontre.
         </p>
-        <div className="bg-blue-50 rounded-xl p-4 mb-6 text-left">
-          <p className="text-sm text-blue-700">
+        <div className="bg-[#fff3cc] rounded-xl p-4 mb-6 text-left">
+          <p className="text-sm text-[#cc9b00]">
             <Lock className="h-4 w-4 inline mr-2" />
             Votre demande est traitée en toute confidentialité.
           </p>
@@ -98,8 +98,8 @@ export default function ConflictResolutionPage() {
     <div className="max-w-2xl mx-auto p-4 pb-24">
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
-          <Scale className="h-8 w-8 text-blue-600" />
+        <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+          <Scale className="h-8 w-8 text-[#cc9b00]" />
         </div>
         <h1 className="text-2xl font-bold text-gray-900">Résoudre un conflit</h1>
         <p className="text-gray-600 mt-2">
@@ -155,8 +155,8 @@ export default function ConflictResolutionPage() {
                   }}
                   className={`w-full flex items-center gap-4 p-4 rounded-xl border transition-all text-left ${
                     request.conflictType === type.id
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-blue-300 bg-white'
+                      ? 'border-[#ffc200] bg-[#fff3cc]'
+                      : 'border-gray-200 hover:border-[#ffda66] bg-white'
                   }`}
                 >
                   <div className="p-2 bg-gray-100 rounded-xl">
@@ -258,8 +258,8 @@ export default function ConflictResolutionPage() {
                 onClick={() => setRequest({ ...request, urgency: level.id })}
                 className={`w-full p-4 rounded-xl border text-left transition-all ${
                   request.urgency === level.id
-                    ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-200 hover:border-blue-300 bg-white'
+                    ? 'border-[#ffc200] bg-[#fff3cc]'
+                    : 'border-gray-200 hover:border-[#ffda66] bg-white'
                 }`}
               >
                 <div className="flex items-center justify-between">
@@ -268,9 +268,9 @@ export default function ConflictResolutionPage() {
                     <p className="text-sm text-gray-500">{level.description}</p>
                   </div>
                   <div className={`w-5 h-5 rounded-full border-2 ${
-                    request.urgency === level.id ? 'border-blue-500 bg-blue-500' : 'border-gray-300'
+                    request.urgency === level.id ? 'border-[#ffc200] bg-[#ffc200]' : 'border-gray-300'
                   }`}>
-                    {request.urgency === level.id && <Check className="h-4 w-4 text-white" />}
+                    {request.urgency === level.id && <Check className="h-4 w-4 text-[#0a0a0a]" />}
                   </div>
                 </div>
               </button>
@@ -282,7 +282,7 @@ export default function ConflictResolutionPage() {
               type="checkbox"
               checked={request.confidential}
               onChange={(e) => setRequest({ ...request, confidential: e.target.checked })}
-              className="mt-1 w-5 h-5 rounded border-gray-300 text-blue-600"
+              className="mt-1 w-5 h-5 rounded border-gray-300 text-[#ffc200]"
             />
             <div>
               <p className="font-medium text-gray-900">Je souhaite que cette demande reste confidentielle</p>
@@ -317,7 +317,7 @@ export default function ConflictResolutionPage() {
         </p>
         <a
           href="tel:+243812345678"
-          className="flex items-center gap-2 text-blue-600 font-medium"
+          className="flex items-center gap-2 text-[#cc9b00] font-medium"
         >
           <Phone className="h-4 w-4" />
           Ligne pastorale : +243 81 234 56 78

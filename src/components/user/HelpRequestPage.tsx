@@ -78,7 +78,7 @@ const helpTypes = [
   { value: 'material', label: 'Aide matérielle', icon: Home, color: 'bg-amber-100 text-amber-700', description: 'Nourriture, vêtements, logement...' },
   { value: 'financial', label: 'Aide financière', icon: Briefcase, color: 'bg-green-100 text-green-700', description: 'Difficultés financières temporaires' },
   { value: 'spiritual', label: 'Soutien spirituel', icon: Heart, color: 'bg-purple-100 text-purple-700', description: 'Accompagnement dans la foi' },
-  { value: 'counseling', label: 'Counseling', icon: Users, color: 'bg-blue-100 text-blue-700', description: 'Conseil familial, personnel' },
+  { value: 'counseling', label: 'Counseling', icon: Users, color: 'bg-[#fff3cc] text-[#cc9b00]', description: 'Conseil familial, personnel' },
   { value: 'prayer', label: 'Prière spéciale', icon: Heart, color: 'bg-pink-100 text-pink-700', description: 'Demande de prière urgente' },
   { value: 'other', label: 'Autre', icon: HeartHandshake, color: 'bg-gray-100 text-gray-700', description: 'Autre type d\'aide' }
 ]
@@ -266,7 +266,7 @@ const HelpRequestPage: React.FC = () => {
       case 'pending':
         return <span className="flex items-center gap-1 px-2 py-1 bg-yellow-100 text-yellow-700 rounded-full text-xs"><Clock className="h-3 w-3" />En attente</span>
       case 'in_progress':
-        return <span className="flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs"><AlertCircle className="h-3 w-3" />En cours</span>
+        return <span className="flex items-center gap-1 px-2 py-1 bg-[#fff3cc] text-[#cc9b00] rounded-full text-xs"><AlertCircle className="h-3 w-3" />En cours</span>
       case 'completed':
         return <span className="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs"><CheckCircle className="h-3 w-3" />Traitée</span>
       case 'cancelled':
@@ -328,7 +328,7 @@ const HelpRequestPage: React.FC = () => {
         <div className={`p-4 rounded-lg flex items-center gap-2 ${
           message.type === 'success' ? 'bg-green-50 text-green-800 border border-green-200' :
           message.type === 'error' ? 'bg-red-50 text-red-800 border border-red-200' :
-          'bg-blue-50 text-blue-800 border border-blue-200'
+          'bg-[#fff3cc] text-[#cc9b00] border border-[#ffc200]'
         }`}>
           <span>{message.text}</span>
           <button onClick={() => setMessage(null)} className="ml-auto">
@@ -556,7 +556,7 @@ const HelpRequestPage: React.FC = () => {
             <div className="text-sm text-gray-500">En attente</div>
           </div>
           <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-            <div className="text-2xl font-bold text-blue-600">{stats.inProgress}</div>
+            <div className="text-2xl font-bold text-[#cc9b00]">{stats.inProgress}</div>
             <div className="text-sm text-gray-500">En cours</div>
           </div>
           <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
@@ -605,11 +605,11 @@ const HelpRequestPage: React.FC = () => {
                   <p className="text-gray-600 mb-3 line-clamp-2">{request.description}</p>
 
                   {request.response && (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-3">
-                      <p className="text-sm font-medium text-blue-800 mb-1">Réponse de l&apos;église :</p>
-                      <p className="text-sm text-blue-700">{request.response}</p>
+                    <div className="bg-[#fff3cc] border border-[#ffc200] rounded-lg p-3 mb-3">
+                      <p className="text-sm font-medium text-[#0a0a0a] mb-1">Réponse de l&apos;église :</p>
+                      <p className="text-sm text-[#cc9b00]">{request.response}</p>
                       {request.assignedTo && (
-                        <p className="text-xs text-blue-600 mt-2 flex items-center gap-1">
+                        <p className="text-xs text-[#cc9b00] mt-2 flex items-center gap-1">
                           <User className="h-3 w-3" />
                           Assigné à : {request.assignedTo}
                         </p>

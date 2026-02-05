@@ -19,7 +19,7 @@ export default function HomePage({ user, events, sermons, stats }: HomePageProps
       label: 'Prochain culte',
       value: stats.nextEvent?.title || 'Aucun',
       subtitle: stats.nextEvent ? `${stats.nextEvent.eventDate} à ${stats.nextEvent.startTime}` : '',
-      color: 'bg-blue-500'
+      color: 'bg-[#ffc200]'
     },
     {
       icon: Users,
@@ -47,11 +47,11 @@ export default function HomePage({ user, events, sermons, stats }: HomePageProps
   return (
     <div className="space-y-6">
       {/* Welcome Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-6 text-white">
+      <div className="bg-gradient-to-r from-[#ffc200] to-[#cc9b00] rounded-2xl p-6 text-[#0a0a0a]">
         <h1 className="text-2xl font-bold mb-2">
           Bienvenue, {user.firstName} {user.lastName}
         </h1>
-        <p className="text-blue-100">
+        <p className="text-[#3d3200]">
           Que la paix du Seigneur soit avec vous en ce jour béni.
         </p>
       </div>
@@ -84,8 +84,8 @@ export default function HomePage({ user, events, sermons, stats }: HomePageProps
           <div className="space-y-4">
             {events.slice(0, 3).map((event) => (
               <div key={event.id} className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
-                <div className="bg-blue-100 p-2 rounded-lg">
-                  <Calendar className="h-5 w-5 text-blue-600" />
+                <div className="bg-[#fff3cc] p-2 rounded-lg">
+                  <Calendar className="h-5 w-5 text-[#cc9b00]" />
                 </div>
                 <div className="flex-1">
                   <p className="font-medium text-gray-900">{event.title}</p>

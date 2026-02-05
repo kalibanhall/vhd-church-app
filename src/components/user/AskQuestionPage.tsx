@@ -77,7 +77,7 @@ export default function AskQuestionPage() {
   });
 
   const categories = [
-    { id: 'bible', label: 'Questions bibliques', icon: BookOpen, color: 'text-blue-600', bgColor: 'bg-blue-100' },
+    { id: 'bible', label: 'Questions bibliques', icon: BookOpen, color: 'text-[#cc9b00]', bgColor: 'bg-[#fff3cc]' },
     { id: 'faith', label: 'Questions de foi', icon: Heart, color: 'text-purple-600', bgColor: 'bg-purple-100' },
     { id: 'church', label: 'Vie d\'église', icon: Users, color: 'text-green-600', bgColor: 'bg-green-100' },
     { id: 'practical', label: 'Questions pratiques', icon: Briefcase, color: 'text-orange-600', bgColor: 'bg-orange-100' },

@@ -129,7 +129,7 @@ export default function MobilePaymentPortal({
         {providers.map((provider) => (
           <Card 
             key={provider.id}
-            className="cursor-pointer transition-all hover:shadow-md border-2 hover:border-blue-300"
+            className="cursor-pointer transition-all hover:shadow-md border-2 hover:border-[#ffc200]"
             onClick={() => handleProviderSelect(provider.id)}
           >
             <CardContent className="p-6">
@@ -245,8 +245,8 @@ export default function MobilePaymentPortal({
         </CardContent>
       </Card>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <p className="text-blue-800 text-sm">
+      <div className="bg-[#fff3cc] border border-[#ffc200] rounded-lg p-4">
+        <p className="text-[#cc9b00] text-sm">
           📱 Vous recevrez une notification sur votre téléphone pour confirmer le paiement.
         </p>
       </div>
@@ -263,7 +263,7 @@ export default function MobilePaymentPortal({
 
   const renderProcessing = () => (
     <div className="text-center space-y-6">
-      <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto"></div>
+      <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#ffc200] mx-auto"></div>
       
       <div>
         <h2 className="text-2xl font-bold text-gray-900 mb-2">Traitement en cours...</h2>

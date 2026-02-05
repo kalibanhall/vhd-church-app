@@ -300,7 +300,7 @@ export default function LibraryPage() {
           <p className="text-sm text-gray-500">Livres</p>
         </div>
         <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">
-          <p className="text-2xl font-bold text-blue-600">{favorites.length}</p>
+          <p className="text-2xl font-bold text-[#cc9b00]">{favorites.length}</p>
           <p className="text-sm text-gray-500">Favoris</p>
         </div>
         <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">
@@ -311,7 +311,7 @@ export default function LibraryPage() {
 
       {/* Quick Actions */}
       <div className="flex gap-3 mb-6 overflow-x-auto pb-2">
-        <a href="/library/borrowed" className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-xl whitespace-nowrap hover:bg-blue-100">
+        <a href="/library/borrowed" className="flex items-center gap-2 px-4 py-2 bg-[#fff3cc] text-[#cc9b00] rounded-xl whitespace-nowrap hover:bg-[#ffda66]">
           <BookMarked className="h-5 w-5" />
           Mes emprunts
         </a>
@@ -419,8 +419,8 @@ export default function LibraryPage() {
                   </div>
                 )}
                 {book.digitalAvailable && (
-                  <div className="absolute bottom-2 right-2 p-1.5 bg-blue-500 rounded-full">
-                    <Download className="h-3 w-3 text-white" />
+                  <div className="absolute bottom-2 right-2 p-1.5 bg-[#ffc200] rounded-full">
+                    <Download className="h-3 w-3 text-[#0a0a0a]" />
                   </div>
                 )}
                 <button
@@ -555,7 +555,7 @@ export default function LibraryPage() {
                   </button>
                 )}
                 {selectedBook.digitalAvailable && (
-                  <button className="flex-1 py-3 border border-blue-600 text-blue-600 rounded-xl font-medium hover:bg-blue-50 flex items-center justify-center gap-2">
+                  <button className="flex-1 py-3 border border-[#ffc200] text-[#cc9b00] rounded-xl font-medium hover:bg-[#fff3cc] flex items-center justify-center gap-2">
                     <Download className="h-5 w-5" />
                     Télécharger
                   </button>

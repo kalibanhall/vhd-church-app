@@ -87,15 +87,15 @@ export default function AbuseReportPage() {
           Votre signalement sera traité avec la plus grande confidentialité et sérieux par notre équipe dédiée.
         </p>
         
-        <div className="bg-blue-50 rounded-xl p-4 mb-4 text-left">
-          <h3 className="font-semibold text-blue-900 mb-2 flex items-center gap-2">
+        <div className="bg-[#fff3cc] rounded-xl p-4 mb-4 text-left">
+          <h3 className="font-semibold text-[#0a0a0a] mb-2 flex items-center gap-2">
             <Lock className="h-4 w-4" />
             Numéro de référence
           </h3>
-          <p className="text-2xl font-mono text-blue-700">
+          <p className="text-2xl font-mono text-[#cc9b00]">
             REF-{Math.random().toString(36).substr(2, 9).toUpperCase()}
           </p>
-          <p className="text-sm text-blue-600 mt-2">Conservez ce numéro pour le suivi</p>
+          <p className="text-sm text-[#cc9b00] mt-2">Conservez ce numéro pour le suivi</p>
         </div>
 
         {!anonymous && report.wantsFollowUp && (
@@ -401,8 +401,8 @@ export default function AbuseReportPage() {
             </>
           )}
 
-          <div className="p-4 bg-blue-50 rounded-xl">
-            <p className="text-sm text-blue-700">
+          <div className="p-4 bg-[#fff3cc] rounded-xl">
+            <p className="text-sm text-[#cc9b00]">
               <Heart className="h-4 w-4 inline mr-2" />
               Nous vous remercions de votre courage. L'église s'engage à agir pour la protection de tous ses membres.
             </p>
@@ -430,15 +430,15 @@ export default function AbuseReportPage() {
       <div className="mt-8 p-4 bg-gray-50 rounded-xl">
         <h3 className="font-semibold text-gray-900 mb-3">Ressources d'aide</h3>
         <div className="space-y-2 text-sm">
-          <a href="tel:3919" className="flex items-center gap-2 text-blue-600">
+          <a href="tel:3919" className="flex items-center gap-2 text-[#cc9b00]">
             <Phone className="h-4 w-4" />
             3919 - Violences Femmes Info
           </a>
-          <a href="tel:119" className="flex items-center gap-2 text-blue-600">
+          <a href="tel:119" className="flex items-center gap-2 text-[#cc9b00]">
             <Phone className="h-4 w-4" />
             119 - Enfance en danger
           </a>
-          <a href="https://www.service-public.fr/particuliers/vosdroits/N19805" target="_blank" rel="noopener" className="flex items-center gap-2 text-blue-600">
+          <a href="https://www.service-public.fr/particuliers/vosdroits/N19805" target="_blank" rel="noopener" className="flex items-center gap-2 text-[#cc9b00]">
             <ExternalLink className="h-4 w-4" />
             Service-Public.fr - Porter plainte
           </a>

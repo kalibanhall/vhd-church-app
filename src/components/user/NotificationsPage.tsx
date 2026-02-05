@@ -190,7 +190,7 @@ export default function NotificationsPage() {
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'event': return 'bg-blue-100 text-blue-600';
+      case 'event': return 'bg-[#fff3cc] text-[#cc9b00]';
       case 'prayer': return 'bg-purple-100 text-purple-600';
       case 'message': return 'bg-green-100 text-green-600';
       case 'donation': return 'bg-yellow-100 text-yellow-600';
@@ -320,7 +320,7 @@ export default function NotificationsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#ffc200] border-t-transparent"></div>
       </div>
     );
   }
@@ -370,7 +370,7 @@ export default function NotificationsPage() {
           {unreadCount > 0 && (
             <button
               onClick={markAllAsRead}
-              className="text-sm text-blue-600 hover:text-blue-700"
+              className="text-sm text-[#cc9b00] hover:text-[#e6af00]"
             >
               Tout marquer comme lu
             </button>
@@ -395,7 +395,7 @@ export default function NotificationsPage() {
                       className={`bg-white rounded-xl p-4 shadow-sm border transition-all ${
                         notification.isRead 
                           ? 'border-gray-100' 
-                          : 'border-blue-200 bg-blue-50/30'
+                          : 'border-[#ffc200] bg-[#fff3cc]/30'
                       }`}
                     >
                       <div className="flex items-start gap-3">
@@ -431,7 +431,7 @@ export default function NotificationsPage() {
                                 {notification.actionUrl && (
                                   <a
                                     href={notification.actionUrl}
-                                    className="text-xs text-blue-600 hover:text-blue-700 flex items-center gap-1"
+                                    className="text-xs text-[#cc9b00] hover:text-[#e6af00] flex items-center gap-1"
                                   >
                                     {notification.actionLabel || 'Voir'}
                                     <ChevronRight className="h-3 w-3" />

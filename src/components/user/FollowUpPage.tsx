@@ -66,8 +66,8 @@ export default function FollowUpPage() {
       title: 'Discipulat',
       description: 'Formation approfondie pour devenir un disciple de Christ',
       icon: BookOpen,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-100',
+      color: 'text-[#cc9b00]',
+      bgColor: 'bg-[#fff3cc]',
     },
     {
       id: 'crisis',
@@ -170,8 +170,8 @@ export default function FollowUpPage() {
     <div className="max-w-2xl mx-auto p-4 pb-24">
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
-          <Heart className="h-8 w-8 text-blue-600" />
+        <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+          <Heart className="h-8 w-8 text-[#cc9b00]" />
         </div>
         <h1 className="text-2xl font-bold text-gray-900">Être suivi</h1>
         <p className="text-gray-600 mt-2">
@@ -224,8 +224,8 @@ export default function FollowUpPage() {
                   }}
                   className={`flex items-center gap-4 p-4 rounded-xl border transition-all text-left ${
                     request.type === type.id
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-blue-300 bg-white'
+                      ? 'border-[#ffc200] bg-[#fff3cc]'
+                      : 'border-gray-200 hover:border-[#ffda66] bg-white'
                   }`}
                 >
                   <div className={`p-3 rounded-xl ${type.bgColor}`}>
@@ -256,15 +256,15 @@ export default function FollowUpPage() {
                 onClick={() => setRequest({ ...request, reason })}
                 className={`p-4 rounded-xl border text-left transition-all ${
                   request.reason === reason
-                    ? 'border-blue-500 bg-blue-50'
-                    : 'border-gray-200 hover:border-blue-300 bg-white'
+                    ? 'border-[#ffc200] bg-[#fff3cc]'
+                    : 'border-gray-200 hover:border-[#ffda66] bg-white'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
-                    request.reason === reason ? 'border-blue-500 bg-blue-500' : 'border-gray-300'
+                    request.reason === reason ? 'border-[#ffc200] bg-[#ffc200]' : 'border-gray-300'
                   }`}>
-                    {request.reason === reason && <Check className="h-3 w-3 text-white" />}
+                    {request.reason === reason && <Check className="h-3 w-3 text-[#0a0a0a]" />}
                   </div>
                   <span className="text-gray-900">{reason}</span>
                 </div>

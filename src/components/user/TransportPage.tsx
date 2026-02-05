@@ -323,8 +323,8 @@ export default function TransportPage() {
     return (
       <div className="max-w-4xl mx-auto p-4 pb-24">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
-            <Loader2 className="h-8 w-8 text-blue-600 animate-spin" />
+          <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+            <Loader2 className="h-8 w-8 text-[#cc9b00] animate-spin" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Transport & Navette</h1>
           <p className="text-gray-600 mt-2">Chargement des trajets...</p>
@@ -351,8 +351,8 @@ export default function TransportPage() {
     <div className="max-w-4xl mx-auto p-4 pb-24">
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
-          <Bus className="h-8 w-8 text-blue-600" />
+        <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+          <Bus className="h-8 w-8 text-[#cc9b00]" />
         </div>
         <h1 className="text-2xl font-bold text-gray-900">Transport & Navette</h1>
         <p className="text-gray-600 mt-2">
@@ -369,7 +369,7 @@ export default function TransportPage() {
             placeholder="Rechercher un trajet, une gare, un conducteur..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200] focus:border-[#ffc200]"
           />
         </div>
 
@@ -399,7 +399,7 @@ export default function TransportPage() {
       <div className="mb-6">
         <button
           onClick={() => setShowOfferModal(true)}
-          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl font-medium hover:from-blue-700 hover:to-blue-800"
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-[#ffc200] to-[#cc9b00] text-[#0a0a0a] rounded-xl font-medium hover:from-[#cc9b00] hover:to-[#e6af00] shadow-church"
         >
           <Plus className="h-5 w-5" />
           Proposer un trajet
@@ -408,8 +408,8 @@ export default function TransportPage() {
 
       {/* Stats */}
       <div className="grid grid-cols-3 gap-3 mb-6">
-        <div className="bg-blue-50 rounded-xl p-3 text-center">
-          <p className="text-2xl font-bold text-blue-600">{filteredRoutes.filter(r => r.type === 'shuttle').length}</p>
+        <div className="bg-[#fff3cc] rounded-xl p-3 text-center">
+          <p className="text-2xl font-bold text-[#cc9b00]">{filteredRoutes.filter(r => r.type === 'shuttle').length}</p>
           <p className="text-xs text-gray-600">Navettes</p>
         </div>
         <div className="bg-green-50 rounded-xl p-3 text-center">
@@ -440,9 +440,9 @@ export default function TransportPage() {
             >
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
-                  <div className={`p-3 rounded-xl ${route.type === 'shuttle' ? 'bg-blue-100' : 'bg-green-100'}`}>
+                  <div className={`p-3 rounded-xl ${route.type === 'shuttle' ? 'bg-[#fff3cc]' : 'bg-green-100'}`}>
                     {route.type === 'shuttle' ? (
-                      <Bus className="h-6 w-6 text-blue-600" />
+                      <Bus className="h-6 w-6 text-[#cc9b00]" />
                     ) : (
                       <Car className="h-6 w-6 text-green-600" />
                     )}
@@ -479,7 +479,7 @@ export default function TransportPage() {
                   </div>
                 )}
                 <div className="flex items-center gap-2 text-sm">
-                  <div className="w-2 h-2 rounded-full bg-blue-500" />
+                  <div className="w-2 h-2 rounded-full bg-[#ffc200]" />
                   <MapPin className="h-4 w-4 text-gray-400" />
                   <span className="text-gray-700">{route.destination.location}</span>
                 </div>
@@ -544,8 +544,8 @@ export default function TransportPage() {
               <div className="space-y-4">
                 {/* Driver Info */}
                 <div className="flex items-center gap-4 p-3 bg-gray-50 rounded-xl">
-                  <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                    <User className="h-6 w-6 text-blue-600" />
+                  <div className="w-12 h-12 rounded-full bg-[#fff3cc] flex items-center justify-center">
+                    <User className="h-6 w-6 text-[#cc9b00]" />
                   </div>
                   <div className="flex-1">
                     <p className="font-medium text-gray-900">{selectedRoute.driver.name}</p>
@@ -559,7 +559,7 @@ export default function TransportPage() {
                   {selectedRoute.driver.phone && (
                     <a
                       href={`tel:${selectedRoute.driver.phone}`}
-                      className="p-2 bg-blue-100 text-blue-600 rounded-full"
+                      className="p-2 bg-[#fff3cc] text-[#cc9b00] rounded-full"
                     >
                       <Phone className="h-5 w-5" />
                     </a>
@@ -573,7 +573,7 @@ export default function TransportPage() {
                     <div>
                       <p className="font-medium text-gray-900">{selectedRoute.departure.location}</p>
                       <p className="text-sm text-gray-500">{selectedRoute.departure.address}</p>
-                      <p className="text-sm text-blue-600">{selectedRoute.departure.time}</p>
+                      <p className="text-sm text-[#cc9b00]">{selectedRoute.departure.time}</p>
                     </div>
                   </div>
 
@@ -588,7 +588,7 @@ export default function TransportPage() {
                   ))}
 
                   <div className="flex items-start gap-3">
-                    <div className="w-3 h-3 rounded-full bg-blue-500 mt-1.5" />
+                    <div className="w-3 h-3 rounded-full bg-[#ffc200] mt-1.5" />
                     <div>
                       <p className="font-medium text-gray-900">{selectedRoute.destination.location}</p>
                       <p className="text-sm text-gray-500">{selectedRoute.destination.address}</p>

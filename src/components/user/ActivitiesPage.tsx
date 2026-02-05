@@ -83,7 +83,7 @@ const eventIcons: Record<string, React.ReactNode> = {
 
 // Couleurs par type d'événement
 const eventColors: Record<string, { bg: string, text: string, border: string }> = {
-  'WORSHIP': { bg: 'bg-blue-50', text: 'text-blue-700', border: 'border-blue-200' },
+  'WORSHIP': { bg: 'bg-[#fff3cc]', text: 'text-[#cc9b00]', border: 'border-[#ffc200]' },
   'BIBLE_STUDY': { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200' },
   'PRAYER': { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200' },
   'YOUTH': { bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-200' },
@@ -333,7 +333,7 @@ const ActivitiesPage: React.FC = () => {
         <div className={`p-4 rounded-xl flex items-center gap-2 shadow-sm ${
           message.type === 'success' ? 'bg-green-50 text-green-800 border border-green-200' :
           message.type === 'error' ? 'bg-red-50 text-red-800 border border-red-200' :
-          'bg-blue-50 text-blue-800 border border-blue-200'
+          'bg-[#fff3cc] text-[#cc9b00] border border-[#ffc200]'
         }`}>
           {message.type === 'success' && <CheckCircle className="h-5 w-5" />}
           {message.type === 'error' && <XCircle className="h-5 w-5" />}
@@ -405,7 +405,7 @@ const ActivitiesPage: React.FC = () => {
           {/* Événements à venir */}
           <div>
             <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <Bell className="h-5 w-5 text-blue-600" />
+              <Bell className="h-5 w-5 text-[#cc9b00]" />
               Événements à venir ({upcomingEvents.length})
             </h2>
             
