@@ -636,7 +636,7 @@ export default function MutualHelpPage() {
                 className={`flex-1 py-3 rounded-xl font-medium flex items-center justify-center gap-2 ${
                   selectedRequest.type === 'offer'
                     ? 'bg-green-600 text-white hover:bg-green-700'
-                    : 'bg-blue-600 text-white hover:bg-blue-700'
+                    : 'bg-[#ffc200] text-[#0a0a0a] hover:bg-[#cc9b00] shadow-church'
                 }`}
               >
                 <HeartHandshake className="h-5 w-5" />

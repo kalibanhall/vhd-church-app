@@ -158,7 +158,7 @@ export default function FollowUpPage() {
               notes: '',
             });
           }}
-          className="px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700"
+          className="px-6 py-3 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#cc9b00] shadow-church"
         >
           Nouvelle demande
         </button>
@@ -189,7 +189,7 @@ export default function FollowUpPage() {
             <div
               className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
                 s <= step
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-[#ffc200] text-[#0a0a0a]'
                   : 'bg-gray-200 text-gray-500'
               }`}
             >
@@ -198,7 +198,7 @@ export default function FollowUpPage() {
             {s < 4 && (
               <div
                 className={`flex-1 h-1 mx-2 rounded ${
-                  s < step ? 'bg-blue-600' : 'bg-gray-200'
+                  s < step ? 'bg-[#ffc200]' : 'bg-gray-200'
                 }`}
               />
             )}
@@ -281,7 +281,7 @@ export default function FollowUpPage() {
             <button
               onClick={() => setStep(3)}
               disabled={!request.reason}
-              className="flex-1 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 py-3 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#cc9b00] disabled:opacity-50 disabled:cursor-not-allowed shadow-church"
             >
               Continuer
             </button>
@@ -303,8 +303,8 @@ export default function FollowUpPage() {
                   onClick={() => setRequest({ ...request, preferredContact: pref.id })}
                   className={`p-4 rounded-xl border text-center transition-all ${
                     request.preferredContact === pref.id
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-blue-300 bg-white'
+                      ? 'border-[#ffc200] bg-[#fff3cc]'
+                      : 'border-gray-200 hover:border-[#ffda66] bg-white'
                   }`}
                 >
                   <span className="text-2xl mb-2 block">{pref.icon}</span>
@@ -325,8 +325,8 @@ export default function FollowUpPage() {
                   onClick={() => setRequest({ ...request, availability: avail.id })}
                   className={`p-3 rounded-xl border text-center transition-all ${
                     request.availability === avail.id
-                      ? 'border-blue-500 bg-blue-50'
-                      : 'border-gray-200 hover:border-blue-300 bg-white'
+                      ? 'border-[#ffc200] bg-[#fff3cc]'
+                      : 'border-gray-200 hover:border-[#ffda66] bg-white'
                   }`}
                 >
                   <span className="text-xl mb-1 block">{avail.icon}</span>
@@ -346,7 +346,7 @@ export default function FollowUpPage() {
             <button
               onClick={() => setStep(4)}
               disabled={!request.preferredContact || !request.availability}
-              className="flex-1 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 py-3 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#cc9b00] disabled:opacity-50 disabled:cursor-not-allowed shadow-church"
             >
               Continuer
             </button>
@@ -406,7 +406,7 @@ export default function FollowUpPage() {
             </button>
             <button
               onClick={handleSubmit}
-              className="flex-1 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 flex items-center justify-center gap-2"
+              className="flex-1 py-3 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#cc9b00] flex items-center justify-center gap-2 shadow-church"
             >
               <Send className="h-5 w-5" />
               Envoyer la demande

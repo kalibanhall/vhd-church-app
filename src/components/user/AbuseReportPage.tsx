@@ -115,7 +115,7 @@ export default function AbuseReportPage() {
 
         <a
           href="/"
-          className="px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 inline-block"
+          className="px-6 py-3 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#cc9b00] inline-block shadow-church"
         >
           Retour à l'accueil
         </a>
@@ -173,7 +173,7 @@ export default function AbuseReportPage() {
         </div>
         <button
           onClick={() => setAnonymous(!anonymous)}
-          className={`w-12 h-6 rounded-full transition-colors ${anonymous ? 'bg-blue-600' : 'bg-gray-300'}`}
+          className={`w-12 h-6 rounded-full transition-colors ${anonymous ? 'bg-[#ffc200]' : 'bg-gray-300'}`}
         >
           <div className={`w-5 h-5 rounded-full bg-white shadow transform transition-transform ${anonymous ? 'translate-x-6' : 'translate-x-1'}`} />
         </button>

@@ -384,7 +384,7 @@ export default function TransportPage() {
               onClick={() => setSelectedType(type.id as 'all' | 'shuttle' | 'carpool')}
               className={`flex items-center gap-2 px-4 py-2 rounded-full whitespace-nowrap transition-colors ${
                 selectedType === type.id
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-[#ffc200] text-[#0a0a0a] shadow-church'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -508,7 +508,7 @@ export default function TransportPage() {
                   {route.availableSeats > 0 && !myBookings.includes(route.id) && (
                     <button
                       onClick={() => handleBookRoute(route)}
-                      className="px-3 py-2 text-sm text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+                      className="px-3 py-2 text-sm text-[#0a0a0a] bg-[#ffc200] rounded-lg hover:bg-[#cc9b00] shadow-church"
                     >
                       Réserver
                     </button>
@@ -630,7 +630,7 @@ export default function TransportPage() {
                       setShowDetailModal(false);
                       handleBookRoute(selectedRoute);
                     }}
-                    className="flex-1 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700"
+                    className="flex-1 py-3 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#cc9b00] shadow-church"
                   >
                     Réserver
                   </button>
@@ -708,7 +708,7 @@ export default function TransportPage() {
                 </button>
                 <button
                   onClick={submitBooking}
-                  className="flex-1 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700"
+                  className="flex-1 py-3 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#cc9b00] shadow-church"
                 >
                   Confirmer
                 </button>
@@ -737,7 +737,7 @@ export default function TransportPage() {
               </p>
               <button
                 onClick={() => setShowOfferModal(false)}
-                className="w-full py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700"
+                className="w-full py-3 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#cc9b00] shadow-church"
               >
                 Fermer
               </button>

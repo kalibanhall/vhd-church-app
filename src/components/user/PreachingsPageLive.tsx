@@ -302,8 +302,8 @@ export default function PreachingsPageLive() {
                 onClick={() => setSelectedType('AUDIO')}
                 className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all flex items-center gap-1 ${
                   selectedType === 'AUDIO'
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
+                    ? 'bg-[#ffc200] text-[#0a0a0a] shadow-church'
+                    : 'bg-[#fff3cc] text-[#cc9b00] hover:bg-[#ffda66]'
                 }`}
               >
                 <Volume2 className="h-4 w-4" />

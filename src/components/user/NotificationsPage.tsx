@@ -358,7 +358,7 @@ export default function NotificationsPage() {
               onClick={() => setFilter(f.id)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 filter === f.id
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-[#ffc200] text-[#0a0a0a] shadow-church'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -413,7 +413,7 @@ export default function NotificationsPage() {
                                   <Star className="h-4 w-4 text-yellow-500 fill-current" />
                                 )}
                                 {!notification.isRead && (
-                                  <span className="w-2 h-2 bg-blue-600 rounded-full"></span>
+                                  <span className="w-2 h-2 bg-[#ffc200] rounded-full"></span>
                                 )}
                               </div>
                               <p className={`text-sm mt-1 ${notification.isRead ? 'text-gray-500' : 'text-gray-700'}`}>
@@ -510,7 +510,7 @@ export default function NotificationsPage() {
                 <button
                   onClick={() => setSettings({ ...settings, pushEnabled: !settings.pushEnabled })}
                   className={`w-12 h-6 rounded-full transition-colors ${
-                    settings.pushEnabled ? 'bg-blue-600' : 'bg-gray-300'
+                    settings.pushEnabled ? 'bg-[#ffc200]' : 'bg-gray-300'
                   }`}
                 >
                   <span
@@ -528,7 +528,7 @@ export default function NotificationsPage() {
                 <button
                   onClick={() => setSettings({ ...settings, emailEnabled: !settings.emailEnabled })}
                   className={`w-12 h-6 rounded-full transition-colors ${
-                    settings.emailEnabled ? 'bg-blue-600' : 'bg-gray-300'
+                    settings.emailEnabled ? 'bg-[#ffc200]' : 'bg-gray-300'
                   }`}
                 >
                   <span
@@ -558,7 +558,7 @@ export default function NotificationsPage() {
                       <button
                         onClick={() => setSettings({ ...settings, [item.key]: !settings[item.key as keyof typeof settings] })}
                         className={`w-10 h-5 rounded-full transition-colors ${
-                          settings[item.key as keyof typeof settings] ? 'bg-blue-600' : 'bg-gray-300'
+                          settings[item.key as keyof typeof settings] ? 'bg-[#ffc200]' : 'bg-gray-300'
                         }`}
                       >
                         <span

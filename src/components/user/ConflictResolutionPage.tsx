@@ -86,7 +86,7 @@ export default function ConflictResolutionPage() {
         </div>
         <a
           href="/"
-          className="px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 inline-block"
+          className="px-6 py-3 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#cc9b00] inline-block shadow-church"
         >
           Retour à l'accueil
         </a>
@@ -130,11 +130,11 @@ export default function ConflictResolutionPage() {
         {[1, 2, 3].map(s => (
           <div key={s} className={`flex items-center ${s < 3 ? 'flex-1' : ''}`}>
             <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-              s <= step ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-500'
+              s <= step ? 'bg-[#ffc200] text-[#0a0a0a]' : 'bg-gray-200 text-gray-500'
             }`}>
               {s < step ? <Check className="h-4 w-4" /> : s}
             </div>
-            {s < 3 && <div className={`flex-1 h-1 mx-2 rounded ${s < step ? 'bg-blue-600' : 'bg-gray-200'}`} />}
+            {s < 3 && <div className={`flex-1 h-1 mx-2 rounded ${s < step ? 'bg-[#ffc200]' : 'bg-gray-200'}`} />}
           </div>
         ))}
       </div>
@@ -238,7 +238,7 @@ export default function ConflictResolutionPage() {
             <button
               onClick={() => setStep(3)}
               disabled={!request.description}
-              className="flex-1 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50"
+              className="flex-1 py-3 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#cc9b00] disabled:opacity-50 shadow-church"
             >
               Continuer
             </button>
@@ -300,7 +300,7 @@ export default function ConflictResolutionPage() {
             <button
               onClick={handleSubmit}
               disabled={!request.urgency}
-              className="flex-1 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2"
+              className="flex-1 py-3 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#cc9b00] disabled:opacity-50 flex items-center justify-center gap-2 shadow-church"
             >
               <Send className="h-5 w-5" />
               Envoyer la demande

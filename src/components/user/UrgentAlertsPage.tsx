@@ -480,7 +480,7 @@ export default function UrgentAlertsPage() {
                     acknowledgeAlert(selectedAlert.id);
                     setSelectedAlert({ ...selectedAlert, isAcknowledged: true });
                   }}
-                  className="w-full py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700"
+                  className="w-full py-3 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#cc9b00] shadow-church"
                 >
                   <CheckCircle className="h-5 w-5 inline mr-2" />
                   Accusé réception

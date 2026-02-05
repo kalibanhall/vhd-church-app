@@ -9,6 +9,8 @@
  * Description: Page permettant aux membres de l'église de s'inscrire aux 
  * différentes équipes de service pour contribuer à la vie de la communauté.
  * 
+ * Design: Figma Church Design System
+ * 
  * =============================================================================
  */
 
@@ -88,18 +90,18 @@ const teamIcons: Record<string, React.ReactNode> = {
   'CATERING': <Utensils className="h-8 w-8" />
 }
 
-// Couleurs par code d'équipe
+// Couleurs par code d'équipe - Design Church
 const teamColors: Record<string, string> = {
-  'WELCOME': 'from-blue-500 to-blue-600',
-  'WORSHIP': 'from-purple-500 to-purple-600',
-  'TECH': 'from-gray-600 to-gray-700',
-  'CHILDREN': 'from-pink-500 to-pink-600',
-  'INTERCESSION': 'from-red-500 to-red-600',
-  'PROTOCOL': 'from-amber-500 to-amber-600',
-  'MEDIA': 'from-cyan-500 to-cyan-600',
-  'CLEANING': 'from-green-500 to-green-600',
-  'SECURITY': 'from-slate-600 to-slate-700',
-  'CATERING': 'from-orange-500 to-orange-600'
+  'WELCOME': 'from-[#ffc200] to-[#cc9b00]',
+  'WORSHIP': 'from-[#ffc200] to-[#cc9b00]',
+  'TECH': 'from-[#ffc200] to-[#cc9b00]',
+  'CHILDREN': 'from-[#ffc200] to-[#cc9b00]',
+  'INTERCESSION': 'from-[#ffc200] to-[#cc9b00]',
+  'PROTOCOL': 'from-[#ffc200] to-[#cc9b00]',
+  'MEDIA': 'from-[#ffc200] to-[#cc9b00]',
+  'CLEANING': 'from-[#ffc200] to-[#cc9b00]',
+  'SECURITY': 'from-[#ffc200] to-[#cc9b00]',
+  'CATERING': 'from-[#ffc200] to-[#cc9b00]'
 }
 
 const VolunteerPage: React.FC = () => {
@@ -247,7 +249,6 @@ const VolunteerPage: React.FC = () => {
       })
 
       const data = await response.json()
-
       if (response.ok) {
         setMessage({ type: 'success', text: '🎉 Inscription enregistrée ! Un responsable va examiner votre demande.' })
         setShowModal(false)
@@ -288,7 +289,7 @@ const VolunteerPage: React.FC = () => {
   // Rendu du badge de statut
   const StatusBadge = ({ status }: { status: string }) => {
     const configs: Record<string, { bg: string, text: string, icon: React.ReactNode, label: string }> = {
-      'PENDING': { bg: 'bg-yellow-100', text: 'text-yellow-800', icon: <Clock className="h-3 w-3" />, label: 'En attente' },
+      'PENDING': { bg: 'bg-[#fff3cc]', text: 'text-[#cc9b00]', icon: <Clock className="h-3 w-3" />, label: 'En attente' },
       'APPROVED': { bg: 'bg-green-100', text: 'text-green-800', icon: <CheckCircle className="h-3 w-3" />, label: 'Approuvé' },
       'REJECTED': { bg: 'bg-red-100', text: 'text-red-800', icon: <XCircle className="h-3 w-3" />, label: 'Refusé' }
     }
@@ -306,20 +307,20 @@ const VolunteerPage: React.FC = () => {
     return (
       <div className="max-w-4xl mx-auto p-4 pb-24">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
-            <Loader2 className="h-8 w-8 text-blue-600 animate-spin" />
+          <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+            <Loader2 className="h-8 w-8 text-[#cc9b00] animate-spin" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">Servir dans l'Église</h1>
-          <p className="text-gray-600 mt-2">Chargement des équipes...</p>
+          <h1 className="text-2xl font-bold text-[#0a0a0a]">Servir dans l'Église</h1>
+          <p className="text-[#666] mt-2">Chargement des équipes...</p>
         </div>
         <div className="space-y-4">
           {[1, 2, 3, 4].map(i => (
-            <div key={i} className="bg-white rounded-xl p-4 shadow-sm animate-pulse">
+            <div key={i} className="bg-white rounded-xl p-4 shadow-church animate-pulse">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 bg-gray-200 rounded-xl" />
+                <div className="w-16 h-16 bg-[#fffefa] rounded-xl" />
                 <div className="flex-1 space-y-2">
-                  <div className="h-5 bg-gray-200 rounded w-1/3" />
-                  <div className="h-4 bg-gray-200 rounded w-2/3" />
+                  <div className="h-5 bg-[#fffefa] rounded w-1/3" />
+                  <div className="h-4 bg-[#fffefa] rounded w-2/3" />
                 </div>
               </div>
             </div>
@@ -330,16 +331,16 @@ const VolunteerPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen bg-[#fffefa]">
       {/* Header gradient */}
-      <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white">
+      <div className="bg-gradient-to-r from-[#ffc200] via-[#ffda66] to-[#fff3cc] text-[#0a0a0a]">
         <div className="max-w-4xl mx-auto px-4 py-8">
           <div className="text-center">
-            <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-4">
-              <HeartHandshake className="h-8 w-8 text-white" />
+            <div className="w-16 h-16 rounded-full bg-white/40 backdrop-blur-sm flex items-center justify-center mx-auto mb-4">
+              <HeartHandshake className="h-8 w-8 text-[#0a0a0a]" />
             </div>
             <h1 className="text-2xl font-bold mb-2">Servir dans l'Église</h1>
-            <p className="text-blue-100 text-sm">
+            <p className="text-[#0a0a0a]/70 text-sm">
               « Car nous sommes son ouvrage, créés pour de bonnes œuvres » - Éphésiens 2:10
             </p>
           </div>
@@ -349,17 +350,17 @@ const VolunteerPage: React.FC = () => {
       <div className="max-w-4xl mx-auto p-4 pb-24 -mt-6">
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3 mb-6">
-          <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 text-center">
-            <p className="text-xl font-bold text-blue-600">{teams.length}</p>
-            <p className="text-xs text-gray-600">Équipes</p>
+          <div className="bg-[#fff3cc] border border-[#ffc200] rounded-xl p-3 text-center">
+            <p className="text-xl font-bold text-[#cc9b00]">{teams.length}</p>
+            <p className="text-xs text-[#666]">Équipes</p>
           </div>
           <div className="bg-green-50 border border-green-100 rounded-xl p-3 text-center">
             <p className="text-xl font-bold text-green-600">{myRegistrations.filter(r => r.status === 'APPROVED').length}</p>
-            <p className="text-xs text-gray-600">Approuvées</p>
+            <p className="text-xs text-[#666]">Approuvées</p>
           </div>
-          <div className="bg-yellow-50 border border-yellow-100 rounded-xl p-3 text-center">
-            <p className="text-xl font-bold text-yellow-600">{myRegistrations.filter(r => r.status === 'PENDING').length}</p>
-            <p className="text-xs text-gray-600">En attente</p>
+          <div className="bg-[#fff3cc] border border-[#ffc200] rounded-xl p-3 text-center">
+            <p className="text-xl font-bold text-[#cc9b00]">{myRegistrations.filter(r => r.status === 'PENDING').length}</p>
+            <p className="text-xs text-[#666]">En attente</p>
           </div>
         </div>
 
@@ -368,7 +369,7 @@ const VolunteerPage: React.FC = () => {
           <div className={`p-4 rounded-xl mb-6 flex items-center gap-3 ${
             message.type === 'success' ? 'bg-green-100 text-green-800 border border-green-200' :
             message.type === 'error' ? 'bg-red-100 text-red-800 border border-red-200' :
-            'bg-blue-100 text-blue-800 border border-blue-200'
+            'bg-[#fff3cc] text-[#cc9b00] border border-[#ffc200]'
           }`}>
             {message.type === 'success' && <CheckCircle className="h-5 w-5 flex-shrink-0" />}
             {message.type === 'error' && <XCircle className="h-5 w-5 flex-shrink-0" />}
@@ -381,13 +382,13 @@ const VolunteerPage: React.FC = () => {
         )}
 
         {/* Tabs */}
-        <div className="flex bg-white rounded-xl p-1 shadow-sm mb-6">
+        <div className="flex bg-white rounded-xl p-1 shadow-church mb-6">
           <button
             onClick={() => setActiveTab('teams')}
             className={`flex-1 py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all ${
               activeTab === 'teams'
-                ? 'bg-blue-600 text-white shadow'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-[#ffc200] text-[#0a0a0a] shadow-church'
+                : 'text-[#666] hover:text-[#0a0a0a]'
             }`}
           >
             <Users className="h-4 w-4" />
@@ -397,15 +398,15 @@ const VolunteerPage: React.FC = () => {
             onClick={() => setActiveTab('my-registrations')}
             className={`flex-1 py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all ${
               activeTab === 'my-registrations'
-                ? 'bg-blue-600 text-white shadow'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'bg-[#ffc200] text-[#0a0a0a] shadow-church'
+                : 'text-[#666] hover:text-[#0a0a0a]'
             }`}
           >
             <UserPlus className="h-4 w-4" />
             Inscriptions
             {myRegistrations.length > 0 && (
               <span className={`px-2 py-0.5 rounded-full text-xs ${
-                activeTab === 'my-registrations' ? 'bg-white/30' : 'bg-blue-100 text-blue-800'
+                activeTab === 'my-registrations' ? 'bg-white/30' : 'bg-[#fff3cc] text-[#cc9b00]'
               }`}>
                 {myRegistrations.length}
               </span>
@@ -420,27 +421,27 @@ const VolunteerPage: React.FC = () => {
           {teams.map((team) => {
             const isRegistered = isRegisteredToTeam(team.id)
             const status = getRegistrationStatus(team.id)
-            const colorClass = teamColors[team.code] || 'from-gray-500 to-gray-600'
+            const colorClass = teamColors[team.code] || 'from-[#ffc200] to-[#cc9b00]'
             const icon = teamIcons[team.code] || <Users className="h-8 w-8" />
             const isFull = team.maxMembers && team.currentMembers >= team.maxMembers
 
             return (
               <div 
                 key={team.id}
-                className={`bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden transition-all hover:shadow-md ${
-                  isRegistered ? 'ring-2 ring-blue-500' : ''
+                className={`bg-white rounded-xl shadow-church border border-[rgba(201,201,201,0.3)] overflow-hidden transition-all hover:shadow-lg ${
+                  isRegistered ? 'ring-2 ring-[#ffc200]' : ''
                 }`}
               >
                 {/* Header coloré */}
-                <div className={`bg-gradient-to-r ${colorClass} p-4 text-white`}>
+                <div className={`bg-gradient-to-r ${colorClass} p-4 text-[#0a0a0a]`}>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="bg-white/20 p-2 rounded-lg">
+                      <div className="bg-white/30 p-2 rounded-lg">
                         {icon}
                       </div>
                       <div>
                         <h3 className="font-bold text-lg">{team.name}</h3>
-                        <p className="text-white/80 text-sm">{team.icon} {team.code}</p>
+                        <p className="text-[#0a0a0a]/70 text-sm">{team.icon} {team.code}</p>
                       </div>
                     </div>
                   </div>
@@ -448,16 +449,16 @@ const VolunteerPage: React.FC = () => {
 
                 {/* Contenu */}
                 <div className="p-4 space-y-3">
-                  <p className="text-gray-600 text-sm">{team.description}</p>
+                  <p className="text-[#666] text-sm">{team.description}</p>
 
                   {/* Infos */}
                   <div className="flex flex-wrap gap-2 text-xs">
-                    <span className="inline-flex items-center gap-1 bg-gray-100 text-gray-700 px-2 py-1 rounded">
+                    <span className="inline-flex items-center gap-1 bg-[#fffefa] text-[#666] px-2 py-1 rounded border border-[rgba(201,201,201,0.3)]">
                       <Users className="h-3 w-3" />
                       {team.currentMembers}{team.maxMembers ? `/${team.maxMembers}` : ''} membres
                     </span>
                     {team.schedule && (
-                      <span className="inline-flex items-center gap-1 bg-gray-100 text-gray-700 px-2 py-1 rounded">
+                      <span className="inline-flex items-center gap-1 bg-[#fffefa] text-[#666] px-2 py-1 rounded border border-[rgba(201,201,201,0.3)]">
                         <Calendar className="h-3 w-3" />
                         {team.schedule}
                       </span>
@@ -486,8 +487,8 @@ const VolunteerPage: React.FC = () => {
                       disabled={isFull || false}
                       className={`w-full py-2 px-4 rounded-lg font-medium flex items-center justify-center gap-2 transition-colors ${
                         isFull
-                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                          : 'bg-blue-600 text-white hover:bg-blue-700'
+                          ? 'bg-[#fffefa] text-[#999] cursor-not-allowed border border-[rgba(201,201,201,0.3)]'
+                          : 'bg-[#ffc200] text-[#0a0a0a] hover:bg-[#cc9b00]'
                       }`}
                     >
                       {isFull ? (
@@ -510,13 +511,13 @@ const VolunteerPage: React.FC = () => {
         /* Liste des inscriptions */
         <div className="space-y-4">
           {myRegistrations.length === 0 ? (
-            <div className="text-center py-12 bg-gray-50 rounded-xl">
-              <UserPlus className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Aucune inscription</h3>
-              <p className="text-gray-500 mb-4">Vous n&apos;êtes inscrit à aucune équipe de service</p>
+            <div className="text-center py-12 bg-[#fffefa] rounded-xl border border-[rgba(201,201,201,0.3)]">
+              <UserPlus className="h-12 w-12 text-[#999] mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-[#0a0a0a] mb-2">Aucune inscription</h3>
+              <p className="text-[#666] mb-4">Vous n&apos;êtes inscrit à aucune équipe de service</p>
               <button
                 onClick={() => setActiveTab('teams')}
-                className="text-blue-600 hover:text-blue-700 font-medium"
+                className="text-[#cc9b00] hover:text-[#ffc200] font-medium"
               >
                 Voir les équipes disponibles →
               </button>
@@ -524,19 +525,19 @@ const VolunteerPage: React.FC = () => {
           ) : (
             myRegistrations.map((registration) => {
               const team = teams.find(t => t.id === registration.teamId)
-              const colorClass = team ? teamColors[team.code] || 'from-gray-500 to-gray-600' : 'from-gray-500 to-gray-600'
+              const colorClass = team ? teamColors[team.code] || 'from-[#ffc200] to-[#cc9b00]' : 'from-[#ffc200] to-[#cc9b00]'
 
               return (
                 <div 
                   key={registration.id}
-                  className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+                  className="bg-white rounded-xl shadow-church border border-[rgba(201,201,201,0.3)] overflow-hidden"
                 >
                   <div className={`bg-gradient-to-r ${colorClass} h-2`} />
                   <div className="p-4">
                     <div className="flex items-start justify-between">
                       <div>
-                        <h3 className="font-bold text-gray-900">{registration.teamName}</h3>
-                        <p className="text-sm text-gray-500">
+                        <h3 className="font-bold text-[#0a0a0a]">{registration.teamName}</h3>
+                        <p className="text-sm text-[#666]">
                           Inscrit le {new Date(registration.createdAt).toLocaleDateString('fr-FR')}
                         </p>
                       </div>
@@ -546,10 +547,10 @@ const VolunteerPage: React.FC = () => {
                     {/* Disponibilités */}
                     {registration.availability && registration.availability.length > 0 && (
                       <div className="mt-3">
-                        <p className="text-xs text-gray-500 mb-1">Disponibilités :</p>
+                        <p className="text-xs text-[#666] mb-1">Disponibilités :</p>
                         <div className="flex flex-wrap gap-1">
                           {registration.availability.map((avail, idx) => (
-                            <span key={idx} className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded">
+                            <span key={idx} className="text-xs bg-[#fff3cc] text-[#cc9b00] px-2 py-0.5 rounded">
                               {avail}
                             </span>
                           ))}
@@ -559,7 +560,7 @@ const VolunteerPage: React.FC = () => {
 
                     {/* Actions */}
                     {registration.status === 'PENDING' && (
-                      <div className="mt-4 pt-3 border-t border-gray-100">
+                      <div className="mt-4 pt-3 border-t border-[rgba(201,201,201,0.3)]">
                         <button
                           onClick={() => handleCancelRegistration(registration.id)}
                           className="text-sm text-red-600 hover:text-red-700"
@@ -570,7 +571,7 @@ const VolunteerPage: React.FC = () => {
                     )}
 
                     {registration.status === 'APPROVED' && (
-                      <div className="mt-4 pt-3 border-t border-gray-100">
+                      <div className="mt-4 pt-3 border-t border-[rgba(201,201,201,0.3)]">
                         <p className="text-sm text-green-600">
                           ✅ Vous faites partie de cette équipe !
                         </p>
@@ -589,20 +590,20 @@ const VolunteerPage: React.FC = () => {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
             {/* Header */}
-            <div className={`bg-gradient-to-r ${teamColors[selectedTeam.code] || 'from-blue-500 to-blue-600'} p-6 text-white rounded-t-2xl`}>
+            <div className={`bg-gradient-to-r ${teamColors[selectedTeam.code] || 'from-[#ffc200] to-[#cc9b00]'} p-6 text-[#0a0a0a] rounded-t-2xl`}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="bg-white/20 p-2 rounded-lg">
+                  <div className="bg-white/30 p-2 rounded-lg">
                     {teamIcons[selectedTeam.code] || <Users className="h-8 w-8" />}
                   </div>
                   <div>
                     <h2 className="text-xl font-bold">S&apos;inscrire</h2>
-                    <p className="text-white/80">{selectedTeam.name}</p>
+                    <p className="text-[#0a0a0a]/70">{selectedTeam.name}</p>
                   </div>
                 </div>
                 <button
                   onClick={() => setShowModal(false)}
-                  className="text-white/80 hover:text-white p-1"
+                  className="text-[#0a0a0a]/70 hover:text-[#0a0a0a] p-1"
                 >
                   <X className="h-6 w-6" />
                 </button>
@@ -613,7 +614,7 @@ const VolunteerPage: React.FC = () => {
             <form onSubmit={handleSubmitRegistration} className="p-6 space-y-6">
               {/* Disponibilités */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-[#0a0a0a] mb-2">
                   Vos disponibilités *
                 </label>
                 <div className="grid grid-cols-2 gap-2">
@@ -624,8 +625,8 @@ const VolunteerPage: React.FC = () => {
                       onClick={() => toggleAvailability(option)}
                       className={`p-2 rounded-lg text-sm border transition-colors ${
                         formData.availability.includes(option)
-                          ? 'bg-blue-50 border-blue-500 text-blue-700'
-                          : 'border-gray-200 text-gray-600 hover:border-gray-300'
+                          ? 'bg-[#fff3cc] border-[#ffc200] text-[#cc9b00]'
+                          : 'border-[rgba(201,201,201,0.3)] text-[#666] hover:border-[#ffc200]'
                       }`}
                     >
                       {formData.availability.includes(option) && (
@@ -639,28 +640,28 @@ const VolunteerPage: React.FC = () => {
 
               {/* Expérience */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-[#0a0a0a] mb-2">
                   Expérience dans ce domaine (optionnel)
                 </label>
                 <textarea
                   value={formData.experience}
                   onChange={(e) => setFormData(prev => ({ ...prev, experience: e.target.value }))}
                   rows={2}
-                  className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full border border-[rgba(201,201,201,0.3)] rounded-lg p-3 text-sm focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
                   placeholder="Décrivez brièvement votre expérience..."
                 />
               </div>
 
               {/* Motivation */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-[#0a0a0a] mb-2">
                   Pourquoi souhaitez-vous rejoindre cette équipe ? (optionnel)
                 </label>
                 <textarea
                   value={formData.motivation}
                   onChange={(e) => setFormData(prev => ({ ...prev, motivation: e.target.value }))}
                   rows={3}
-                  className="w-full border border-gray-300 rounded-xl p-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full border border-[rgba(201,201,201,0.3)] rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
                   placeholder="Partagez votre motivation..."
                 />
               </div>
@@ -670,14 +671,14 @@ const VolunteerPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="flex-1 py-3 px-4 border border-gray-300 rounded-xl font-medium text-gray-700 hover:bg-gray-50"
+                  className="flex-1 py-3 px-4 border border-[rgba(201,201,201,0.3)] rounded-xl font-medium text-[#666] hover:bg-[#fffefa]"
                 >
                   Annuler
                 </button>
                 <button
                   type="submit"
                   disabled={submitting || formData.availability.length === 0}
-                  className="flex-1 py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-medium hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg"
+                  className="flex-1 py-3 px-4 bg-gradient-to-r from-[#ffc200] to-[#cc9b00] text-[#0a0a0a] rounded-xl font-medium hover:from-[#cc9b00] hover:to-[#a67c00] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-church"
                 >
                   {submitting ? (
                     <>
@@ -698,8 +699,8 @@ const VolunteerPage: React.FC = () => {
       )}
 
       {/* Info bottom */}
-      <div className="mt-6 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-xl p-4 text-center">
-        <p className="text-sm text-blue-800">
+      <div className="mt-6 bg-gradient-to-r from-[#fff3cc] to-[#ffda66] rounded-xl p-4 text-center border border-[#ffc200]">
+        <p className="text-sm text-[#0a0a0a]">
           🤝 « Servir les autres, c'est servir Christ » - Matthieu 25:40
         </p>
       </div>

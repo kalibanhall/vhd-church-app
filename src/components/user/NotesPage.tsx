@@ -353,7 +353,7 @@ const NotesPage: React.FC = () => {
                       onClick={() => setEditType(value as 'sermon' | 'personal' | 'bible_study')}
                       className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
                         editType === value 
-                          ? 'bg-blue-600 text-white' 
+                          ? 'bg-[#ffc200] text-[#0a0a0a] shadow-church' 
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
@@ -417,7 +417,7 @@ const NotesPage: React.FC = () => {
               </button>
               <button
                 onClick={saveNote}
-                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="flex items-center gap-2 px-4 py-2 bg-[#ffc200] text-[#0a0a0a] rounded-lg hover:bg-[#cc9b00] shadow-church"
               >
                 <Save className="h-4 w-4" />
                 Enregistrer
@@ -441,7 +441,7 @@ const NotesPage: React.FC = () => {
               onClick={() => setSelectedType(value as typeof selectedType)}
               className={`px-4 py-2 rounded-lg whitespace-nowrap ${
                 selectedType === value
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-[#ffc200] text-[#0a0a0a] shadow-church'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -458,12 +458,12 @@ const NotesPage: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Rechercher..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
             />
           </div>
           <button
             onClick={createNewNote}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="flex items-center gap-2 px-4 py-2 bg-[#ffc200] text-[#0a0a0a] rounded-lg hover:bg-[#cc9b00] shadow-church"
           >
             <Plus className="h-4 w-4" />
             <span className="hidden md:inline">Nouvelle note</span>
@@ -486,7 +486,7 @@ const NotesPage: React.FC = () => {
           {!searchQuery && (
             <button
               onClick={createNewNote}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-[#ffc200] text-[#0a0a0a] rounded-lg hover:bg-[#cc9b00] shadow-church"
             >
               <Plus className="h-4 w-4" />
               Créer une note
