@@ -100,92 +100,28 @@ export default function AskQuestionPage() {
       });
       if (questionsRes.ok) {
         const data = await questionsRes.json();
-        setMyQuestions(data.questions || generateMockQuestions());
+        setMyQuestions(data.questions || []);
       } else {
-        setMyQuestions(generateMockQuestions());
+        console.warn('[Questions] Backend indisponible');
+        setMyQuestions([]);
       }
 
       // Fetch FAQs
       const faqRes = await fetch('/api/questions-proxy?type=faq');
       if (faqRes.ok) {
         const data = await faqRes.json();
-        setFaqs(data.faqs || generateMockFaqs());
+        setFaqs(data.faqs || []);
       } else {
-        setFaqs(generateMockFaqs());
+        setFaqs([]);
       }
     } catch (error) {
       console.error('Erreur:', error);
-      setMyQuestions(generateMockQuestions());
-      setFaqs(generateMockFaqs());
+      setMyQuestions([]);
+      setFaqs([]);
     } finally {
       setLoading(false);
     }
   };
-
-  const generateMockQuestions = (): Question[] => [
-    {
-      id: '1',
-      category: 'bible',
-      subject: 'Signification de la parabole du semeur',
-      content: 'Pouvez-vous m\'expliquer en détail la parabole du semeur dans Matthieu 13 ?',
-      isAnonymous: false,
-      isPublic: true,
-      status: 'answered',
-      answer: {
-        content: 'La parabole du semeur illustre les différentes réponses des gens à la Parole de Dieu. Les quatre types de sol représentent...',
-        answeredBy: 'Pasteur David',
-        answeredAt: new Date(Date.now() - 86400000).toISOString(),
-      },
-      createdAt: new Date(Date.now() - 172800000).toISOString(),
-      views: 45,
-      likes: 12,
-    },
-    {
-      id: '2',
-      category: 'practical',
-      subject: 'Comment s\'inscrire au baptême ?',
-      content: 'Je souhaite me faire baptiser. Quelle est la procédure à suivre ?',
-      isAnonymous: false,
-      isPublic: false,
-      status: 'pending',
-      createdAt: new Date(Date.now() - 3600000).toISOString(),
-    },
-  ];
-
-  const generateMockFaqs = (): FAQ[] => [
-    {
-      id: '1',
-      category: 'church',
-      question: 'À quelle heure commence le culte du dimanche ?',
-      answer: 'Le culte principal a lieu chaque dimanche à 10h00. Les portes ouvrent à 9h30 pour l\'accueil. Un service de garderie est disponible pour les enfants.',
-      views: 234,
-      helpful: 89,
-    },
-    {
-      id: '2',
-      category: 'practical',
-      question: 'Comment devenir membre de l\'église ?',
-      answer: 'Pour devenir membre, vous devez suivre les cours de fondement (4 séances), avoir un entretien avec un pasteur, et faire votre profession de foi publique. Inscrivez-vous via l\'application ou à l\'accueil.',
-      views: 189,
-      helpful: 67,
-    },
-    {
-      id: '3',
-      category: 'faith',
-      question: 'Qu\'est-ce que le baptême du Saint-Esprit ?',
-      answer: 'Le baptême du Saint-Esprit est une expérience distincte de la nouvelle naissance, où le croyant est rempli de la puissance de l\'Esprit pour le service et le témoignage. Actes 1:8 décrit cette promesse.',
-      views: 156,
-      helpful: 52,
-    },
-    {
-      id: '4',
-      category: 'bible',
-      question: 'Quelle version de la Bible est recommandée ?',
-      answer: 'Nous recommandons plusieurs versions selon vos besoins : Louis Segond pour l\'étude classique, Semeur pour une lecture moderne, et la Bible de Jérusalem pour les notes de référence.',
-      views: 123,
-      helpful: 45,
-    },
-  ];
 
   const handleSubmit = async () => {
     if (!newQuestion.category || !newQuestion.subject || !newQuestion.content) return;

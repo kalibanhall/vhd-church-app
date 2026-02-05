@@ -105,13 +105,14 @@ export default function NewsFeedPage() {
       
       if (response.ok) {
         const data = await response.json();
-        setPosts(data.posts || generateMockPosts());
+        setPosts(data.posts || []);
       } else {
-        setPosts(generateMockPosts());
+        console.warn('[NewsFeed] Backend indisponible, status:', response.status);
+        setPosts([]);
       }
     } catch (error) {
       console.error('[NewsFeed] Erreur chargement fil d\'actualite:', error);
-      setPosts(generateMockPosts());
+      setPosts([]);
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -121,76 +122,6 @@ export default function NewsFeedPage() {
   useEffect(() => {
     fetchPosts();
   }, [fetchPosts]);
-
-  const generateMockPosts = (): NewsPost[] => [
-    {
-      id: '1',
-      type: 'announcement',
-      title: 'Culte special de louange ce dimanche',
-      content: 'Rejoignez-nous ce dimanche pour un moment exceptionnel de louange et d\'adoration au Temple VHD de Kinshasa. Le pasteur Emmanuel Kasongo apportera un message special sur la puissance de la louange dans nos vies. N\'oubliez pas d\'inviter vos proches !',
-      author: { id: '1', name: 'Pasteur Emmanuel Kasongo', role: 'Pasteur Principal', avatar: '' },
-      likes: 256,
-      comments: 48,
-      shares: 67,
-      views: 1245,
-      isLiked: false,
-      isSaved: false,
-      isPinned: true,
-      createdAt: new Date().toISOString(),
-      tags: ['culte', 'louange', 'dimanche'],
-    },
-    {
-      id: '2',
-      type: 'event',
-      title: 'Retraite spirituelle a Bukavu - Inscriptions ouvertes',
-      content: 'La retraite annuelle de l\'eglise aura lieu du 15 au 17 fevrier au bord du lac Kivu a Bukavu. C\'est un moment de ressourcement spirituel, de communion fraternelle et de rencontre avec Dieu. Places limitees !',
-      author: { id: '2', name: 'Equipe Evenements Goma', role: 'Coordination' },
-      media: { type: 'image', urls: ['/images/retreat.jpg'] },
-      likes: 189,
-      comments: 52,
-      shares: 38,
-      views: 876,
-      isLiked: true,
-      isSaved: true,
-      isPinned: false,
-      createdAt: new Date(Date.now() - 86400000).toISOString(),
-      eventDate: '2026-02-15',
-      tags: ['retraite', 'spirituel', 'Bukavu'],
-    },
-    {
-      id: '3',
-      type: 'testimony',
-      title: 'Temoignage de guerison miraculeuse',
-      content: 'Gloire a Dieu ! Apres 3 ans de maladie, notre soeur Marie Kasongo de Lubumbashi a ete completement guerie. Elle partage son temoignage de foi et de perseverance. Que toute la gloire revienne a notre Seigneur !',
-      author: { id: '3', name: 'Marie Kasongo', role: 'Membre - Lubumbashi' },
-      likes: 345,
-      comments: 87,
-      shares: 112,
-      views: 1567,
-      isLiked: false,
-      isSaved: false,
-      isPinned: false,
-      createdAt: new Date(Date.now() - 172800000).toISOString(),
-      tags: ['temoignage', 'guerison', 'miracle'],
-    },
-    {
-      id: '4',
-      type: 'media',
-      title: 'Predication du dimanche dernier disponible',
-      content: 'La predication "Marcher par la foi" du Pasteur Pierre Kalonda est maintenant disponible en ligne. Retrouvez ce message puissant sur notre plateforme.',
-      author: { id: '1', name: 'Ministere Media Kinshasa', role: 'Communication' },
-      media: { type: 'video', urls: ['/videos/sermon.mp4'], thumbnail: '/images/sermon-thumb.jpg' },
-      likes: 198,
-      comments: 56,
-      shares: 78,
-      views: 2567,
-      isLiked: true,
-      isSaved: false,
-      isPinned: false,
-      createdAt: new Date(Date.now() - 259200000).toISOString(),
-      tags: ['predication', 'foi', 'video'],
-    },
-  ];
 
   const handleRefresh = () => {
     setRefreshing(true);

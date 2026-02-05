@@ -87,13 +87,14 @@ export default function NotificationsPage() {
       
       if (response.ok) {
         const data = await response.json();
-        setNotifications(data.notifications || generateMockNotifications());
+        setNotifications(data.notifications || []);
       } else {
-        setNotifications(generateMockNotifications());
+        console.warn('[Notifications] Backend indisponible');
+        setNotifications([]);
       }
     } catch (error) {
       console.error('Erreur chargement notifications:', error);
-      setNotifications(generateMockNotifications());
+      setNotifications([]);
     } finally {
       setLoading(false);
     }
@@ -102,77 +103,6 @@ export default function NotificationsPage() {
   useEffect(() => {
     fetchNotifications();
   }, [fetchNotifications]);
-
-  const generateMockNotifications = (): Notification[] => [
-    {
-      id: '1',
-      type: 'event',
-      title: 'Rappel : Culte de dimanche',
-      message: 'Le culte commence dans 2 heures. N\'oubliez pas votre Bible et votre carnet de notes.',
-      isRead: false,
-      isImportant: true,
-      actionUrl: '/events/1',
-      actionLabel: 'Voir l\'événement',
-      createdAt: new Date().toISOString(),
-    },
-    {
-      id: '2',
-      type: 'prayer',
-      title: 'Nouvelle demande de prière',
-      message: 'Jean-Paul a partagé une demande de prière urgente pour sa famille.',
-      isRead: false,
-      isImportant: true,
-      sender: { name: 'Jean-Paul' },
-      actionUrl: '/prayers',
-      actionLabel: 'Prier maintenant',
-      createdAt: new Date(Date.now() - 3600000).toISOString(),
-    },
-    {
-      id: '3',
-      type: 'message',
-      title: 'Nouveau message',
-      message: 'Vous avez reçu un message du Pasteur David concernant votre rendez-vous.',
-      isRead: false,
-      isImportant: false,
-      sender: { name: 'Pasteur David' },
-      actionUrl: '/chat',
-      actionLabel: 'Lire le message',
-      createdAt: new Date(Date.now() - 7200000).toISOString(),
-    },
-    {
-      id: '4',
-      type: 'donation',
-      title: 'Don reçu avec succès',
-      message: 'Votre don de 50 000 FC pour le projet "Bâtiment" a été traité avec succès. Merci pour votre générosité !',
-      isRead: true,
-      isImportant: false,
-      actionUrl: '/donations/history',
-      actionLabel: 'Voir l\'historique',
-      createdAt: new Date(Date.now() - 86400000).toISOString(),
-    },
-    {
-      id: '5',
-      type: 'announcement',
-      title: 'Nouvelle annonce de l\'église',
-      message: 'Les inscriptions pour la retraite spirituelle sont maintenant ouvertes. Places limitées !',
-      isRead: true,
-      isImportant: false,
-      actionUrl: '/news',
-      actionLabel: 'En savoir plus',
-      createdAt: new Date(Date.now() - 172800000).toISOString(),
-    },
-    {
-      id: '6',
-      type: 'reminder',
-      title: 'Rappel de lecture biblique',
-      message: 'N\'oubliez pas votre lecture du jour : Psaume 23',
-      isRead: true,
-      isImportant: false,
-      actionUrl: '/bible',
-      actionLabel: 'Lire maintenant',
-      createdAt: new Date(Date.now() - 259200000).toISOString(),
-    },
-  ];
 
   const getTypeIcon = (type: string) => {
     switch (type) {

@@ -66,13 +66,14 @@ export default function UrgentAlertsPage() {
       
       if (response.ok) {
         const data = await response.json();
-        setAlerts(data.alerts || generateMockAlerts());
+        setAlerts(data.alerts || []);
       } else {
-        setAlerts(generateMockAlerts());
+        console.warn('[Alerts] Backend indisponible');
+        setAlerts([]);
       }
     } catch (error) {
       console.error('Erreur chargement alertes:', error);
-      setAlerts(generateMockAlerts());
+      setAlerts([]);
     } finally {
       setLoading(false);
     }
@@ -84,85 +85,6 @@ export default function UrgentAlertsPage() {
     const interval = setInterval(fetchAlerts, 30000);
     return () => clearInterval(interval);
   }, [fetchAlerts]);
-
-  const generateMockAlerts = (): UrgentAlert[] => [
-    {
-      id: '1',
-      type: 'emergency',
-      category: 'prayer',
-      title: 'Appel urgent à la prière',
-      message: 'Notre frère Samuel est hospitalisé en urgence suite à un accident. Prions ensemble pour sa guérison.',
-      details: 'Samuel a été impliqué dans un accident de la route ce matin. Il est actuellement aux soins intensifs. La famille demande nos prières ferventes.',
-      instructions: [
-        'Rejoignez la chaîne de prière sur le groupe WhatsApp',
-        'Moment de prière collective ce soir à 20h',
-        'Les visites sont autorisées de 14h à 18h'
-      ],
-      contacts: [
-        { name: 'Pasteur David Mukendi', phone: '+243 81 234 56 78', role: 'Coordination spirituelle' },
-        { name: 'Diacre Pierre Kabongo', phone: '+243 99 876 54 32', role: 'Coordination logistique' }
-      ],
-      location: 'Clinique Ngaliema, Service Réanimation, Kinshasa',
-      isActive: true,
-      isAcknowledged: false,
-      priority: 1,
-      createdAt: new Date(Date.now() - 3600000).toISOString(),
-    },
-    {
-      id: '2',
-      type: 'critical',
-      category: 'church',
-      title: 'Changement de lieu pour le culte',
-      message: 'En raison de travaux urgents, le culte de dimanche se tiendra exceptionnellement à la salle polyvalente.',
-      details: 'Une fuite d\'eau a été détectée dans le bâtiment principal. Par mesure de sécurité, nous déplaçons le culte.',
-      instructions: [
-        'Nouvelle adresse : Salle polyvalente, Avenue Kalemie 45, Limete',
-        'Horaire inchangé : 10h00',
-        'Parking disponible à proximité'
-      ],
-      location: 'Salle polyvalente VHD Limete, Kinshasa',
-      affectedAreas: ['Bâtiment principal', 'Salle de prière'],
-      isActive: true,
-      isAcknowledged: true,
-      priority: 2,
-      createdAt: new Date(Date.now() - 86400000).toISOString(),
-      expiresAt: new Date(Date.now() + 604800000).toISOString(),
-    },
-    {
-      id: '3',
-      type: 'warning',
-      category: 'weather',
-      title: 'Alerte météo - Neige',
-      message: 'Des chutes de neige importantes sont prévues ce week-end. Soyez prudents sur les routes.',
-      instructions: [
-        'Prévoir plus de temps pour vos déplacements',
-        'Vérifier l\'état des routes avant de partir',
-        'Covoiturage encouragé'
-      ],
-      isActive: true,
-      isAcknowledged: true,
-      priority: 3,
-      createdAt: new Date(Date.now() - 172800000).toISOString(),
-      expiresAt: new Date(Date.now() + 259200000).toISOString(),
-    },
-    {
-      id: '4',
-      type: 'info',
-      category: 'community',
-      title: 'Collecte pour famille dans le besoin',
-      message: 'Une famille de notre communauté traverse une période difficile. Organisons une collecte de soutien.',
-      details: 'Suite à la perte d\'emploi du chef de famille, nous organisons une collecte de denrées alimentaires et de vêtements.',
-      instructions: [
-        'Dépôt des dons à l\'accueil de l\'église',
-        'Collecte jusqu\'au 15 janvier',
-        'Priorité : alimentation non périssable, vêtements enfants'
-      ],
-      isActive: true,
-      isAcknowledged: false,
-      priority: 4,
-      createdAt: new Date(Date.now() - 259200000).toISOString(),
-    },
-  ];
 
   const getTypeConfig = (type: string) => {
     switch (type) {

@@ -106,12 +106,12 @@ export default function PrayerCellPage() {
       
       if (cellsResponse.ok) {
         const data = await cellsResponse.json();
-        setCells(data.cells || generateMockCells());
+        setCells(data.cells || []);
         setMyCell(data.myCell || null);
       } else {
-        const mockCells = generateMockCells();
-        setCells(mockCells);
-        setMyCell(mockCells[0]);
+        console.warn('[PrayerCells] Backend indisponible');
+        setCells([]);
+        setMyCell(null);
       }
       
       // Fetch meetings
@@ -121,16 +121,15 @@ export default function PrayerCellPage() {
       
       if (meetingsResponse.ok) {
         const data = await meetingsResponse.json();
-        setUpcomingMeetings(data.meetings || generateMockMeetings());
+        setUpcomingMeetings(data.meetings || []);
       } else {
-        setUpcomingMeetings(generateMockMeetings());
+        setUpcomingMeetings([]);
       }
     } catch (error) {
       console.error('Erreur:', error);
-      const mockCells = generateMockCells();
-      setCells(mockCells);
-      setMyCell(mockCells[0]);
-      setUpcomingMeetings(generateMockMeetings());
+      setCells([]);
+      setMyCell(null);
+      setUpcomingMeetings([]);
     } finally {
       setLoading(false);
     }
@@ -139,117 +138,6 @@ export default function PrayerCellPage() {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
-
-  const generateMockCells = (): PrayerCell[] => [
-    {
-      id: '1',
-      name: 'Cellule des Guerriers de Prière - Gombe',
-      description: 'Un groupe dynamique dédié à l\'intercession pour notre communauté et le Congo.',
-      leader: { id: '1', name: 'Jean-Paul Mbuyi', phone: '+243 81 234 56 78', email: 'jpmbuyi@vhd-church.org' },
-      members: [
-        { id: '1', name: 'Jean-Paul Mbuyi', role: 'leader', joinedAt: '2024-01-15' },
-        { id: '2', name: 'Marie Kasongo', role: 'co-leader', joinedAt: '2024-02-01' },
-        { id: '3', name: 'Samuel Lukusa', role: 'member', joinedAt: '2024-03-10' },
-        { id: '4', name: 'Ruth Ngoma', role: 'member', joinedAt: '2024-04-20' },
-        { id: '5', name: 'David Mutombo', role: 'member', joinedAt: '2024-05-05' },
-      ],
-      schedule: { day: 'Mercredi', time: '18:00', frequency: 'weekly' },
-      location: { type: 'hybrid', address: 'Avenue de la Libération, Gombe, Kinshasa', onlineLink: 'https://meet.google.com/xxx' },
-      category: 'Intercession',
-      targetGroup: 'Adultes',
-      maxMembers: 12,
-      isOpen: true,
-      prayerFocus: ['Familles', 'Jeunes', 'Congo'],
-      testimoniesCount: 24,
-      prayersAnswered: 18,
-      createdAt: '2024-01-15',
-    },
-    {
-      id: '2',
-      name: 'Cellule Jeunesse Lemba',
-      description: 'Jeunes adultes de Lemba passionnés par la prière et le réveil spirituel.',
-      leader: { id: '6', name: 'Grace Mwenze', phone: '+243 99 876 54 32' },
-      members: [
-        { id: '6', name: 'Grace Mwenze', role: 'leader', joinedAt: '2024-02-01' },
-        { id: '7', name: 'Paul Kabongo', role: 'member', joinedAt: '2024-03-15' },
-        { id: '8', name: 'Esther Tshimanga', role: 'member', joinedAt: '2024-04-01' },
-      ],
-      schedule: { day: 'Vendredi', time: '19:00', frequency: 'weekly' },
-      location: { type: 'online', onlineLink: 'https://zoom.us/xxx' },
-      category: 'Jeunesse',
-      targetGroup: '18-35 ans',
-      maxMembers: 15,
-      isOpen: true,
-      prayerFocus: ['Études', 'Carrière', 'Relations'],
-      testimoniesCount: 12,
-      prayersAnswered: 8,
-      createdAt: '2024-02-01',
-    },
-    {
-      id: '3',
-      name: 'Cellule des Hommes VHD',
-      description: 'Hommes engagés dans la prière pour leurs familles et le pays.',
-      leader: { id: '9', name: 'Emmanuel Kalonda' },
-      members: [
-        { id: '9', name: 'Emmanuel Kalonda', role: 'leader', joinedAt: '2024-01-20' },
-        { id: '10', name: 'Pierre Mukendi', role: 'member', joinedAt: '2024-02-15' },
-      ],
-      schedule: { day: 'Samedi', time: '06:00', frequency: 'weekly' },
-      location: { type: 'physical', address: 'Temple VHD Kinshasa' },
-      category: 'Hommes',
-      isOpen: true,
-      prayerFocus: ['Leadership', 'Familles', 'Travail'],
-      testimoniesCount: 15,
-      prayersAnswered: 10,
-      createdAt: '2024-01-20',
-    },
-    {
-      id: '4',
-      name: 'Cellule des Mamans Ngaliema',
-      description: 'Mères unies dans la prière pour leurs enfants et leurs familles.',
-      leader: { id: '11', name: 'Sarah Mbombo' },
-      members: [],
-      schedule: { day: 'Mardi', time: '09:00', frequency: 'bi-weekly' },
-      location: { type: 'physical', address: 'Domicile (tournant) - Ngaliema' },
-      category: 'Femmes',
-      targetGroup: 'Mamans',
-      maxMembers: 10,
-      isOpen: true,
-      prayerFocus: ['Enfants', 'Mariage', 'Santé'],
-      testimoniesCount: 30,
-      prayersAnswered: 25,
-      createdAt: '2024-03-01',
-    },
-  ];
-
-  const generateMockMeetings = (): PrayerMeeting[] => [
-    {
-      id: '1',
-      cellId: '1',
-      cellName: 'Cellule des Guerriers de Prière - Gombe',
-      date: new Date(Date.now() + 86400000 * 2).toISOString(),
-      time: '18:00',
-      duration: 90,
-      location: 'Avenue de la Libération, Gombe / En ligne',
-      isOnline: true,
-      attendees: 5,
-      topics: ['Prière pour les malades', 'Intercession pour le Congo'],
-      status: 'upcoming',
-    },
-    {
-      id: '2',
-      cellId: '2',
-      cellName: 'Cellule Jeunesse Lemba',
-      date: new Date(Date.now() + 86400000 * 4).toISOString(),
-      time: '19:00',
-      duration: 60,
-      location: 'Zoom',
-      isOnline: true,
-      attendees: 3,
-      topics: ['Étude biblique', 'Témoignages'],
-      status: 'upcoming',
-    },
-  ];
 
   const handleJoinCell = async (cellId: string) => {
     try {
