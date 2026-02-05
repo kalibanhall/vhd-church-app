@@ -60,7 +60,7 @@ export function Avatar({
   };
 
   const bgColors = [
-    'bg-blue-500',
+    'bg-[#ffc200]',
     'bg-green-500',
     'bg-purple-500',
     'bg-pink-500',
@@ -163,3 +163,5 @@ export function AvatarGroup({
 }
 
 export default Avatar;
+
+

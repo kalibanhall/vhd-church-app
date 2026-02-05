@@ -190,7 +190,7 @@ export default function PreachingsPageLive() {
   // ERROR STATE
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-[#fffefa]">
         <div className="max-w-6xl mx-auto p-4 pb-24">
           <div className="text-center py-12">
             <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
@@ -213,9 +213,9 @@ export default function PreachingsPageLive() {
 
   // DESIGN PRINCIPAL
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-[#fffefa]">
       {/* Header avec gradient */}
-      <div className="bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 text-white">
+      <div className="bg-gradient-to-r from-purple-600 via-indigo-600 to-[#cc9b00] text-white">
         <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="text-center">
             <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-4">

@@ -257,7 +257,7 @@ export default function AppointmentsManagement() {
       case 'PENDING': return 'bg-yellow-100 text-yellow-800'
       case 'CONFIRMED': return 'bg-green-100 text-green-800'
       case 'CANCELLED': return 'bg-red-100 text-red-800'
-      case 'COMPLETED': return 'bg-blue-100 text-blue-800'
+      case 'COMPLETED': return 'bg-[#fff3cc] text-[#3d3200]'
       default: return 'bg-gray-100 text-gray-800'
     }
   }
@@ -305,7 +305,7 @@ export default function AppointmentsManagement() {
               onClick={() => setActiveTab('pending')}
               className={`py-2 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'pending'
-                  ? 'border-blue-500 text-blue-600'
+                  ? 'border-[#ffc200] text-[#cc9b00]'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
@@ -315,7 +315,7 @@ export default function AppointmentsManagement() {
               onClick={() => setActiveTab('confirmed')}
               className={`py-2 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'confirmed'
-                  ? 'border-blue-500 text-blue-600'
+                  ? 'border-[#ffc200] text-[#cc9b00]'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
@@ -325,7 +325,7 @@ export default function AppointmentsManagement() {
               onClick={() => setActiveTab('availability')}
               className={`py-2 px-1 border-b-2 font-medium text-sm ${
                 activeTab === 'availability'
-                  ? 'border-blue-500 text-blue-600'
+                  ? 'border-[#ffc200] text-[#cc9b00]'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
               }`}
             >
@@ -508,7 +508,7 @@ export default function AppointmentsManagement() {
                 <div className="flex items-end">
                   <button
                     onClick={addAvailability}
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-[#ffc200] hover:bg-[#cc9b00]"
                   >
                     <Plus className="h-4 w-4 mr-1" />
                     Ajouter

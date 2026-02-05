@@ -171,7 +171,7 @@ export interface ConfirmModalProps {
 const variantClasses = {
   danger: 'bg-red-600 hover:bg-red-700 focus:ring-red-500',
   warning: 'bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500',
-  info: 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500',
+  info: 'bg-[#ffc200] hover:bg-[#cc9b00] focus:ring-[#ffc200]',
 };
 
 export function ConfirmModal({
@@ -198,7 +198,7 @@ export function ConfirmModal({
             disabled={isLoading}
             className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 
                      rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 
-                     focus:ring-blue-500 disabled:opacity-50"
+                     focus:ring-[#ffc200] disabled:opacity-50"
           >
             {cancelText}
           </button>
@@ -222,3 +222,5 @@ export function ConfirmModal({
 }
 
 export default Modal;
+
+

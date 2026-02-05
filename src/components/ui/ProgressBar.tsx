@@ -29,12 +29,12 @@ const sizeClasses = {
 };
 
 const colorClasses = {
-  blue: 'bg-blue-600',
+  blue: 'bg-[#ffc200]',
   green: 'bg-green-600',
   red: 'bg-red-600',
   yellow: 'bg-yellow-500',
   purple: 'bg-purple-600',
-  gradient: 'bg-gradient-to-r from-blue-500 to-purple-600',
+  gradient: 'bg-gradient-to-r from-[#ffc200] to-[#cc9b00]',
 };
 
 export function ProgressBar({
@@ -187,3 +187,5 @@ export function CircularProgress({
 }
 
 export default ProgressBar;
+
+

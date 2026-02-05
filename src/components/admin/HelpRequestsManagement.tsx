@@ -85,7 +85,7 @@ interface Stats {
 
 // Configuration des types de demandes
 const requestTypes = [
-  { value: 'material', label: 'Aide matérielle', icon: Home, color: 'bg-blue-500' },
+  { value: 'material', label: 'Aide matérielle', icon: Home, color: 'bg-[#ffc200]' },
   { value: 'financial', label: 'Aide financière', icon: DollarSign, color: 'bg-green-500' },
   { value: 'spiritual', label: 'Accompagnement spirituel', icon: Heart, color: 'bg-purple-500' },
   { value: 'counseling', label: 'Counseling', icon: Users, color: 'bg-indigo-500' },
@@ -103,7 +103,7 @@ const urgencyLevels = [
 // Configuration des statuts
 const statusConfig = [
   { value: 'pending', label: 'En attente', color: 'bg-yellow-100 text-yellow-700', icon: Clock },
-  { value: 'in_progress', label: 'En cours', color: 'bg-blue-100 text-blue-700', icon: Loader2 },
+  { value: 'in_progress', label: 'En cours', color: 'bg-[#fff3cc] text-[#5c4d00]', icon: Loader2 },
   { value: 'completed', label: 'Terminée', color: 'bg-green-100 text-green-700', icon: CheckCircle },
   { value: 'cancelled', label: 'Annulée', color: 'bg-gray-100 text-gray-700', icon: XCircle }
 ]
@@ -338,7 +338,7 @@ const HelpRequestsManagement: React.FC = () => {
         <div className={`p-4 rounded-lg flex items-center gap-2 ${
           message.type === 'success' ? 'bg-green-50 text-green-700' :
           message.type === 'error' ? 'bg-red-50 text-red-700' :
-          'bg-blue-50 text-blue-700'
+          'bg-[#fffefa] text-[#5c4d00]'
         }`}>
           {message.type === 'success' ? <CheckCircle className="h-5 w-5" /> :
            message.type === 'error' ? <XCircle className="h-5 w-5" /> :
@@ -378,11 +378,11 @@ const HelpRequestsManagement: React.FC = () => {
         
         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <TrendingUp className="h-5 w-5 text-blue-600" />
+            <div className="p-2 bg-[#fff3cc] rounded-lg">
+              <TrendingUp className="h-5 w-5 text-[#cc9b00]" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-blue-600">{stats.in_progress}</p>
+              <p className="text-2xl font-bold text-[#cc9b00]">{stats.in_progress}</p>
               <p className="text-xs text-gray-500">En cours</p>
             </div>
           </div>
@@ -567,7 +567,7 @@ const HelpRequestsManagement: React.FC = () => {
                         <div className="flex items-center justify-end gap-2">
                           <button
                             onClick={() => viewDetails(request)}
-                            className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            className="p-2 text-gray-400 hover:text-[#cc9b00] hover:bg-[#fffefa] rounded-lg transition-colors"
                             title="Voir détails"
                           >
                             <Eye className="h-4 w-4" />
@@ -888,3 +888,4 @@ const HelpRequestsManagement: React.FC = () => {
 }
 
 export default HelpRequestsManagement
+

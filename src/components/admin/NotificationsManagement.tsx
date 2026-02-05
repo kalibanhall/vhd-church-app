@@ -271,7 +271,7 @@ export default function NotificationsManagement() {
           onClick={() => setActiveTab('send')}
           className={`px-4 py-2 rounded-t-lg transition-colors ${
             activeTab === 'send' 
-              ? 'bg-blue-500 text-white' 
+              ? 'bg-[#ffc200] text-white' 
               : 'bg-gray-100 hover:bg-gray-200'
           }`}
         >
@@ -282,7 +282,7 @@ export default function NotificationsManagement() {
           onClick={() => setActiveTab('templates')}
           className={`px-4 py-2 rounded-t-lg transition-colors ${
             activeTab === 'templates' 
-              ? 'bg-blue-500 text-white' 
+              ? 'bg-[#ffc200] text-white' 
               : 'bg-gray-100 hover:bg-gray-200'
           }`}
         >
@@ -293,7 +293,7 @@ export default function NotificationsManagement() {
           onClick={() => setActiveTab('history')}
           className={`px-4 py-2 rounded-t-lg transition-colors ${
             activeTab === 'history' 
-              ? 'bg-blue-500 text-white' 
+              ? 'bg-[#ffc200] text-white' 
               : 'bg-gray-100 hover:bg-gray-200'
           }`}
         >

@@ -365,7 +365,7 @@ export default function FollowUpPage() {
             value={request.notes}
             onChange={(e) => setRequest({ ...request, notes: e.target.value })}
             placeholder="Partagez ici toute information que vous jugez utile pour votre accompagnement (optionnel)"
-            className="w-full h-32 p-4 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full h-32 p-4 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
           />
 
           {/* Summary */}

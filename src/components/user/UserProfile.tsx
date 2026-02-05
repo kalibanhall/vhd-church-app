@@ -104,7 +104,7 @@ export default function UserProfile({ user }: ProfileProps) {
               type: 'appointment',
               description: 'Rendez-vous confirmé',
               date: 'Récemment',
-              color: 'blue'
+              color: 'amber'
             })
           }
           
@@ -320,7 +320,7 @@ export default function UserProfile({ user }: ProfileProps) {
                       type="text"
                       value={editData.firstName}
                       onChange={(e) => handleInputChange('firstName', e.target.value)}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                       required
                     />
                   </div>
@@ -332,7 +332,7 @@ export default function UserProfile({ user }: ProfileProps) {
                       type="text"
                       value={editData.lastName}
                       onChange={(e) => handleInputChange('lastName', e.target.value)}
-                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                       required
                     />
                   </div>
@@ -346,7 +346,7 @@ export default function UserProfile({ user }: ProfileProps) {
                     type="email"
                     value={editData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                     required
                   />
                 </div>
@@ -360,7 +360,7 @@ export default function UserProfile({ user }: ProfileProps) {
                     value={editData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
                     placeholder="+237 6XX XXX XXX"
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   />
                 </div>
 
@@ -372,7 +372,7 @@ export default function UserProfile({ user }: ProfileProps) {
                     type="date"
                     value={editData.birthDate}
                     onChange={(e) => handleInputChange('birthDate', e.target.value)}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   />
                 </div>
 
@@ -383,7 +383,7 @@ export default function UserProfile({ user }: ProfileProps) {
                   <select
                     value={editData.maritalStatus}
                     onChange={(e) => handleInputChange('maritalStatus', e.target.value)}
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   >
                     <option value="">Sélectionner...</option>
                     <option value="célibataire">Célibataire</option>
@@ -409,7 +409,7 @@ export default function UserProfile({ user }: ProfileProps) {
                     onChange={(e) => handleInputChange('address', e.target.value)}
                     rows={3}
                     placeholder="Quartier, rue..."
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   />
                 </div>
 
@@ -422,7 +422,7 @@ export default function UserProfile({ user }: ProfileProps) {
                     value={editData.city}
                     onChange={(e) => handleInputChange('city', e.target.value)}
                     placeholder="Douala, Yaoundé..."
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   />
                 </div>
 
@@ -435,7 +435,7 @@ export default function UserProfile({ user }: ProfileProps) {
                     value={editData.profession}
                     onChange={(e) => handleInputChange('profession', e.target.value)}
                     placeholder="Ex: Ingénieur, Enseignant..."
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   />
                 </div>
 
@@ -448,7 +448,7 @@ export default function UserProfile({ user }: ProfileProps) {
                     onChange={(e) => handleInputChange('bio', e.target.value)}
                     rows={4}
                     placeholder="Parlez-nous de vous..."
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   />
                 </div>
               </div>

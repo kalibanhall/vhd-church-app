@@ -181,7 +181,7 @@ export default function FaceCapture({
     return (
       <div className="flex items-center justify-center p-8 bg-gray-100 dark:bg-gray-800 rounded-lg">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#ffc200] mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-400">Chargement des modèles...</p>
         </div>
       </div>
@@ -243,17 +243,18 @@ export default function FaceCapture({
       {mode === 'capture' && (
         <button
           onClick={capturePhoto}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+          className="w-full bg-[#ffc200] hover:bg-[#cc9b00] text-white font-semibold py-3 px-6 rounded-lg transition-colors"
         >
           📸 Capturer le visage
         </button>
       )}
 
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-        <p className="text-sm text-blue-800 dark:text-blue-300">
+      <div className="bg-[#fffefa] dark:bg-[#3d3200]/20 border border-[#e6af00] dark:border-[#cc9b00] rounded-lg p-4">
+        <p className="text-sm text-[#3d3200] dark:text-[#ffc200]">
           💡 <strong>Conseil:</strong> Positionnez votre visage face à la caméra, bien éclairé et à environ 50cm de l'écran.
         </p>
       </div>
     </div>
   );
 }
+

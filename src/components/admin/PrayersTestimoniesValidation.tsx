@@ -172,7 +172,7 @@ export default function PrayersTestimoniesValidation() {
           onClick={() => setActiveTab('prayers')}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'prayers' 
-              ? 'bg-white text-blue-600 shadow-sm' 
+              ? 'bg-white text-[#cc9b00] shadow-sm' 
               : 'text-gray-600 hover:text-gray-900'
           }`}
         >
@@ -183,7 +183,7 @@ export default function PrayersTestimoniesValidation() {
           onClick={() => setActiveTab('testimonies')}
           className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === 'testimonies' 
-              ? 'bg-white text-blue-600 shadow-sm' 
+              ? 'bg-white text-[#cc9b00] shadow-sm' 
               : 'text-gray-600 hover:text-gray-900'
           }`}
         >

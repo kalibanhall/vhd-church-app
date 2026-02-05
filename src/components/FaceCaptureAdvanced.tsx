@@ -485,7 +485,7 @@ export default function FaceCaptureAdvanced({
         <div className="flex flex-col items-center gap-4">
           <div className="relative">
             <div className="w-20 h-20 rounded-full border-4 border-gray-700 flex items-center justify-center">
-              <Scan className="h-10 w-10 text-blue-500 animate-pulse" />
+              <Scan className="h-10 w-10 text-[#cc9b00] animate-pulse" />
             </div>
             <svg className="absolute inset-0 w-20 h-20 -rotate-90">
               <circle
@@ -493,7 +493,7 @@ export default function FaceCaptureAdvanced({
                 cy="40"
                 r="36"
                 fill="none"
-                stroke="#3b82f6"
+                stroke="#ffc200"
                 strokeWidth="4"
                 strokeDasharray={`${loadingProgress * 2.26} 226`}
                 className="transition-all duration-300"
@@ -661,7 +661,7 @@ export default function FaceCaptureAdvanced({
             disabled={!qualityCheck.faceInPosition || isCapturing || captures.length >= minCaptureCount}
             className={`flex-1 flex items-center justify-center gap-2 py-4 px-6 rounded-xl font-semibold transition-all ${
               qualityCheck.faceInPosition && !isCapturing && captures.length < minCaptureCount
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 shadow-lg'
+                ? 'bg-gradient-to-r from-[#ffc200] to-[#cc9b00] text-white hover:from-[#cc9b00] hover:to-[#a67d00] shadow-lg'
                 : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
             }`}
           >
@@ -695,11 +695,11 @@ export default function FaceCaptureAdvanced({
       )}
 
       {/* Instructions */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-4">
-        <h4 className="font-medium text-blue-900 dark:text-blue-300 mb-2">
+      <div className="bg-[#fffefa] dark:bg-[#3d3200]/20 border border-[#e6af00] dark:border-[#cc9b00] rounded-xl p-4">
+        <h4 className="font-medium text-[#3d3200] dark:text-[#ffc200] mb-2">
           Conseils pour une bonne capture
         </h4>
-        <ul className="text-sm text-blue-800 dark:text-blue-400 space-y-1">
+        <ul className="text-sm text-[#3d3200] dark:text-[#e6af00] space-y-1">
           <li>• Positionnez votre visage dans l&apos;ovale vert</li>
           <li>• Assurez-vous d&apos;avoir un bon éclairage de face</li>
           <li>• Gardez une expression neutre et regardez la caméra</li>
@@ -745,3 +745,5 @@ function QualityIndicator({
     </div>
   )
 }
+
+

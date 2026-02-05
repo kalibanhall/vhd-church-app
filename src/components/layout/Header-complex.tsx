@@ -56,7 +56,7 @@ export default function Header({ user, onProfileClick, onTabChange }: HeaderProp
                     setSearchQuery('')
                   }
                 }}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm bg-gray-50 focus:bg-white transition-colors"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-[#ffc200] focus:border-transparent text-sm bg-gray-50 focus:bg-white transition-colors"
               />
               
               {/* Smart Suggestions Dropdown */}
@@ -64,7 +64,7 @@ export default function Header({ user, onProfileClick, onTabChange }: HeaderProp
                 <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-xl shadow-xl z-50 max-h-[32rem] overflow-y-auto">
                   {/* Header */}
                   {searchQuery === '' ? (
-                    <div className="p-4 text-sm font-medium text-blue-600 border-b bg-gradient-to-r from-blue-50 to-indigo-50">
+                    <div className="p-4 text-sm font-medium text-[#cc9b00] border-b bg-gradient-to-r from-[#fffefa] to-[#fff3cc]">
                       <div className="flex items-center space-x-2">
                         <span>🚀</span>
                         <span>Navigation intelligente VHD - Que souhaitez-vous faire ?</span>
@@ -74,7 +74,7 @@ export default function Header({ user, onProfileClick, onTabChange }: HeaderProp
                     <div className="p-3 text-sm text-gray-600 border-b bg-gray-50">
                       <div className="flex items-center justify-between">
                         <span>Résultats pour "{searchQuery}"</span>
-                        <span className="text-blue-600 font-medium">{filteredSuggestions.length} trouvé{filteredSuggestions.length > 1 ? 's' : ''}</span>
+                        <span className="text-[#cc9b00] font-medium">{filteredSuggestions.length} trouvé{filteredSuggestions.length > 1 ? 's' : ''}</span>
                       </div>
                     </div>
                   )}
@@ -99,16 +99,16 @@ export default function Header({ user, onProfileClick, onTabChange }: HeaderProp
                             <button
                               key={suggestion.id}
                               onClick={() => handleSuggestionClick(suggestion)}
-                              className="w-full flex items-center space-x-4 px-4 py-4 hover:bg-blue-50 hover:border-l-4 hover:border-blue-500 transition-all text-left group focus:outline-none focus:bg-blue-50"
+                              className="w-full flex items-center space-x-4 px-4 py-4 hover:bg-[#fffefa] hover:border-l-4 hover:border-[#ffc200] transition-all text-left group focus:outline-none focus:bg-[#fffefa]"
                             >
                               <span className="text-2xl group-hover:scale-110 transition-transform flex-shrink-0">
                                 {suggestion.icon}
                               </span>
                               <div className="flex-1 min-w-0">
-                                <div className="font-medium text-gray-900 group-hover:text-blue-700 truncate">
+                                <div className="font-medium text-gray-900 group-hover:text-[#cc9b00] truncate">
                                   {suggestion.label}
                                 </div>
-                                <div className="text-sm text-gray-500 group-hover:text-blue-600 line-clamp-2">
+                                <div className="text-sm text-gray-500 group-hover:text-[#cc9b00] line-clamp-2">
                                   {suggestion.description}
                                 </div>
                                 {suggestion.requiresRole && (
@@ -169,7 +169,7 @@ export default function Header({ user, onProfileClick, onTabChange }: HeaderProp
               onClick={handleProfileClick}
               className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-100 transition-colors"
             >
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-[#ffc200] to-[#cc9b00] rounded-full flex items-center justify-center">
                 <User className="h-6 w-6 text-white" />
               </div>
               <div className="text-left">

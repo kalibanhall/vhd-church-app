@@ -141,8 +141,8 @@ export function DatePicker({
         onClick={() => !disabled && setIsOpen(!isOpen)}
         className={`
           flex items-center gap-2 px-3 py-2 border rounded-lg cursor-pointer
-          ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white hover:border-blue-500'}
-          ${isOpen ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-300'}
+          ${disabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white hover:border-[#ffc200]'}
+          ${isOpen ? 'border-[#ffc200] ring-2 ring-[#e6af00]' : 'border-gray-300'}
           dark:bg-gray-800 dark:border-gray-700
         `}
       >
@@ -198,9 +198,9 @@ export function DatePicker({
                       w-full h-full rounded-lg text-sm font-medium
                       transition-colors
                       ${isSelected(date)
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-[#ffc200] text-white'
                         : isToday(date)
-                          ? 'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'
+                          ? 'bg-[#fff3cc] text-[#cc9b00] dark:bg-[#3d3200]/30 dark:text-[#e6af00]'
                           : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white'
                       }
                       ${isDisabled(date) ? 'opacity-50 cursor-not-allowed' : ''}
@@ -220,7 +220,7 @@ export function DatePicker({
                 onChange(new Date());
                 setIsOpen(false);
               }}
-              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+              className="text-sm text-[#cc9b00] hover:text-[#5c4d00] font-medium"
             >
               Aujourd&apos;hui
             </button>
@@ -241,3 +241,5 @@ export function DatePicker({
 }
 
 export default DatePicker;
+
+

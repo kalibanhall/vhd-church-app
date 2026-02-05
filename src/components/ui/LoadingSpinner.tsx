@@ -37,7 +37,7 @@ export default function LoadingSpinner({
 }: LoadingSpinnerProps) {
   const content = (
     <div className={`flex flex-col items-center justify-center gap-3 ${className}`}>
-      <Loader2 className={`${sizeClasses[size]} animate-spin text-blue-600`} />
+      <Loader2 className={`${sizeClasses[size]} animate-spin text-[#cc9b00]`} />
       {text && (
         <p className="text-sm text-gray-500 animate-pulse">{text}</p>
       )}
@@ -59,3 +59,5 @@ export default function LoadingSpinner({
 export function InlineLoader({ className = '' }: { className?: string }) {
   return <Loader2 className={`h-4 w-4 animate-spin ${className}`} />
 }
+
+

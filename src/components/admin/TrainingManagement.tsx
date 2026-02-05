@@ -437,7 +437,7 @@ const TrainingManagement: React.FC = () => {
         </div>
         <button
           onClick={openCreateModal}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-[#ffc200] text-white rounded-lg hover:bg-[#cc9b00] transition-colors"
         >
           <Plus className="h-4 w-4" />
           Nouvelle Formation
@@ -451,7 +451,7 @@ const TrainingManagement: React.FC = () => {
             ? 'bg-green-50 text-green-800 border border-green-200' 
             : message.type === 'error'
             ? 'bg-red-50 text-red-800 border border-red-200'
-            : 'bg-blue-50 text-blue-800 border border-blue-200'
+            : 'bg-[#fffefa] text-[#3d3200] border border-[#e6af00]'
         }`}>
           {message.type === 'success' ? <CheckCircle className="h-5 w-5" /> : <Clock className="h-5 w-5" />}
           <span>{message.text}</span>
@@ -465,8 +465,8 @@ const TrainingManagement: React.FC = () => {
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="bg-blue-100 p-2 rounded-lg">
-              <GraduationCap className="h-5 w-5 text-blue-600" />
+            <div className="bg-[#fff3cc] p-2 rounded-lg">
+              <GraduationCap className="h-5 w-5 text-[#cc9b00]" />
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-900">{stats.totalCourses}</p>
@@ -532,7 +532,7 @@ const TrainingManagement: React.FC = () => {
             onClick={() => setActiveTab('courses')}
             className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
               activeTab === 'courses'
-                ? 'border-blue-500 text-blue-600'
+                ? 'border-[#ffc200] text-[#cc9b00]'
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -543,7 +543,7 @@ const TrainingManagement: React.FC = () => {
             onClick={() => setActiveTab('enrollments')}
             className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors ${
               activeTab === 'enrollments'
-                ? 'border-blue-500 text-blue-600'
+                ? 'border-[#ffc200] text-[#cc9b00]'
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -565,13 +565,13 @@ const TrainingManagement: React.FC = () => {
                 placeholder="Rechercher une formation..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
               />
             </div>
             <select
               value={filterCategory}
               onChange={(e) => setFilterCategory(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
             >
               <option value="">Toutes les catégories</option>
               {categories.map(cat => (
@@ -587,7 +587,7 @@ const TrainingManagement: React.FC = () => {
               <p className="text-gray-500">Aucune formation trouvée</p>
               <button
                 onClick={openCreateModal}
-                className="mt-4 text-blue-600 hover:text-blue-700 font-medium"
+                className="mt-4 text-[#cc9b00] hover:text-[#5c4d00] font-medium"
               >
                 Créer une première formation
               </button>
@@ -597,7 +597,7 @@ const TrainingManagement: React.FC = () => {
               {filteredCourses.map(course => (
                 <div key={course.id} className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
                   {/* Image */}
-                  <div className="h-32 bg-gradient-to-r from-blue-500 to-purple-600 relative">
+                  <div className="h-32 bg-gradient-to-r from-[#ffc200] to-[#cc9b00] relative">
                     {course.imageUrl && (
                       <div className="w-full h-full" style={{ backgroundImage: `url(${course.imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
                     )}
@@ -640,7 +640,7 @@ const TrainingManagement: React.FC = () => {
                     <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
                       <button
                         onClick={() => openEditModal(course)}
-                        className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-lg"
+                        className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-sm text-[#cc9b00] hover:bg-[#fffefa] rounded-lg"
                       >
                         <Edit3 className="h-4 w-4" />
                         Modifier
@@ -761,7 +761,7 @@ const TrainingManagement: React.FC = () => {
                           <div className="flex items-center gap-2">
                             <div className="w-24 bg-gray-200 rounded-full h-2">
                               <div 
-                                className="bg-blue-600 h-2 rounded-full" 
+                                className="bg-[#ffc200] h-2 rounded-full" 
                                 style={{ width: `${enrollment.progress}%` }}
                               />
                             </div>
@@ -772,7 +772,7 @@ const TrainingManagement: React.FC = () => {
                           enrollment.status === 'COMPLETED' ? 'text-green-600' :
                           enrollment.status === 'REJECTED' ? 'text-red-600' :
                           enrollment.status === 'ABANDONED' ? 'text-gray-600' :
-                          enrollment.status === 'APPROVED' ? 'text-blue-600' :
+                          enrollment.status === 'APPROVED' ? 'text-[#cc9b00]' :
                           'text-purple-600'
                         }`}>
                           {enrollment.status === 'COMPLETED' ? '✅ Terminé' : 
@@ -796,7 +796,7 @@ const TrainingManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
             {/* Header */}
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white rounded-t-2xl">
+            <div className="bg-gradient-to-r from-[#ffc200] to-[#cc9b00] p-6 text-white rounded-t-2xl">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-bold">
@@ -822,7 +822,7 @@ const TrainingManagement: React.FC = () => {
                     type="text"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                     required
                   />
                 </div>
@@ -834,7 +834,7 @@ const TrainingManagement: React.FC = () => {
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                     rows={3}
                     required
                   />
@@ -847,7 +847,7 @@ const TrainingManagement: React.FC = () => {
                   <select
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   >
                     {categories.map(cat => (
                       <option key={cat.value} value={cat.value}>{cat.label}</option>
@@ -862,7 +862,7 @@ const TrainingManagement: React.FC = () => {
                   <select
                     value={formData.level}
                     onChange={(e) => setFormData({ ...formData, level: e.target.value as any })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   >
                     {levels.map(lvl => (
                       <option key={lvl.value} value={lvl.value}>{lvl.label}</option>
@@ -879,7 +879,7 @@ const TrainingManagement: React.FC = () => {
                     value={formData.duration}
                     onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
                     placeholder="Ex: 4 semaines"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   />
                 </div>
 
@@ -892,7 +892,7 @@ const TrainingManagement: React.FC = () => {
                     value={formData.instructor}
                     onChange={(e) => setFormData({ ...formData, instructor: e.target.value })}
                     placeholder="Nom du formateur"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   />
                 </div>
 
@@ -905,7 +905,7 @@ const TrainingManagement: React.FC = () => {
                     value={formData.imageUrl}
                     onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
                     placeholder="https://..."
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   />
                 </div>
 
@@ -915,7 +915,7 @@ const TrainingManagement: React.FC = () => {
                       type="checkbox"
                       checked={formData.isPublished}
                       onChange={(e) => setFormData({ ...formData, isPublished: e.target.checked })}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="rounded border-gray-300 text-[#cc9b00] focus:ring-[#ffc200]"
                     />
                     <span className="text-sm font-medium text-gray-700">
                       Publier immédiatement
@@ -936,7 +936,7 @@ const TrainingManagement: React.FC = () => {
                   <div className="space-y-2 mb-4">
                     {courseLessons.map((lesson, index) => (
                       <div key={index} className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
-                        <span className="w-6 h-6 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center text-xs font-medium">
+                        <span className="w-6 h-6 bg-[#fff3cc] text-[#5c4d00] rounded-full flex items-center justify-center text-xs font-medium">
                           {index + 1}
                         </span>
                         <div className="flex-1">
@@ -967,7 +967,7 @@ const TrainingManagement: React.FC = () => {
                           <button
                             type="button"
                             onClick={() => editLesson(index)}
-                            className="p-1 text-blue-600 hover:text-blue-700"
+                            className="p-1 text-[#cc9b00] hover:text-[#5c4d00]"
                           >
                             <Edit3 className="h-4 w-4" />
                           </button>
@@ -985,8 +985,8 @@ const TrainingManagement: React.FC = () => {
                 )}
 
                 {/* Formulaire d'ajout de leçon */}
-                <div className="bg-blue-50 p-4 rounded-lg space-y-3">
-                  <h4 className="font-medium text-blue-900">
+                <div className="bg-[#fffefa] p-4 rounded-lg space-y-3">
+                  <h4 className="font-medium text-[#3d3200]">
                     {editingLessonIndex !== null ? 'Modifier la leçon' : 'Ajouter une leçon'}
                   </h4>
                   
@@ -1026,7 +1026,7 @@ const TrainingManagement: React.FC = () => {
                   <button
                     type="button"
                     onClick={addLesson}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+                    className="flex items-center gap-2 px-4 py-2 bg-[#ffc200] text-white rounded-lg hover:bg-[#cc9b00] text-sm"
                   >
                     <Plus className="h-4 w-4" />
                     {editingLessonIndex !== null ? 'Mettre à jour' : 'Ajouter la leçon'}
@@ -1046,7 +1046,7 @@ const TrainingManagement: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="flex-1 py-3 px-4 bg-[#ffc200] text-white rounded-lg hover:bg-[#cc9b00] disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -1065,3 +1065,4 @@ const TrainingManagement: React.FC = () => {
 }
 
 export default TrainingManagement
+

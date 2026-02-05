@@ -232,7 +232,7 @@ export default function FaceScanner({ userId, onScanComplete, onAlreadyRegistere
     return (
       <div className="flex items-center justify-center p-8 bg-gray-100 dark:bg-gray-800 rounded-lg">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#ffc200] mx-auto mb-4"></div>
           <p className="text-gray-600 dark:text-gray-400">Chargement des modèles...</p>
         </div>
       </div>
@@ -312,18 +312,18 @@ export default function FaceScanner({ userId, onScanComplete, onAlreadyRegistere
             ? 'bg-gray-400 cursor-not-allowed'
             : error.includes('déjà enregistré')
             ? 'bg-red-400 cursor-not-allowed'
-            : 'bg-blue-600 hover:bg-blue-700 text-white'
+            : 'bg-[#ffc200] hover:bg-[#cc9b00] text-white'
         }`}
       >
         {checkingExisting ? '🔍 Vérification...' : isScanning ? '⏳ Scan en cours...' : '📸 Enregistrer mon visage'}
       </button>
 
       {/* Instructions */}
-      <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-        <p className="text-sm text-blue-800 dark:text-blue-300">
+      <div className="bg-[#fffefa] dark:bg-[#3d3200]/20 border border-[#e6af00] dark:border-[#cc9b00] rounded-lg p-4">
+        <p className="text-sm text-[#3d3200] dark:text-[#ffc200]">
           <strong>💡 Instructions:</strong>
         </p>
-        <ul className="text-sm text-blue-700 dark:text-blue-400 mt-2 space-y-1 list-disc list-inside">
+        <ul className="text-sm text-[#5c4d00] dark:text-[#e6af00] mt-2 space-y-1 list-disc list-inside">
           <li>Positionnez votre visage face à la caméra</li>
           <li>Assurez-vous d'avoir un bon éclairage</li>
           <li>Restez immobile pendant le scan (environ 2 secondes)</li>
@@ -334,3 +334,4 @@ export default function FaceScanner({ userId, onScanComplete, onAlreadyRegistere
     </div>
   );
 }
+

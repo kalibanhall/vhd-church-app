@@ -241,7 +241,7 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
     switch (type) {
       case 'appointment_reminder':
       case 'event_reminder':
-        return <Calendar size={20} className="text-blue-500" />;
+        return <Calendar size={20} className="text-[#cc9b00]" />;
       case 'donation_receipt':
         return <Heart size={20} className="text-green-500" />;
       case 'prayer_request':
@@ -277,7 +277,7 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
       {/* Bouton de notifications */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 text-gray-600 hover:text-blue-600 transition-colors rounded-lg hover:bg-gray-100"
+        className="relative p-2 text-gray-600 hover:text-[#cc9b00] transition-colors rounded-lg hover:bg-gray-100"
       >
         <Bell className="h-5 w-5 md:h-6 md:w-6" />
         {totalUnread > 0 && (
@@ -308,7 +308,7 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
                     setIsOpen(false);
                     router.push('/?tab=chat');
                   }}
-                  className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1 bg-blue-50 px-2 py-1 rounded-full"
+                  className="text-xs text-[#cc9b00] hover:text-[#5c4d00] flex items-center gap-1 bg-[#fff3cc] px-2 py-1 rounded-full"
                 >
                   <MessageCircle size={12} />
                   <span>{unreadMessages} msg</span>
@@ -317,7 +317,7 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
               {unreadCount > 0 && (
                 <button
                   onClick={markAllAsRead}
-                  className="text-xs text-blue-600 hover:text-blue-800 flex items-center gap-1"
+                  className="text-xs text-[#cc9b00] hover:text-[#5c4d00] flex items-center gap-1"
                   title="Marquer tout comme lu"
                 >
                   <CheckCircle2 size={14} />
@@ -337,7 +337,7 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
           <div className="flex-1 overflow-y-auto">
             {loading ? (
               <div className="flex items-center justify-center p-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#ffc200]"></div>
               </div>
             ) : notifications.length === 0 ? (
               <div className="text-center p-8 text-gray-500">
@@ -351,7 +351,7 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
                     key={notification.id}
                     onClick={() => handleNotificationClick(notification)}
                     className={`p-4 transition-colors cursor-pointer hover:bg-gray-50 ${
-                      !notification.isRead ? 'bg-blue-50' : ''
+                      !notification.isRead ? 'bg-[#fff3cc]' : ''
                     }`}
                   >
                     <div className="flex items-start space-x-3">
@@ -373,7 +373,7 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
                               {formatTimeAgo(notification.createdAt)}
                             </span>
                             {!notification.isRead && (
-                              <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                              <div className="w-2 h-2 bg-[#ffc200] rounded-full"></div>
                             )}
                           </div>
                         </div>
@@ -381,7 +381,7 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
                           {notification.message}
                         </p>
                         {notification.actionUrl && (
-                          <div className="flex items-center space-x-1 mt-2 text-xs text-blue-600">
+                          <div className="flex items-center space-x-1 mt-2 text-xs text-[#cc9b00]">
                             <ExternalLink size={12} />
                             <span>Cliquer pour voir</span>
                           </div>
@@ -402,7 +402,7 @@ export default function NotificationsPanel({ className = '' }: NotificationsPane
                   setShowAllNotifications(!showAllNotifications);
                   fetchNotifications(!showAllNotifications);
                 }}
-                className="text-sm text-blue-600 hover:text-blue-800"
+                className="text-sm text-[#cc9b00] hover:text-[#5c4d00]"
               >
                 {showAllNotifications ? 'Voir moins' : 'Voir toutes les notifications'}
               </button>

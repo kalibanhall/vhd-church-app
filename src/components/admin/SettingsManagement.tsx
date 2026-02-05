@@ -211,7 +211,7 @@ const SettingsManagement: React.FC = () => {
         <div className={`p-4 rounded-lg flex items-center gap-2 ${
           message.type === 'success' ? 'bg-green-50 text-green-800 border border-green-200' :
           message.type === 'error' ? 'bg-red-50 text-red-800 border border-red-200' :
-          'bg-blue-50 text-blue-800 border border-blue-200'
+          'bg-[#fffefa] text-[#3d3200] border border-[#e6af00]'
         }`}>
           {message.type === 'success' ? <CheckCircle className="h-5 w-5" /> : 
            message.type === 'error' ? <AlertCircle className="h-5 w-5" /> : null}
@@ -357,3 +357,5 @@ const SettingsManagement: React.FC = () => {
 }
 
 export default SettingsManagement
+
+

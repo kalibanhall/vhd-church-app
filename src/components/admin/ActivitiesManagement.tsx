@@ -79,7 +79,7 @@ interface Message {
 }
 
 const activityTypes = [
-  { value: 'event', label: 'Événement général', icon: Calendar, color: 'bg-blue-500' },
+  { value: 'event', label: 'Événement général', icon: Calendar, color: 'bg-[#ffc200]' },
   { value: 'worship', label: 'Culte', icon: Church, color: 'bg-purple-500' },
   { value: 'youth', label: 'Jeunesse', icon: Zap, color: 'bg-green-500' },
   { value: 'women', label: 'Femmes', icon: Heart, color: 'bg-pink-500' },
@@ -311,7 +311,7 @@ const ActivitiesManagement: React.FC = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'upcoming':
-        return <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs">À venir</span>
+        return <span className="px-2 py-1 bg-[#fff3cc] text-[#5c4d00] rounded-full text-xs">À venir</span>
       case 'ongoing':
         return <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs">En cours</span>
       case 'completed':
@@ -356,7 +356,7 @@ const ActivitiesManagement: React.FC = () => {
         </div>
         <button
           onClick={openCreateModal}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          className="flex items-center gap-2 px-4 py-2 bg-[#ffc200] text-white rounded-lg hover:bg-[#cc9b00]"
         >
           <Plus className="h-5 w-5" />
           Nouvelle activité
@@ -368,7 +368,7 @@ const ActivitiesManagement: React.FC = () => {
         <div className={`p-4 rounded-lg flex items-center gap-2 ${
           message.type === 'success' ? 'bg-green-50 text-green-800 border border-green-200' :
           message.type === 'error' ? 'bg-red-50 text-red-800 border border-red-200' :
-          'bg-blue-50 text-blue-800 border border-blue-200'
+          'bg-[#fffefa] text-[#3d3200] border border-[#e6af00]'
         }`}>
           <span>{message.text}</span>
           <button onClick={() => setMessage(null)} className="ml-auto">
@@ -384,7 +384,7 @@ const ActivitiesManagement: React.FC = () => {
           <div className="text-sm text-gray-500">Total</div>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-          <div className="text-2xl font-bold text-blue-600">{stats.upcoming}</div>
+          <div className="text-2xl font-bold text-[#cc9b00]">{stats.upcoming}</div>
           <div className="text-sm text-gray-500">À venir</div>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
@@ -406,13 +406,13 @@ const ActivitiesManagement: React.FC = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Rechercher une activité..."
-            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
           />
         </div>
         <select
           value={filterType}
           onChange={(e) => setFilterType(e.target.value)}
-          className="px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+          className="px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
         >
           <option value="all">Tous les types</option>
           {activityTypes.map(t => (
@@ -422,7 +422,7 @@ const ActivitiesManagement: React.FC = () => {
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
-          className="px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+          className="px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
         >
           <option value="all">Tous les statuts</option>
           <option value="upcoming">À venir</option>
@@ -438,7 +438,7 @@ const ActivitiesManagement: React.FC = () => {
           <Calendar className="h-12 w-12 text-gray-300 mx-auto mb-4" />
           <h3 className="text-lg font-medium text-gray-900 mb-2">Aucune activité</h3>
           <p className="text-gray-500 mb-4">Créez votre première activité</p>
-          <button onClick={openCreateModal} className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg">
+          <button onClick={openCreateModal} className="inline-flex items-center gap-2 px-4 py-2 bg-[#ffc200] text-white rounded-lg">
             <Plus className="h-4 w-4" />
             Créer une activité
           </button>
@@ -489,7 +489,7 @@ const ActivitiesManagement: React.FC = () => {
                     <td className="p-4 text-center">
                       <button
                         onClick={() => viewRegistrations(activity)}
-                        className="inline-flex items-center gap-1 text-blue-600 hover:underline"
+                        className="inline-flex items-center gap-1 text-[#cc9b00] hover:underline"
                       >
                         <Users className="h-4 w-4" />
                         {activity.registration_count || activity.current_participants || 0}
@@ -503,7 +503,7 @@ const ActivitiesManagement: React.FC = () => {
                       <div className="flex items-center justify-end gap-2">
                         <button
                           onClick={() => openEditModal(activity)}
-                          className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg"
+                          className="p-2 text-gray-400 hover:text-[#cc9b00] hover:bg-[#fffefa] rounded-lg"
                           title="Modifier"
                         >
                           <Edit3 className="h-4 w-4" />
@@ -568,7 +568,7 @@ const ActivitiesManagement: React.FC = () => {
                   type="text"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   placeholder="Titre de l'activité"
                   required
                 />
@@ -580,7 +580,7 @@ const ActivitiesManagement: React.FC = () => {
                 <select
                   value={formData.type}
                   onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                 >
                   {activityTypes.map(t => (
                     <option key={t.value} value={t.value}>{t.label}</option>
@@ -595,7 +595,7 @@ const ActivitiesManagement: React.FC = () => {
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 resize-none"
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200] resize-none"
                   placeholder="Description de l'activité..."
                 />
               </div>
@@ -610,7 +610,7 @@ const ActivitiesManagement: React.FC = () => {
                     type="datetime-local"
                     value={formData.start_date}
                     onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                     required
                   />
                 </div>
@@ -620,7 +620,7 @@ const ActivitiesManagement: React.FC = () => {
                     type="datetime-local"
                     value={formData.end_date}
                     onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   />
                 </div>
               </div>
@@ -632,7 +632,7 @@ const ActivitiesManagement: React.FC = () => {
                   type="text"
                   value={formData.location}
                   onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   placeholder="Lieu de l'activité"
                 />
               </div>
@@ -646,7 +646,7 @@ const ActivitiesManagement: React.FC = () => {
                   type="number"
                   value={formData.max_participants}
                   onChange={(e) => setFormData({ ...formData, max_participants: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   placeholder="Laisser vide pour illimité"
                   min="0"
                 />
@@ -659,7 +659,7 @@ const ActivitiesManagement: React.FC = () => {
                     type="checkbox"
                     checked={formData.all_day}
                     onChange={(e) => setFormData({ ...formData, all_day: e.target.checked })}
-                    className="w-4 h-4 text-blue-600 rounded"
+                    className="w-4 h-4 text-[#cc9b00] rounded"
                   />
                   <span className="text-sm text-gray-700">Journée entière</span>
                 </label>
@@ -668,7 +668,7 @@ const ActivitiesManagement: React.FC = () => {
                     type="checkbox"
                     checked={formData.registration_required}
                     onChange={(e) => setFormData({ ...formData, registration_required: e.target.checked })}
-                    className="w-4 h-4 text-blue-600 rounded"
+                    className="w-4 h-4 text-[#cc9b00] rounded"
                   />
                   <span className="text-sm text-gray-700">Inscription requise</span>
                 </label>
@@ -677,7 +677,7 @@ const ActivitiesManagement: React.FC = () => {
                     type="checkbox"
                     checked={formData.is_recurring}
                     onChange={(e) => setFormData({ ...formData, is_recurring: e.target.checked })}
-                    className="w-4 h-4 text-blue-600 rounded"
+                    className="w-4 h-4 text-[#cc9b00] rounded"
                   />
                   <span className="text-sm text-gray-700">Récurrent</span>
                 </label>
@@ -695,7 +695,7 @@ const ActivitiesManagement: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                  className="flex items-center gap-2 px-4 py-2 bg-[#ffc200] text-white rounded-lg hover:bg-[#cc9b00] disabled:opacity-50"
                 >
                   {isSubmitting ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -745,7 +745,7 @@ const ActivitiesManagement: React.FC = () => {
                         </p>
                         <span className={`text-xs px-2 py-1 rounded-full ${
                           reg.status === 'registered' ? 'bg-green-100 text-green-700' :
-                          reg.status === 'attended' ? 'bg-blue-100 text-blue-700' :
+                          reg.status === 'attended' ? 'bg-[#fff3cc] text-[#5c4d00]' :
                           'bg-gray-100 text-gray-700'
                         }`}>
                           {reg.status === 'registered' ? 'Inscrit' :
@@ -765,3 +765,5 @@ const ActivitiesManagement: React.FC = () => {
 }
 
 export default ActivitiesManagement
+
+

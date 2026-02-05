@@ -32,8 +32,8 @@ export function StatCard({
   value,
   subtitle,
   icon: Icon,
-  iconColor = 'text-blue-600',
-  iconBgColor = 'bg-blue-100',
+  iconColor = 'text-[#cc9b00]',
+  iconBgColor = 'bg-[#fff3cc]',
   trend,
   loading = false,
   onClick,
@@ -142,3 +142,5 @@ export function StatCardGrid({
 }
 
 export default StatCard;
+
+

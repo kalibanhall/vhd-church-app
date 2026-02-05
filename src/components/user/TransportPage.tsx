@@ -661,7 +661,7 @@ export default function TransportPage() {
                   <select
                     value={bookingRequest.pickupStop}
                     onChange={(e) => setBookingRequest({ ...bookingRequest, pickupStop: e.target.value })}
-                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200]"
                   >
                     <option value={selectedRoute.departure.location}>{selectedRoute.departure.location}</option>
                     {selectedRoute.stops.map((stop, idx) => (
@@ -677,7 +677,7 @@ export default function TransportPage() {
                   <select
                     value={bookingRequest.passengers}
                     onChange={(e) => setBookingRequest({ ...bookingRequest, passengers: parseInt(e.target.value) })}
-                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200]"
                   >
                     {Array.from({ length: Math.min(selectedRoute.availableSeats, 4) }, (_, i) => i + 1).map(n => (
                       <option key={n} value={n}>{n} passager{n > 1 ? 's' : ''}</option>
@@ -693,7 +693,7 @@ export default function TransportPage() {
                     value={bookingRequest.notes}
                     onChange={(e) => setBookingRequest({ ...bookingRequest, notes: e.target.value })}
                     placeholder="Information pour le conducteur..."
-                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 resize-none"
+                    className="w-full p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200] resize-none"
                     rows={2}
                   />
                 </div>

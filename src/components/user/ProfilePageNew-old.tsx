@@ -171,7 +171,7 @@ export default function ProfilePage({ user }: ProfileProps) {
       case 'donation':
         return <div className="w-2 h-2 bg-green-500 rounded-full"></div>
       case 'appointment':
-        return <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+        return <div className="w-2 h-2 bg-[#ffc200] rounded-full"></div>
       case 'prayer':
         return <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
       case 'testimony':
@@ -184,7 +184,7 @@ export default function ProfilePage({ user }: ProfileProps) {
   return (
     <div className="min-h-screen bg-gray-50 flex">
       {/* Sidebar Navigation */}
-      <div className="w-80 bg-blue-600 text-white flex flex-col">
+      <div className="w-80 bg-[#ffc200] text-white flex flex-col">
         <div className="p-6">
           <div className="space-y-2">
             {menuItems.map((item) => {
@@ -196,7 +196,7 @@ export default function ProfilePage({ user }: ProfileProps) {
                   className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors ${
                     item.id === 'profile' || item.active
                       ? 'bg-white/10 text-white font-medium'
-                      : 'text-blue-100 hover:bg-white/5 hover:text-white'
+                      : 'text-[#fff3cc] hover:bg-white/5 hover:text-white'
                   }`}
                 >
                   <Icon className="w-5 h-5" />
@@ -217,8 +217,8 @@ export default function ProfilePage({ user }: ProfileProps) {
             <div className="lg:col-span-2">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
                 <div className="bg-white rounded-xl p-6 text-center shadow-sm">
-                  <Heart className="w-8 h-8 text-blue-500 mx-auto mb-3" />
-                  <div className="text-2xl font-bold text-blue-600">${stats.totalDonations}</div>
+                  <Heart className="w-8 h-8 text-[#cc9b00] mx-auto mb-3" />
+                  <div className="text-2xl font-bold text-[#cc9b00]">${stats.totalDonations}</div>
                   <div className="text-sm text-gray-500">Total des dons</div>
                 </div>
 
@@ -253,7 +253,7 @@ export default function ProfilePage({ user }: ProfileProps) {
                       <div className="flex-1">
                         <div className="flex items-center space-x-2 mb-1">
                           {activity.type === 'donation' && <Check className="w-4 h-4 text-green-500" />}
-                          {activity.type === 'appointment' && <Calendar className="w-4 h-4 text-blue-500" />}
+                          {activity.type === 'appointment' && <Calendar className="w-4 h-4 text-[#cc9b00]" />}
                           {activity.type === 'prayer' && <MessageCircle className="w-4 h-4 text-purple-500" />}
                           <span className="font-medium">{activity.title}</span>
                         </div>
@@ -267,7 +267,7 @@ export default function ProfilePage({ user }: ProfileProps) {
 
             {/* Carte de membre */}
             <div className="space-y-6">
-              <div className="bg-blue-600 rounded-xl p-6 text-white relative overflow-hidden">
+              <div className="bg-[#ffc200] rounded-xl p-6 text-white relative overflow-hidden">
                 <div className="absolute top-4 right-4 bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full text-xs font-medium">
                   Membre officiel
                 </div>
@@ -290,14 +290,14 @@ export default function ProfilePage({ user }: ProfileProps) {
                     <div className="absolute -bottom-2 -right-2 flex space-x-1">
                       <button
                         onClick={() => fileInputRef.current?.click()}
-                        className="w-8 h-8 bg-white text-blue-600 rounded-full flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
+                        className="w-8 h-8 bg-white text-[#cc9b00] rounded-full flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
                         title="Téléverser une photo"
                       >
                         <Edit3 className="w-4 h-4" />
                       </button>
                       <button
                         onClick={handleCameraCapture}
-                        className="w-8 h-8 bg-white text-blue-600 rounded-full flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
+                        className="w-8 h-8 bg-white text-[#cc9b00] rounded-full flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
                         title="Prendre une photo"
                       >
                         <Camera className="w-4 h-4" />
@@ -324,7 +324,7 @@ export default function ProfilePage({ user }: ProfileProps) {
               {/* Bouton modifier profil */}
               <button
                 onClick={() => setShowEditModal(true)}
-                className="w-full bg-white border-2 border-blue-200 hover:border-blue-300 text-blue-600 py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors"
+                className="w-full bg-white border-2 border-[#e6af00] hover:border-[#cc9b00] text-[#cc9b00] py-3 px-4 rounded-lg flex items-center justify-center space-x-2 transition-colors"
               >
                 <Edit3 className="w-4 h-4" />
                 <span>Modifier le profil</span>
@@ -347,7 +347,7 @@ export default function ProfilePage({ user }: ProfileProps) {
                   type="text"
                   value={editData.firstName}
                   onChange={(e) => setEditData({...editData, firstName: e.target.value})}
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-[#ffc200]"
                 />
               </div>
 
@@ -357,7 +357,7 @@ export default function ProfilePage({ user }: ProfileProps) {
                   type="text"
                   value={editData.lastName}
                   onChange={(e) => setEditData({...editData, lastName: e.target.value})}
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-[#ffc200]"
                 />
               </div>
 
@@ -367,7 +367,7 @@ export default function ProfilePage({ user }: ProfileProps) {
                   type="email"
                   value={editData.email}
                   onChange={(e) => setEditData({...editData, email: e.target.value})}
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-[#ffc200]"
                 />
               </div>
 
@@ -377,7 +377,7 @@ export default function ProfilePage({ user }: ProfileProps) {
                   type="tel"
                   value={editData.phone}
                   onChange={(e) => setEditData({...editData, phone: e.target.value})}
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-[#ffc200]"
                 />
               </div>
             </div>
@@ -385,7 +385,7 @@ export default function ProfilePage({ user }: ProfileProps) {
             <div className="flex space-x-3 mt-6">
               <button
                 onClick={handleSaveProfile}
-                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 px-4 rounded-lg transition-colors"
+                className="flex-1 bg-[#ffc200] hover:bg-[#cc9b00] text-white py-3 px-4 rounded-lg transition-colors"
               >
                 Sauvegarder
               </button>

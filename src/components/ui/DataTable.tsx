@@ -123,9 +123,9 @@ export function DataTable<T extends Record<string, unknown>>({
       return <ChevronsUpDown className="h-4 w-4 text-gray-400" />;
     }
     if (sortDirection === 'asc') {
-      return <ChevronUp className="h-4 w-4 text-blue-600" />;
+      return <ChevronUp className="h-4 w-4 text-[#cc9b00]" />;
     }
-    return <ChevronDown className="h-4 w-4 text-blue-600" />;
+    return <ChevronDown className="h-4 w-4 text-[#cc9b00]" />;
   };
 
   // Alignement des cellules
@@ -156,7 +156,7 @@ export function DataTable<T extends Record<string, unknown>>({
               }}
               placeholder={searchPlaceholder}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg
-                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                       focus:outline-none focus:ring-2 focus:ring-[#ffc200] focus:border-transparent
                        dark:bg-gray-800 dark:border-gray-700 dark:text-white"
             />
           </div>
@@ -192,7 +192,7 @@ export function DataTable<T extends Record<string, unknown>>({
               <tr>
                 <td colSpan={columns.length} className="px-4 py-12 text-center">
                   <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#ffc200]" />
                   </div>
                 </td>
               </tr>
@@ -212,7 +212,7 @@ export function DataTable<T extends Record<string, unknown>>({
                     key={key}
                     className={`
                       ${onRowClick ? 'cursor-pointer' : ''}
-                      ${isSelected ? 'bg-blue-50 dark:bg-blue-900/20' : 'hover:bg-gray-50 dark:hover:bg-gray-800'}
+                      ${isSelected ? 'bg-[#fffefa] dark:bg-[#3d3200]/20' : 'hover:bg-gray-50 dark:hover:bg-gray-800'}
                       transition-colors
                     `}
                     onClick={() => onRowClick?.(item)}
@@ -287,3 +287,5 @@ export function DataTable<T extends Record<string, unknown>>({
 }
 
 export default DataTable;
+
+

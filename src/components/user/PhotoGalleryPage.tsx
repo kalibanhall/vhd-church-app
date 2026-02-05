@@ -315,7 +315,7 @@ export default function PhotoGalleryPage() {
 
       {/* Album Header */}
       {activeView === 'photos' && selectedAlbum && (
-        <div className="bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl p-6 text-white mb-6">
+        <div className="bg-gradient-to-r from-cyan-500 to-[#ffc200] rounded-xl p-6 text-white mb-6">
           <h2 className="text-2xl font-bold">{selectedAlbum.title}</h2>
           {selectedAlbum.description && (
             <p className="mt-2 opacity-90">{selectedAlbum.description}</p>
@@ -425,7 +425,7 @@ export default function PhotoGalleryPage() {
                 onClick={() => openAlbum(album)}
                 className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all cursor-pointer group"
               >
-                <div className="aspect-[4/3] bg-gradient-to-br from-cyan-100 to-blue-200 relative">
+                <div className="aspect-[4/3] bg-gradient-to-br from-cyan-100 to-[#fff3cc] relative">
                   <div className="absolute inset-0 flex items-center justify-center">
                     <Camera className="h-12 w-12 text-cyan-400" />
                   </div>

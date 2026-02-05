@@ -335,7 +335,7 @@ const VolunteerManagement: React.FC = () => {
         </div>
         <button
           onClick={openCreateTeamModal}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-[#ffc200] text-white rounded-lg hover:bg-[#cc9b00] transition-colors"
         >
           <Plus className="h-4 w-4" />
           Nouvelle Équipe
@@ -361,8 +361,8 @@ const VolunteerManagement: React.FC = () => {
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
           <div className="flex items-center gap-3">
-            <div className="bg-blue-100 p-2 rounded-lg">
-              <Users className="h-5 w-5 text-blue-600" />
+            <div className="bg-[#fff3cc] p-2 rounded-lg">
+              <Users className="h-5 w-5 text-[#cc9b00]" />
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-900">{stats.totalVolunteers}</p>
@@ -429,7 +429,7 @@ const VolunteerManagement: React.FC = () => {
             <p className="text-gray-500 mb-4">Aucune équipe créée pour le moment</p>
             <button
               onClick={openCreateTeamModal}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-[#ffc200] text-white rounded-lg hover:bg-[#cc9b00]"
             >
               <Plus className="h-4 w-4" />
               Créer votre première équipe
@@ -452,7 +452,7 @@ const VolunteerManagement: React.FC = () => {
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => openEditTeamModal(team)}
-                      className="p-1.5 text-gray-400 hover:text-blue-600 rounded hover:bg-blue-50"
+                      className="p-1.5 text-gray-400 hover:text-[#cc9b00] rounded hover:bg-[#fffefa]"
                       title="Modifier"
                     >
                       <Edit3 className="h-4 w-4" />
@@ -496,7 +496,7 @@ const VolunteerManagement: React.FC = () => {
               placeholder="Rechercher par nom ou email..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
             />
           </div>
 
@@ -505,7 +505,7 @@ const VolunteerManagement: React.FC = () => {
             <select
               value={filterTeam}
               onChange={(e) => setFilterTeam(e.target.value)}
-              className="appearance-none pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white"
+              className="appearance-none pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200] bg-white"
             >
               <option value="">Toutes les équipes</option>
               {teams.map(team => (
@@ -520,7 +520,7 @@ const VolunteerManagement: React.FC = () => {
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value)}
-              className="appearance-none pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 bg-white"
+              className="appearance-none pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200] bg-white"
             >
               <option value="">Tous les statuts</option>
               <option value="PENDING">En attente</option>
@@ -554,8 +554,8 @@ const VolunteerManagement: React.FC = () => {
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="bg-blue-100 p-2 rounded-full">
-                      <Users className="h-5 w-5 text-blue-600" />
+                    <div className="bg-[#fff3cc] p-2 rounded-full">
+                      <Users className="h-5 w-5 text-[#cc9b00]" />
                     </div>
                     <div>
                       <p className="font-medium text-gray-900">{registration.userName}</p>
@@ -625,7 +625,7 @@ const VolunteerManagement: React.FC = () => {
                   {registration.availability && registration.availability.length > 0 && (
                     <div className="flex flex-wrap gap-1 mt-2">
                       {registration.availability.map((avail, idx) => (
-                        <span key={idx} className="text-xs bg-blue-50 text-blue-700 px-2 py-0.5 rounded">
+                        <span key={idx} className="text-xs bg-[#fffefa] text-[#5c4d00] px-2 py-0.5 rounded">
                           {avail}
                         </span>
                       ))}
@@ -643,7 +643,7 @@ const VolunteerManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
             {/* Header */}
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white rounded-t-2xl">
+            <div className="bg-gradient-to-r from-[#ffc200] to-[#cc9b00] p-6 text-white rounded-t-2xl">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-bold">Détail de l&apos;inscription</h2>
@@ -677,7 +677,7 @@ const VolunteerManagement: React.FC = () => {
                   <h3 className="font-semibold text-gray-900">Disponibilités</h3>
                   <div className="flex flex-wrap gap-2">
                     {selectedRegistration.availability.map((avail, idx) => (
-                      <span key={idx} className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm">
+                      <span key={idx} className="bg-[#fffefa] text-[#5c4d00] px-3 py-1 rounded-full text-sm">
                         {avail}
                       </span>
                     ))}
@@ -736,7 +736,7 @@ const VolunteerManagement: React.FC = () => {
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
             {/* Header */}
-            <div className="bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white rounded-t-2xl">
+            <div className="bg-gradient-to-r from-[#ffc200] to-[#cc9b00] p-6 text-white rounded-t-2xl">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-xl font-bold">
@@ -768,7 +768,7 @@ const VolunteerManagement: React.FC = () => {
                       onClick={() => setTeamForm({ ...teamForm, icon })}
                       className={`text-2xl p-2 rounded-lg transition-colors ${
                         teamForm.icon === icon 
-                          ? 'bg-blue-100 ring-2 ring-blue-500' 
+                          ? 'bg-[#fff3cc] ring-2 ring-[#ffc200]' 
                           : 'hover:bg-gray-100'
                       }`}
                     >
@@ -788,7 +788,7 @@ const VolunteerManagement: React.FC = () => {
                   value={teamForm.name}
                   onChange={(e) => setTeamForm({ ...teamForm, name: e.target.value })}
                   placeholder="Ex: Équipe d'Accueil"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   required
                 />
               </div>
@@ -803,7 +803,7 @@ const VolunteerManagement: React.FC = () => {
                   value={teamForm.code}
                   onChange={(e) => setTeamForm({ ...teamForm, code: e.target.value.toUpperCase() })}
                   placeholder="Ex: ACCUEIL"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   required
                 />
                 <p className="text-xs text-gray-500 mt-1">Code unique pour identifier l&apos;équipe</p>
@@ -819,7 +819,7 @@ const VolunteerManagement: React.FC = () => {
                   onChange={(e) => setTeamForm({ ...teamForm, description: e.target.value })}
                   placeholder="Décrivez les responsabilités de cette équipe..."
                   rows={3}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                   required
                 />
               </div>
@@ -835,7 +835,7 @@ const VolunteerManagement: React.FC = () => {
                   onChange={(e) => setTeamForm({ ...teamForm, maxMembers: e.target.value })}
                   placeholder="Illimité si vide"
                   min="1"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                 />
               </div>
 
@@ -849,7 +849,7 @@ const VolunteerManagement: React.FC = () => {
                   value={teamForm.schedule}
                   onChange={(e) => setTeamForm({ ...teamForm, schedule: e.target.value })}
                   placeholder="Ex: Dimanche 8h-12h"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200]"
                 />
               </div>
 
@@ -860,7 +860,7 @@ const VolunteerManagement: React.FC = () => {
                   id="isActive"
                   checked={teamForm.isActive}
                   onChange={(e) => setTeamForm({ ...teamForm, isActive: e.target.checked })}
-                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="rounded border-gray-300 text-[#ffc200] focus:ring-[#ffc200]"
                 />
                 <label htmlFor="isActive" className="text-sm text-gray-700">
                   Équipe active (visible pour les inscriptions)
@@ -879,7 +879,7 @@ const VolunteerManagement: React.FC = () => {
                 <button
                   type="submit"
                   disabled={processing === 'team'}
-                  className="flex-1 py-3 px-4 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 disabled:opacity-50 flex items-center justify-center gap-2"
+                  className="flex-1 py-3 px-4 bg-[#ffc200] text-white rounded-lg font-medium hover:bg-[#cc9b00] disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                   {processing === 'team' ? (
                     <Loader2 className="h-4 w-4 animate-spin" />

@@ -334,7 +334,7 @@ const NotesPage: React.FC = () => {
                   type="text"
                   value={editTitle}
                   onChange={(e) => setEditTitle(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
                   placeholder="Titre de la note..."
                 />
               </div>
@@ -371,7 +371,7 @@ const NotesPage: React.FC = () => {
                   value={editContent}
                   onChange={(e) => setEditContent(e.target.value)}
                   rows={10}
-                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-transparent resize-none"
                   placeholder="Écrivez votre note ici..."
                 />
               </div>
@@ -395,7 +395,7 @@ const NotesPage: React.FC = () => {
                     value={newTag}
                     onChange={(e) => setNewTag(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                    className="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
                     placeholder="Ajouter un tag..."
                   />
                   <button

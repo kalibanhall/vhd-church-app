@@ -41,7 +41,7 @@ export function SplashScreen() {
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 transition-opacity duration-500 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-[#ffc200] via-[#cc9b00] to-[#5c4d00] transition-opacity duration-500 ${
         fadeOut ? 'opacity-0' : 'opacity-100'
       }`}
     >
@@ -66,7 +66,7 @@ export function SplashScreen() {
           <h1 className="text-4xl font-bold text-white animate-fade-in-up">
             VHD Church
           </h1>
-          <p className="text-xl text-blue-100 animate-fade-in-up animation-delay-200">
+          <p className="text-xl text-[#fff3cc] animate-fade-in-up animation-delay-200">
             Ministère des Vaillants Hommes de David
           </p>
 
@@ -76,7 +76,7 @@ export function SplashScreen() {
           </div>
 
           {/* Texte de chargement */}
-          <p className="text-sm text-blue-200 animate-pulse mt-4">
+          <p className="text-sm text-[#fff3cc] animate-pulse mt-4">
             Chargement en cours...
           </p>
         </div>

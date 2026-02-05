@@ -50,8 +50,8 @@ export default function PageWrapper({
   title,
   subtitle,
   icon: Icon,
-  iconColor = 'text-blue-600',
-  iconBgColor = 'bg-blue-100',
+  iconColor = 'text-[#cc9b00]',
+  iconBgColor = 'bg-[#fff3cc]',
   loading = false,
   loadingText = 'Chargement...',
   maxWidth = '4xl',
@@ -187,7 +187,7 @@ interface StatItemProps {
 }
 
 const colorClasses = {
-  blue: { bg: 'bg-blue-50', text: 'text-blue-600' },
+  blue: { bg: 'bg-[#fffefa]', text: 'text-[#cc9b00]' },
   green: { bg: 'bg-green-50', text: 'text-green-600' },
   purple: { bg: 'bg-purple-50', text: 'text-purple-600' },
   orange: { bg: 'bg-orange-50', text: 'text-orange-600' },
@@ -251,3 +251,5 @@ export function EmptyState({ icon: Icon, title, description, action }: EmptyStat
     </div>
   );
 }
+
+

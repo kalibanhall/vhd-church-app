@@ -132,14 +132,14 @@ export default function AnalyticsPage() {
 
       {/* Stats Cards - Vue d'ensemble */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card className="border-blue-200 bg-blue-50">
+        <Card className="border-[#e6af00] bg-[#fffefa]">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-blue-800">Total Membres</CardTitle>
-            <Users className="h-4 w-4 text-blue-600" />
+            <CardTitle className="text-sm font-medium text-[#3d3200]">Total Membres</CardTitle>
+            <Users className="h-4 w-4 text-[#cc9b00]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-900">{analytics.totalMembers}</div>
-            <p className="text-xs text-blue-600">
+            <div className="text-2xl font-bold text-[#3d3200]">{analytics.totalMembers}</div>
+            <p className="text-xs text-[#cc9b00]">
               +{analytics.newMembersThisMonth} ce mois ({analytics.memberGrowth > 0 ? '+' : ''}{analytics.memberGrowth}%)
             </p>
           </CardContent>
@@ -250,7 +250,7 @@ export default function AnalyticsPage() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="text-sm font-semibold text-blue-600">{sermon.viewCount} vues</div>
+                    <div className="text-sm font-semibold text-[#cc9b00]">{sermon.viewCount} vues</div>
                     <div className="text-xs text-gray-500">{sermon.downloadCount} téléchargements</div>
                   </div>
                 </div>
@@ -325,7 +325,7 @@ export default function AnalyticsPage() {
                       Par {event.creator} • {event.status}
                     </div>
                   </div>
-                  <div className="text-blue-600 font-semibold text-xs">
+                  <div className="text-[#cc9b00] font-semibold text-xs">
                     {new Date(event.date).toLocaleDateString('fr-FR')}
                   </div>
                 </div>

@@ -185,7 +185,7 @@ export default function ConflictResolutionPage() {
               value={request.parties}
               onChange={(e) => setRequest({ ...request, parties: e.target.value })}
               placeholder="Ex: Un frère de la chorale, Ma belle-famille..."
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200]"
             />
           </div>
 
@@ -198,7 +198,7 @@ export default function ConflictResolutionPage() {
               onChange={(e) => setRequest({ ...request, description: e.target.value })}
               placeholder="Expliquez le contexte et la nature du conflit..."
               rows={4}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-[#ffc200]"
             />
           </div>
 
@@ -211,7 +211,7 @@ export default function ConflictResolutionPage() {
               onChange={(e) => setRequest({ ...request, attempts: e.target.value })}
               placeholder="Décrivez vos tentatives précédentes de résolution..."
               rows={2}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-[#ffc200]"
             />
           </div>
 
@@ -224,7 +224,7 @@ export default function ConflictResolutionPage() {
               onChange={(e) => setRequest({ ...request, desiredOutcome: e.target.value })}
               placeholder="Décrivez le résultat que vous souhaitez atteindre..."
               rows={2}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-[#ffc200]"
             />
           </div>
 

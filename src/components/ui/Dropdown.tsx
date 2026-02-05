@@ -161,9 +161,9 @@ export function Select({
           border rounded-lg text-sm
           ${disabled
             ? 'bg-gray-100 cursor-not-allowed'
-            : 'bg-white hover:border-blue-500 cursor-pointer'
+            : 'bg-white hover:border-[#ffc200] cursor-pointer'
           }
-          ${isOpen ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-300'}
+          ${isOpen ? 'border-[#ffc200] ring-2 ring-[#e6af00]' : 'border-gray-300'}
           dark:bg-gray-800 dark:border-gray-700
         `}
       >
@@ -190,7 +190,7 @@ export function Select({
                 ${option.disabled
                   ? 'opacity-50 cursor-not-allowed'
                   : option.value === value
-                    ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
+                    ? 'bg-[#fffefa] text-[#cc9b00] dark:bg-[#3d3200]/20 dark:text-[#e6af00]'
                     : 'hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
                 }
               `}
@@ -205,3 +205,5 @@ export function Select({
 }
 
 export default Dropdown;
+
+

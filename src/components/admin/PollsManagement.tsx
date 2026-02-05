@@ -192,7 +192,7 @@ export default function PollsManagement() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#ffc200]"></div>
       </div>
     )
   }
@@ -207,7 +207,7 @@ export default function PollsManagement() {
         </div>
         <Button
           onClick={() => setShowCreateForm(true)}
-          className="bg-blue-600 hover:bg-blue-700 text-white"
+          className="bg-[#ffc200] hover:bg-[#cc9b00] text-white"
         >
           <Plus className="w-4 h-4 mr-2" />
           Nouveau Sondage
@@ -219,7 +219,7 @@ export default function PollsManagement() {
         <Card>
           <CardContent className="p-6">
             <div className="flex items-center">
-              <BarChart className="h-8 w-8 text-blue-600" />
+              <BarChart className="h-8 w-8 text-[#cc9b00]" />
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Sondages</p>
                 <p className="text-2xl font-bold text-gray-900">{polls.length}</p>
@@ -281,7 +281,7 @@ export default function PollsManagement() {
               <p className="text-gray-600 mb-4">Créez votre premier sondage pour engager la communauté</p>
               <Button
                 onClick={() => setShowCreateForm(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white"
+                className="bg-[#ffc200] hover:bg-[#cc9b00] text-white"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Créer un sondage
@@ -313,7 +313,7 @@ export default function PollsManagement() {
                           </span>
                         )}
                         {poll.isAnonymous && (
-                          <span className="px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 rounded-full">
+                          <span className="px-2 py-1 text-xs font-medium bg-[#fff3cc] text-[#3d3200] rounded-full">
                             Anonyme
                           </span>
                         )}
@@ -375,7 +375,7 @@ export default function PollsManagement() {
                       <div className="flex items-center gap-2">
                         <div className="w-24 bg-gray-200 rounded-full h-2">
                           <div
-                            className="bg-blue-600 h-2 rounded-full"
+                            className="bg-[#ffc200] h-2 rounded-full"
                             style={{ width: `${option.percentage}%` }}
                           />
                         </div>
@@ -507,7 +507,7 @@ export default function PollsManagement() {
                   </Button>
                   <Button
                     type="submit"
-                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white"
+                    className="flex-1 bg-[#ffc200] hover:bg-[#cc9b00] text-white"
                   >
                     Créer le sondage
                   </Button>
@@ -540,9 +540,9 @@ export default function PollsManagement() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                <div className="text-center p-4 bg-blue-50 rounded-lg">
-                  <Users className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-                  <p className="text-2xl font-bold text-blue-600">{selectedPoll.totalVotes}</p>
+                <div className="text-center p-4 bg-[#fffefa] rounded-lg">
+                  <Users className="h-8 w-8 text-[#cc9b00] mx-auto mb-2" />
+                  <p className="text-2xl font-bold text-[#cc9b00]">{selectedPoll.totalVotes}</p>
                   <p className="text-sm text-gray-600">Total des votes</p>
                 </div>
                 <div className="text-center p-4 bg-green-50 rounded-lg">
@@ -576,7 +576,7 @@ export default function PollsManagement() {
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-3">
                       <div
-                        className="bg-blue-600 h-3 rounded-full transition-all duration-300"
+                        className="bg-[#ffc200] h-3 rounded-full transition-all duration-300"
                         style={{ width: `${option.percentage}%` }}
                       />
                     </div>

@@ -7,7 +7,7 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, variant = "church", ...props }, ref) => {
     const variantClasses = {
-      default: "border-gray-300 bg-white focus-visible:ring-blue-500",
+      default: "border-gray-300 bg-white focus-visible:ring-[#ffc200]",
       church: "border-[rgba(201,201,201,0.6)] bg-[#fffefa] focus-visible:ring-[#ffc200] focus-visible:border-[#ffc200]",
     }
 

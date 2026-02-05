@@ -15,7 +15,7 @@ export default function ContactPage() {
           
           <div className="space-y-4">
             <div className="flex items-start space-x-3">
-              <MapPin className="h-5 w-5 text-blue-600 mt-1 flex-shrink-0" />
+              <MapPin className="h-5 w-5 text-[#cc9b00] mt-1 flex-shrink-0" />
               <div>
                 <p className="font-medium text-gray-800">Adresse</p>
                 <p className="text-gray-600">24, avenue</p>
@@ -25,12 +25,12 @@ export default function ContactPage() {
             </div>
 
             <div className="flex items-center space-x-3">
-              <Phone className="h-5 w-5 text-blue-600 flex-shrink-0" />
+              <Phone className="h-5 w-5 text-[#cc9b00] flex-shrink-0" />
               <div>
                 <p className="font-medium text-gray-800">Téléphone</p>
                 <a 
                   href="tel:+243895360658" 
-                  className="text-blue-600 hover:text-blue-800 transition-colors"
+                  className="text-[#cc9b00] hover:text-[#3d3200] transition-colors"
                 >
                   0895 360 658
                 </a>
@@ -38,12 +38,12 @@ export default function ContactPage() {
             </div>
 
             <div className="flex items-center space-x-3">
-              <Mail className="h-5 w-5 text-blue-600 flex-shrink-0" />
+              <Mail className="h-5 w-5 text-[#cc9b00] flex-shrink-0" />
               <div>
                 <p className="font-medium text-gray-800">Email</p>
                 <a 
                   href="mailto:contact@vaillantshommesdedavid.org" 
-                  className="text-blue-600 hover:text-blue-800 transition-colors"
+                  className="text-[#cc9b00] hover:text-[#3d3200] transition-colors"
                 >
                   contact@vaillantshommesdedavid.org
                 </a>
@@ -51,14 +51,14 @@ export default function ContactPage() {
             </div>
 
             <div className="flex items-center space-x-3">
-              <Globe className="h-5 w-5 text-blue-600 flex-shrink-0" />
+              <Globe className="h-5 w-5 text-[#cc9b00] flex-shrink-0" />
               <div>
                 <p className="font-medium text-gray-800">Site Web</p>
                 <a 
                   href="https://vaillantshommesdedavid.org" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="text-blue-600 hover:text-blue-800 transition-colors"
+                  className="text-[#cc9b00] hover:text-[#3d3200] transition-colors"
                 >
                   vaillantshommesdedavid.org
                 </a>
@@ -80,7 +80,7 @@ export default function ContactPage() {
                 type="text"
                 id="name"
                 name="name"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc200]"
                 placeholder="Votre nom"
               />
             </div>
@@ -93,7 +93,7 @@ export default function ContactPage() {
                 type="email"
                 id="email"
                 name="email"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc200]"
                 placeholder="votre@email.com"
               />
             </div>
@@ -106,7 +106,7 @@ export default function ContactPage() {
                 type="tel"
                 id="phone"
                 name="phone"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc200]"
                 placeholder="0895 360 658"
               />
             </div>
@@ -119,7 +119,7 @@ export default function ContactPage() {
                 type="text"
                 id="subject"
                 name="subject"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc200]"
                 placeholder="Sujet de votre message"
               />
             </div>
@@ -132,14 +132,14 @@ export default function ContactPage() {
                 id="message"
                 name="message"
                 rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc200]"
                 placeholder="Votre message..."
               ></textarea>
             </div>
 
             <button
               type="submit"
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full bg-[#ffc200] text-white py-2 px-4 rounded-md hover:bg-[#cc9b00] transition-colors focus:outline-none focus:ring-2 focus:ring-[#ffc200]"
             >
               Envoyer le message
             </button>
@@ -148,7 +148,7 @@ export default function ContactPage() {
       </div>
 
       {/* Informations supplémentaires */}
-      <div className="mt-8 bg-blue-50 rounded-lg p-6">
+      <div className="mt-8 bg-[#fffefa] rounded-lg p-6">
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Horaires des Services</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -172,3 +172,4 @@ export default function ContactPage() {
     </div>
   )
 }
+

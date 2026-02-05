@@ -181,7 +181,7 @@ export default function MembersManagement() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#ffc200]"></div>
       </div>
     )
   }
@@ -195,7 +195,7 @@ export default function MembersManagement() {
         </div>
         <button 
           onClick={() => setShowAddModal(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 flex items-center space-x-2"
+          className="bg-[#ffc200] text-white px-4 py-2 rounded-lg hover:bg-[#cc9b00] flex items-center space-x-2"
         >
           <Plus className="h-4 w-4" />
           <span>Ajouter un membre</span>
@@ -250,8 +250,8 @@ export default function MembersManagement() {
                 <tr key={member.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                        <User className="h-5 w-5 text-blue-600" />
+                      <div className="w-10 h-10 bg-[#fff3cc] rounded-full flex items-center justify-center">
+                        <User className="h-5 w-5 text-[#cc9b00]" />
                       </div>
                       <div className="ml-4">
                         <div className="text-sm font-medium text-gray-900">
@@ -292,7 +292,7 @@ export default function MembersManagement() {
                           ? 'bg-purple-100 text-purple-800 border-purple-300'
                           : member.role === 'OUVRIER'
                           ? 'bg-green-100 text-green-800 border-green-300'
-                          : 'bg-blue-100 text-blue-800 border-blue-300'
+                          : 'bg-[#fff3cc] text-[#3d3200] border-[#e6af00]'
                       } ${updateLoading === member.id ? 'opacity-50' : 'hover:bg-gray-50'}`}
                     >
                       {roles.map((role) => (
@@ -341,8 +341,8 @@ export default function MembersManagement() {
             <div className="overflow-y-auto flex-1 p-6">
               <form onSubmit={(e) => { e.preventDefault(); handleAddMember(); }} className="space-y-4">
                 <div className="mb-4">
-                  <p className="text-sm text-gray-600 mb-4 bg-blue-50 p-3 rounded-lg border border-blue-200">
-                    <span className="font-medium text-blue-800">ℹ️ Information :</span> Les champs marqués d'un astérisque (*) sont obligatoires.
+                  <p className="text-sm text-gray-600 mb-4 bg-[#fffefa] p-3 rounded-lg border border-[#e6af00]">
+                    <span className="font-medium text-[#3d3200]">ℹ️ Information :</span> Les champs marqués d'un astérisque (*) sont obligatoires.
                   </p>
                 </div>
 
@@ -355,7 +355,7 @@ export default function MembersManagement() {
                       type="text"
                       value={newMember.firstName}
                       onChange={(e) => setNewMember(prev => ({ ...prev, firstName: e.target.value }))}
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-[#ffc200] ${
                         !newMember.firstName.trim() ? 'border-red-300 bg-red-50' : 'border-gray-300'
                       }`}
                       placeholder="Saisir le prénom"
@@ -370,7 +370,7 @@ export default function MembersManagement() {
                       type="text"
                       value={newMember.lastName}
                       onChange={(e) => setNewMember(prev => ({ ...prev, lastName: e.target.value }))}
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-[#ffc200] ${
                         !newMember.lastName.trim() ? 'border-red-300 bg-red-50' : 'border-gray-300'
                       }`}
                       placeholder="Saisir le nom de famille"
@@ -388,7 +388,7 @@ export default function MembersManagement() {
                       type="email"
                       value={newMember.email}
                       onChange={(e) => setNewMember(prev => ({ ...prev, email: e.target.value }))}
-                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                      className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-[#ffc200] ${
                         !newMember.email.trim() ? 'border-red-300 bg-red-50' : 'border-gray-300'
                       }`}
                       placeholder="email@exemple.com"
@@ -403,7 +403,7 @@ export default function MembersManagement() {
                       type="tel"
                       value={newMember.phone}
                       onChange={(e) => setNewMember(prev => ({ ...prev, phone: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-[#ffc200]"
                       placeholder="+243 81 234 56 78"
                     />
                   </div>
@@ -419,7 +419,7 @@ export default function MembersManagement() {
                         type={showPassword ? "text" : "password"}
                         value={newMember.password}
                         onChange={(e) => setNewMember(prev => ({ ...prev, password: e.target.value }))}
-                        className={`w-full px-3 py-2 pr-12 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                        className={`w-full px-3 py-2 pr-12 border rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-[#ffc200] ${
                           !newMember.password.trim() || newMember.password.length < 6 ? 'border-red-300 bg-red-50' : 'border-gray-300'
                         }`}
                         placeholder="Minimum 6 caractères"
@@ -445,7 +445,7 @@ export default function MembersManagement() {
                     <select
                       value={newMember.role}
                       onChange={(e) => setNewMember(prev => ({ ...prev, role: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-[#ffc200]"
                     >
                       {roles.map((role) => (
                         <option key={role.value} value={role.value}>
@@ -464,7 +464,7 @@ export default function MembersManagement() {
                     type="text"
                     value={newMember.address}
                     onChange={(e) => setNewMember(prev => ({ ...prev, address: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-[#ffc200]"
                     placeholder="Adresse complète (optionnel)"
                   />
                 </div>
@@ -477,7 +477,7 @@ export default function MembersManagement() {
                     type="text"
                     value={newMember.profession}
                     onChange={(e) => setNewMember(prev => ({ ...prev, profession: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-[#ffc200]"
                     placeholder="Profession (optionnel)"
                   />
                 </div>
@@ -508,7 +508,7 @@ export default function MembersManagement() {
                 type="button"
                 onClick={handleAddMember}
                 disabled={addLoading || !newMember.firstName || !newMember.lastName || !newMember.email || !newMember.password}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center space-x-2"
+                className="px-6 py-2 bg-[#ffc200] text-white rounded-lg hover:bg-[#cc9b00] disabled:opacity-50 disabled:cursor-not-allowed font-medium flex items-center space-x-2"
               >
                 {addLoading ? (
                   <>
@@ -529,3 +529,4 @@ export default function MembersManagement() {
     </div>
   )
 }
+

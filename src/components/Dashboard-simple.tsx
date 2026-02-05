@@ -187,15 +187,15 @@ export default function DashboardSimple() {
       </header>
 
       {/* Navigation simple */}
-      <nav className="bg-blue-600 text-white">
+      <nav className="bg-[#ffc200] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex space-x-8 h-12 items-center">
             <button
               onClick={() => setActiveSection('accueil')}
               className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeSection === 'accueil' 
-                  ? 'bg-blue-700 text-white' 
-                  : 'text-blue-100 hover:bg-blue-500'
+                  ? 'bg-[#cc9b00] text-white' 
+                  : 'text-[#fff3cc] hover:bg-[#ffc200]'
               }`}
             >
               Accueil
@@ -204,8 +204,8 @@ export default function DashboardSimple() {
               onClick={() => setActiveSection('predications')}
               className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeSection === 'predications' 
-                  ? 'bg-blue-700 text-white' 
-                  : 'text-blue-100 hover:bg-blue-500'
+                  ? 'bg-[#cc9b00] text-white' 
+                  : 'text-[#fff3cc] hover:bg-[#ffc200]'
               }`}
             >
               Prédications
@@ -214,8 +214,8 @@ export default function DashboardSimple() {
               onClick={() => setActiveSection('dons')}
               className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeSection === 'dons' 
-                  ? 'bg-blue-700 text-white' 
-                  : 'text-blue-100 hover:bg-blue-500'
+                  ? 'bg-[#cc9b00] text-white' 
+                  : 'text-[#fff3cc] hover:bg-[#ffc200]'
               }`}
             >
               Soutien à l'œuvre
@@ -224,8 +224,8 @@ export default function DashboardSimple() {
               onClick={() => setActiveSection('prieres')}
               className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeSection === 'prieres' 
-                  ? 'bg-blue-700 text-white' 
-                  : 'text-blue-100 hover:bg-blue-500'
+                  ? 'bg-[#cc9b00] text-white' 
+                  : 'text-[#fff3cc] hover:bg-[#ffc200]'
               }`}
             >
               Prières
@@ -241,3 +241,4 @@ export default function DashboardSimple() {
     </div>
   )
 }
+

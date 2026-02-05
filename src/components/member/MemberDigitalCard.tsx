@@ -62,10 +62,10 @@ export default function MemberDigitalCard({
   // Thèmes de couleur
   const themes = {
     blue: {
-      gradient: 'from-blue-600 via-blue-700 to-indigo-800',
-      accent: 'bg-blue-500',
-      light: 'bg-blue-100 text-blue-800',
-      border: 'border-blue-500'
+      gradient: 'from-[#ffc200] via-[#cc9b00] to-[#a67d00]',
+      accent: 'bg-[#ffc200]',
+      light: 'bg-[#fff3cc] text-[#3d3200]',
+      border: 'border-[#ffc200]'
     },
     purple: {
       gradient: 'from-purple-600 via-purple-700 to-indigo-800',
@@ -226,7 +226,7 @@ export default function MemberDigitalCard({
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <RefreshCw className="h-8 w-8 animate-spin text-blue-500" />
+        <RefreshCw className="h-8 w-8 animate-spin text-[#cc9b00]" />
       </div>
     )
   }
@@ -386,7 +386,7 @@ export default function MemberDigitalCard({
       {/* Informations supplémentaires */}
       <Card className="p-4 print:hidden">
         <h3 className="font-semibold mb-3 flex items-center gap-2">
-          <User className="h-4 w-4 text-blue-500" />
+          <User className="h-4 w-4 text-[#cc9b00]" />
           Informations de contact
         </h3>
         <div className="space-y-2 text-sm">
@@ -408,3 +408,5 @@ export default function MemberDigitalCard({
 
 // Export des composants utilitaires
 export { MemberDigitalCard }
+
+

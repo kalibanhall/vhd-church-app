@@ -149,7 +149,7 @@ export default function MemberAppointments() {
       case 'CANCELLED':
         return <XCircle className="h-5 w-5 text-red-500" />
       case 'COMPLETED':
-        return <CheckCircle className="h-5 w-5 text-blue-500" />
+        return <CheckCircle className="h-5 w-5 text-[#cc9b00]" />
       default:
         return <AlertCircle className="h-5 w-5 text-gray-500" />
     }
@@ -170,7 +170,7 @@ export default function MemberAppointments() {
       case 'PENDING': return 'bg-yellow-100 text-yellow-800'
       case 'CONFIRMED': return 'bg-green-100 text-green-800'
       case 'CANCELLED': return 'bg-red-100 text-red-800'
-      case 'COMPLETED': return 'bg-blue-100 text-blue-800'
+      case 'COMPLETED': return 'bg-[#fff3cc] text-[#3d3200]'
       default: return 'bg-gray-100 text-gray-800'
     }
   }
@@ -192,7 +192,7 @@ export default function MemberAppointments() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#ffc200]"></div>
       </div>
     )
   }
@@ -209,7 +209,7 @@ export default function MemberAppointments() {
             </div>
             <button
               onClick={() => setShowNewAppointmentModal(true)}
-              className="inline-flex items-center justify-center px-3 py-1.5 md:px-4 md:py-2 border border-transparent text-xs md:text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 whitespace-nowrap"
+              className="inline-flex items-center justify-center px-3 py-1.5 md:px-4 md:py-2 border border-transparent text-xs md:text-sm font-medium rounded-md text-white bg-[#ffc200] hover:bg-[#cc9b00] whitespace-nowrap"
             >
               <Plus className="h-3.5 w-3.5 md:h-4 md:w-4 mr-1 md:mr-2" />
               <span className="hidden sm:inline">Nouveau</span> Rdv
@@ -233,7 +233,7 @@ export default function MemberAppointments() {
                   onClick={() => setActiveFilter(filter.key as any)}
                   className={`px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium transition-colors whitespace-nowrap ${
                     activeFilter === filter.key
-                      ? 'bg-blue-100 text-blue-800'
+                      ? 'bg-[#fff3cc] text-[#3d3200]'
                       : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
                 >
@@ -258,7 +258,7 @@ export default function MemberAppointments() {
               </p>
               <button
                 onClick={() => setShowNewAppointmentModal(true)}
-                className="inline-flex items-center px-3 py-1.5 md:px-4 md:py-2 border border-transparent text-xs md:text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                className="inline-flex items-center px-3 py-1.5 md:px-4 md:py-2 border border-transparent text-xs md:text-sm font-medium rounded-md text-white bg-[#ffc200] hover:bg-[#cc9b00]"
               >
                 <Plus className="h-3.5 w-3.5 md:h-4 md:w-4 mr-1 md:mr-2" />
                 Demander un Rendez-vous
@@ -305,12 +305,12 @@ export default function MemberAppointments() {
                       </div>
 
                       {appointment.responseMessage && (
-                        <div className="mt-4 p-3 bg-blue-50 rounded border-l-4 border-blue-400">
+                        <div className="mt-4 p-3 bg-[#fffefa] rounded border-l-4 border-[#ffc200]">
                           <div className="flex items-center space-x-2 mb-1">
-                            <MessageSquare className="h-4 w-4 text-blue-600" />
-                            <span className="text-sm font-medium text-blue-900">Message du pasteur</span>
+                            <MessageSquare className="h-4 w-4 text-[#cc9b00]" />
+                            <span className="text-sm font-medium text-[#3d3200]">Message du pasteur</span>
                           </div>
-                          <p className="text-sm text-blue-800">{appointment.responseMessage}</p>
+                          <p className="text-sm text-[#3d3200]">{appointment.responseMessage}</p>
                         </div>
                       )}
                     </div>
@@ -336,7 +336,7 @@ export default function MemberAppointments() {
                 <select
                   value={newAppointment.pastorId}
                   onChange={(e) => setNewAppointment(prev => ({ ...prev, pastorId: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc200]"
                   disabled={loadingPastors}
                 >
                   <option value="">
@@ -359,7 +359,7 @@ export default function MemberAppointments() {
                   value={newAppointment.appointmentDate}
                   onChange={(e) => setNewAppointment(prev => ({ ...prev, appointmentDate: e.target.value }))}
                   min={new Date().toISOString().split('T')[0]} // Pas de dates passées
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc200]"
                 />
               </div>
               
@@ -372,7 +372,7 @@ export default function MemberAppointments() {
                     type="time"
                     value={newAppointment.startTime}
                     onChange={(e) => setNewAppointment(prev => ({ ...prev, startTime: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc200]"
                   />
                 </div>
                 <div>
@@ -383,7 +383,7 @@ export default function MemberAppointments() {
                     type="time"
                     value={newAppointment.endTime}
                     onChange={(e) => setNewAppointment(prev => ({ ...prev, endTime: e.target.value }))}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ffc200]"
                   />
                 </div>
               </div>
@@ -395,7 +395,7 @@ export default function MemberAppointments() {
                 <textarea
                   value={newAppointment.reason}
                   onChange={(e) => setNewAppointment(prev => ({ ...prev, reason: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md h-20 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md h-20 resize-none focus:outline-none focus:ring-2 focus:ring-[#ffc200]"
                   placeholder="Décrivez brièvement le motif de votre demande (consultation spirituelle, prière, conseil, etc.)..."
                   maxLength={500}
                 />
@@ -414,7 +414,7 @@ export default function MemberAppointments() {
               </button>
               <button
                 onClick={createAppointment}
-                className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md"
+                className="px-4 py-2 text-sm font-medium text-white bg-[#ffc200] hover:bg-[#cc9b00] rounded-md"
               >
                 Envoyer la demande
               </button>

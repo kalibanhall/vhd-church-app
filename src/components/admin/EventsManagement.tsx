@@ -636,7 +636,7 @@ export default function EventsManagement() {
             onClick={() => setActiveTab('events')}
             className={`py-2 px-1 border-b-2 font-medium text-sm ${
               activeTab === 'events'
-                ? 'border-blue-500 text-blue-600'
+                ? 'border-[#ffc200] text-[#cc9b00]'
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -646,7 +646,7 @@ export default function EventsManagement() {
             onClick={() => setActiveTab('preachings')}
             className={`py-2 px-1 border-b-2 font-medium text-sm ${
               activeTab === 'preachings'
-                ? 'border-blue-500 text-blue-600'
+                ? 'border-[#ffc200] text-[#cc9b00]'
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
@@ -660,7 +660,7 @@ export default function EventsManagement() {
         <div className="space-y-6">
           <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold">Cultes et Événements</h2>
-            <Button onClick={() => setShowCreateForm(true)} className="bg-blue-600 hover:bg-blue-700">
+            <Button onClick={() => setShowCreateForm(true)} className="bg-[#ffc200] hover:bg-[#cc9b00]">
               <Plus className="w-4 h-4 mr-2" />
               Nouveau Culte/Événement
             </Button>
@@ -911,7 +911,7 @@ export default function EventsManagement() {
                     </div>
                   )}
                   {event.liveUrl && (
-                    <div className="flex items-center text-sm text-blue-600">
+                    <div className="flex items-center text-sm text-[#cc9b00]">
                       <Link className="w-4 h-4 mr-1" />
                       <a href={event.liveUrl} target="_blank" rel="noopener noreferrer" className="hover:underline">
                         Lien Live
@@ -937,7 +937,7 @@ export default function EventsManagement() {
               <Button 
                 onClick={() => setShowPreachingsList(!showPreachingsList)} 
                 variant="outline"
-                className="bg-blue-50 hover:bg-blue-100"
+                className="bg-[#fffefa] hover:bg-[#fff3cc]"
               >
                 {showPreachingsList ? 'Masquer' : 'Afficher'} la liste
               </Button>
@@ -977,7 +977,7 @@ export default function EventsManagement() {
                                 preaching.sermonType === 'VIDEO' ? 'bg-red-50 text-red-700' : 
                                 preaching.sermonType === 'AUDIO' ? 'bg-green-50 text-green-700' : 
                                 preaching.sermonType === 'LIVE' ? 'bg-orange-50 text-orange-700' : 
-                                'bg-blue-50 text-blue-700'
+                                'bg-[#fffefa] text-[#5c4d00]'
                               }`}>
                                 {preaching.sermonType}
                               </Badge>
@@ -1032,7 +1032,7 @@ export default function EventsManagement() {
                                 </Badge>
                               )}
                               {preaching.thumbnailUrl && (
-                                <Badge variant="outline" className="text-xs bg-blue-50 text-blue-600">
+                                <Badge variant="outline" className="text-xs bg-[#fffefa] text-[#cc9b00]">
                                   <Image className="w-3 h-3 mr-1" />
                                   Miniature
                                 </Badge>
@@ -1045,7 +1045,7 @@ export default function EventsManagement() {
                               onClick={() => handleEditPreaching(preaching)}
                               size="sm"
                               variant="outline"
-                              className="bg-blue-50 hover:bg-blue-100 text-blue-700 border-blue-200"
+                              className="bg-[#fffefa] hover:bg-[#fff3cc] text-[#5c4d00] border-[#e6af00]"
                             >
                               <Edit2 className="w-4 h-4" />
                             </Button>
@@ -1209,8 +1209,8 @@ export default function EventsManagement() {
                     </div>
                     
                     {/* Section Thumbnail */}
-                    <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                      <label className="block text-sm font-medium mb-2 text-blue-700">
+                    <div className="bg-[#fffefa] p-4 rounded-lg border border-[#e6af00]">
+                      <label className="block text-sm font-medium mb-2 text-[#5c4d00]">
                         <Image className="w-4 h-4 inline mr-1" />
                         Image de couverture
                       </label>
@@ -1243,23 +1243,23 @@ export default function EventsManagement() {
 
                   {/* Barres de progression d'upload */}
                   {isUploading && (
-                    <div className="space-y-3 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                      <h4 className="font-medium text-blue-900">Upload en cours...</h4>
+                    <div className="space-y-3 p-4 bg-[#fffefa] rounded-lg border border-[#e6af00]">
+                      <h4 className="font-medium text-[#3d3200]">Upload en cours...</h4>
                       
                       {preachingData.videoFile && (
                         <div>
                           <div className="flex justify-between items-center mb-1">
-                            <span className="text-sm text-blue-700">Vidéo</span>
-                            <span className="text-sm text-blue-600">{uploadProgress.video}%</span>
+                            <span className="text-sm text-[#5c4d00]">Vidéo</span>
+                            <span className="text-sm text-[#cc9b00]">{uploadProgress.video}%</span>
                           </div>
-                          <div className="w-full bg-blue-200 rounded-full h-2">
+                          <div className="w-full bg-[#e6af00]/30 rounded-full h-2">
                             <div 
-                              className="bg-blue-600 h-2 rounded-full transition-all duration-300" 
+                              className="bg-[#ffc200] h-2 rounded-full transition-all duration-300" 
                               style={{width: `${uploadProgress.video}%`}}
                             ></div>
                           </div>
                           {uploadStatus.video && (
-                            <p className="text-xs text-blue-600 mt-1">{uploadStatus.video}</p>
+                            <p className="text-xs text-[#cc9b00] mt-1">{uploadStatus.video}</p>
                           )}
                         </div>
                       )}
@@ -1267,17 +1267,17 @@ export default function EventsManagement() {
                       {preachingData.audioFile && (
                         <div>
                           <div className="flex justify-between items-center mb-1">
-                            <span className="text-sm text-blue-700">Audio</span>
-                            <span className="text-sm text-blue-600">{uploadProgress.audio}%</span>
+                            <span className="text-sm text-[#5c4d00]">Audio</span>
+                            <span className="text-sm text-[#cc9b00]">{uploadProgress.audio}%</span>
                           </div>
-                          <div className="w-full bg-blue-200 rounded-full h-2">
+                          <div className="w-full bg-[#e6af00]/30 rounded-full h-2">
                             <div 
-                              className="bg-blue-600 h-2 rounded-full transition-all duration-300" 
+                              className="bg-[#ffc200] h-2 rounded-full transition-all duration-300" 
                               style={{width: `${uploadProgress.audio}%`}}
                             ></div>
                           </div>
                           {uploadStatus.audio && (
-                            <p className="text-xs text-blue-600 mt-1">{uploadStatus.audio}</p>
+                            <p className="text-xs text-[#cc9b00] mt-1">{uploadStatus.audio}</p>
                           )}
                         </div>
                       )}
@@ -1285,17 +1285,17 @@ export default function EventsManagement() {
                       {preachingData.thumbnailFile && (
                         <div>
                           <div className="flex justify-between items-center mb-1">
-                            <span className="text-sm text-blue-700">Image</span>
-                            <span className="text-sm text-blue-600">{uploadProgress.thumbnail}%</span>
+                            <span className="text-sm text-[#5c4d00]">Image</span>
+                            <span className="text-sm text-[#cc9b00]">{uploadProgress.thumbnail}%</span>
                           </div>
-                          <div className="w-full bg-blue-200 rounded-full h-2">
+                          <div className="w-full bg-[#e6af00]/30 rounded-full h-2">
                             <div 
-                              className="bg-blue-600 h-2 rounded-full transition-all duration-300" 
+                              className="bg-[#ffc200] h-2 rounded-full transition-all duration-300" 
                               style={{width: `${uploadProgress.thumbnail}%`}}
                             ></div>
                           </div>
                           {uploadStatus.thumbnail && (
-                            <p className="text-xs text-blue-600 mt-1">{uploadStatus.thumbnail}</p>
+                            <p className="text-xs text-[#cc9b00] mt-1">{uploadStatus.thumbnail}</p>
                           )}
                         </div>
                       )}
@@ -1346,3 +1346,4 @@ export default function EventsManagement() {
     </div>
   )
 }
+
