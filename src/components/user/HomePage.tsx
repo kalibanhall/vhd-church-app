@@ -33,7 +33,7 @@ export default function HomePage({ user, events, sermons, stats }: HomePageProps
       label: 'Intentions de prière',
       value: stats.totalPrayers.toString(),
       subtitle: 'En attente de prière',
-      color: 'bg-purple-500'
+      color: 'bg-[#ffc200]'
     },
     {
       icon: DollarSign,

@@ -179,7 +179,7 @@ export default function PrayerCellPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-purple-500 border-t-transparent"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-[#ffc200] border-t-transparent"></div>
       </div>
     );
   }
@@ -190,7 +190,7 @@ export default function PrayerCellPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <Users className="h-6 w-6 text-purple-600" />
+            <Users className="h-6 w-6 text-[#cc9b00]" />
             Cellules de prière
           </h1>
           <p className="text-gray-600">Priez ensemble, grandissez ensemble</p>
@@ -211,7 +211,7 @@ export default function PrayerCellPage() {
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
               className={`flex items-center gap-2 px-4 py-3 border-b-2 transition-colors ${
                 activeTab === tab.id
-                  ? 'border-purple-600 text-purple-600'
+                  ? 'border-[#ffc200] text-[#cc9b00]'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
@@ -228,11 +228,11 @@ export default function PrayerCellPage() {
           {myCell ? (
             <div className="space-y-6">
               {/* Cell Card */}
-              <div className="bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl p-6 text-white">
+              <div className="bg-gradient-to-br from-[#ffc200] to-[#cc9b00] rounded-2xl p-6 text-[#0a0a0a]">
                 <div className="flex items-start justify-between mb-4">
                   <div>
                     <h2 className="text-xl font-bold mb-1">{myCell.name}</h2>
-                    <p className="text-purple-100 text-sm">{myCell.description}</p>
+                    <p className="text-[#3d3200] text-sm">{myCell.description}</p>
                   </div>
                   <span className="px-3 py-1 bg-white/20 rounded-full text-sm">
                     {myCell.category}
@@ -242,15 +242,15 @@ export default function PrayerCellPage() {
                 <div className="grid grid-cols-3 gap-4 mb-4">
                   <div className="text-center p-3 bg-white/10 rounded-xl">
                     <p className="text-2xl font-bold">{myCell.members.length}</p>
-                    <p className="text-xs text-purple-100">Membres</p>
+                    <p className="text-xs text-[#3d3200]">Membres</p>
                   </div>
                   <div className="text-center p-3 bg-white/10 rounded-xl">
                     <p className="text-2xl font-bold">{myCell.testimoniesCount}</p>
-                    <p className="text-xs text-purple-100">Témoignages</p>
+                    <p className="text-xs text-[#3d3200]">Témoignages</p>
                   </div>
                   <div className="text-center p-3 bg-white/10 rounded-xl">
                     <p className="text-2xl font-bold">{myCell.prayersAnswered}</p>
-                    <p className="text-xs text-purple-100">Prières exaucées</p>
+                    <p className="text-xs text-[#3d3200]">Prières exaucées</p>
                   </div>
                 </div>
 
@@ -271,7 +271,7 @@ export default function PrayerCellPage() {
                 <h3 className="font-semibold text-gray-900 mb-3">Responsable</h3>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-semibold">
+                    <div className="w-12 h-12 rounded-full bg-[#fff3cc] flex items-center justify-center text-[#cc9b00] font-semibold">
                       {myCell.leader.name.charAt(0)}
                     </div>
                     <div>
@@ -328,7 +328,7 @@ export default function PrayerCellPage() {
                   <h3 className="font-semibold text-gray-900 mb-3">Axes de prière</h3>
                   <div className="flex flex-wrap gap-2">
                     {myCell.prayerFocus.map((focus, idx) => (
-                      <span key={idx} className="px-3 py-1 bg-purple-100 text-purple-700 rounded-full text-sm">
+                      <span key={idx} className="px-3 py-1 bg-[#fff3cc] text-[#cc9b00] rounded-full text-sm">
                         {focus}
                       </span>
                     ))}
@@ -338,7 +338,7 @@ export default function PrayerCellPage() {
 
               {/* Actions */}
               <div className="grid grid-cols-2 gap-4">
-                <button className="flex items-center justify-center gap-2 py-3 bg-purple-600 text-white rounded-xl font-medium hover:bg-purple-700">
+                <button className="flex items-center justify-center gap-2 py-3 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#e6af00]">
                   <MessageCircle className="h-5 w-5" />
                   Discussion
                 </button>
@@ -359,7 +359,7 @@ export default function PrayerCellPage() {
               </p>
               <button
                 onClick={() => setActiveTab('explore')}
-                className="px-6 py-3 bg-purple-600 text-white rounded-xl font-medium hover:bg-purple-700"
+                className="px-6 py-3 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#e6af00]"
               >
                 Explorer les cellules
               </button>
@@ -380,13 +380,13 @@ export default function PrayerCellPage() {
                 placeholder="Rechercher une cellule..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
               />
             </div>
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500"
+              className="px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200]"
             >
               <option value="all">Toutes</option>
               <option value="intercession">Intercession</option>
@@ -439,7 +439,7 @@ export default function PrayerCellPage() {
 
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-sm font-medium">
+                      <div className="w-8 h-8 rounded-full bg-[#fff3cc] flex items-center justify-center text-[#cc9b00] text-sm font-medium">
                         {cell.leader.name.charAt(0)}
                       </div>
                       <span className="text-sm text-gray-600">{cell.leader.name}</span>
@@ -543,8 +543,8 @@ export default function PrayerCellPage() {
             
             <div className="p-4 space-y-4">
               <div className="text-center">
-                <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-3">
-                  <Users className="h-8 w-8 text-purple-600" />
+                <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-3">
+                  <Users className="h-8 w-8 text-[#cc9b00]" />
                 </div>
                 <h3 className="font-bold text-gray-900">{selectedCell.name}</h3>
                 <p className="text-gray-600 text-sm mt-1">{selectedCell.description}</p>
@@ -592,7 +592,7 @@ export default function PrayerCellPage() {
               {selectedCell.isOpen ? (
                 <button
                   onClick={() => handleJoinCell(selectedCell.id)}
-                  className="w-full py-3 bg-purple-600 text-white rounded-xl font-medium hover:bg-purple-700"
+                  className="w-full py-3 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#e6af00]"
                 >
                   <UserPlus className="h-5 w-5 inline mr-2" />
                   Rejoindre cette cellule

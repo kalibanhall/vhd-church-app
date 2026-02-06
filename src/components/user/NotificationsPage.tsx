@@ -121,10 +121,10 @@ export default function NotificationsPage() {
   const getTypeColor = (type: string) => {
     switch (type) {
       case 'event': return 'bg-[#fff3cc] text-[#cc9b00]';
-      case 'prayer': return 'bg-purple-100 text-purple-600';
+      case 'prayer': return 'bg-[#fff3cc] text-[#cc9b00]';
       case 'message': return 'bg-green-100 text-green-600';
       case 'donation': return 'bg-yellow-100 text-yellow-600';
-      case 'announcement': return 'bg-indigo-100 text-indigo-600';
+      case 'announcement': return 'bg-[#fff3cc] text-[#cc9b00]';
       case 'reminder': return 'bg-orange-100 text-orange-600';
       case 'system': return 'bg-gray-100 text-gray-600';
       case 'alert': return 'bg-red-100 text-red-600';

@@ -108,8 +108,8 @@ export default function ConflictResolutionPage() {
       </div>
 
       {/* Biblical Reminder */}
-      <div className="bg-purple-50 rounded-xl p-4 mb-6">
-        <p className="text-purple-700 text-sm italic">
+      <div className="bg-[#fff3cc] rounded-xl p-4 mb-6">
+        <p className="text-[#5c4d00] text-sm italic">
           "Si ton frère a péché contre toi, va et reprends-le entre toi et lui seul. S'il t'écoute, tu as gagné ton frère." - Matthieu 18:15
         </p>
       </div>

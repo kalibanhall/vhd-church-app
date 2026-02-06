@@ -50,8 +50,8 @@ export default function FollowUpPage() {
       title: 'Croissance spirituelle',
       description: 'Accompagnement pour approfondir votre foi et votre relation avec Dieu',
       icon: TrendingUp,
-      color: 'text-purple-600',
-      bgColor: 'bg-purple-100',
+      color: 'text-[#cc9b00]',
+      bgColor: 'bg-[#fff3cc]',
     },
     {
       id: 'new-believer',
@@ -90,8 +90,8 @@ export default function FollowUpPage() {
       title: 'Partenaire de responsabilité',
       description: 'Avoir quelqu\'un pour vous aider à rester fidèle à vos engagements',
       icon: Target,
-      color: 'text-indigo-600',
-      bgColor: 'bg-indigo-100',
+      color: 'text-[#cc9b00]',
+      bgColor: 'bg-[#fff3cc]',
     },
   ];
 

@@ -635,8 +635,8 @@ export default function UserProfile({ user }: ProfileProps) {
             <div className="text-xs md:text-sm text-gray-600">RDV</div>
           </div>
           <div className="bg-white rounded-lg shadow-sm p-3 md:p-6 text-center">
-            <MessageCircle className="w-5 h-5 md:w-8 md:h-8 text-purple-500 mx-auto mb-2 md:mb-3" />
-            <div className="text-lg md:text-2xl font-bold text-purple-600">{userStats.prayers}</div>
+            <MessageCircle className="w-5 h-5 md:w-8 md:h-8 text-[#cc9b00] mx-auto mb-2 md:mb-3" />
+            <div className="text-lg md:text-2xl font-bold text-[#cc9b00]">{userStats.prayers}</div>
             <div className="text-xs md:text-sm text-gray-600">Prières</div>
           </div>
           <div className="bg-white rounded-lg shadow-sm p-3 md:p-6 text-center">

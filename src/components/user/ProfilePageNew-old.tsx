@@ -173,7 +173,7 @@ export default function ProfilePage({ user }: ProfileProps) {
       case 'appointment':
         return <div className="w-2 h-2 bg-[#ffc200] rounded-full"></div>
       case 'prayer':
-        return <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+        return <div className="w-2 h-2 bg-[#fff3cc]0 rounded-full"></div>
       case 'testimony':
         return <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
       default:
@@ -229,8 +229,8 @@ export default function ProfilePage({ user }: ProfileProps) {
                 </div>
 
                 <div className="bg-white rounded-xl p-6 text-center shadow-sm">
-                  <MessageCircle className="w-8 h-8 text-purple-500 mx-auto mb-3" />
-                  <div className="text-2xl font-bold text-purple-600">{stats.prayerIntentions}</div>
+                  <MessageCircle className="w-8 h-8 text-[#cc9b00] mx-auto mb-3" />
+                  <div className="text-2xl font-bold text-[#cc9b00]">{stats.prayerIntentions}</div>
                   <div className="text-sm text-gray-500">Intentions prière</div>
                 </div>
 
@@ -254,7 +254,7 @@ export default function ProfilePage({ user }: ProfileProps) {
                         <div className="flex items-center space-x-2 mb-1">
                           {activity.type === 'donation' && <Check className="w-4 h-4 text-green-500" />}
                           {activity.type === 'appointment' && <Calendar className="w-4 h-4 text-[#cc9b00]" />}
-                          {activity.type === 'prayer' && <MessageCircle className="w-4 h-4 text-purple-500" />}
+                          {activity.type === 'prayer' && <MessageCircle className="w-4 h-4 text-[#cc9b00]" />}
                           <span className="font-medium">{activity.title}</span>
                         </div>
                         <p className="text-sm text-gray-500">{activity.description}</p>

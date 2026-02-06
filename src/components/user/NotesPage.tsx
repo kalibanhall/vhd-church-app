@@ -244,7 +244,7 @@ const NotesPage: React.FC = () => {
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'sermon': return 'bg-purple-100 text-purple-700'
+      case 'sermon': return 'bg-[#fff3cc] text-[#5c4d00]'
       case 'bible_study': return 'bg-amber-100 text-amber-700'
       default: return 'bg-[#fff3cc] text-[#cc9b00]'
     }
@@ -294,7 +294,7 @@ const NotesPage: React.FC = () => {
           <div className="text-sm text-gray-500">Total</div>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">
-          <div className="text-2xl font-bold text-purple-600">{stats.sermons}</div>
+          <div className="text-2xl font-bold text-[#cc9b00]">{stats.sermons}</div>
           <div className="text-sm text-gray-500">Prédications</div>
         </div>
         <div className="bg-white rounded-xl shadow-sm p-4 border border-gray-100">

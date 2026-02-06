@@ -78,10 +78,10 @@ export default function AskQuestionPage() {
 
   const categories = [
     { id: 'bible', label: 'Questions bibliques', icon: BookOpen, color: 'text-[#cc9b00]', bgColor: 'bg-[#fff3cc]' },
-    { id: 'faith', label: 'Questions de foi', icon: Heart, color: 'text-purple-600', bgColor: 'bg-purple-100' },
+    { id: 'faith', label: 'Questions de foi', icon: Heart, color: 'text-[#cc9b00]', bgColor: 'bg-[#fff3cc]' },
     { id: 'church', label: 'Vie d\'église', icon: Users, color: 'text-green-600', bgColor: 'bg-green-100' },
     { id: 'practical', label: 'Questions pratiques', icon: Briefcase, color: 'text-orange-600', bgColor: 'bg-orange-100' },
-    { id: 'spiritual', label: 'Vie spirituelle', icon: Shield, color: 'text-indigo-600', bgColor: 'bg-indigo-100' },
+    { id: 'spiritual', label: 'Vie spirituelle', icon: Shield, color: 'text-[#cc9b00]', bgColor: 'bg-[#fff3cc]' },
     { id: 'other', label: 'Autre', icon: HelpCircle, color: 'text-gray-600', bgColor: 'bg-gray-100' },
   ];
 
@@ -171,8 +171,8 @@ export default function AskQuestionPage() {
     <div className="max-w-2xl mx-auto p-4 pb-24">
       {/* Header */}
       <div className="text-center mb-6">
-        <div className="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center mx-auto mb-4">
-          <HelpCircle className="h-8 w-8 text-indigo-600" />
+        <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+          <HelpCircle className="h-8 w-8 text-[#cc9b00]" />
         </div>
         <h1 className="text-2xl font-bold text-gray-900">Poser une question</h1>
         <p className="text-gray-600 mt-2">Nos pasteurs sont là pour vous répondre</p>
@@ -192,7 +192,7 @@ export default function AskQuestionPage() {
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
               className={`flex items-center gap-2 px-4 py-3 border-b-2 transition-colors ${
                 activeTab === tab.id
-                  ? 'border-indigo-600 text-indigo-600'
+                  ? 'border-[#ffc200] text-[#cc9b00]'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
@@ -215,7 +215,7 @@ export default function AskQuestionPage() {
               <p className="text-gray-600 mb-6">Un pasteur vous répondra dans les plus brefs délais.</p>
               <button
                 onClick={() => setSubmitted(false)}
-                className="px-6 py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700"
+                className="px-6 py-3 bg-[#ffc200] text-white rounded-xl font-medium hover:bg-[#cc9b00]"
               >
                 Poser une autre question
               </button>
@@ -234,8 +234,8 @@ export default function AskQuestionPage() {
                         onClick={() => setNewQuestion({ ...newQuestion, category: cat.id })}
                         className={`flex items-center gap-2 p-3 rounded-xl border transition-all ${
                           newQuestion.category === cat.id
-                            ? 'border-indigo-500 bg-indigo-50'
-                            : 'border-gray-200 hover:border-indigo-300 bg-white'
+                            ? 'border-[#ffc200] bg-[#fff3cc]'
+                            : 'border-gray-200 hover:border-[#e6af00] bg-white'
                         }`}
                       >
                         <div className={`p-1.5 rounded-lg ${cat.bgColor}`}>
@@ -256,7 +256,7 @@ export default function AskQuestionPage() {
                   value={newQuestion.subject}
                   onChange={(e) => setNewQuestion({ ...newQuestion, subject: e.target.value })}
                   placeholder="Résumez votre question en quelques mots"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
                 />
               </div>
 
@@ -268,7 +268,7 @@ export default function AskQuestionPage() {
                   onChange={(e) => setNewQuestion({ ...newQuestion, content: e.target.value })}
                   placeholder="Développez votre question ici..."
                   rows={5}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
                 />
               </div>
 
@@ -279,7 +279,7 @@ export default function AskQuestionPage() {
                     type="checkbox"
                     checked={newQuestion.isAnonymous}
                     onChange={(e) => setNewQuestion({ ...newQuestion, isAnonymous: e.target.checked })}
-                    className="w-5 h-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    className="w-5 h-5 rounded border-gray-300 text-[#cc9b00] focus:ring-[#ffc200]"
                   />
                   <div>
                     <p className="font-medium text-gray-900">Poser anonymement</p>
@@ -291,7 +291,7 @@ export default function AskQuestionPage() {
                     type="checkbox"
                     checked={newQuestion.isPublic}
                     onChange={(e) => setNewQuestion({ ...newQuestion, isPublic: e.target.checked })}
-                    className="w-5 h-5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    className="w-5 h-5 rounded border-gray-300 text-[#cc9b00] focus:ring-[#ffc200]"
                   />
                   <div>
                     <p className="font-medium text-gray-900">Rendre public</p>
@@ -304,7 +304,7 @@ export default function AskQuestionPage() {
               <button
                 onClick={handleSubmit}
                 disabled={!newQuestion.category || !newQuestion.subject || !newQuestion.content}
-                className="w-full py-3 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="w-full py-3 bg-[#ffc200] text-white rounded-xl font-medium hover:bg-[#cc9b00] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 <Send className="h-5 w-5" />
                 Envoyer ma question
@@ -379,7 +379,7 @@ export default function AskQuestionPage() {
               placeholder="Rechercher dans les FAQ..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
             />
           </div>
 

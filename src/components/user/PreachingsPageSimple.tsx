@@ -271,7 +271,7 @@ export default function PreachingsPage() {
 
       {/* Alerte Live */}
       {livePreachings.length > 0 && (
-        <div className="bg-gradient-to-r from-red-500 to-pink-600 text-white rounded-lg p-6 shadow-church">
+        <div className="bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg p-6 shadow-church">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>

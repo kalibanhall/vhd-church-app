@@ -192,8 +192,8 @@ const DonationsPage: React.FC = () => {
     return (
       <div className="max-w-4xl mx-auto p-4 pb-24">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-            <Loader2 className="h-8 w-8 text-green-600 animate-spin" />
+          <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+            <Loader2 className="h-8 w-8 text-[#cc9b00] animate-spin" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Soutien à l'Œuvre</h1>
           <p className="text-gray-600 mt-2">Chargement...</p>
@@ -214,16 +214,16 @@ const DonationsPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50">
+    <div className="min-h-screen bg-gradient-to-br from-[#fffefa] via-[#fff3cc] to-[#fffefa]">
       {/* Header gradient */}
-      <div className="bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white">
+      <div className="bg-gradient-to-r from-[#ffc200] via-[#e6af00] to-[#cc9b00] text-[#0a0a0a]">
         <div className="max-w-4xl mx-auto px-4 py-8">
           <div className="text-center">
             <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-4">
               <Heart className="h-8 w-8 text-white" />
             </div>
             <h1 className="text-2xl font-bold mb-2">Soutien à l'Œuvre</h1>
-            <p className="text-green-100 text-sm">Participez à la mission de l'église VHD</p>
+            <p className="text-[#3d3200] text-sm">Participez à la mission de l'église VHD</p>
           </div>
         </div>
       </div>
@@ -231,16 +231,16 @@ const DonationsPage: React.FC = () => {
       <div className="max-w-4xl mx-auto p-4 pb-24 -mt-6">
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3 mb-6">
-          <div className="bg-green-50 border border-green-100 rounded-xl p-3 text-center">
-            <p className="text-xl font-bold text-green-600">{donations.filter(d => d.status === 'COMPLETED').length}</p>
+          <div className="bg-[#fff3cc] border border-[#ffc200] rounded-xl p-3 text-center">
+            <p className="text-xl font-bold text-[#cc9b00]">{donations.filter(d => d.status === 'COMPLETED').length}</p>
             <p className="text-xs text-gray-600">Dons validés</p>
           </div>
           <div className="bg-yellow-50 border border-yellow-100 rounded-xl p-3 text-center">
             <p className="text-xl font-bold text-yellow-600">{donations.filter(d => d.status === 'PENDING').length}</p>
             <p className="text-xs text-gray-600">En attente</p>
           </div>
-          <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-3 text-center">
-            <p className="text-xl font-bold text-emerald-600">{getTotalDonations().toLocaleString()}</p>
+          <div className="bg-[#fff3cc] border border-[#ffc200] rounded-xl p-3 text-center">
+            <p className="text-xl font-bold text-[#cc9b00]">{getTotalDonations().toLocaleString()}</p>
             <p className="text-xs text-gray-600">Total (FC)</p>
           </div>
         </div>
@@ -267,7 +267,7 @@ const DonationsPage: React.FC = () => {
             {/* Type de soutien */}
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <Gift className="h-5 w-5 text-green-600" />
+                <Gift className="h-5 w-5 text-[#cc9b00]" />
                 Type de soutien
               </h3>
               <div className="grid grid-cols-2 gap-3">
@@ -280,16 +280,16 @@ const DonationsPage: React.FC = () => {
                       onClick={() => setDonationType(type.id)}
                       className={`p-4 rounded-xl border-2 text-left transition-all ${
                         donationType === type.id 
-                          ? 'border-green-500 bg-green-50' 
+                          ? 'border-[#ffc200] bg-[#fff3cc]' 
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
                     >
                       <div className="flex items-center gap-3">
                         <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                          donationType === type.id ? 'bg-green-100' : 'bg-gray-100'
+                          donationType === type.id ? 'bg-[#ffda66]' : 'bg-gray-100'
                         }`}>
                           <Icon className={`h-5 w-5 ${
-                            donationType === type.id ? 'text-green-600' : 'text-gray-500'
+                            donationType === type.id ? 'text-[#cc9b00]' : 'text-gray-500'
                           }`} />
                         </div>
                         <div>
@@ -306,7 +306,7 @@ const DonationsPage: React.FC = () => {
             {/* Devise */}
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <DollarSign className="h-5 w-5 text-green-600" />
+                <DollarSign className="h-5 w-5 text-[#cc9b00]" />
                 Devise
               </h3>
               <div className="flex gap-3">
@@ -315,7 +315,7 @@ const DonationsPage: React.FC = () => {
                   onClick={() => { setCurrency('CDF'); setSelectedAmount(''); setCustomAmount(''); }}
                   className={`flex-1 py-3 rounded-xl font-medium transition-all ${
                     currency === 'CDF' 
-                      ? 'bg-green-600 text-white shadow-lg' 
+                      ? 'bg-[#ffc200] text-[#0a0a0a] shadow-lg' 
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
@@ -326,7 +326,7 @@ const DonationsPage: React.FC = () => {
                   onClick={() => { setCurrency('USD'); setSelectedAmount(''); setCustomAmount(''); }}
                   className={`flex-1 py-3 rounded-xl font-medium transition-all ${
                     currency === 'USD' 
-                      ? 'bg-green-600 text-white shadow-lg' 
+                      ? 'bg-[#ffc200] text-[#0a0a0a] shadow-lg' 
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
@@ -346,7 +346,7 @@ const DonationsPage: React.FC = () => {
                     onClick={() => { setSelectedAmount(amount.toString()); setCustomAmount(''); }}
                     className={`py-4 rounded-xl font-bold transition-all ${
                       selectedAmount === amount.toString() 
-                        ? 'bg-green-600 text-white shadow-lg scale-105' 
+                        ? 'bg-[#ffc200] text-[#0a0a0a] shadow-lg scale-105' 
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                     }`}
                   >
@@ -361,7 +361,7 @@ const DonationsPage: React.FC = () => {
                   placeholder={`Montant personnalisé en ${currency === 'CDF' ? 'FC' : 'USD'}`}
                   value={customAmount}
                   onChange={(e) => { setCustomAmount(e.target.value); setSelectedAmount('custom'); }}
-                  className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 text-lg"
+                  className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200] focus:border-[#ffc200] text-lg"
                 />
                 <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium">
                   {currency === 'CDF' ? 'FC' : 'USD'}
@@ -372,7 +372,7 @@ const DonationsPage: React.FC = () => {
             {/* Mode de paiement */}
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                <CreditCard className="h-5 w-5 text-green-600" />
+                <CreditCard className="h-5 w-5 text-[#cc9b00]" />
                 Mode de paiement
               </h3>
               <div className="grid grid-cols-2 gap-3">
@@ -385,13 +385,13 @@ const DonationsPage: React.FC = () => {
                       onClick={() => setPaymentMethod(method.id)}
                       className={`p-4 rounded-xl border-2 text-left transition-all ${
                         paymentMethod === method.id 
-                          ? 'border-green-500 bg-green-50' 
+                          ? 'border-[#ffc200] bg-[#fff3cc]' 
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
                     >
                       <div className="flex items-center gap-3">
                         <Icon className={`h-5 w-5 ${
-                          paymentMethod === method.id ? 'text-green-600' : 'text-gray-500'
+                          paymentMethod === method.id ? 'text-[#cc9b00]' : 'text-gray-500'
                         }`} />
                         <div>
                           <p className="font-medium text-gray-900">{method.label}</p>
@@ -414,12 +414,12 @@ const DonationsPage: React.FC = () => {
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="Un message pour accompagner votre don..."
                 rows={3}
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200] focus:border-[#ffc200]"
               />
             </div>
 
             {/* Résumé */}
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border border-green-100">
+            <div className="bg-gradient-to-br from-[#fff3cc] to-[#fffefa] p-4 rounded-xl border border-[#ffc200]">
               <h4 className="font-semibold text-gray-900 mb-3">Résumé</h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
@@ -428,7 +428,7 @@ const DonationsPage: React.FC = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Montant :</span>
-                  <span className="font-bold text-green-600 text-lg">
+                  <span className="font-bold text-[#cc9b00] text-lg">
                     {formatAmount(
                       parseFloat(selectedAmount === 'custom' ? customAmount || '0' : selectedAmount || '0'),
                       currency
@@ -446,7 +446,7 @@ const DonationsPage: React.FC = () => {
             <button
               type="submit"
               disabled={submitting || (!selectedAmount && !customAmount)}
-              className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-4 px-6 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:from-green-700 hover:to-emerald-700 transition-all flex items-center justify-center gap-3 shadow-lg"
+              className="w-full bg-gradient-to-r from-[#ffc200] to-[#cc9b00] text-[#0a0a0a] py-4 px-6 rounded-xl font-semibold disabled:opacity-50 disabled:cursor-not-allowed hover:from-[#e6af00] hover:to-[#cc9b00] transition-all flex items-center justify-center gap-3 shadow-lg"
             >
               {submitting ? (
                 <>
@@ -467,7 +467,7 @@ const DonationsPage: React.FC = () => {
         {donations.length > 0 && (
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
             <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-green-600" />
+              <Calendar className="h-5 w-5 text-[#cc9b00]" />
               Mes dons récents
             </h2>
             <div className="space-y-3">
@@ -514,8 +514,8 @@ const DonationsPage: React.FC = () => {
         )}
 
         {/* Info bottom */}
-        <div className="mt-6 bg-gradient-to-r from-green-100 to-emerald-100 rounded-xl p-4 text-center">
-          <p className="text-sm text-green-800">
+        <div className="mt-6 bg-gradient-to-r from-[#fff3cc] to-[#fffefa] rounded-xl p-4 text-center">
+          <p className="text-sm text-[#cc9b00]">
             💚 « Celui qui sème généreusement moissonnera aussi avec abondance » - 2 Corinthiens 9:6
           </p>
         </div>

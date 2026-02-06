@@ -232,8 +232,8 @@ export default function MutualHelpPage() {
     return (
       <div className="max-w-4xl mx-auto p-4 pb-24">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-            <Loader2 className="h-8 w-8 text-green-600 animate-spin" />
+          <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+            <Loader2 className="h-8 w-8 text-[#cc9b00] animate-spin" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">S'entraider</h1>
           <p className="text-gray-600 mt-2">Chargement...</p>
@@ -259,8 +259,8 @@ export default function MutualHelpPage() {
     <div className="max-w-4xl mx-auto p-4 pb-24">
       {/* Header */}
       <div className="text-center mb-6">
-        <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-          <HeartHandshake className="h-8 w-8 text-green-600" />
+        <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+          <HeartHandshake className="h-8 w-8 text-[#cc9b00]" />
         </div>
         <h1 className="text-2xl font-bold text-gray-900">S'entraider</h1>
         <p className="text-gray-600 mt-2">
@@ -271,7 +271,7 @@ export default function MutualHelpPage() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">
-          <p className="text-2xl font-bold text-green-600">{requests.filter(r => r.type === 'offer').length}</p>
+          <p className="text-2xl font-bold text-[#cc9b00]">{requests.filter(r => r.type === 'offer').length}</p>
           <p className="text-sm text-gray-500">Offres d'aide</p>
         </div>
         <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">
@@ -279,7 +279,7 @@ export default function MutualHelpPage() {
           <p className="text-sm text-gray-500">Demandes</p>
         </div>
         <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">
-          <p className="text-2xl font-bold text-purple-600">{requests.filter(r => r.status === 'completed').length}</p>
+          <p className="text-2xl font-bold text-[#cc9b00]">{requests.filter(r => r.status === 'completed').length}</p>
           <p className="text-sm text-gray-500">Résolues</p>
         </div>
       </div>
@@ -293,12 +293,12 @@ export default function MutualHelpPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Rechercher..."
-            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500"
+            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200]"
           />
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="px-4 py-3 bg-green-600 text-white rounded-xl font-medium hover:bg-green-700 flex items-center gap-2"
+          className="px-4 py-3 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#cc9b00] flex items-center gap-2"
         >
           <Plus className="h-5 w-5" />
           <span className="hidden sm:inline">Publier</span>
@@ -318,7 +318,7 @@ export default function MutualHelpPage() {
             onClick={() => setActiveTab(tab.id as typeof activeTab)}
             className={`px-4 py-2 rounded-full font-medium whitespace-nowrap transition-all ${
               activeTab === tab.id
-                ? 'bg-green-600 text-white'
+                ? 'bg-[#ffc200] text-[#0a0a0a]'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
@@ -366,7 +366,7 @@ export default function MutualHelpPage() {
             <p className="text-gray-500">Aucune annonce pour le moment</p>
             <button
               onClick={() => setShowCreateModal(true)}
-              className="mt-4 px-4 py-2 bg-green-600 text-white rounded-xl font-medium hover:bg-green-700"
+              className="mt-4 px-4 py-2 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#cc9b00]"
             >
               Soyez le premier à publier
             </button>
@@ -384,8 +384,8 @@ export default function MutualHelpPage() {
                 className="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-lg transition-shadow cursor-pointer"
               >
                 <div className="flex items-start gap-4">
-                  <div className={`p-3 rounded-xl ${request.type === 'offer' ? 'bg-green-100' : 'bg-[#fff3cc]'}`}>
-                    <CategoryIcon className={`h-6 w-6 ${request.type === 'offer' ? 'text-green-600' : 'text-[#cc9b00]'}`} />
+                  <div className={`p-3 rounded-xl ${request.type === 'offer' ? 'bg-[#fff3cc]' : 'bg-[#fff3cc]'}`}>
+                    <CategoryIcon className={`h-6 w-6 ${request.type === 'offer' ? 'text-[#cc9b00]' : 'text-[#cc9b00]'}`} />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2">
@@ -393,7 +393,7 @@ export default function MutualHelpPage() {
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
                             request.type === 'offer' 
-                              ? 'bg-green-100 text-green-700' 
+                              ? 'bg-[#fff3cc] text-[#5c4d00]' 
                               : 'bg-[#fff3cc] text-[#cc9b00]'
                           }`}>
                             {request.type === 'offer' ? 'Offre' : 'Besoin'}
@@ -464,11 +464,11 @@ export default function MutualHelpPage() {
                   onClick={() => setNewRequest({ ...newRequest, type: 'offer' })}
                   className={`p-4 rounded-xl border text-center transition-all ${
                     newRequest.type === 'offer'
-                      ? 'border-green-500 bg-green-50'
-                      : 'border-gray-200 hover:border-green-300'
+                      ? 'border-[#ffc200] bg-[#fff3cc]'
+                      : 'border-gray-200 hover:border-[#ffda66]'
                   }`}
                 >
-                  <HeartHandshake className="h-6 w-6 text-green-600 mx-auto mb-2" />
+                  <HeartHandshake className="h-6 w-6 text-[#cc9b00] mx-auto mb-2" />
                   <p className="font-medium text-gray-900">Je propose mon aide</p>
                 </button>
               </div>
@@ -505,7 +505,7 @@ export default function MutualHelpPage() {
                   value={newRequest.title}
                   onChange={(e) => setNewRequest({ ...newRequest, title: e.target.value })}
                   placeholder="Ex: Besoin d'aide pour déménager"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200]"
                 />
               </div>
 
@@ -517,7 +517,7 @@ export default function MutualHelpPage() {
                   onChange={(e) => setNewRequest({ ...newRequest, description: e.target.value })}
                   placeholder="Décrivez votre besoin ou votre offre en détail..."
                   rows={4}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-green-500"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl resize-none focus:ring-2 focus:ring-[#ffc200]"
                 />
               </div>
 
@@ -529,7 +529,7 @@ export default function MutualHelpPage() {
                   value={newRequest.location}
                   onChange={(e) => setNewRequest({ ...newRequest, location: e.target.value })}
                   placeholder="Ex: Gombe, Kinshasa"
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200]"
                 />
               </div>
 
@@ -559,7 +559,7 @@ export default function MutualHelpPage() {
               <button
                 onClick={handleCreateRequest}
                 disabled={!newRequest.title || !newRequest.description || !newRequest.category}
-                className="flex-1 py-3 bg-green-600 text-white rounded-xl font-medium hover:bg-green-700 disabled:opacity-50 flex items-center justify-center gap-2"
+                className="flex-1 py-3 bg-[#ffc200] text-[#0a0a0a] rounded-xl font-medium hover:bg-[#cc9b00] disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 <Send className="h-5 w-5" />
                 Publier

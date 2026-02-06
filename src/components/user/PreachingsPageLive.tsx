@@ -144,7 +144,7 @@ export default function PreachingsPageLive() {
 
   const getMediaBadgeColor = (type: string) => {
     switch (type) {
-      case 'VIDEO': return 'bg-purple-100 text-purple-700';
+      case 'VIDEO': return 'bg-[#fff3cc] text-[#cc9b00]';
       case 'AUDIO': return 'bg-[#fff3cc] text-[#cc9b00]';
       case 'LIVE': return 'bg-red-100 text-red-700';
       case 'TEXT': return 'bg-gray-100 text-gray-700';
@@ -163,8 +163,8 @@ export default function PreachingsPageLive() {
     return (
       <div className="max-w-6xl mx-auto p-4 pb-24">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
-            <Loader2 className="h-8 w-8 text-purple-600 animate-spin" />
+          <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+            <Loader2 className="h-8 w-8 text-[#cc9b00] animate-spin" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Prédications</h1>
           <p className="text-gray-600 mt-2">Chargement des prédications...</p>
@@ -190,7 +190,7 @@ export default function PreachingsPageLive() {
   // ERROR STATE
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-[#fffefa]">
+      <div className="min-h-screen bg-gradient-to-br from-[#fffefa] via-[#fff3cc] to-[#fffefa]">
         <div className="max-w-6xl mx-auto p-4 pb-24">
           <div className="text-center py-12">
             <div className="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
@@ -200,7 +200,7 @@ export default function PreachingsPageLive() {
             <p className="text-gray-600 mb-6">{error}</p>
             <button 
               onClick={fetchSermons}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-medium hover:from-purple-700 hover:to-indigo-700 transition-all shadow-lg"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#ffc200] to-[#cc9b00] text-[#0a0a0a] rounded-xl font-medium hover:from-[#e6af00] hover:to-[#cc9b00] transition-all shadow-lg"
             >
               <RefreshCw className="h-5 w-5" />
               Réessayer
@@ -213,17 +213,17 @@ export default function PreachingsPageLive() {
 
   // DESIGN PRINCIPAL
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-indigo-50 to-[#fffefa]">
+    <div className="min-h-screen bg-gradient-to-br from-[#fffefa] via-[#fff3cc] to-[#fffefa]">
       {/* Header avec gradient */}
-      <div className="bg-gradient-to-r from-purple-600 via-indigo-600 to-[#cc9b00] text-white">
+      <div className="bg-gradient-to-r from-[#ffc200] via-[#e6af00] to-[#cc9b00] text-[#0a0a0a]">
         <div className="max-w-6xl mx-auto px-4 py-8">
           <div className="text-center">
             <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-4">
               <Video className="h-8 w-8 text-white" />
             </div>
             <h1 className="text-2xl font-bold mb-2">Prédications</h1>
-            <p className="text-purple-100 text-sm">Retrouvez tous les enseignements et prédications</p>
-            <p className="text-purple-200 text-xs mt-1">
+            <p className="text-[#3d3200] text-sm">Retrouvez tous les enseignements et prédications</p>
+            <p className="text-[#5c4d00] text-xs mt-1">
               {sermons.length} prédication{sermons.length > 1 ? 's' : ''} disponible{sermons.length > 1 ? 's' : ''}
             </p>
           </div>
@@ -234,7 +234,7 @@ export default function PreachingsPageLive() {
         {/* Stats */}
         <div className="grid grid-cols-4 gap-3 mb-6">
           <div className="bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100">
-            <p className="text-2xl font-bold text-purple-600">{videoCount}</p>
+            <p className="text-2xl font-bold text-[#cc9b00]">{videoCount}</p>
             <p className="text-xs text-gray-600">Vidéos</p>
           </div>
           <div className="bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100">
@@ -246,7 +246,7 @@ export default function PreachingsPageLive() {
             <p className="text-xs text-gray-600">En direct</p>
           </div>
           <div className="bg-white rounded-xl p-3 text-center shadow-sm border border-gray-100">
-            <p className="text-2xl font-bold text-indigo-600">{totalViews}</p>
+            <p className="text-2xl font-bold text-[#e6af00]">{totalViews}</p>
             <p className="text-xs text-gray-600">Vues</p>
           </div>
         </div>
@@ -261,7 +261,7 @@ export default function PreachingsPageLive() {
                 placeholder="Rechercher une prédication, un pasteur..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all"
+                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200] focus:border-[#ffc200] transition-all"
               />
             </div>
             
@@ -270,7 +270,7 @@ export default function PreachingsPageLive() {
                 onClick={() => setSelectedType('all')}
                 className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all ${
                   selectedType === 'all'
-                    ? 'bg-purple-600 text-white shadow-md'
+                    ? 'bg-[#ffc200] text-[#0a0a0a] shadow-md'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -291,8 +291,8 @@ export default function PreachingsPageLive() {
                 onClick={() => setSelectedType('VIDEO')}
                 className={`px-4 py-2 rounded-xl text-sm font-medium whitespace-nowrap transition-all flex items-center gap-1 ${
                   selectedType === 'VIDEO'
-                    ? 'bg-purple-600 text-white shadow-md'
-                    : 'bg-purple-50 text-purple-700 hover:bg-purple-100'
+                    ? 'bg-[#ffc200] text-[#0a0a0a] shadow-md'
+                    : 'bg-[#fff3cc] text-[#cc9b00] hover:bg-[#ffda66]'
                 }`}
               >
                 <Video className="h-4 w-4" />
@@ -392,7 +392,7 @@ export default function PreachingsPageLive() {
                     <div className="flex items-start gap-4">
                       {/* Thumbnail */}
                       <div 
-                        className="relative w-28 h-20 rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 flex-shrink-0 overflow-hidden cursor-pointer group"
+                        className="relative w-28 h-20 rounded-xl bg-gradient-to-br from-[#ffc200] to-[#cc9b00] flex-shrink-0 overflow-hidden cursor-pointer group"
                         onClick={() => (sermon.media_url || sermon.event?.stream_url) && handlePlay(sermon)}
                       >
                         {sermon.thumbnail_url ? (
@@ -417,7 +417,7 @@ export default function PreachingsPageLive() {
                         {(sermon.media_url || sermon.event?.stream_url) && (
                           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 flex items-center justify-center transition-all">
                             <div className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transform scale-75 group-hover:scale-100 transition-all">
-                              <Play className="h-5 w-5 text-purple-600 fill-current ml-0.5" />
+                              <Play className="h-5 w-5 text-[#cc9b00] fill-current ml-0.5" />
                             </div>
                           </div>
                         )}
@@ -452,13 +452,13 @@ export default function PreachingsPageLive() {
                         <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
                           {sermon.pastor_name && sermon.pastor_name.trim() !== '' && (
                             <div className="flex items-center gap-1">
-                              <User className="h-3 w-3 text-purple-500" />
+                              <User className="h-3 w-3 text-[#cc9b00]" />
                               <span>{sermon.pastor_name}</span>
                             </div>
                           )}
 
                           <div className="flex items-center gap-1">
-                            <Calendar className="h-3 w-3 text-indigo-500" />
+                            <Calendar className="h-3 w-3 text-[#e6af00]" />
                             <span>{safeFormatDate(sermon.sermon_date, 'Date non disponible')}</span>
                           </div>
 
@@ -472,7 +472,7 @@ export default function PreachingsPageLive() {
 
                         {/* Versets bibliques */}
                         {sermon.bible_verses && (
-                          <div className="mt-2 flex items-center gap-1 text-xs text-purple-600">
+                          <div className="mt-2 flex items-center gap-1 text-xs text-[#cc9b00]">
                             <BookOpen className="h-3 w-3" />
                             <span className="font-medium">{sermon.bible_verses}</span>
                           </div>
@@ -483,7 +483,7 @@ export default function PreachingsPageLive() {
                       {(sermon.media_url || sermon.event?.stream_url) && (
                         <button
                           onClick={() => handlePlay(sermon)}
-                          className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center text-white hover:from-purple-700 hover:to-indigo-700 transition-all shadow-md hover:shadow-lg"
+                          className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-[#ffc200] to-[#cc9b00] flex items-center justify-center text-[#0a0a0a] hover:from-[#e6af00] hover:to-[#cc9b00] transition-all shadow-md hover:shadow-lg"
                         >
                           <Play className="h-4 w-4 fill-current ml-0.5" />
                         </button>
@@ -507,7 +507,7 @@ export default function PreachingsPageLive() {
             {(searchTerm || selectedType !== 'all') && (
               <button
                 onClick={() => { setSearchTerm(''); setSelectedType('all'); }}
-                className="text-purple-600 text-sm font-medium hover:text-purple-700"
+                className="text-[#cc9b00] text-sm font-medium hover:text-[#e6af00]"
               >
                 Réinitialiser les filtres
               </button>
@@ -547,7 +547,7 @@ function MediaPlayer({ sermon, onClose, isFullscreen, onToggleFullscreen, videoR
     <div className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
       <div className={`bg-white rounded-2xl overflow-hidden shadow-2xl ${isFullscreen ? 'w-full h-full' : 'max-w-4xl w-full'}`}>
         {/* En-tête */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-purple-50 to-indigo-50">
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-[#fff3cc] to-[#fffefa]">
           <div className="flex-1 min-w-0">
             <h2 className="font-bold text-lg text-gray-900 truncate">{sermon.title}</h2>
             {isLive && (
@@ -589,7 +589,7 @@ function MediaPlayer({ sermon, onClose, isFullscreen, onToggleFullscreen, videoR
               Votre navigateur ne supporte pas la lecture vidéo.
             </video>
           ) : sermon.media_type === 'AUDIO' ? (
-            <div className="flex flex-col items-center justify-center p-12 bg-gradient-to-br from-purple-900 to-indigo-900">
+            <div className="flex flex-col items-center justify-center p-12 bg-gradient-to-br from-[#cc9b00] to-[#e6af00]">
               <div className="w-24 h-24 rounded-full bg-white/20 flex items-center justify-center mb-6">
                 <Volume2 className="h-12 w-12 text-white" />
               </div>
@@ -619,12 +619,12 @@ function MediaPlayer({ sermon, onClose, isFullscreen, onToggleFullscreen, videoR
             <div className="flex flex-wrap gap-4 text-sm text-gray-600">
               {sermon.pastor_name && (
                 <div className="flex items-center gap-2">
-                  <User className="h-4 w-4 text-purple-500" />
+                  <User className="h-4 w-4 text-[#cc9b00]" />
                   <span>{sermon.pastor_name}</span>
                 </div>
               )}
               <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-indigo-500" />
+                <Calendar className="h-4 w-4 text-[#e6af00]" />
                 <span>{safeFormatDate(sermon.sermon_date, 'Date non disponible')}</span>
               </div>
               {sermon.view_count !== undefined && (
@@ -637,8 +637,8 @@ function MediaPlayer({ sermon, onClose, isFullscreen, onToggleFullscreen, videoR
 
             {sermon.bible_verses && (
               <div className="pt-3 border-t border-gray-200 flex items-center gap-2">
-                <BookOpen className="h-4 w-4 text-purple-600" />
-                <p className="text-purple-600 font-medium text-sm">
+                <BookOpen className="h-4 w-4 text-[#cc9b00]" />
+                <p className="text-[#cc9b00] font-medium text-sm">
                   {sermon.bible_verses}
                 </p>
               </div>

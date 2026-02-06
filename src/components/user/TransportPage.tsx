@@ -416,8 +416,8 @@ export default function TransportPage() {
           <p className="text-2xl font-bold text-green-600">{filteredRoutes.filter(r => r.type === 'carpool').length}</p>
           <p className="text-xs text-gray-600">Covoiturages</p>
         </div>
-        <div className="bg-purple-50 rounded-xl p-3 text-center">
-          <p className="text-2xl font-bold text-purple-600">
+        <div className="bg-[#fff3cc] rounded-xl p-3 text-center">
+          <p className="text-2xl font-bold text-[#cc9b00]">
             {filteredRoutes.reduce((sum, r) => sum + r.availableSeats, 0)}
           </p>
           <p className="text-xs text-gray-600">Places dispo</p>

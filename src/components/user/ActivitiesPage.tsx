@@ -85,9 +85,9 @@ const eventIcons: Record<string, React.ReactNode> = {
 const eventColors: Record<string, { bg: string, text: string, border: string }> = {
   'WORSHIP': { bg: 'bg-[#fff3cc]', text: 'text-[#cc9b00]', border: 'border-[#ffc200]' },
   'BIBLE_STUDY': { bg: 'bg-green-50', text: 'text-green-700', border: 'border-green-200' },
-  'PRAYER': { bg: 'bg-purple-50', text: 'text-purple-700', border: 'border-purple-200' },
+  'PRAYER': { bg: 'bg-[#fffefa]', text: 'text-[#5c4d00]', border: 'border-[#e6af00]' },
   'YOUTH': { bg: 'bg-orange-50', text: 'text-orange-700', border: 'border-orange-200' },
-  'CONCERT': { bg: 'bg-pink-50', text: 'text-pink-700', border: 'border-pink-200' },
+  'CONCERT': { bg: 'bg-[#fff3cc]', text: 'text-[#cc9b00]', border: 'border-[#ffc200]' },
   'SPECIAL': { bg: 'bg-amber-50', text: 'text-amber-700', border: 'border-amber-200' },
   'OTHER': { bg: 'bg-gray-50', text: 'text-gray-700', border: 'border-gray-200' }
 }
@@ -274,12 +274,12 @@ const ActivitiesPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-cyan-50 to-teal-50">
+      <div className="min-h-screen bg-gradient-to-b from-[#fffefa] to-[#fff3cc]">
         <div className="flex flex-col items-center justify-center min-h-[60vh]">
-          <div className="bg-cyan-100 rounded-full p-4 mb-4">
-            <Loader2 className="h-8 w-8 text-cyan-600 animate-spin" />
+          <div className="bg-[#fff3cc] rounded-full p-4 mb-4">
+            <Loader2 className="h-8 w-8 text-[#cc9b00] animate-spin" />
           </div>
-          <p className="text-cyan-700 font-medium">Chargement des activités...</p>
+          <p className="text-[#cc9b00] font-medium">Chargement des activités...</p>
           <div className="mt-6 space-y-3 w-full max-w-md px-4">
             <div className="h-20 bg-white/60 rounded-xl animate-pulse" />
             <div className="h-32 bg-white/60 rounded-xl animate-pulse" />
@@ -291,9 +291,9 @@ const ActivitiesPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-cyan-50 to-teal-50 pb-20">
+    <div className="min-h-screen bg-gradient-to-b from-[#fffefa] to-[#fff3cc] pb-20">
       {/* Header avec gradient */}
-      <div className="bg-gradient-to-r from-cyan-600 via-teal-600 to-cyan-700 px-4 py-8 pb-12">
+      <div className="bg-gradient-to-r from-[#ffc200] via-[#e6af00] to-[#cc9b00] px-4 py-8 pb-12">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center gap-4 mb-4">
             <div className="bg-white/20 rounded-xl p-3">
@@ -301,7 +301,7 @@ const ActivitiesPage: React.FC = () => {
             </div>
             <div>
               <h1 className="text-2xl md:text-3xl font-bold text-white">Activités de l&apos;Église</h1>
-              <p className="text-cyan-100">
+              <p className="text-[#3d3200]">
                 Découvrez et participez aux événements de notre communauté
               </p>
             </div>
@@ -311,15 +311,15 @@ const ActivitiesPage: React.FC = () => {
           <div className="grid grid-cols-3 gap-3 mt-6">
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
               <div className="text-2xl font-bold text-white">{upcomingEvents.length}</div>
-              <div className="text-xs text-cyan-100">À venir</div>
+              <div className="text-xs text-[#3d3200]">À venir</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
               <div className="text-2xl font-bold text-white">{myRegistrations.length}</div>
-              <div className="text-xs text-cyan-100">Inscriptions</div>
+              <div className="text-xs text-[#3d3200]">Inscriptions</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
               <div className="text-2xl font-bold text-white">{pastEvents.length}</div>
-              <div className="text-xs text-cyan-100">Passés</div>
+              <div className="text-xs text-[#3d3200]">Passés</div>
             </div>
           </div>
         </div>
@@ -354,7 +354,7 @@ const ActivitiesPage: React.FC = () => {
               onClick={() => setFilterType('')}
               className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                 filterType === '' 
-                  ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-md' 
+                  ? 'bg-gradient-to-r from-[#ffc200] to-[#cc9b00] text-[#0a0a0a] shadow-md' 
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -366,7 +366,7 @@ const ActivitiesPage: React.FC = () => {
                 onClick={() => setFilterType(type)}
                 className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                   filterType === type 
-                    ? 'bg-gradient-to-r from-cyan-600 to-teal-600 text-white shadow-md' 
+                    ? 'bg-gradient-to-r from-[#ffc200] to-[#cc9b00] text-[#0a0a0a] shadow-md' 
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -380,7 +380,7 @@ const ActivitiesPage: React.FC = () => {
             <button
               onClick={() => setViewMode('list')}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                viewMode === 'list' ? 'bg-white text-cyan-600 shadow-sm' : 'text-gray-600 hover:text-gray-800'
+                viewMode === 'list' ? 'bg-white text-[#cc9b00] shadow-sm' : 'text-gray-600 hover:text-gray-800'
               }`}
             >
               <CalendarDays className="h-4 w-4 inline mr-1" />
@@ -389,7 +389,7 @@ const ActivitiesPage: React.FC = () => {
             <button
               onClick={() => setViewMode('calendar')}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                viewMode === 'calendar' ? 'bg-white text-cyan-600 shadow-sm' : 'text-gray-600 hover:text-gray-800'
+                viewMode === 'calendar' ? 'bg-white text-[#cc9b00] shadow-sm' : 'text-gray-600 hover:text-gray-800'
               }`}
             >
               <Calendar className="h-4 w-4 inline mr-1" />
@@ -504,18 +504,18 @@ const ActivitiesPage: React.FC = () => {
           <div className="flex items-center justify-between mb-6">
             <button
               onClick={() => navigateMonth('prev')}
-              className="p-2 hover:bg-cyan-50 rounded-xl transition-colors"
+              className="p-2 hover:bg-[#fff3cc] rounded-xl transition-colors"
             >
-              <ChevronLeft className="h-5 w-5 text-cyan-600" />
+              <ChevronLeft className="h-5 w-5 text-[#cc9b00]" />
             </button>
             <h2 className="text-xl font-bold text-gray-900 capitalize">
               {currentMonth.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}
             </h2>
             <button
               onClick={() => navigateMonth('next')}
-              className="p-2 hover:bg-cyan-50 rounded-xl transition-colors"
+              className="p-2 hover:bg-[#fff3cc] rounded-xl transition-colors"
             >
-              <ChevronRight className="h-5 w-5 text-cyan-600" />
+              <ChevronRight className="h-5 w-5 text-[#cc9b00]" />
             </button>
           </div>
 
@@ -542,10 +542,10 @@ const ActivitiesPage: React.FC = () => {
                 <div
                   key={day.toISOString()}
                   className={`h-24 p-1 rounded-xl border transition-all ${
-                    isToday ? 'border-cyan-500 bg-cyan-50 shadow-sm' : 'border-gray-100 hover:bg-gray-50 hover:border-gray-200'
+                    isToday ? 'border-[#ffc200] bg-[#fff3cc] shadow-sm' : 'border-gray-100 hover:bg-gray-50 hover:border-gray-200'
                   }`}
                 >
-                  <div className={`text-sm font-medium mb-1 ${isToday ? 'text-cyan-600' : 'text-gray-700'}`}>
+                  <div className={`text-sm font-medium mb-1 ${isToday ? 'text-[#cc9b00]' : 'text-gray-700'}`}>
                     {day.getDate()}
                   </div>
                   <div className="space-y-0.5 overflow-hidden">
@@ -658,7 +658,7 @@ const ActivitiesPage: React.FC = () => {
                   <button
                     onClick={() => handleRegisterEvent(selectedEvent.id)}
                     disabled={registering}
-                    className="w-full py-3 bg-gradient-to-r from-cyan-600 to-teal-600 text-white rounded-xl font-medium hover:from-cyan-700 hover:to-teal-700 disabled:opacity-50 flex items-center justify-center gap-2 shadow-md transition-all"
+                    className="w-full py-3 bg-gradient-to-r from-[#ffc200] to-[#cc9b00] text-[#0a0a0a] rounded-xl font-medium hover:from-[#e6af00] hover:to-[#b38900] disabled:opacity-50 flex items-center justify-center gap-2 shadow-md transition-all"
                   >
                     {registering ? (
                       <Loader2 className="h-5 w-5 animate-spin" />
@@ -677,8 +677,8 @@ const ActivitiesPage: React.FC = () => {
       )}
 
       {/* Info bottom */}
-      <div className="bg-gradient-to-r from-cyan-100 to-teal-100 rounded-xl p-4 text-center">
-        <p className="text-cyan-800 text-sm italic">
+      <div className="bg-gradient-to-r from-[#fff3cc] to-[#ffda66] rounded-xl p-4 text-center">
+        <p className="text-[#5c4d00] text-sm italic">
           &quot;Là où deux ou trois sont assemblés en mon nom, je suis au milieu d&apos;eux.&quot; - Matthieu 18:20
         </p>
       </div>

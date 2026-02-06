@@ -217,8 +217,8 @@ export default function GospelMusicPage() {
     return (
       <div className="max-w-4xl mx-auto p-4 pb-24">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-pink-100 flex items-center justify-center mx-auto mb-4">
-            <Loader2 className="h-8 w-8 text-pink-600 animate-spin" />
+          <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+            <Loader2 className="h-8 w-8 text-[#cc9b00] animate-spin" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Musique Gospel</h1>
           <p className="text-gray-600 mt-2">Chargement...</p>
@@ -244,8 +244,8 @@ export default function GospelMusicPage() {
     <div className={`max-w-6xl mx-auto p-4 ${currentSong ? 'pb-40' : 'pb-24'}`}>
       {/* Header */}
       <div className="text-center mb-6">
-        <div className="w-16 h-16 rounded-full bg-pink-100 flex items-center justify-center mx-auto mb-4">
-          <Music className="h-8 w-8 text-pink-600" />
+        <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+          <Music className="h-8 w-8 text-[#cc9b00]" />
         </div>
         <h1 className="text-2xl font-bold text-gray-900">Musique Gospel</h1>
         <p className="text-gray-600 mt-2">
@@ -261,7 +261,7 @@ export default function GospelMusicPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Rechercher un titre, artiste..."
-          className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pink-500"
+          className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200]"
         />
       </div>
 
@@ -279,7 +279,7 @@ export default function GospelMusicPage() {
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
               className={`flex items-center gap-2 px-4 py-3 font-medium border-b-2 transition-colors ${
                 activeTab === tab.id
-                  ? 'text-pink-600 border-pink-600'
+                  ? 'text-[#cc9b00] border-[#ffc200]'
                   : 'text-gray-500 border-transparent hover:text-gray-700'
               }`}
             >
@@ -299,7 +299,7 @@ export default function GospelMusicPage() {
               onClick={() => setSelectedCategory('')}
               className={`px-4 py-2 rounded-full font-medium whitespace-nowrap transition-all ${
                 !selectedCategory
-                  ? 'bg-pink-600 text-white'
+                  ? 'bg-[#ffc200] text-[#0a0a0a]'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
@@ -311,7 +311,7 @@ export default function GospelMusicPage() {
                 onClick={() => setSelectedCategory(selectedCategory === cat.id ? '' : cat.id)}
                 className={`px-4 py-2 rounded-full font-medium whitespace-nowrap transition-all flex items-center gap-1.5 ${
                   selectedCategory === cat.id
-                    ? 'bg-pink-600 text-white'
+                    ? 'bg-[#ffc200] text-[#0a0a0a]'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -332,11 +332,11 @@ export default function GospelMusicPage() {
                     onClick={() => playSong(song, filteredSongs.filter(s => s.isNew))}
                     className="flex-shrink-0 w-40 cursor-pointer group"
                   >
-                    <div className="relative w-40 h-40 bg-gradient-to-br from-pink-100 to-pink-200 rounded-xl flex items-center justify-center mb-2">
-                      <Music className="h-12 w-12 text-pink-400" />
+                    <div className="relative w-40 h-40 bg-gradient-to-br from-[#fff3cc] to-[#ffda66] rounded-xl flex items-center justify-center mb-2">
+                      <Music className="h-12 w-12 text-[#cc9b00]" />
                       <div className="absolute inset-0 bg-black/40 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                         <div className="p-3 bg-white rounded-full">
-                          <Play className="h-6 w-6 text-pink-600 ml-0.5" />
+                          <Play className="h-6 w-6 text-[#cc9b00] ml-0.5" />
                         </div>
                       </div>
                     </div>
@@ -358,19 +358,19 @@ export default function GospelMusicPage() {
                 <div
                   key={song.id}
                   className={`flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer group ${
-                    currentSong?.id === song.id ? 'bg-pink-50' : ''
+                    currentSong?.id === song.id ? 'bg-[#fff3cc]' : ''
                   }`}
                   onClick={() => playSong(song, filteredSongs)}
                 >
                   <span className="w-6 text-center text-gray-400 text-sm group-hover:hidden">
                     {index + 1}
                   </span>
-                  <Play className="h-5 w-5 text-pink-600 hidden group-hover:block" />
-                  <div className="w-12 h-12 bg-gradient-to-br from-pink-100 to-pink-200 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Music className="h-6 w-6 text-pink-400" />
+                  <Play className="h-5 w-5 text-[#cc9b00] hidden group-hover:block" />
+                  <div className="w-12 h-12 bg-gradient-to-br from-[#fff3cc] to-[#ffda66] rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Music className="h-6 w-6 text-[#cc9b00]" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className={`font-medium truncate ${currentSong?.id === song.id ? 'text-pink-600' : 'text-gray-900'}`}>
+                    <p className={`font-medium truncate ${currentSong?.id === song.id ? 'text-[#cc9b00]' : 'text-gray-900'}`}>
                       {song.title}
                     </p>
                     <p className="text-sm text-gray-500 truncate">{song.artist}</p>
@@ -404,21 +404,21 @@ export default function GospelMusicPage() {
               onClick={() => setSelectedPlaylist(playlist)}
               className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all cursor-pointer group"
             >
-              <div className="aspect-square bg-gradient-to-br from-pink-100 to-purple-200 relative">
+              <div className="aspect-square bg-gradient-to-br from-[#fff3cc] to-[#ffda66] relative">
                 <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-0.5 p-2">
                   {playlist.songs.slice(0, 4).map((_, i) => (
                     <div key={i} className="bg-white/30 rounded flex items-center justify-center">
-                      <Music className="h-6 w-6 text-white" />
+                      <Music className="h-6 w-6 text-[#0a0a0a]" />
                     </div>
                   ))}
                 </div>
                 <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <div className="p-4 bg-white rounded-full">
-                    <Play className="h-8 w-8 text-pink-600 ml-0.5" />
+                    <Play className="h-8 w-8 text-[#cc9b00] ml-0.5" />
                   </div>
                 </div>
                 {playlist.isOfficial && (
-                  <div className="absolute top-2 left-2 px-2 py-1 bg-pink-600 text-white text-xs font-medium rounded-full">
+                  <div className="absolute top-2 left-2 px-2 py-1 bg-[#ffc200] text-[#0a0a0a] text-xs font-medium rounded-full">
                     Officielle
                   </div>
                 )}
@@ -430,7 +430,7 @@ export default function GospelMusicPage() {
             </div>
           ))}
           {/* Create Playlist Button */}
-          <div className="bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center p-6 cursor-pointer hover:border-pink-400 transition-colors">
+          <div className="bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center p-6 cursor-pointer hover:border-[#ffc200] transition-colors">
             <Plus className="h-10 w-10 text-gray-400 mb-2" />
             <p className="font-medium text-gray-600">Créer une playlist</p>
           </div>
@@ -461,7 +461,7 @@ export default function GospelMusicPage() {
           {/* Progress Bar */}
           <div className="h-1 bg-gray-200">
             <div 
-              className="h-full bg-pink-600 transition-all"
+              className="h-full bg-[#ffc200] transition-all"
               style={{ width: `${(currentTime / currentSong.duration) * 100}%` }}
             />
           </div>
@@ -469,8 +469,8 @@ export default function GospelMusicPage() {
           <div className="flex items-center gap-4 p-4">
             {/* Song Info */}
             <div className="flex items-center gap-3 flex-1 min-w-0">
-              <div className="w-14 h-14 bg-gradient-to-br from-pink-100 to-pink-200 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Music className="h-6 w-6 text-pink-400" />
+              <div className="w-14 h-14 bg-gradient-to-br from-[#fff3cc] to-[#fff3cc] rounded-lg flex items-center justify-center flex-shrink-0">
+                <Music className="h-6 w-6 text-[#e6af00]" />
               </div>
               <div className="min-w-0">
                 <p className="font-medium text-gray-900 truncate">{currentSong.title}</p>
@@ -488,7 +488,7 @@ export default function GospelMusicPage() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShuffle(!shuffle)}
-                className={`p-2 hover:bg-gray-100 rounded-full hidden sm:block ${shuffle ? 'text-pink-600' : 'text-gray-400'}`}
+                className={`p-2 hover:bg-gray-100 rounded-full hidden sm:block ${shuffle ? 'text-[#cc9b00]' : 'text-gray-400'}`}
               >
                 <Shuffle className="h-5 w-5" />
               </button>
@@ -497,7 +497,7 @@ export default function GospelMusicPage() {
               </button>
               <button
                 onClick={() => setIsPlaying(!isPlaying)}
-                className="p-3 bg-pink-600 text-white rounded-full hover:bg-pink-700"
+                className="p-3 bg-[#ffc200] text-white rounded-full hover:bg-[#cc9b00]"
               >
                 {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6 ml-0.5" />}
               </button>
@@ -506,7 +506,7 @@ export default function GospelMusicPage() {
               </button>
               <button
                 onClick={() => setRepeat(repeat === 'off' ? 'all' : repeat === 'all' ? 'one' : 'off')}
-                className={`p-2 hover:bg-gray-100 rounded-full hidden sm:block ${repeat !== 'off' ? 'text-pink-600' : 'text-gray-400'}`}
+                className={`p-2 hover:bg-gray-100 rounded-full hidden sm:block ${repeat !== 'off' ? 'text-[#cc9b00]' : 'text-gray-400'}`}
               >
                 <Repeat className="h-5 w-5" />
                 {repeat === 'one' && <span className="absolute text-xs">1</span>}
@@ -524,11 +524,11 @@ export default function GospelMusicPage() {
                 max="100"
                 value={isMuted ? 0 : volume}
                 onChange={(e) => setVolume(Number(e.target.value))}
-                className="w-24 accent-pink-600"
+                className="w-24 accent-[#ffc200]"
               />
               <button 
                 onClick={() => setShowQueue(!showQueue)}
-                className={`p-2 hover:bg-gray-100 rounded-full ${showQueue ? 'text-pink-600' : 'text-gray-400'}`}
+                className={`p-2 hover:bg-gray-100 rounded-full ${showQueue ? 'text-[#cc9b00]' : 'text-gray-400'}`}
               >
                 <ListMusic className="h-5 w-5" />
               </button>
@@ -555,9 +555,9 @@ export default function GospelMusicPage() {
           <div className="p-4">
             <p className="text-sm text-gray-500 mb-4">En cours de lecture</p>
             {currentSong && (
-              <div className="flex items-center gap-3 p-2 bg-pink-50 rounded-lg mb-4">
-                <div className="w-10 h-10 bg-gradient-to-br from-pink-100 to-pink-200 rounded flex items-center justify-center">
-                  <Music className="h-5 w-5 text-pink-400" />
+              <div className="flex items-center gap-3 p-2 bg-[#fff3cc] rounded-lg mb-4">
+                <div className="w-10 h-10 bg-gradient-to-br from-[#fff3cc] to-[#fff3cc] rounded flex items-center justify-center">
+                  <Music className="h-5 w-5 text-[#e6af00]" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-gray-900 truncate text-sm">{currentSong.title}</p>
@@ -589,7 +589,7 @@ export default function GospelMusicPage() {
         <div className="fixed inset-0 bg-black/50 z-50 flex items-end sm:items-center justify-center">
           <div className="bg-white w-full sm:max-w-lg sm:rounded-2xl max-h-[90vh] overflow-y-auto">
             <div className="relative">
-              <div className="aspect-video bg-gradient-to-br from-pink-400 to-purple-500 flex items-center justify-center">
+              <div className="aspect-video bg-gradient-to-br from-[#ffc200] to-[#cc9b00] flex items-center justify-center">
                 <ListMusic className="h-20 w-20 text-white" />
               </div>
               <button
@@ -610,7 +610,7 @@ export default function GospelMusicPage() {
                     playSong(selectedPlaylist.songs[0], selectedPlaylist.songs);
                   }
                 }}
-                className="w-full mt-4 py-3 bg-pink-600 text-white rounded-xl font-medium hover:bg-pink-700 flex items-center justify-center gap-2"
+                className="w-full mt-4 py-3 bg-[#ffc200] text-white rounded-xl font-medium hover:bg-[#cc9b00] flex items-center justify-center gap-2"
               >
                 <Play className="h-5 w-5" />
                 Lecture
@@ -624,8 +624,8 @@ export default function GospelMusicPage() {
                     className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer"
                   >
                     <span className="w-6 text-center text-gray-400 text-sm">{index + 1}</span>
-                    <div className="w-10 h-10 bg-gradient-to-br from-pink-100 to-pink-200 rounded flex items-center justify-center">
-                      <Music className="h-5 w-5 text-pink-400" />
+                    <div className="w-10 h-10 bg-gradient-to-br from-[#fff3cc] to-[#fff3cc] rounded flex items-center justify-center">
+                      <Music className="h-5 w-5 text-[#e6af00]" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-gray-900 truncate">{song.title}</p>
@@ -642,3 +642,6 @@ export default function GospelMusicPage() {
     </div>
   );
 }
+
+
+

@@ -244,8 +244,8 @@ export default function PhotoGalleryPage() {
     return (
       <div className="max-w-4xl mx-auto p-4 pb-24">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-cyan-100 flex items-center justify-center mx-auto mb-4">
-            <Loader2 className="h-8 w-8 text-cyan-600 animate-spin" />
+          <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+            <Loader2 className="h-8 w-8 text-[#cc9b00] animate-spin" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Photothèque</h1>
           <p className="text-gray-600 mt-2">Chargement...</p>
@@ -271,8 +271,8 @@ export default function PhotoGalleryPage() {
     <div className="max-w-6xl mx-auto p-4 pb-24">
       {/* Header */}
       <div className="text-center mb-6">
-        <div className="w-16 h-16 rounded-full bg-cyan-100 flex items-center justify-center mx-auto mb-4">
-          <Camera className="h-8 w-8 text-cyan-600" />
+        <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+          <Camera className="h-8 w-8 text-[#cc9b00]" />
         </div>
         <h1 className="text-2xl font-bold text-gray-900">Photothèque</h1>
         <p className="text-gray-600 mt-2">
@@ -283,11 +283,11 @@ export default function PhotoGalleryPage() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">
-          <p className="text-2xl font-bold text-cyan-600">{albums.length}</p>
+          <p className="text-2xl font-bold text-[#cc9b00]">{albums.length}</p>
           <p className="text-sm text-gray-500">Albums</p>
         </div>
         <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">
-          <p className="text-2xl font-bold text-purple-600">
+          <p className="text-2xl font-bold text-[#cc9b00]">
             {albums.reduce((acc, a) => acc + a.photoCount, 0)}
           </p>
           <p className="text-sm text-gray-500">Photos</p>
@@ -350,7 +350,7 @@ export default function PhotoGalleryPage() {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Rechercher un album..."
-                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-cyan-500"
+                className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200]"
               />
             </div>
           </div>
@@ -361,7 +361,7 @@ export default function PhotoGalleryPage() {
               onClick={() => setSelectedCategory('')}
               className={`px-4 py-2 rounded-full font-medium whitespace-nowrap transition-all ${
                 !selectedCategory
-                  ? 'bg-cyan-600 text-white'
+                  ? 'bg-[#ffc200] text-white'
                   : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
               }`}
             >
@@ -373,7 +373,7 @@ export default function PhotoGalleryPage() {
                 onClick={() => setSelectedCategory(selectedCategory === cat.id ? '' : cat.id)}
                 className={`px-4 py-2 rounded-full font-medium whitespace-nowrap transition-all flex items-center gap-1.5 ${
                   selectedCategory === cat.id
-                    ? 'bg-cyan-600 text-white'
+                    ? 'bg-[#ffc200] text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
@@ -400,7 +400,7 @@ export default function PhotoGalleryPage() {
                 key={size.id}
                 onClick={() => setViewSize(size.id as typeof viewSize)}
                 className={`p-2 rounded-lg ${
-                  viewSize === size.id ? 'bg-cyan-100 text-cyan-600' : 'hover:bg-gray-100 text-gray-400'
+                  viewSize === size.id ? 'bg-[#fff3cc] text-[#cc9b00]' : 'hover:bg-gray-100 text-gray-400'
                 }`}
               >
                 <Icon className="h-5 w-5" />
@@ -427,7 +427,7 @@ export default function PhotoGalleryPage() {
               >
                 <div className="aspect-[4/3] bg-gradient-to-br from-cyan-100 to-[#fff3cc] relative">
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <Camera className="h-12 w-12 text-cyan-400" />
+                    <Camera className="h-12 w-12 text-[#e6af00]" />
                   </div>
                   <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <span className="px-4 py-2 bg-white rounded-full font-medium text-gray-900">

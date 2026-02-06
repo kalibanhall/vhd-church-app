@@ -251,8 +251,8 @@ export default function AudiobooksPage() {
     return (
       <div className="max-w-4xl mx-auto p-4 pb-24">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
-            <Loader2 className="h-8 w-8 text-purple-600 animate-spin" />
+          <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+            <Loader2 className="h-8 w-8 text-[#cc9b00] animate-spin" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Audiobooks</h1>
           <p className="text-gray-600 mt-2">Chargement...</p>
@@ -278,8 +278,8 @@ export default function AudiobooksPage() {
     <div className="max-w-6xl mx-auto p-4 pb-24">
       {/* Header */}
       <div className="text-center mb-6">
-        <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mx-auto mb-4">
-          <Headphones className="h-8 w-8 text-purple-600" />
+        <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+          <Headphones className="h-8 w-8 text-[#cc9b00]" />
         </div>
         <h1 className="text-2xl font-bold text-gray-900">Audiobooks</h1>
         <p className="text-gray-600 mt-2">
@@ -290,7 +290,7 @@ export default function AudiobooksPage() {
       {/* Stats */}
       <div className="grid grid-cols-3 gap-4 mb-6">
         <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">
-          <p className="text-2xl font-bold text-purple-600">{audiobooks.length}</p>
+          <p className="text-2xl font-bold text-[#cc9b00]">{audiobooks.length}</p>
           <p className="text-sm text-gray-500">Audiobooks</p>
         </div>
         <div className="bg-white rounded-xl p-4 border border-gray-200 text-center">
@@ -314,7 +314,7 @@ export default function AudiobooksPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Rechercher un audiobook..."
-            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500"
+            className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#ffc200]"
           />
         </div>
         <div className="flex gap-1 bg-gray-100 rounded-xl p-1">
@@ -339,7 +339,7 @@ export default function AudiobooksPage() {
           onClick={() => setSelectedCategory('')}
           className={`px-4 py-2 rounded-full font-medium whitespace-nowrap transition-all ${
             !selectedCategory
-              ? 'bg-purple-600 text-white'
+              ? 'bg-[#ffc200] text-[#0a0a0a]'
               : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
           }`}
         >
@@ -351,7 +351,7 @@ export default function AudiobooksPage() {
             onClick={() => setSelectedCategory(selectedCategory === cat.id ? '' : cat.id)}
             className={`px-4 py-2 rounded-full font-medium whitespace-nowrap transition-all flex items-center gap-1.5 ${
               selectedCategory === cat.id
-                ? 'bg-purple-600 text-white'
+                ? 'bg-[#ffc200] text-[#0a0a0a]'
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
@@ -383,9 +383,9 @@ export default function AudiobooksPage() {
               }`}
             >
               {/* Cover */}
-              <div className={`relative bg-gradient-to-br from-purple-100 to-purple-200 ${viewMode === 'list' ? 'w-24 h-32 flex-shrink-0' : 'aspect-square'}`}>
+              <div className={`relative bg-gradient-to-br from-[#fff3cc] to-[#ffda66] ${viewMode === 'list' ? 'w-24 h-32 flex-shrink-0' : 'aspect-square'}`}>
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <Headphones className="h-12 w-12 text-purple-400" />
+                  <Headphones className="h-12 w-12 text-[#cc9b00]" />
                 </div>
                 {audiobook.isNew && (
                   <div className="absolute top-2 left-2 px-2 py-1 bg-green-500 text-white text-xs font-medium rounded-full">
@@ -448,8 +448,8 @@ export default function AudiobooksPage() {
           {/* Content */}
           <div className="flex-1 flex flex-col items-center justify-center px-4">
             {/* Cover */}
-            <div className="w-48 h-48 md:w-64 md:h-64 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center shadow-2xl mb-8">
-              <Headphones className="h-20 w-20 text-white" />
+            <div className="w-48 h-48 md:w-64 md:h-64 bg-gradient-to-br from-[#ffc200] to-[#cc9b00] rounded-2xl flex items-center justify-center shadow-2xl mb-8">
+              <Headphones className="h-20 w-20 text-[#0a0a0a]" />
             </div>
 
             {/* Title */}
@@ -468,7 +468,7 @@ export default function AudiobooksPage() {
             <div className="w-full max-w-md mt-8 px-4">
               <div className="h-1 bg-white/20 rounded-full overflow-hidden">
                 <div 
-                  className="h-full bg-purple-500 rounded-full transition-all"
+                  className="h-full bg-[#ffc200] rounded-full transition-all"
                   style={{ width: `${(currentTime / (selectedAudiobook.chapters[currentChapter]?.duration * 60 || 1)) * 100}%` }}
                 />
               </div>
@@ -488,7 +488,7 @@ export default function AudiobooksPage() {
               </button>
               <button
                 onClick={() => setIsPlaying(!isPlaying)}
-                className="p-5 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors"
+                className="p-5 bg-[#ffc200] text-[#0a0a0a] rounded-full hover:bg-[#e6af00] transition-colors"
               >
                 {isPlaying ? <Pause className="h-10 w-10" /> : <Play className="h-10 w-10 ml-1" />}
               </button>
@@ -524,7 +524,7 @@ export default function AudiobooksPage() {
                   max="100"
                   value={isMuted ? 0 : volume}
                   onChange={(e) => setVolume(Number(e.target.value))}
-                  className="w-24 accent-purple-500"
+                  className="w-24 accent-[#ffc200]"
                 />
               </div>
             </div>
@@ -542,7 +542,7 @@ export default function AudiobooksPage() {
                     setCurrentTime(0);
                   }}
                   className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors ${
-                    currentChapter === index ? 'bg-purple-600' : 'hover:bg-white/10'
+                    currentChapter === index ? 'bg-[#ffc200]' : 'hover:bg-white/10'
                   }`}
                 >
                   <span className="text-white text-sm">{chapter.title}</span>

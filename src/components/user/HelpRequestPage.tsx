@@ -77,9 +77,9 @@ interface Message {
 const helpTypes = [
   { value: 'material', label: 'Aide matérielle', icon: Home, color: 'bg-amber-100 text-amber-700', description: 'Nourriture, vêtements, logement...' },
   { value: 'financial', label: 'Aide financière', icon: Briefcase, color: 'bg-green-100 text-green-700', description: 'Difficultés financières temporaires' },
-  { value: 'spiritual', label: 'Soutien spirituel', icon: Heart, color: 'bg-purple-100 text-purple-700', description: 'Accompagnement dans la foi' },
+  { value: 'spiritual', label: 'Soutien spirituel', icon: Heart, color: 'bg-[#fff3cc] text-[#5c4d00]', description: 'Accompagnement dans la foi' },
   { value: 'counseling', label: 'Counseling', icon: Users, color: 'bg-[#fff3cc] text-[#cc9b00]', description: 'Conseil familial, personnel' },
-  { value: 'prayer', label: 'Prière spéciale', icon: Heart, color: 'bg-pink-100 text-pink-700', description: 'Demande de prière urgente' },
+  { value: 'prayer', label: 'Prière spéciale', icon: Heart, color: 'bg-[#fff3cc] text-[#5c4d00]', description: 'Demande de prière urgente' },
   { value: 'other', label: 'Autre', icon: HeartHandshake, color: 'bg-gray-100 text-gray-700', description: 'Autre type d\'aide' }
 ]
 
@@ -316,9 +316,9 @@ const HelpRequestPage: React.FC = () => {
   return (
     <div className="space-y-6 p-4 md:p-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-rose-600 to-pink-600 rounded-2xl p-6 text-white">
+      <div className="bg-gradient-to-r from-[#ffc200] to-[#cc9b00] rounded-2xl p-6 text-white">
         <h1 className="text-2xl md:text-3xl font-bold mb-2">🤝 Besoin d&apos;aide</h1>
-        <p className="text-rose-100">
+        <p className="text-[#fff3cc]">
           L&apos;église est là pour vous accompagner. N&apos;hésitez pas à nous faire part de vos besoins.
         </p>
       </div>
@@ -338,11 +338,11 @@ const HelpRequestPage: React.FC = () => {
       )}
 
       {/* Confidentialité */}
-      <div className="bg-purple-50 border border-purple-200 rounded-xl p-4 flex items-start gap-3">
-        <Shield className="h-5 w-5 text-purple-600 mt-0.5 flex-shrink-0" />
+      <div className="bg-[#fff3cc] border border-[#e6af00] rounded-xl p-4 flex items-start gap-3">
+        <Shield className="h-5 w-5 text-[#cc9b00] mt-0.5 flex-shrink-0" />
         <div>
-          <p className="font-medium text-purple-800">Vos demandes sont confidentielles</p>
-          <p className="text-sm text-purple-600">
+          <p className="font-medium text-[#3d3200]">Vos demandes sont confidentielles</p>
+          <p className="text-sm text-[#cc9b00]">
             Seuls les responsables autorisés ont accès à vos demandes. Vous pouvez aussi choisir l&apos;option anonyme.
           </p>
         </div>
@@ -352,7 +352,7 @@ const HelpRequestPage: React.FC = () => {
       {!showNewForm && (
         <button
           onClick={() => setShowNewForm(true)}
-          className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-rose-600 text-white rounded-xl hover:bg-rose-700 transition-colors"
+          className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 bg-[#ffc200] text-white rounded-xl hover:bg-[#cc9b00] transition-colors"
         >
           <Plus className="h-5 w-5" />
           Nouvelle demande d&apos;aide
@@ -382,7 +382,7 @@ const HelpRequestPage: React.FC = () => {
                       onClick={() => setFormType(type.value as HelpRequest['type'])}
                       className={`p-4 rounded-xl border-2 text-left transition-all ${
                         formType === type.value 
-                          ? 'border-rose-500 bg-rose-50' 
+                          ? 'border-[#ffc200] bg-[#fff3cc]' 
                           : 'border-gray-200 hover:border-gray-300'
                       }`}
                     >
@@ -406,7 +406,7 @@ const HelpRequestPage: React.FC = () => {
                 type="text"
                 value={formTitle}
                 onChange={(e) => setFormTitle(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
                 placeholder="Ex: Besoin de prière pour ma santé"
               />
             </div>
@@ -420,7 +420,7 @@ const HelpRequestPage: React.FC = () => {
                 value={formDescription}
                 onChange={(e) => setFormDescription(e.target.value)}
                 rows={4}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent resize-none"
+                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-transparent resize-none"
                 placeholder="Décrivez votre situation et comment l'église peut vous aider..."
               />
             </div>
@@ -451,7 +451,7 @@ const HelpRequestPage: React.FC = () => {
             <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
               <button
                 onClick={() => setFormIsAnonymous(!formIsAnonymous)}
-                className={`p-2 rounded-lg ${formIsAnonymous ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-600'}`}
+                className={`p-2 rounded-lg ${formIsAnonymous ? 'bg-[#ffc200] text-white' : 'bg-gray-200 text-gray-600'}`}
               >
                 {formIsAnonymous ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
               </button>
@@ -485,7 +485,7 @@ const HelpRequestPage: React.FC = () => {
                           onClick={() => setFormContactPref(opt.value as HelpRequest['contactPreference'])}
                           className={`flex items-center gap-2 px-4 py-2 rounded-lg border-2 ${
                             formContactPref === opt.value 
-                              ? 'border-rose-500 bg-rose-50 text-rose-700' 
+                              ? 'border-[#ffc200] bg-[#fff3cc] text-[#5c4d00]' 
                               : 'border-gray-200 text-gray-600'
                           }`}
                         >
@@ -501,7 +501,7 @@ const HelpRequestPage: React.FC = () => {
                       type="tel"
                       value={formPhone}
                       onChange={(e) => setFormPhone(e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
                       placeholder="Votre numéro de téléphone"
                     />
                   )}
@@ -511,7 +511,7 @@ const HelpRequestPage: React.FC = () => {
                       type="email"
                       value={formEmail}
                       onChange={(e) => setFormEmail(e.target.value)}
-                      className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-rose-500 focus:border-transparent"
+                      className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#ffc200] focus:border-transparent"
                       placeholder="Votre adresse email"
                     />
                   )}
@@ -530,7 +530,7 @@ const HelpRequestPage: React.FC = () => {
               <button
                 onClick={submitRequest}
                 disabled={isSubmitting}
-                className="flex items-center gap-2 px-6 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 disabled:opacity-50"
+                className="flex items-center gap-2 px-6 py-2 bg-[#ffc200] text-white rounded-lg hover:bg-[#cc9b00] disabled:opacity-50"
               >
                 {isSubmitting ? (
                   <Loader2 className="h-4 w-4 animate-spin" />

@@ -221,8 +221,8 @@ export default function PollsPage() {
     return (
       <div className="max-w-4xl mx-auto p-4 pb-24">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center mx-auto mb-4">
-            <Loader2 className="h-8 w-8 text-indigo-600 animate-spin" />
+          <div className="w-16 h-16 rounded-full bg-[#fff3cc] flex items-center justify-center mx-auto mb-4">
+            <Loader2 className="h-8 w-8 text-[#cc9b00] animate-spin" />
           </div>
           <h1 className="text-2xl font-bold text-gray-900">Sondages</h1>
           <p className="text-gray-600 mt-2">Chargement des sondages...</p>
@@ -248,16 +248,16 @@ export default function PollsPage() {
   const votedPolls = polls.filter(poll => poll.hasVoted)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-[#fffefa] via-[#fff3cc] to-[#fffefa]">
       {/* Header gradient */}
-      <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white">
+      <div className="bg-gradient-to-r from-[#ffc200] via-[#e6af00] to-[#cc9b00] text-[#0a0a0a]">
         <div className="max-w-4xl mx-auto px-4 py-8">
           <div className="text-center">
             <div className="w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-4">
               <Vote className="h-8 w-8 text-white" />
             </div>
             <h1 className="text-2xl font-bold mb-2">Sondages</h1>
-            <p className="text-indigo-100 text-sm">Donnez votre avis sur les décisions de l'église</p>
+            <p className="text-[#3d3200] text-sm">Donnez votre avis sur les décisions de l'église</p>
           </div>
         </div>
       </div>
@@ -265,8 +265,8 @@ export default function PollsPage() {
       <div className="max-w-4xl mx-auto p-4 pb-24 -mt-6">
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3 mb-6">
-          <div className="bg-white rounded-xl p-3 text-center shadow-sm border border-indigo-100">
-            <p className="text-2xl font-bold text-indigo-600">{activePolls.length}</p>
+          <div className="bg-white rounded-xl p-3 text-center shadow-sm border border-[#ffc200]">
+            <p className="text-2xl font-bold text-[#cc9b00]">{activePolls.length}</p>
             <p className="text-xs text-gray-600">Actifs</p>
           </div>
           <div className="bg-white rounded-xl p-3 text-center shadow-sm border border-green-100">
@@ -283,8 +283,8 @@ export default function PollsPage() {
         {activePolls.length > 0 && (
           <div className="mb-6">
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center">
-                <Vote className="h-4 w-4 text-indigo-600" />
+              <div className="w-8 h-8 rounded-full bg-[#fff3cc] flex items-center justify-center">
+                <Vote className="h-4 w-4 text-[#cc9b00]" />
               </div>
               <h2 className="text-lg font-semibold text-gray-900">Sondages Actifs</h2>
             </div>
@@ -322,14 +322,14 @@ export default function PollsPage() {
                         </span>
                       )}
                       {poll.isAnonymous && (
-                        <span className="bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full">
+                        <span className="bg-[#fff3cc] text-[#cc9b00] px-2 py-0.5 rounded-full">
                           Anonyme
                         </span>
                       )}
                     </div>
                     
                     {poll.allowMultiple && !poll.hasVoted && (
-                      <div className="mt-3 flex items-center gap-2 text-xs text-indigo-600 bg-indigo-50 px-3 py-2 rounded-lg">
+                      <div className="mt-3 flex items-center gap-2 text-xs text-[#cc9b00] bg-[#fff3cc] px-3 py-2 rounded-lg">
                         <AlertCircle className="w-3 h-3" />
                         <span>Choix multiples autorisés</span>
                       </div>
@@ -353,14 +353,14 @@ export default function PollsPage() {
                               : 'cursor-pointer hover:shadow-md'
                           } ${
                             isSelected && !userVoted
-                              ? 'ring-2 ring-indigo-500 ring-offset-1' 
+                              ? 'ring-2 ring-[#ffc200] ring-offset-1' 
                               : ''
                           }`}
                         >
                           {/* Barre de progression en background */}
                           {userVoted && (
                             <div 
-                              className={`absolute inset-0 ${isWinning ? 'bg-indigo-100' : 'bg-gray-100'}`}
+                              className={`absolute inset-0 ${isWinning ? 'bg-[#fff3cc]' : 'bg-gray-100'}`}
                               style={{ width: `${option.percentage}%` }}
                             />
                           )}
@@ -368,7 +368,7 @@ export default function PollsPage() {
                           <div className={`relative flex items-center justify-between p-3 ${
                             !userVoted 
                               ? isSelected 
-                                ? 'bg-indigo-50 border-2 border-indigo-500' 
+                                ? 'bg-[#fff3cc] border-2 border-[#ffc200]' 
                                 : 'bg-gray-50 border-2 border-gray-200'
                               : 'border-2 border-transparent'
                           } rounded-lg`}>
@@ -376,21 +376,21 @@ export default function PollsPage() {
                               {!userVoted && (
                                 <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
                                   isSelected 
-                                    ? 'border-indigo-600 bg-indigo-600' 
+                                    ? 'border-[#cc9b00] bg-[#ffc200]' 
                                     : 'border-gray-300'
                                 }`}>
-                                  {isSelected && <CheckCircle className="w-3 h-3 text-white" />}
+                                  {isSelected && <CheckCircle className="w-3 h-3 text-[#0a0a0a]" />}
                                 </div>
                               )}
                               <span className={`text-sm font-medium ${
-                                isWinning ? 'text-indigo-900' : 'text-gray-700'
+                                isWinning ? 'text-[#5c4d00]' : 'text-gray-700'
                               }`}>
                                 {option.text}
                               </span>
                             </div>
                             {userVoted && (
                               <span className={`text-sm font-semibold ${
-                                isWinning ? 'text-indigo-600' : 'text-gray-500'
+                                isWinning ? 'text-[#cc9b00]' : 'text-gray-500'
                               }`}>
                                 {option.percentage}%
                               </span>
@@ -419,7 +419,7 @@ export default function PollsPage() {
                     ) : (
                       <div className="flex items-center justify-between">
                         {(selectedOptions[poll.id] || []).length > 0 && (
-                          <span className="text-xs text-indigo-600">
+                          <span className="text-xs text-[#cc9b00]">
                             {selectedOptions[poll.id].length} sélectionné{selectedOptions[poll.id].length > 1 ? 's' : ''}
                           </span>
                         )}
@@ -430,7 +430,7 @@ export default function PollsPage() {
                             selectedOptions[poll.id].length === 0 || 
                             votingFor === poll.id
                           }
-                          className="ml-auto bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-6 py-2 rounded-lg hover:from-indigo-700 hover:to-purple-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm font-medium transition-all shadow-sm hover:shadow-md"
+                          className="ml-auto bg-gradient-to-r from-[#ffc200] to-[#cc9b00] text-[#0a0a0a] px-6 py-2 rounded-lg hover:from-[#e6af00] hover:to-[#cc9b00] disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 text-sm font-medium transition-all shadow-sm hover:shadow-md"
                         >
                           {votingFor === poll.id ? (
                             <>
@@ -541,10 +541,10 @@ export default function PollsPage() {
         )}
 
         {/* Info bottom */}
-        <div className="mt-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-4 border border-indigo-100">
+        <div className="mt-6 bg-gradient-to-r from-[#fff3cc] to-[#fffefa] rounded-xl p-4 border border-[#ffc200]">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0">
-              <AlertCircle className="h-5 w-5 text-indigo-600" />
+            <div className="w-10 h-10 rounded-full bg-[#ffda66] flex items-center justify-center flex-shrink-0">
+              <AlertCircle className="h-5 w-5 text-[#cc9b00]" />
             </div>
             <div>
               <h4 className="font-medium text-gray-900 mb-1">Votre voix compte!</h4>
