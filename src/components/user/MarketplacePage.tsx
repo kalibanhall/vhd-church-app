@@ -29,7 +29,16 @@ import {
   AlertCircle,
   Check,
   Image as ImageIcon,
-  Loader2
+  Loader2,
+  Smartphone,
+  Shirt,
+  Sofa,
+  BookOpen,
+  Dumbbell,
+  Baby,
+  Car,
+  Wrench,
+  Package
 } from 'lucide-react';
 
 interface Product {
@@ -75,15 +84,15 @@ export default function MarketplacePage() {
   const [loading, setLoading] = useState(true);
 
   const categories = [
-    { id: 'electronics', label: 'Électronique', emoji: '📱' },
-    { id: 'clothing', label: 'Vêtements', emoji: '👕' },
-    { id: 'furniture', label: 'Meubles', emoji: '🛋️' },
-    { id: 'books', label: 'Livres', emoji: '📚' },
-    { id: 'sports', label: 'Sports', emoji: '⚽' },
-    { id: 'kids', label: 'Enfants', emoji: '🧸' },
-    { id: 'vehicles', label: 'Véhicules', emoji: '🚗' },
-    { id: 'services', label: 'Services', emoji: '🔧' },
-    { id: 'other', label: 'Autre', emoji: '📦' },
+    { id: 'electronics', label: 'Électronique', icon: Smartphone },
+    { id: 'clothing', label: 'Vêtements', icon: Shirt },
+    { id: 'furniture', label: 'Meubles', icon: Sofa },
+    { id: 'books', label: 'Livres', icon: BookOpen },
+    { id: 'sports', label: 'Sports', icon: Dumbbell },
+    { id: 'kids', label: 'Enfants', icon: Baby },
+    { id: 'vehicles', label: 'Véhicules', icon: Car },
+    { id: 'services', label: 'Services', icon: Wrench },
+    { id: 'other', label: 'Autre', icon: Package },
   ];
 
   const conditions = [
@@ -392,7 +401,7 @@ export default function MarketplacePage() {
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            <span>{cat.emoji}</span>
+            <cat.icon className="h-4 w-4" />
             {cat.label}
           </button>
         ))}
@@ -482,7 +491,7 @@ export default function MarketplacePage() {
                   </span>
                 </div>
                 <div className="flex items-center gap-2 mt-1 text-xs text-gray-400">
-                  <span>{getCategoryInfo(product.category).emoji} {getCategoryInfo(product.category).label}</span>
+                  <span className="flex items-center gap-1">{(() => { const CatIcon = getCategoryInfo(product.category).icon; return <CatIcon className="h-3 w-3" />; })()} {getCategoryInfo(product.category).label}</span>
                   <span>•</span>
                   <span>{getConditionLabel(product.condition)}</span>
                 </div>
@@ -594,7 +603,7 @@ export default function MarketplacePage() {
                           : 'border-gray-200 hover:border-orange-300'
                       }`}
                     >
-                      <span className="text-lg">{cat.emoji}</span>
+                      <span className="text-lg"><cat.icon className="h-5 w-5 mx-auto text-gray-600" /></span>
                       <p className="text-xs text-gray-700 mt-1">{cat.label}</p>
                     </button>
                   ))}
@@ -690,7 +699,7 @@ export default function MarketplacePage() {
               </div>
 
               <div className="flex items-center gap-2 text-sm text-gray-500">
-                <span className="px-2 py-1 bg-gray-100 rounded-full">{getCategoryInfo(selectedProduct.category).emoji} {getCategoryInfo(selectedProduct.category).label}</span>
+                <span className="px-2 py-1 bg-gray-100 rounded-full flex items-center gap-1">{(() => { const CatIcon = getCategoryInfo(selectedProduct.category).icon; return <CatIcon className="h-3 w-3" />; })()} {getCategoryInfo(selectedProduct.category).label}</span>
                 <span className="px-2 py-1 bg-gray-100 rounded-full">{getConditionLabel(selectedProduct.condition)}</span>
               </div>
 

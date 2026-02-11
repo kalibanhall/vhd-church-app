@@ -156,7 +156,7 @@ export default function AuthPage() {
       <div 
         className="hidden lg:flex lg:w-1/2 bg-cover bg-center bg-no-repeat relative"
         style={{ 
-          backgroundImage: 'linear-gradient(135deg, rgba(255, 194, 0, 0.9) 0%, rgba(204, 155, 0, 0.9) 100%), url(/images/logos/vhd-logo.jpg)',
+          backgroundImage: 'linear-gradient(135deg, rgba(255, 194, 0, 0.9) 0%, rgba(204, 155, 0, 0.9) 100%), url(/images/logos/mychurchapp-logo.svg)',
           backgroundSize: '60%',
           backgroundPosition: 'center'
         }}
@@ -165,17 +165,17 @@ export default function AuthPage() {
         <div className="relative z-10 flex flex-col justify-center items-center text-[#0a0a0a] p-12 text-center">
           <div className="mb-8">
             <img 
-              src="/images/logos/vhd-logo.jpg" 
-              alt="Logo VHD" 
+              src="/images/logos/mychurchapp-logo.svg" 
+              alt="Logo MyChurchApp" 
               className="w-32 h-32 mx-auto mb-6 rounded-full border-4 border-white/50 shadow-2xl object-cover"
             />
             <h1 className="text-4xl font-bold mb-4 leading-tight">
-              Ministères Vaillants<br />
-              <span className="text-white drop-shadow-md">Hommes de David</span>
+              MyChurchApp<br />
+              <span className="text-white drop-shadow-md">Votre Église Connectée</span>
             </h1>
             <p className="text-xl font-medium mb-8 text-[#0a0a0a]/80">
-              Où Dieu convertit le <span className="text-white font-bold drop-shadow-md">POTENTIEL</span><br />
-              en l'<span className="text-white font-bold drop-shadow-md">EXTRAORDINAIRE</span>
+              Gérez votre communauté<br />
+              avec <span className="text-white font-bold drop-shadow-md">simplicité</span>
             </p>
           </div>
           
@@ -197,8 +197,8 @@ export default function AuthPage() {
           <div className="text-center">
             <div className="lg:hidden mb-8">
               <img 
-                src="/images/logos/vhd-logo.jpg" 
-                alt="Logo VHD" 
+                src="/images/logos/mychurchapp-logo.svg" 
+                alt="Logo MyChurchApp" 
                 className="w-20 h-20 mx-auto mb-4 rounded-full object-cover border-2 border-[#ffc200] shadow-church"
               />
             </div>
@@ -207,7 +207,7 @@ export default function AuthPage() {
               {isLogin ? 'Connexion' : 'Inscription'}
             </h2>
             <p className="text-[#999] mb-6">
-              {isLogin ? 'Accédez à votre espace VHD' : 'Rejoignez la communauté VHD'}
+              {isLogin ? 'Accédez à votre espace' : 'Rejoignez la communauté'}
             </p>
           </div>
 
@@ -442,9 +442,9 @@ export default function AuthPage() {
 
 
           <footer className="text-center text-sm text-[#999] pt-8 border-t border-[rgba(201,201,201,0.3)]">
-            <p className="mb-1">© 2025 Ministères Vaillants Hommes de David</p>
+            <p className="mb-1">© 2025 MyChurchApp</p>
             <p className="text-xs italic text-[#cc9b00] font-medium">
-              Où Dieu convertit le POTENTIEL en l'EXTRAORDINAIRE
+              Votre église, connectée et organisée
             </p>
           </footer>
         </div>

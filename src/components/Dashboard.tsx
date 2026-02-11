@@ -1,6 +1,6 @@
 /**
  * =============================================================================
- * MINISTÈRE DES VAILLANTS HOMMES DE DAVID
+ * MYCHURCHAPP
  * =============================================================================
  * 
  * Auteur: CHRIS NGOZULU KASONGO (KalibanHall)
@@ -78,8 +78,8 @@ import TransportPage from './user/TransportPage'
 // Suppression des imports mockés - utilisation des API réelles
 
 // Clés de stockage pour la persistance
-const TAB_STORAGE_KEY = 'vhd_active_tab';
-const HISTORY_STORAGE_KEY = 'vhd_tab_history';
+const TAB_STORAGE_KEY = 'mychurchapp_active_tab';
+const HISTORY_STORAGE_KEY = 'mychurchapp_tab_history';
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('home')

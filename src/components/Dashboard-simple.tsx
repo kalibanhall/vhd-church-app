@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
+import { Video, DollarSign } from 'lucide-react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 
@@ -30,8 +31,8 @@ export default function DashboardSimple() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    📖 Prédications
+                  <CardTitle className="flex items-center gap-2">
+                    <Video className="h-5 w-5" /> Prédications
                   </CardTitle>
                   <CardDescription>
                     Écoutez les dernières prédications
@@ -49,8 +50,8 @@ export default function DashboardSimple() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center">
-                    💰 Soutien à l'œuvre
+                  <CardTitle className="flex items-center gap-2">
+                    <DollarSign className="h-5 w-5" /> Soutien à l'œuvre
                   </CardTitle>
                   <CardDescription>
                     Gérez vos contributions

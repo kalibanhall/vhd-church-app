@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Card, CardContent } from '../../components/ui/card'
 import { Button } from '../../components/ui/button'
 import { Input } from '../../components/ui/input'
-import { ArrowLeft, Phone } from 'lucide-react'
+import { ArrowLeft, Phone, Smartphone, Wallet, CreditCard } from 'lucide-react'
 
 function MobilePaymentContent() {
   const router = useRouter()
@@ -25,7 +25,7 @@ function MobilePaymentContent() {
     {
       id: 'VODACOM_MPESA',
       name: 'Vodacom M-PESA',
-      logo: '📱',
+      icon: Smartphone,
       color: 'bg-red-500',
       prefix: '+243 81/82/83/84',
       description: 'Paiement sécurisé via M-PESA'
@@ -33,7 +33,7 @@ function MobilePaymentContent() {
     {
       id: 'AIRTEL_MONEY',
       name: 'Airtel Money',
-      logo: '💰',
+      icon: Wallet,
       color: 'bg-red-600',
       prefix: '+243 97/98/99',
       description: 'Paiement sécurisé via Airtel Money'
@@ -41,7 +41,7 @@ function MobilePaymentContent() {
     {
       id: 'ORANGE_MONEY',
       name: 'Orange Money',
-      logo: '🧡',
+      icon: CreditCard,
       color: 'bg-orange-500',
       prefix: '+243 89/85',
       description: 'Paiement sécurisé via Orange Money'
@@ -92,7 +92,7 @@ function MobilePaymentContent() {
     <div className="min-h-screen bg-white">
       <div className="border-b bg-gray-50 py-6">
         <div className="container mx-auto px-6 flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-gray-900">💳 Paiement Mobile Money</h1>
+          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2"><CreditCard className="h-7 w-7" /> Paiement Mobile Money</h1>
           <Button 
             onClick={() => router.back()}
             variant="outline"
@@ -127,7 +127,7 @@ function MobilePaymentContent() {
                   <CardContent className="p-6">
                     <div className="flex items-center gap-4">
                       <div className={`p-3 rounded-full ${provider.color}`}>
-                        <span className="text-2xl">{provider.logo}</span>
+                        <provider.icon className="h-6 w-6 text-white" />
                       </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-lg text-gray-900">{provider.name}</h3>
@@ -156,7 +156,7 @@ function MobilePaymentContent() {
 
             <div className="text-center">
               <div className={`inline-flex items-center gap-2 p-3 rounded-full ${selectedProviderData?.color} mb-4`}>
-                <span className="text-2xl">{selectedProviderData?.logo}</span>
+                {selectedProviderData && <selectedProviderData.icon className="h-6 w-6 text-white" />}
                 <span className="font-semibold text-white">{selectedProviderData?.name}</span>
               </div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Numéro de téléphone</h2>
@@ -212,7 +212,7 @@ function MobilePaymentContent() {
                 <div className="flex justify-between items-center">
                   <span className="text-gray-700">Opérateur :</span>
                   <div className="flex items-center gap-2">
-                    <span>{selectedProviderData?.logo}</span>
+                    {selectedProviderData && <selectedProviderData.icon className="h-4 w-4" />}
                     <span className="font-semibold">{selectedProviderData?.name}</span>
                   </div>
                 </div>
@@ -237,8 +237,8 @@ function MobilePaymentContent() {
             </Card>
 
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <p className="text-blue-800 text-sm">
-                📱 Vous recevrez une notification sur votre téléphone pour confirmer le paiement.
+              <p className="text-blue-800 text-sm flex items-start gap-2">
+                <Smartphone className="h-4 w-4 mt-0.5 flex-shrink-0" /> Vous recevrez une notification sur votre téléphone pour confirmer le paiement.
               </p>
             </div>
 
@@ -261,8 +261,8 @@ function MobilePaymentContent() {
               <p className="text-gray-600 mb-4">Vérifiez votre téléphone pour confirmer le paiement</p>
               
               <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                <p className="text-yellow-800 text-sm">
-                  📱 Une demande de paiement de <strong>${amount}</strong> a été envoyée à votre numéro {phoneNumber}
+                <p className="text-yellow-800 text-sm flex items-start gap-2">
+                  <Smartphone className="h-4 w-4 mt-0.5 flex-shrink-0" /> Une demande de paiement de <strong>${amount}</strong> a été envoyée à votre numéro {phoneNumber}
                 </p>
               </div>
             </div>

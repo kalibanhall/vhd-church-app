@@ -55,7 +55,7 @@ app.use(helmet());
 
 // CORS configuration
 const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [
-  'https://vhd-church-app.vercel.app',
+  'https://mychurchapp.vercel.app',
   'http://localhost:3000',
 ];
 
@@ -105,7 +105,7 @@ if (process.env.NODE_ENV === 'production') {
 // Root route
 app.get('/', (req: Request, res: Response) => {
   res.json({
-    name: 'VHD Church API',
+    name: 'MyChurchApp API',
     version: '1.0.0',
     status: 'active',
     endpoints: {
@@ -182,7 +182,7 @@ app.listen(PORT, () => {
   console.log(`
 ╔════════════════════════════════════════════════════════════╗
 ║                                                            ║
-║         VHD Church API Backend - Running                   ║
+║         MyChurchApp API Backend - Running                   ║
 ║                                                            ║
 ║  Environment: ${process.env.NODE_ENV || 'development'}                              ║
 ║  Port:        ${PORT}                                      ║

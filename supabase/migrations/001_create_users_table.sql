@@ -64,4 +64,4 @@ GRANT ALL ON public.users TO authenticated;
 GRANT ALL ON public.users TO service_role;
 
 -- Add comment
-COMMENT ON TABLE public.users IS 'Users table for VHD Church App authentication';
+COMMENT ON TABLE public.users IS 'Users table for MyChurchApp authentication';

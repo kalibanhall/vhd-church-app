@@ -47,7 +47,7 @@ const MOCK_MY_FOLLOWUPS = [
       id: '1',
       name: 'Pasteur Marc Mukendi',
       phone: '+243 81 234 56 78',
-      email: 'marc@vhdchurch.cd',
+      email: 'marc@mychurchapp.com',
     },
     startDate: new Date(Date.now() - 86400000 * 30).toISOString(),
     status: 'active',

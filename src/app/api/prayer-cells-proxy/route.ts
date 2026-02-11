@@ -30,7 +30,7 @@ const MOCK_CELLS = [
     name: 'Cellule Sagesse',
     description: 'Intercession et étude biblique pour seniors',
     leader: { id: '3', name: 'Papa Pierre Tshimanga', phone: '+243 82 111 22 33' },
-    location: 'Salle paroissiale VHD Gombe',
+    location: 'Salle paroissiale MyChurchApp Gombe',
     schedule: 'Mardi 15h00',
     members: 10,
     maxMembers: 10,

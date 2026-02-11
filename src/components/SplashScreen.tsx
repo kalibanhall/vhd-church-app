@@ -1,6 +1,6 @@
 /**
  * =============================================================================
- * MINISTÈRE DES VAILLANTS HOMMES DE DAVID
+ * MYCHURCHAPP
  * =============================================================================
  * 
  * Auteur: CHRIS NGOZULU KASONGO (KalibanHall)
@@ -52,7 +52,7 @@ export function SplashScreen() {
           <div className="relative">
             <Image
               src="/icons/icon-192x192.png"
-              alt="VHD Church"
+              alt="MyChurchApp"
               width={192}
               height={192}
               className="mx-auto drop-shadow-2xl animate-bounce-slow"
@@ -64,10 +64,10 @@ export function SplashScreen() {
         {/* Texte animé */}
         <div className="space-y-4">
           <h1 className="text-4xl font-bold text-white animate-fade-in-up">
-            VHD Church
+            MyChurchApp
           </h1>
           <p className="text-xl text-[#fff3cc] animate-fade-in-up animation-delay-200">
-            Ministère des Vaillants Hommes de David
+            Votre Église Connectée
           </p>
 
           {/* Barre de chargement */}

@@ -65,9 +65,9 @@ const settingCategories = [
 // Configuration des champs par catégorie
 const settingFields: Record<string, { key: string, label: string, type: string, placeholder: string, icon: React.ElementType }[]> = {
   contact: [
-    { key: 'contact_email', label: 'Email de contact', type: 'email', placeholder: 'contact@vhd.com', icon: Mail },
+    { key: 'contact_email', label: 'Email de contact', type: 'email', placeholder: 'contact@mychurchapp.com', icon: Mail },
     { key: 'contact_phone', label: 'Téléphone principal', type: 'tel', placeholder: '+243 83 23 13 105', icon: Phone },
-    { key: 'emergency_email', label: 'Email urgences', type: 'email', placeholder: 'urgence@vhd.com', icon: Mail },
+    { key: 'emergency_email', label: 'Email urgences', type: 'email', placeholder: 'urgence@mychurchapp.com', icon: Mail },
     { key: 'emergency_phone', label: 'Téléphone urgences', type: 'tel', placeholder: '+243 83 23 13 105', icon: Phone },
     { key: 'secretariat_phone', label: 'Téléphone secrétariat', type: 'tel', placeholder: '+243 83 23 13 105', icon: Phone },
     { key: 'church_address', label: 'Adresse de l\'église', type: 'text', placeholder: 'Adresse complète', icon: MapPin },
@@ -87,7 +87,7 @@ const settingFields: Record<string, { key: string, label: string, type: string, 
     { key: 'office_hours', label: 'Horaires du secrétariat', type: 'text', placeholder: 'Lun-Ven: 08h00 - 17h00', icon: Clock }
   ],
   general: [
-    { key: 'church_name', label: 'Nom de l\'église', type: 'text', placeholder: 'VHD - Vision pour l\'Homme de Demain', icon: Building },
+    { key: 'church_name', label: 'Nom de l\'\u00e9glise', type: 'text', placeholder: 'MyChurchApp', icon: Building },
     { key: 'app_version', label: 'Version de l\'application', type: 'text', placeholder: '1.0.0', icon: Settings }
   ]
 }

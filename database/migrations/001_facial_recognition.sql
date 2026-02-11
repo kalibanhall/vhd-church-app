@@ -207,4 +207,4 @@ COMMENT ON TABLE cameras IS 'Gestion des caméras/stations de pointage';
 -- ('Tablette 1', 'Accueil', 'TABLET'),
 -- ('Mobile Admin', 'Mobile', 'MOBILE');
 
-COMMENT ON DATABASE postgres IS 'Base de données VHD Church avec reconnaissance faciale';
+COMMENT ON DATABASE postgres IS 'Base de données MyChurchApp avec reconnaissance faciale';

@@ -1,6 +1,6 @@
 /**
  * =============================================================================
- * MINISTÈRE DES VAILLANTS HOMMES DE DAVID
+ * MYCHURCHAPP
  * =============================================================================
  * 
  * Auteur: CHRIS NGOZULU KASONGO (KalibanHall)
@@ -19,8 +19,8 @@ import { ClientProviders } from '@/components/ClientProviders'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'VHD Church - Vaillants Hommes de David',
-  description: 'Application de gestion moderne pour le Ministère des Vaillants Hommes de David - Gestion des membres, soutien à l\'œuvre, prédications, rendez-vous et plus',
+  title: 'MyChurchApp',
+  description: 'Application de gestion moderne pour votre église - Gestion des membres, soutien à l\'œuvre, prédications, rendez-vous et plus',
   icons: {
     icon: '/favicon.ico',
     apple: '/icons/icon-192x192.png',
@@ -50,7 +50,7 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="VHD Church" />
+        <meta name="apple-mobile-web-app-title" content="MyChurchApp" />
         
         {/* Désactiver le zoom iOS Safari */}
         <meta name="format-detection" content="telephone=no" />

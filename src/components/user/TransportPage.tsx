@@ -102,7 +102,7 @@ export default function TransportPage() {
         time: '08:00',
       },
       destination: {
-        location: 'Église VHD Kinshasa',
+        location: 'Église MyChurchApp Kinshasa',
         address: 'Avenue de la Libération, Gombe',
       },
       stops: [
@@ -134,7 +134,7 @@ export default function TransportPage() {
         time: '08:30',
       },
       destination: {
-        location: 'Église VHD Kinshasa',
+        location: 'Église MyChurchApp Kinshasa',
         address: 'Avenue de la Libération, Gombe',
       },
       stops: [
@@ -166,7 +166,7 @@ export default function TransportPage() {
         time: '06:00',
       },
       destination: {
-        location: 'Église VHD Matadi',
+        location: 'Église MyChurchApp Matadi',
         address: 'Avenue Mobutu, Matadi',
       },
       stops: [
@@ -197,7 +197,7 @@ export default function TransportPage() {
         time: '08:15',
       },
       destination: {
-        location: 'Église VHD Kinshasa',
+        location: 'Église MyChurchApp Kinshasa',
         address: 'Avenue de la Libération, Gombe',
       },
       stops: [
@@ -229,7 +229,7 @@ export default function TransportPage() {
         time: '07:30',
       },
       destination: {
-        location: 'Église VHD Lubumbashi',
+        location: 'Église MyChurchApp Lubumbashi',
         address: 'Avenue Moïse Tshombe, Lubumbashi',
       },
       stops: [

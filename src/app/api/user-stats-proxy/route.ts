@@ -1,6 +1,6 @@
 /**
  * @fileoverview Route proxy pour récupérer les statistiques d'un utilisateur
- * @author VHD Church Management System
+ * @author MyChurchApp Management System
  * @version 1.0.0
  * 
  * Récupère le nombre de dons, RDV, prières et témoignages d'un utilisateur

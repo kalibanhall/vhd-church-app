@@ -1,6 +1,6 @@
 /**
  * =============================================================================
- * MINISTÈRE DES VAILLANTS HOMMES DE DAVID
+ * MYCHURCHAPP
  * =============================================================================
  * 
  * Auteur: CHRIS NGOZULU KASONGO (KalibanHall)
@@ -15,8 +15,8 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 
 export const metadata: Metadata = {
-  title: 'VHD Church - Installation PWA',
-  description: 'Installer l\'application VHD Church sur votre appareil',
+  title: 'MyChurchApp - Installation PWA',
+  description: 'Installer l\'application MyChurchApp sur votre appareil',
 };
 
 export default function InstallPage() {
@@ -28,14 +28,14 @@ export default function InstallPage() {
           <div className="mb-6">
             <Image
               src="/icons/icon-192x192.png"
-              alt="VHD Church"
+              alt="MyChurchApp"
               width={96}
               height={96}
               className="mx-auto drop-shadow-lg"
             />
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Installer VHD Church App
+            Installer MyChurchApp
           </h1>
           <p className="text-xl text-gray-600">
             Profitez d&apos;une expérience native sur votre appareil

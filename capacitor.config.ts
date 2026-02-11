@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.vhdchurch.app',
-  appName: 'vhd-church-app',
+  appId: 'com.mychurchapp.app',
+  appName: 'mychurchapp',
   webDir: 'public'
 };
 

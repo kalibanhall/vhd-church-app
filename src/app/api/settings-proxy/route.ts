@@ -19,7 +19,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://vhd-api-backend.onrender.com/api/v1'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://vhd-church-api.onrender.com/v1'
 
 // Interface pour les paramètres
 interface AppSetting {
@@ -38,7 +38,7 @@ const defaultSettings: Record<string, AppSetting> = {
   contact_email: {
     id: 'default_1',
     key: 'contact_email',
-    value: 'contact@vhd.com',
+    value: 'contact@mychurchapp.com',
     category: 'contact',
     description: 'Email de contact principal',
     isPublic: true,
@@ -58,7 +58,7 @@ const defaultSettings: Record<string, AppSetting> = {
   emergency_email: {
     id: 'default_3',
     key: 'emergency_email',
-    value: 'contact@vhd.com',
+    value: 'contact@mychurchapp.com',
     category: 'contact',
     description: 'Email pour les urgences',
     isPublic: true,
@@ -88,7 +88,7 @@ const defaultSettings: Record<string, AppSetting> = {
   church_name: {
     id: 'default_6',
     key: 'church_name',
-    value: 'VHD - Vision pour l\'Homme de Demain',
+    value: 'MyChurchApp',
     category: 'general',
     description: 'Nom de l\'église',
     isPublic: true,

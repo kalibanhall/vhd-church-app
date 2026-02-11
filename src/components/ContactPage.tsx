@@ -5,7 +5,7 @@ export default function ContactPage() {
     <div className="p-6 max-w-4xl mx-auto">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">Contactez-nous</h1>
-        <p className="text-gray-600">Ministères Vaillants Hommes de David</p>
+        <p className="text-gray-600">MyChurchApp</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -42,10 +42,10 @@ export default function ContactPage() {
               <div>
                 <p className="font-medium text-gray-800">Email</p>
                 <a 
-                  href="mailto:contact@vaillantshommesdedavid.org" 
+                  href="mailto:contact@mychurchapp.com" 
                   className="text-[#cc9b00] hover:text-[#3d3200] transition-colors"
                 >
-                  contact@vaillantshommesdedavid.org
+                  contact@mychurchapp.com
                 </a>
               </div>
             </div>
@@ -55,12 +55,12 @@ export default function ContactPage() {
               <div>
                 <p className="font-medium text-gray-800">Site Web</p>
                 <a 
-                  href="https://vaillantshommesdedavid.org" 
+                  href="https://mychurchapp.com" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-[#cc9b00] hover:text-[#3d3200] transition-colors"
                 >
-                  vaillantshommesdedavid.org
+                  mychurchapp.com
                 </a>
               </div>
             </div>

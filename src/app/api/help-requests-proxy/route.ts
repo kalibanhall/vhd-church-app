@@ -11,7 +11,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://vhd-backend.onrender.com'
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || 'https://mychurchapp-backend.onrender.com'
 
 export async function GET(request: NextRequest) {
   try {

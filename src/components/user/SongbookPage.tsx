@@ -31,7 +31,18 @@ import {
   Plus,
   Bookmark,
   BookMarked,
-  Loader2
+  Loader2,
+  HandMetal,
+  TreePine,
+  Cross,
+  Wine,
+  Droplets,
+  Church,
+  Bird,
+  Baby,
+  Scroll,
+  Keyboard,
+  Timer
 } from 'lucide-react';
 
 interface Song {
@@ -64,16 +75,16 @@ export default function SongbookPage() {
   const [loading, setLoading] = useState(true);
 
   const categories = [
-    { id: 'worship', label: 'Louange', emoji: '🙌' },
-    { id: 'praise', label: 'Adoration', emoji: '❤️' },
-    { id: 'christmas', label: 'Noël', emoji: '🎄' },
-    { id: 'easter', label: 'Pâques', emoji: '✝️' },
-    { id: 'communion', label: 'Sainte-Cène', emoji: '🍷' },
-    { id: 'baptism', label: 'Baptême', emoji: '💧' },
-    { id: 'wedding', label: 'Mariage', emoji: '💒' },
-    { id: 'funeral', label: 'Funérailles', emoji: '🕊️' },
-    { id: 'children', label: 'Enfants', emoji: '🧒' },
-    { id: 'traditional', label: 'Traditionnels', emoji: '📜' },
+    { id: 'worship', label: 'Louange', icon: HandMetal },
+    { id: 'praise', label: 'Adoration', icon: Heart },
+    { id: 'christmas', label: 'Noël', icon: TreePine },
+    { id: 'easter', label: 'Pâques', icon: Cross },
+    { id: 'communion', label: 'Sainte-Cène', icon: Wine },
+    { id: 'baptism', label: 'Baptême', icon: Droplets },
+    { id: 'wedding', label: 'Mariage', icon: Church },
+    { id: 'funeral', label: 'Funérailles', icon: Bird },
+    { id: 'children', label: 'Enfants', icon: Baby },
+    { id: 'traditional', label: 'Traditionnels', icon: Scroll },
   ];
 
   const mockSongs: Song[] = [
@@ -196,7 +207,7 @@ export default function SongbookPage() {
       id: '8',
       number: 275,
       title: 'Yesu Azali Awa',
-      author: 'Chorale VHD Kinshasa',
+      author: 'Chorale MyChurchApp',
       category: 'worship',
       verses: [
         { number: 1, text: 'Yesu azali awa, Yesu azali awa\nNa kati na biso, Yesu azali awa\nWa na lopango na biso\nYesu azali awa!' },
@@ -325,7 +336,7 @@ export default function SongbookPage() {
   });
 
   const getCategoryInfo = (categoryId: string) => {
-    return categories.find(c => c.id === categoryId) || { id: categoryId, label: categoryId, emoji: '🎵' };
+    return categories.find(c => c.id === categoryId) || { id: categoryId, label: categoryId, icon: Music };
   };
 
   // Loading skeleton
@@ -476,7 +487,7 @@ export default function SongbookPage() {
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            <span>{cat.emoji}</span>
+            <cat.icon className="h-4 w-4" />
             {cat.label}
           </button>
         ))}
@@ -619,17 +630,17 @@ export default function SongbookPage() {
               <div className="mt-8 pt-6 border-t border-gray-200">
                 <div className="flex flex-wrap gap-2">
                   {selectedSong.key && (
-                    <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
-                      🎹 {selectedSong.key}
+                    <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm inline-flex items-center gap-1">
+                      <Keyboard className="h-3.5 w-3.5" /> {selectedSong.key}
                     </span>
                   )}
                   {selectedSong.tempo && (
-                    <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm">
-                      ⏱️ {selectedSong.tempo}
+                    <span className="px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm inline-flex items-center gap-1">
+                      <Timer className="h-3.5 w-3.5" /> {selectedSong.tempo}
                     </span>
                   )}
-                  <span className="px-3 py-1 bg-[#fff3cc] text-[#cc9b00] rounded-full text-sm">
-                    {getCategoryInfo(selectedSong.category).emoji} {getCategoryInfo(selectedSong.category).label}
+                  <span className="px-3 py-1 bg-[#fff3cc] text-[#cc9b00] rounded-full text-sm inline-flex items-center gap-1">
+                    {(() => { const CatIcon = getCategoryInfo(selectedSong.category).icon; return <CatIcon className="h-3.5 w-3.5" />; })()} {getCategoryInfo(selectedSong.category).label}
                   </span>
                 </div>
                 {selectedSong.tags.length > 0 && (

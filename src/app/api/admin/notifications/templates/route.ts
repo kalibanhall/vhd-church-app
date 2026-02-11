@@ -10,7 +10,7 @@ const NOTIFICATION_TEMPLATES = [
   {
     id: 'welcome',
     title: 'Bienvenue',
-    message: 'Bienvenue dans la famille VHD ! Nous sommes heureux de vous accueillir.',
+    message: 'Bienvenue dans la famille MyChurchApp ! Nous sommes heureux de vous accueillir.',
     type: 'info'
   },
   {

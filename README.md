@@ -1,14 +1,14 @@
-# VHD Church App
+# MyChurchApp
 
-Application web de gestion pour le Ministere des Vaillants Hommes de David.
+Application web de gestion d'église - MyChurchApp.
 
-**Production:** [www.vhd.app](https://www.vhd.app)
+**Production:** [www.mychurchapp.com](https://www.mychurchapp.com)
 
 ---
 
 ## Presentation
 
-VHD Church App est une solution complete de gestion d'eglise permettant aux membres, pasteurs et administrateurs de gerer efficacement les activites de la communaute.
+MyChurchApp est une solution complete de gestion d'eglise permettant aux membres, pasteurs et administrateurs de gerer efficacement les activites de la communaute.
 
 ### Fonctionnalites principales
 
@@ -58,8 +58,8 @@ VHD Church App est une solution complete de gestion d'eglise permettant aux memb
 
 ```bash
 # Cloner le repository
-git clone https://github.com/kalibanhall/vhd-church-app.git
-cd vhd-church-app
+git clone https://github.com/kalibanhall/mychurchapp.git
+cd mychurchapp
 
 # Installer les dependances
 npm install
@@ -110,7 +110,7 @@ SUPABASE_ANON_KEY="votre-anon-key"
 ```env
 DATABASE_URL="postgresql://user:password@host:5432/database"
 JWT_SECRET="votre-secret-jwt-production"
-NEXTAUTH_URL="https://www.vhd.app"
+NEXTAUTH_URL="https://www.mychurchapp.com"
 NEXTAUTH_SECRET="votre-secret-nextauth-production"
 SUPABASE_URL="https://votre-projet.supabase.co"
 SUPABASE_ANON_KEY="votre-anon-key"
@@ -162,7 +162,7 @@ npm run lint     # Verification du code
 
 ## Licence
 
-Projet prive - Ministere des Vaillants Hommes de David
+Projet prive - MyChurchApp
 
 ---
 

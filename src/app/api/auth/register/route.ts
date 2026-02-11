@@ -1,6 +1,6 @@
 /**
  * =============================================================================
- * MINISTÈRE DES VAILLANTS HOMMES DE DAVID
+ * MYCHURCHAPP
  * =============================================================================
  * 
  * Auteur: CHRIS NGOZULU KASONGO (KalibanHall)
@@ -69,7 +69,7 @@ export async function POST(request: NextRequest) {
         email: user.email, 
         role: user.role 
       },
-      process.env.JWT_SECRET || 'vhd-church-app-chris-kasongo-jwt-secret-production-2025-qualis-super-secure-key',
+      process.env.JWT_SECRET || 'mychurchapp-chris-kasongo-jwt-secret-production-2025-qualis-super-secure-key',
       { expiresIn: '7d' }
     )
 

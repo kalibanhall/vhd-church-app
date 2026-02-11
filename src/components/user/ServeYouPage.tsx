@@ -162,16 +162,16 @@ export default function ServeYouPage() {
   const contacts = [
     {
       role: 'Secrétariat',
-      name: 'Accueil Église VHD Kinshasa',
+      name: 'Accueil Église MyChurchApp',
       phone: '+243 81 234 56 78',
-      email: 'contact@vhd-church.org',
+      email: 'contact@mychurchapp.com',
       hours: 'Lun-Sam: 8h-17h',
     },
     {
       role: 'Urgences pastorales',
       name: 'Pasteur Mukendi Jean-Pierre',
       phone: '+243 99 876 54 32',
-      email: 'pasteur@vhd-church.org',
+      email: 'pasteur@mychurchapp.com',
       hours: '24h/24',
     },
   ];

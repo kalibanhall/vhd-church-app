@@ -10,7 +10,8 @@ import {
   Loader2,
   User,
   ChevronRight,
-  X
+  X,
+  Trophy
 } from 'lucide-react'
 import { authenticatedFetch } from '@/lib/auth-fetch'
 import { safeFormatDate } from '@/lib/utils'
@@ -509,7 +510,7 @@ export default function PollsPage() {
                               isWinning ? 'text-green-800' : 'text-gray-600'
                             }`}>
                               {option.text}
-                              {isWinning && <span className="ml-2">🏆</span>}
+                              {isWinning && <span className="ml-2"><Trophy className="h-4 w-4 inline text-amber-500" /></span>}
                             </span>
                             <span className={`text-sm font-semibold ${
                               isWinning ? 'text-green-600' : 'text-gray-500'

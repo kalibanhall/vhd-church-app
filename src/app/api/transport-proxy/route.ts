@@ -18,7 +18,7 @@ const MOCK_ROUTES = [
       time: '08:30',
     },
     destination: {
-      location: 'Église VHD Lemba',
+      location: 'Église MyChurchApp Lemba',
       address: 'Avenue de l\'Université, Lemba, Kinshasa',
     },
     stops: [
@@ -50,7 +50,7 @@ const MOCK_ROUTES = [
       time: '09:00',
     },
     destination: {
-      location: 'Église VHD Gombe',
+      location: 'Église MyChurchApp Gombe',
       address: 'Avenue Colonel Ebeya, Gombe, Kinshasa',
     },
     stops: [
@@ -76,7 +76,7 @@ const MOCK_ROUTES = [
       trips: 89,
     },
     departure: {
-      location: 'Église VHD Gombe',
+      location: 'Église MyChurchApp Gombe',
       address: 'Avenue Colonel Ebeya, Gombe, Kinshasa',
       time: '07:00',
     },

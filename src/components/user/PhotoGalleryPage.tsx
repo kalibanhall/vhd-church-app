@@ -30,7 +30,14 @@ import {
   Upload,
   FolderOpen,
   Clock,
-  Loader2
+  Loader2,
+  Church,
+  PartyPopper,
+  Droplets,
+  Sparkles,
+  Baby,
+  Globe,
+  Users
 } from 'lucide-react';
 
 interface Photo {
@@ -72,14 +79,14 @@ export default function PhotoGalleryPage() {
   const [loading, setLoading] = useState(true);
 
   const categories = [
-    { id: 'worship', label: 'Cultes', emoji: '⛪' },
-    { id: 'events', label: 'Événements', emoji: '🎉' },
-    { id: 'baptism', label: 'Baptêmes', emoji: '💧' },
-    { id: 'wedding', label: 'Mariages', emoji: '💒' },
-    { id: 'youth', label: 'Jeunesse', emoji: '🌟' },
-    { id: 'children', label: 'Enfants', emoji: '🧒' },
-    { id: 'mission', label: 'Missions', emoji: '🌍' },
-    { id: 'community', label: 'Vie d\'église', emoji: '👨‍👩‍👧‍👦' },
+    { id: 'worship', label: 'Cultes', icon: Church },
+    { id: 'events', label: 'Événements', icon: PartyPopper },
+    { id: 'baptism', label: 'Baptêmes', icon: Droplets },
+    { id: 'wedding', label: 'Mariages', icon: Heart },
+    { id: 'youth', label: 'Jeunesse', icon: Sparkles },
+    { id: 'children', label: 'Enfants', icon: Baby },
+    { id: 'mission', label: 'Missions', icon: Globe },
+    { id: 'community', label: 'Vie d\'\u00e9glise', icon: Users },
   ];
 
   const mockAlbums: Album[] = [
@@ -88,7 +95,7 @@ export default function PhotoGalleryPage() {
       title: 'Culte de Noël 2024 - Kinshasa',
       description: 'Célébration de la nativité avec toute l\'église de Kinshasa',
       date: '2024-12-25',
-      location: 'Temple VHD Gombe',
+      location: 'Temple MyChurchApp Gombe',
       photoCount: 45,
       category: 'worship',
     },
@@ -115,7 +122,7 @@ export default function PhotoGalleryPage() {
       title: 'Mariage Emmanuel & Grace',
       description: 'Une belle cérémonie pleine d\'amour à Goma',
       date: '2024-09-21',
-      location: 'Temple VHD Goma',
+      location: 'Temple MyChurchApp Goma',
       photoCount: 112,
       category: 'wedding',
     },
@@ -124,7 +131,7 @@ export default function PhotoGalleryPage() {
       title: 'Fête des enfants 2024',
       description: 'Spectacle et goûter pour les plus petits à Matadi',
       date: '2024-06-01',
-      location: 'Salle VHD Matadi',
+      location: 'Salle MyChurchApp Matadi',
       photoCount: 78,
       category: 'children',
     },
@@ -228,7 +235,7 @@ export default function PhotoGalleryPage() {
   });
 
   const getCategoryInfo = (categoryId: string) => {
-    return categories.find(c => c.id === categoryId) || { id: categoryId, label: categoryId, emoji: '📷' };
+    return categories.find(c => c.id === categoryId) || { id: categoryId, label: categoryId, icon: Camera };
   };
 
   const getGridCols = () => {
@@ -377,7 +384,7 @@ export default function PhotoGalleryPage() {
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
-                <span>{cat.emoji}</span>
+                <cat.icon className="h-4 w-4" />
                 {cat.label}
               </button>
             ))}
@@ -438,7 +445,7 @@ export default function PhotoGalleryPage() {
                     {album.photoCount} photos
                   </div>
                   <div className="absolute top-2 left-2 px-2 py-1 bg-white/90 text-xs font-medium rounded-full">
-                    {getCategoryInfo(album.category).emoji} {getCategoryInfo(album.category).label}
+                    <span className="inline-flex items-center gap-1">{(() => { const CatIcon = getCategoryInfo(album.category).icon; return <CatIcon className="h-3 w-3" />; })()} {getCategoryInfo(album.category).label}</span>
                   </div>
                 </div>
                 <div className="p-3">

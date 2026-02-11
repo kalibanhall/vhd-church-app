@@ -58,7 +58,7 @@ export const useSmartSearch = (
     { 
       id: 'home', 
       label: 'Aller à l\'accueil', 
-      icon: '🏠', 
+      icon: 'Home', 
       description: 'Retourner à la page d\'accueil du ministère', 
       category: 'Navigation', 
       action: 'navigate', 
@@ -70,7 +70,7 @@ export const useSmartSearch = (
     { 
       id: 'sermons', 
       label: 'Voir les dernières prédications', 
-      icon: '📹', 
+      icon: 'Video', 
       description: 'Consulter les messages et enseignements récents', 
       category: 'Spirituel', 
       action: 'tab', 
@@ -80,7 +80,7 @@ export const useSmartSearch = (
     { 
       id: 'upload-sermon', 
       label: 'Ajouter une nouvelle prédication', 
-      icon: '🎥', 
+      icon: 'Upload', 
       description: 'Télécharger un nouveau message (pasteurs/admin)', 
       category: 'Spirituel', 
       action: 'navigate', 
@@ -93,7 +93,7 @@ export const useSmartSearch = (
     { 
       id: 'donations', 
       label: 'Faire un don au ministère', 
-      icon: '💰', 
+      icon: 'DollarSign', 
       description: 'Soutenir financièrement l\'œuvre de Dieu', 
       category: 'Soutien', 
       action: 'tab', 
@@ -103,7 +103,7 @@ export const useSmartSearch = (
     { 
       id: 'quick-donation-1000', 
       label: 'Don rapide de 1000 FCFA', 
-      icon: '⚡', 
+      icon: 'Zap', 
       description: 'Faire un don express de mille francs', 
       category: 'Action Rapide', 
       action: 'quick-donate', 
@@ -113,7 +113,7 @@ export const useSmartSearch = (
     { 
       id: 'quick-donation-5000', 
       label: 'Don rapide de 5000 FCFA', 
-      icon: '⚡', 
+      icon: 'Zap', 
       description: 'Faire un don express de cinq mille francs', 
       category: 'Action Rapide', 
       action: 'quick-donate', 
@@ -125,7 +125,7 @@ export const useSmartSearch = (
     { 
       id: 'appointments', 
       label: 'Prendre rendez-vous avec un pasteur', 
-      icon: '📅', 
+      icon: 'Calendar', 
       description: 'Réserver un moment pour un conseil spirituel', 
       category: 'Conseil', 
       action: 'tab', 
@@ -135,7 +135,7 @@ export const useSmartSearch = (
     { 
       id: 'urgent-appointment', 
       label: 'Rendez-vous urgent avec un pasteur', 
-      icon: '🚨', 
+      icon: 'AlertTriangle', 
       description: 'Demande de conseil pastoral prioritaire', 
       category: 'Action Rapide', 
       action: 'quick-appointment', 
@@ -147,7 +147,7 @@ export const useSmartSearch = (
     { 
       id: 'prayers', 
       label: 'Soumettre une demande de prière', 
-      icon: '🙏', 
+      icon: 'Heart', 
       description: 'Partager un besoin d\'intercession avec la communauté', 
       category: 'Prière', 
       action: 'tab', 
@@ -157,7 +157,7 @@ export const useSmartSearch = (
     { 
       id: 'emergency-prayer', 
       label: 'Demande de prière urgente', 
-      icon: '🚨', 
+      icon: 'AlertTriangle', 
       description: 'Intercession prioritaire pour une situation critique', 
       category: 'Action Rapide', 
       action: 'quick-prayer', 
@@ -169,7 +169,7 @@ export const useSmartSearch = (
     { 
       id: 'testimonies', 
       label: 'Partager mon témoignage', 
-      icon: '📖', 
+      icon: 'BookOpen', 
       description: 'Raconter ce que Dieu a fait dans ma vie', 
       category: 'Témoignage', 
       action: 'tab', 
@@ -179,7 +179,7 @@ export const useSmartSearch = (
     { 
       id: 'praise-testimony', 
       label: 'Témoignage de louange rapide', 
-      icon: '🙌', 
+      icon: 'HandMetal', 
       description: 'Partager une louange ou action de grâce', 
       category: 'Action Rapide', 
       action: 'quick-praise', 
@@ -191,7 +191,7 @@ export const useSmartSearch = (
     { 
       id: 'chat', 
       label: 'Rejoindre la discussion communautaire', 
-      icon: '💬', 
+      icon: 'MessageCircle', 
       description: 'Échanger avec les autres membres du ministère', 
       category: 'Communauté', 
       action: 'tab', 
@@ -203,7 +203,7 @@ export const useSmartSearch = (
     { 
       id: 'profile', 
       label: 'Gérer mon profil', 
-      icon: '👤', 
+      icon: 'User', 
       description: 'Modifier mes informations personnelles', 
       category: 'Profil', 
       action: 'navigate', 
@@ -215,7 +215,7 @@ export const useSmartSearch = (
     { 
       id: 'manage-members', 
       label: 'Gérer les membres', 
-      icon: '👥', 
+      icon: 'Users', 
       description: 'Administration des comptes utilisateurs', 
       category: 'Administration', 
       action: 'navigate', 
@@ -226,7 +226,7 @@ export const useSmartSearch = (
     { 
       id: 'moderate-content', 
       label: 'Modérer le contenu', 
-      icon: '🛡️', 
+      icon: 'Shield', 
       description: 'Approuver ou rejeter les contenus soumis', 
       category: 'Administration', 
       action: 'navigate', 

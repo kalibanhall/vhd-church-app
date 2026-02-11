@@ -108,7 +108,7 @@ export async function seedData() {
     // Créer un admin
     await sql`
       INSERT INTO users (email, password, name, role, phone)
-      VALUES ('admin@vhd.app', '$2a$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Administrateur VHD', 'admin', '+243 123 456 789')
+      VALUES ('admin@mychurchapp.com', '$2a$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Administrateur MyChurchApp', 'admin', '+243 123 456 789')
       ON CONFLICT (email) DO NOTHING
     `
 
@@ -116,8 +116,8 @@ export async function seedData() {
     await sql`
       INSERT INTO users (email, password, name, role, phone)
       VALUES 
-        ('pasteur@vhd.app', '$2a$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Pasteur Principal', 'pastor', '+243 987 654 321'),
-        ('membre@vhd.app', '$2a$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Membre Test', 'member', '+243 555 123 456')
+        ('pasteur@mychurchapp.com', '$2a$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Pasteur Principal', 'pastor', '+243 987 654 321'),
+        ('membre@mychurchapp.com', '$2a$12$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Membre Test', 'member', '+243 555 123 456')
       ON CONFLICT (email) DO NOTHING
     `
 

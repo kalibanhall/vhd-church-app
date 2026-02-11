@@ -31,7 +31,12 @@ import {
   Radio,
   TrendingUp,
   Mic2,
-  Loader2
+  Loader2,
+  HandMetal,
+  Music2,
+  Church,
+  Globe,
+  Baby
 } from 'lucide-react';
 
 interface Song {
@@ -75,14 +80,14 @@ export default function GospelMusicPage() {
   const [loading, setLoading] = useState(true);
 
   const categories = [
-    { id: 'worship', label: 'Louange', emoji: '🙌' },
-    { id: 'praise', label: 'Adoration', emoji: '❤️' },
-    { id: 'gospel', label: 'Gospel', emoji: '🎵' },
-    { id: 'choir', label: 'Chorale', emoji: '🎤' },
-    { id: 'contemporary', label: 'Contemporain', emoji: '🎸' },
-    { id: 'traditional', label: 'Traditionnel', emoji: '⛪' },
-    { id: 'african', label: 'Africain', emoji: '🌍' },
-    { id: 'kids', label: 'Enfants', emoji: '🧒' },
+    { id: 'worship', label: 'Louange', icon: HandMetal },
+    { id: 'praise', label: 'Adoration', icon: Heart },
+    { id: 'gospel', label: 'Gospel', icon: Music },
+    { id: 'choir', label: 'Chorale', icon: Mic2 },
+    { id: 'contemporary', label: 'Contemporain', icon: Music2 },
+    { id: 'traditional', label: 'Traditionnel', icon: Church },
+    { id: 'african', label: 'Africain', icon: Globe },
+    { id: 'kids', label: 'Enfants', icon: Baby },
   ];
 
   const mockSongs: Song[] = [
@@ -95,7 +100,7 @@ export default function GospelMusicPage() {
     { id: '7', title: 'Célébration', artist: 'Athoms Mbuma', album: 'Ma Raison de Vivre', duration: 510, category: 'praise', plays: 88700, isNew: false },
     { id: '8', title: 'Eternel Tu Règnes', artist: 'Rosny Kayiba', album: 'Adoration Live', duration: 352, category: 'worship', plays: 77200, isNew: false },
     { id: '9', title: 'Na Lobi Na Yo', artist: 'Sandra Mbuyi', album: 'Hosanna', duration: 268, category: 'contemporary', plays: 58900, isNew: true },
-    { id: '10', title: 'Hymne de Louange', artist: 'Chorale VHD Kinshasa', album: 'Hymnes Congolais', duration: 245, category: 'traditional', plays: 28500, isNew: false },
+    { id: '10', title: 'Hymne de Louange', artist: 'Chorale MyChurchApp', album: 'Hymnes Congolais', duration: 245, category: 'traditional', plays: 28500, isNew: false },
     { id: '11', title: 'Mokonzi', artist: 'Gloire Kielema', album: 'Louange à Goma', duration: 390, category: 'african', plays: 65800, isNew: true },
     { id: '12', title: 'Yesu Alingi Bana', artist: 'Chorale Enfants Lubumbashi', album: 'Chants pour Enfants', duration: 145, category: 'kids', plays: 32400, isNew: false },
   ];
@@ -209,7 +214,7 @@ export default function GospelMusicPage() {
   });
 
   const getCategoryInfo = (categoryId: string) => {
-    return categories.find(c => c.id === categoryId) || { id: categoryId, label: categoryId, emoji: '🎵' };
+    return categories.find(c => c.id === categoryId) || { id: categoryId, label: categoryId, icon: Music };
   };
 
   // Loading skeleton
@@ -315,7 +320,7 @@ export default function GospelMusicPage() {
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
-                <span>{cat.emoji}</span>
+                <cat.icon className="h-4 w-4" />
                 {cat.label}
               </button>
             ))}

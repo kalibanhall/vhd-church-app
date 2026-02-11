@@ -1,5 +1,5 @@
 {
-  "name": "ministere-vaillants-hommes-david",
+  "name": "mychurchapp",
   "version": "1.0.3",
   "private": true,
   "scripts": {
@@ -67,7 +67,7 @@
     "typescript": "^5.2.0"
   },
   "author": "CHRIS NGOZULU KASONGO (KalibanHall) <votre-email@domaine.com>",
-  "description": "Application de gestion d'église - Ministère des Vaillants Hommes de David",
+  "description": "Application de gestion d'église - MyChurchApp",
   "keywords": [
     "église",
     "gestion",
@@ -76,9 +76,9 @@
     "rendez-vous",
     "prédications"
   ],
-  "homepage": "https://github.com/KalibanHall/vhd-church-app",
+  "homepage": "https://github.com/KalibanHall/mychurchapp",
   "repository": {
     "type": "git",
-    "url": "https://github.com/KalibanHall/vhd-church-app.git"
+    "url": "https://github.com/KalibanHall/mychurchapp.git"
   }
 }

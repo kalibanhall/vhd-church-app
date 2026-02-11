@@ -168,7 +168,7 @@ const NotesPage: React.FC = () => {
           : n
       )
       saveNotes(updatedNotes)
-      setMessage({ type: 'success', text: '✅ Note mise à jour' })
+      setMessage({ type: 'success', text: 'Note mise à jour' })
     } else {
       // Nouvelle note
       const newNote: Note = {
@@ -182,7 +182,7 @@ const NotesPage: React.FC = () => {
         isFavorite: false
       }
       saveNotes([newNote, ...notes])
-      setMessage({ type: 'success', text: '✅ Note créée' })
+      setMessage({ type: 'success', text: 'Note créée' })
     }
 
     setIsEditing(false)
@@ -267,7 +267,7 @@ const NotesPage: React.FC = () => {
     <div className="space-y-6 p-4 md:p-6">
       {/* Header */}
       <div className="bg-gradient-to-r from-[#ffc200] to-[#cc9b00] rounded-2xl p-6 text-[#0a0a0a]">
-        <h1 className="text-2xl md:text-3xl font-bold mb-2">📝 Mes Notes</h1>
+        <h1 className="text-2xl md:text-3xl font-bold mb-2">Mes Notes</h1>
         <p className="text-[#3d3200]">
           Prenez des notes pendant les prédications et gardez une trace de vos réflexions spirituelles
         </p>

@@ -50,8 +50,8 @@ interface AppNavigationContextType {
 
 const AppNavigationContext = createContext<AppNavigationContextType | undefined>(undefined);
 
-const STORAGE_KEY = 'vhd_app_navigation';
-const FORM_DATA_KEY = 'vhd_app_form_data';
+const STORAGE_KEY = 'mychurchapp_navigation';
+const FORM_DATA_KEY = 'mychurchapp_form_data';
 
 export function AppNavigationProvider({ children }: { children: ReactNode }) {
   const router = useRouter();

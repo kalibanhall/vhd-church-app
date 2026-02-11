@@ -1,11 +1,11 @@
 /**
- * Service Worker - VHD Church App PWA
+ * Service Worker - MyChurchApp PWA
  * @author CHRIS NGOZULU KASONGO (KalibanHall)
  * @version 2.0.0 - Mise à jour reconnaissance faciale
  */
 
 const CACHE_VERSION = '2.0.0';
-const CACHE_NAME = `vhd-church-v${CACHE_VERSION}`;
+const CACHE_NAME = `mychurchapp-v${CACHE_VERSION}`;
 const urlsToCache = [
   '/',
   '/auth',
@@ -35,7 +35,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           // Supprimer TOUS les caches qui ne correspondent pas à la version actuelle
-          if (cacheName !== CACHE_NAME && cacheName.startsWith('vhd-church')) {
+          if (cacheName !== CACHE_NAME && cacheName.startsWith('mychurchapp')) {
             console.log('🗑️ Suppression ancien cache:', cacheName);
             return caches.delete(cacheName);
           }
@@ -108,7 +108,7 @@ self.addEventListener('push', (event) => {
     }
 
     event.waitUntil(
-      self.registration.showNotification(data.title || 'VHD Ministères', options)
+      self.registration.showNotification(data.title || 'MyChurchApp', options)
     )
   }
 })

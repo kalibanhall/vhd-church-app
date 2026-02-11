@@ -18,7 +18,7 @@
  * =============================================================================
  */
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import {
   Home,
@@ -80,6 +80,28 @@ interface SidebarProps {
 export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed = false, onToggleCollapse }: SidebarProps) {
   // État pour contrôler l'ouverture/fermeture du menu déroulant du tableau de bord
   const [isDashboardOpen, setIsDashboardOpen] = useState(true)
+  // Compteur de messages non lus pour le badge de discussion
+  const [unreadChatCount, setUnreadChatCount] = useState(0)
+
+  // Récupérer le nombre de messages non lus
+  const fetchUnreadCount = useCallback(async () => {
+    try {
+      const res = await fetch('/api/chat/unread-count')
+      if (res.ok) {
+        const data = await res.json()
+        setUnreadChatCount(data.count ?? 0)
+      }
+    } catch {
+      // Silently fail - badge just won't show
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchUnreadCount()
+    // Rafraîchir toutes les 30 secondes
+    const interval = setInterval(fetchUnreadCount, 30000)
+    return () => clearInterval(interval)
+  }, [fetchUnreadCount])
 
   // Menu principal accessible à tous les utilisateurs (membres fidèles)
   // ADMIN n'a PAS accès à ce menu, uniquement au dashboard admin
@@ -155,14 +177,14 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
    * - ADMIN: Espace Admin (accès complet)
    * - PASTOR: Espace Pasteur (gestion rendez-vous)
    * - FIDELE: Espace Fidèle (membre de l'église)
-   * - Autres: Espace Vaillants (par défaut)
+   * - Autres: Espace Fidèle (par défaut)
    */
   const getSpaceTitle = () => {
     switch (userRole) {
       case 'ADMIN': return 'Espace Admin'
       case 'PASTOR': return 'Espace Pasteur'
       case 'FIDELE': return 'Espace Fidèle'
-      default: return 'Espace Vaillants'
+      default: return 'Espace Fidèle'
     }
   }
   
@@ -212,17 +234,17 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
           <div className="p-2 md:p-3 border-b border-[#cc9b00]">
             <div className="flex items-center justify-between">
               <div className="text-center flex-1">
-                {/* Logo VHD - Taille réduite */}
+                {/* Logo MyChurchApp - Taille réduite */}
                 <div className="mb-1 md:mb-2 flex justify-center">
                   <Image
-                    src="/images/logos/vhd-logo.jpg"
-                    alt="Logo VHD"
+                    src="/images/logos/mychurchapp-logo.svg"
+                    alt="Logo MyChurchApp"
                     width={40}
                     height={40}
                     className="md:w-[50px] md:h-[50px] rounded-full border border-[#fff3cc] object-cover"
                   />
                 </div>
-                <h1 className="text-xs md:text-sm font-bold text-[#0a0a0a] leading-tight">Ministères VHD</h1>
+                <h1 className="text-xs md:text-sm font-bold text-[#0a0a0a] leading-tight">MyChurchApp</h1>
                 <p className="text-[#5c4d00] text-xs hidden md:block">{getSpaceTitle()}</p>
               </div>
               {/* Bouton de fermeture sidebar */}
@@ -258,9 +280,9 @@ export default function Sidebar({ activeTab, onTabChange, userRole, isCollapsed 
                     <Icon className="h-5 w-5" />
                     <span className="font-medium">{item.label}</span>
                   </div>
-                  {item.id === 'chat' && (
+                  {item.id === 'chat' && unreadChatCount > 0 && (
                     <span className="bg-red-500 text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">
-                      3
+                      {unreadChatCount > 99 ? '99+' : unreadChatCount}
                     </span>
                   )}
                 </button>

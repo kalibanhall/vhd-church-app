@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: vhd-church-api
+    name: mychurchapp-api
     runtime: node
     region: frankfurt
     plan: free
@@ -24,8 +24,8 @@ services:
       - key: JWT_EXPIRES_IN
         value: 7d
       - key: ALLOWED_ORIGINS
-        value: https://vhd-church-app.vercel.app,http://localhost:3000
+        value: https://mychurchapp.vercel.app,http://localhost:3000
       - key: CHURCH_NAME
-        value: VHD Church App
+        value: MyChurchApp
       - key: CHURCH_EMAIL
-        value: contact@vhdchurchapp.com
+        value: contact@mychurchapp.com

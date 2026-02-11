@@ -2,7 +2,7 @@
 export const tempUsers = [
   {
     id: 'admin-chris-kasongo-temp',
-    email: 'admin@vhd.app',
+    email: 'admin@mychurchapp.com',
     passwordHash: '$2a$12$5w7wbciIDhCiGtQubYCzN.TObWHHtrh4M3o9GJeM4Em2pxh4qEaKO', // password: Qualis@2025
     firstName: 'Chris',
     lastName: 'Kasongo',
@@ -14,7 +14,7 @@ export const tempUsers = [
   },
   {
     id: 'demo-user-temp',
-    email: 'membre@vhd.app',
+    email: 'membre@mychurchapp.com',
     passwordHash: '$2a$12$V0qrbgwleamQpc4LRMNPTefG7.nV2wo.jeq0YUcTumhIxJya8Piwq', // password: Demo123!
     firstName: 'Demo',
     lastName: 'Membre',

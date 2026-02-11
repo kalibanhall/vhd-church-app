@@ -30,14 +30,14 @@ CREATE INDEX IF NOT EXISTS idx_app_settings_is_public ON app_settings(is_public)
 -- ============================================
 INSERT INTO app_settings (key, value, category, description, is_public) VALUES
     -- Informations de contact
-    ('contact_email', 'contact@vhd.com', 'contact', 'Email de contact principal de l''église', TRUE),
+    ('contact_email', 'contact@mychurchapp.com', 'contact', 'Email de contact principal de l''église', TRUE),
     ('contact_phone', '+243 83 23 13 105', 'contact', 'Numéro de téléphone principal de l''église', TRUE),
-    ('emergency_email', 'contact@vhd.com', 'contact', 'Email pour les urgences', TRUE),
+    ('emergency_email', 'contact@mychurchapp.com', 'contact', 'Email pour les urgences', TRUE),
     ('emergency_phone', '+243 83 23 13 105', 'contact', 'Numéro de téléphone pour les urgences', TRUE),
     ('secretariat_phone', '+243 83 23 13 105', 'contact', 'Numéro du secrétariat', TRUE),
     
     -- Adresse
-    ('church_name', 'VHD - Vision pour l''Homme de Demain', 'general', 'Nom de l''église', TRUE),
+    ('church_name', 'MyChurchApp', 'general', 'Nom de l''église', TRUE),
     ('church_address', '', 'contact', 'Adresse physique de l''église', TRUE),
     ('church_city', '', 'contact', 'Ville', TRUE),
     ('church_country', 'République Démocratique du Congo', 'contact', 'Pays', TRUE),
@@ -72,7 +72,7 @@ CREATE TRIGGER update_app_settings_updated_at
 -- ============================================
 -- COMMENTS
 -- ============================================
-COMMENT ON TABLE app_settings IS 'Paramètres configurables de l''application VHD Church';
+COMMENT ON TABLE app_settings IS 'Paramètres configurables de l''application MyChurchApp';
 COMMENT ON COLUMN app_settings.key IS 'Clé unique du paramètre';
 COMMENT ON COLUMN app_settings.value IS 'Valeur du paramètre';
 COMMENT ON COLUMN app_settings.category IS 'Catégorie pour le regroupement (contact, social, hours, general)';

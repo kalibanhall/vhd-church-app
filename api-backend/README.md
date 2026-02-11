@@ -1,6 +1,6 @@
-# VHD Church API Backend
+# MyChurchApp API Backend
 
-API Backend pour l'application VHD Church, deployee sur Render.
+API Backend pour l'application MyChurchApp, deployee sur Render.
 
 ## Stack Technique
 

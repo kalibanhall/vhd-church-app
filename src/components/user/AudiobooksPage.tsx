@@ -29,7 +29,14 @@ import {
   Share2,
   User,
   Calendar,
-  Loader2
+  Loader2,
+  BookOpen,
+  HeartHandshake,
+  BookCopy,
+  Sparkles,
+  BookMarked,
+  Baby,
+  Podcast
 } from 'lucide-react';
 
 interface Audiobook {
@@ -67,13 +74,13 @@ export default function AudiobooksPage() {
   const [loading, setLoading] = useState(true);
 
   const categories = [
-    { id: 'bible', label: 'Bible Audio', emoji: '📖' },
-    { id: 'devotional', label: 'Dévotion', emoji: '🙏' },
-    { id: 'teaching', label: 'Enseignements', emoji: '📚' },
-    { id: 'testimony', label: 'Témoignages', emoji: '✨' },
-    { id: 'fiction', label: 'Romans chrétiens', emoji: '📕' },
-    { id: 'children', label: 'Enfants', emoji: '🧒' },
-    { id: 'podcast', label: 'Podcasts', emoji: '🎙️' },
+    { id: 'bible', label: 'Bible Audio', icon: BookOpen },
+    { id: 'devotional', label: 'Dévotion', icon: HeartHandshake },
+    { id: 'teaching', label: 'Enseignements', icon: BookCopy },
+    { id: 'testimony', label: 'Témoignages', icon: Sparkles },
+    { id: 'fiction', label: 'Romans chrétiens', icon: BookMarked },
+    { id: 'children', label: 'Enfants', icon: Baby },
+    { id: 'podcast', label: 'Podcasts', icon: Podcast },
   ];
 
   const speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
@@ -355,7 +362,7 @@ export default function AudiobooksPage() {
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            <span>{cat.emoji}</span>
+            <cat.icon className="h-4 w-4" />
             {cat.label}
           </button>
         ))}

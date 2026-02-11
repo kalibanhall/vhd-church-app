@@ -175,7 +175,7 @@ export default function HomePageSimple() {
               {user ? `Bonjour, ${user.firstName}` : 'Bienvenue'}
             </h1>
             <p className="text-[#0a0a0a]/70 text-sm">
-              {settings?.churchName || 'VHD Church App'}
+              {settings?.churchName || 'MyChurchApp'}
             </p>
           </div>
         </div>

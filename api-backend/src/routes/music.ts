@@ -94,7 +94,7 @@ router.get('/artists', async (req: Request, res: Response) => {
         artists: [
           { id: '1', name: 'Chorale Emmanuel', trackCount: 25 },
           { id: '2', name: 'Groupe Hosanna', trackCount: 18 },
-          { id: '3', name: 'Louange VHD', trackCount: 32 },
+          { id: '3', name: 'Louange MyChurchApp', trackCount: 32 },
         ],
         _mock: true,
       });
@@ -200,7 +200,7 @@ function getMockTracks() {
     {
       id: '3',
       title: 'Tu es fidèle',
-      artist: 'Louange VHD',
+      artist: 'Louange MyChurchApp',
       album: 'Fidélité',
       genre: 'gospel',
       duration: '6:02',

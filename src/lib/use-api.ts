@@ -1,6 +1,6 @@
 /**
  * @fileoverview Hook React pour utiliser les API avec gestion d'erreur
- * @author VHD Church Management System
+ * @author MyChurchApp Management System
  * @version 1.0.0
  */
 

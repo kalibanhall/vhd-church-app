@@ -94,9 +94,9 @@ const HelpRequestPage: React.FC = () => {
   // État pour les paramètres de contact
   const [appSettings, setAppSettings] = useState<AppSettings>({
     emergency_phone: '+243 83 23 13 105',
-    emergency_email: 'contact@vhd.com',
+    emergency_email: 'contact@mychurchapp.com',
     contact_phone: '+243 83 23 13 105',
-    contact_email: 'contact@vhd.com'
+    contact_email: 'contact@mychurchapp.com'
   })
   
   // États du formulaire
@@ -237,7 +237,7 @@ const HelpRequestPage: React.FC = () => {
       setFormEmail('')
       setShowNewForm(false)
       
-      setMessage({ type: 'success', text: '✅ Votre demande a été envoyée. Nous vous contacterons bientôt.' })
+      setMessage({ type: 'success', text: 'Votre demande a été envoyée. Nous vous contacterons bientôt.' })
     } catch {
       setMessage({ type: 'error', text: 'Erreur lors de l\'envoi de la demande' })
     } finally {
@@ -317,7 +317,7 @@ const HelpRequestPage: React.FC = () => {
     <div className="space-y-6 p-4 md:p-6">
       {/* Header */}
       <div className="bg-gradient-to-r from-[#ffc200] to-[#cc9b00] rounded-2xl p-6 text-white">
-        <h1 className="text-2xl md:text-3xl font-bold mb-2">🤝 Besoin d&apos;aide</h1>
+        <h1 className="text-2xl md:text-3xl font-bold mb-2">Besoin d&apos;aide</h1>
         <p className="text-[#fff3cc]">
           L&apos;église est là pour vous accompagner. N&apos;hésitez pas à nous faire part de vos besoins.
         </p>

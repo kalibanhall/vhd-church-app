@@ -223,7 +223,7 @@ const DonationsPage: React.FC = () => {
               <Heart className="h-8 w-8 text-white" />
             </div>
             <h1 className="text-2xl font-bold mb-2">Soutien à l'Œuvre</h1>
-            <p className="text-[#3d3200] text-sm">Participez à la mission de l'église VHD</p>
+            <p className="text-[#3d3200] text-sm">Participez à la mission de l'église</p>
           </div>
         </div>
       </div>
@@ -516,7 +516,7 @@ const DonationsPage: React.FC = () => {
         {/* Info bottom */}
         <div className="mt-6 bg-gradient-to-r from-[#fff3cc] to-[#fffefa] rounded-xl p-4 text-center">
           <p className="text-sm text-[#cc9b00]">
-            💚 « Celui qui sème généreusement moissonnera aussi avec abondance » - 2 Corinthiens 9:6
+            « Celui qui sème généreusement moissonnera aussi avec abondance » - 2 Corinthiens 9:6
           </p>
         </div>
       </div>

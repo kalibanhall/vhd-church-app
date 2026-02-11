@@ -27,7 +27,15 @@ import {
   List,
   BookMarked,
   Check,
-  Loader2
+  Loader2,
+  Church,
+  HeartHandshake,
+  Users,
+  Sparkles,
+  Baby,
+  Globe,
+  Target,
+  BookCopy
 } from 'lucide-react';
 
 interface Book {
@@ -64,16 +72,16 @@ export default function LibraryPage() {
   const [loading, setLoading] = useState(true);
 
   const categories = [
-    { id: 'bible', label: 'Bible & Études', emoji: '📖' },
-    { id: 'theology', label: 'Théologie', emoji: '⛪' },
-    { id: 'devotional', label: 'Dévotion', emoji: '🙏' },
-    { id: 'biography', label: 'Biographies', emoji: '👤' },
-    { id: 'family', label: 'Famille', emoji: '👨‍👩‍👧‍👦' },
-    { id: 'youth', label: 'Jeunesse', emoji: '🌟' },
-    { id: 'children', label: 'Enfants', emoji: '🧒' },
-    { id: 'mission', label: 'Mission', emoji: '🌍' },
-    { id: 'leadership', label: 'Leadership', emoji: '🎯' },
-    { id: 'other', label: 'Autres', emoji: '📚' },
+    { id: 'bible', label: 'Bible & Études', icon: BookOpen },
+    { id: 'theology', label: 'Théologie', icon: Church },
+    { id: 'devotional', label: 'Dévotion', icon: HeartHandshake },
+    { id: 'biography', label: 'Biographies', icon: User },
+    { id: 'family', label: 'Famille', icon: Users },
+    { id: 'youth', label: 'Jeunesse', icon: Sparkles },
+    { id: 'children', label: 'Enfants', icon: Baby },
+    { id: 'mission', label: 'Mission', icon: Globe },
+    { id: 'leadership', label: 'Leadership', icon: Target },
+    { id: 'other', label: 'Autres', icon: BookCopy },
   ];
 
   const mockBooks: Book[] = [
@@ -383,7 +391,7 @@ export default function LibraryPage() {
                 : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
             }`}
           >
-            <span>{cat.emoji}</span>
+            <cat.icon className="h-4 w-4" />
             {cat.label}
           </button>
         ))}
@@ -474,8 +482,8 @@ export default function LibraryPage() {
             </div>
             <div className="p-4 space-y-4">
               <div>
-                <span className="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded-full">
-                  {getCategoryInfo(selectedBook.category).emoji} {getCategoryInfo(selectedBook.category).label}
+                <span className="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded-full inline-flex items-center gap-1">
+                  {(() => { const CatIcon = getCategoryInfo(selectedBook.category).icon; return <CatIcon className="h-3 w-3" />; })()} {getCategoryInfo(selectedBook.category).label}
                 </span>
                 <h2 className="text-xl font-bold text-gray-900 mt-2">{selectedBook.title}</h2>
                 <p className="text-gray-600">{selectedBook.author}</p>

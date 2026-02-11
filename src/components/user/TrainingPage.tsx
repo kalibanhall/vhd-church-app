@@ -236,9 +236,9 @@ const TrainingPage: React.FC = () => {
         )
         
         if (data.enrollment.progress === 100) {
-          setMessage({ type: 'success', text: '🏆 Félicitations ! Vous avez terminé ce cours !' })
+          setMessage({ type: 'success', text: 'Félicitations ! Vous avez terminé ce cours !' })
         } else {
-          setMessage({ type: 'success', text: '✅ Leçon complétée !' })
+          setMessage({ type: 'success', text: 'Leçon complétée !' })
         }
         setShowLessonModal(false)
       }
@@ -671,7 +671,7 @@ const TrainingPage: React.FC = () => {
               <div className="pt-4 border-t border-gray-100">
                 {getEnrollment(selectedCourse.id) ? (
                   <div className="text-center">
-                    <p className="text-green-600 font-medium mb-2">✅ Vous êtes inscrit à ce cours</p>
+                    <p className="text-green-600 font-medium mb-2">Vous êtes inscrit à ce cours</p>
                     <p className="text-sm text-gray-500">
                       Cliquez sur une leçon pour commencer ou continuer votre apprentissage
                     </p>

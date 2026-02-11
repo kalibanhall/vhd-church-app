@@ -31,7 +31,8 @@ import {
   Loader2,
   Sparkles,
   List,
-  Clock
+  Clock,
+  Lightbulb
 } from 'lucide-react'
 
 // Types
@@ -541,8 +542,8 @@ const BiblePage: React.FC = () => {
                 d&apos;afficher le texte complet.
               </p>
               <div className="mt-6 p-4 bg-amber-50 rounded-lg border border-amber-200">
-                <p className="text-amber-800">
-                  💡 <strong>Astuce :</strong> Utilisez l&apos;onglet &quot;Plans de lecture&quot; pour suivre 
+                <p className="text-amber-800 flex items-start gap-2">
+                  <Lightbulb className="h-4 w-4 mt-0.5 flex-shrink-0" /> <strong>Astuce :</strong> Utilisez l&apos;onglet &quot;Plans de lecture&quot; pour suivre 
                   un programme de lecture structuré.
                 </p>
               </div>

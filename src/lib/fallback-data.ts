@@ -57,7 +57,7 @@ export const fallbackData = {
       id: 'pastor-1',
       firstName: 'Chris',
       lastName: 'Kasongo',
-      email: 'admin@vhd.app',
+      email: 'admin@mychurchapp.com',
       role: 'PASTEUR',
       status: 'ACTIVE',
       available: true

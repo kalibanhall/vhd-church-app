@@ -248,9 +248,15 @@ const VolunteerPage: React.FC = () => {
         })
       })
 
+      // Vérifier le content-type avant de parser en JSON
+      const contentType = response.headers.get('content-type')
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Le serveur a renvoyé une réponse invalide')
+      }
+
       const data = await response.json()
       if (response.ok) {
-        setMessage({ type: 'success', text: '🎉 Inscription enregistrée ! Un responsable va examiner votre demande.' })
+        setMessage({ type: 'success', text: 'Inscription enregistrée ! Un responsable va examiner votre demande.' })
         setShowModal(false)
         fetchMyRegistrations()
         fetchTeams()
@@ -278,8 +284,15 @@ const VolunteerPage: React.FC = () => {
         fetchMyRegistrations()
         fetchTeams()
       } else {
-        const data = await response.json()
-        setMessage({ type: 'error', text: data.error || 'Erreur lors de l\'annulation' })
+        let errorMsg = 'Erreur lors de l\'annulation'
+        try {
+          const contentType = response.headers.get('content-type')
+          if (contentType && contentType.includes('application/json')) {
+            const data = await response.json()
+            errorMsg = data.error || errorMsg
+          }
+        } catch { /* ignore parse error */ }
+        setMessage({ type: 'error', text: errorMsg })
       }
     } catch (error) {
       setMessage({ type: 'error', text: 'Erreur de connexion au serveur' })
@@ -701,7 +714,7 @@ const VolunteerPage: React.FC = () => {
       {/* Info bottom */}
       <div className="mt-6 bg-gradient-to-r from-[#fff3cc] to-[#ffda66] rounded-xl p-4 text-center border border-[#ffc200]">
         <p className="text-sm text-[#0a0a0a]">
-          🤝 « Servir les autres, c'est servir Christ » - Matthieu 25:40
+          « Servir les autres, c'est servir Christ » - Matthieu 25:40
         </p>
       </div>
       </div>

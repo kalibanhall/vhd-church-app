@@ -67,7 +67,7 @@ export default function Header({ user, onProfileClick, onTabChange }: HeaderProp
                     <div className="p-4 text-sm font-medium text-[#cc9b00] border-b bg-gradient-to-r from-[#fffefa] to-[#fff3cc]">
                       <div className="flex items-center space-x-2">
                         <span>🚀</span>
-                        <span>Navigation intelligente VHD - Que souhaitez-vous faire ?</span>
+                        <span>Navigation intelligente MyChurchApp - Que souhaitez-vous faire ?</span>
                       </div>
                     </div>
                   ) : (

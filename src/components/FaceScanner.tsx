@@ -1,13 +1,15 @@
 /**
  * Composant de scan facial progressif avec vérification d'unicité
- * @author VHD Church Management System
+ * @author MyChurchApp Management System
  */
 
 'use client';
 
 import React, { useRef, useEffect, useState } from 'react';
 import * as faceapi from 'face-api.js';
-import { CheckCircle, AlertCircle, Scan } from 'lucide-react';
+import { CheckCircle, AlertCircle, AlertTriangle, Scan } from 'lucide-react';
+
+type MessageType = 'error' | 'warning' | 'success';
 
 interface FaceScannerProps {
   userId: string;
@@ -22,6 +24,7 @@ export default function FaceScanner({ userId, onScanComplete, onAlreadyRegistere
   const [isModelLoaded, setIsModelLoaded] = useState(false);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [error, setError] = useState<string>('');
+  const [messageType, setMessageType] = useState<MessageType>('error');
   const [scanProgress, setScanProgress] = useState(0);
   const [isScanning, setIsScanning] = useState(false);
   const [checkingExisting, setCheckingExisting] = useState(false);
@@ -95,7 +98,8 @@ export default function FaceScanner({ userId, onScanComplete, onAlreadyRegistere
       if (response.ok) {
         const data = await response.json();
         if (data.data && data.data.length > 0) {
-          setError('❌ Visage déjà enregistré. Vous ne pouvez enregistrer qu\'une seule fois.');
+          setError('Visage déjà enregistré. Vous ne pouvez enregistrer qu\'une seule fois.');
+          setMessageType('error');
           setCheckingExisting(false);
           if (onAlreadyRegistered) {
             onAlreadyRegistered();
@@ -151,7 +155,8 @@ export default function FaceScanner({ userId, onScanComplete, onAlreadyRegistere
           .withFaceDescriptor();
 
         if (!detection) {
-          setError('❌ Visage perdu pendant le scan. Gardez votre visage face à la caméra.');
+          setError('Visage perdu pendant le scan. Gardez votre visage face à la caméra.');
+          setMessageType('error');
           setIsScanning(false);
           setScanStage('idle');
           return;
@@ -159,7 +164,8 @@ export default function FaceScanner({ userId, onScanComplete, onAlreadyRegistere
 
         // Vérifier la qualité
         if (detection.detection.score < 0.5) {
-          setError('⚠️ Qualité insuffisante. Améliorez l\'éclairage.');
+          setError('Qualité insuffisante. Améliorez l\'éclairage.');
+          setMessageType('warning');
           setIsScanning(false);
           setScanStage('idle');
           return;
@@ -243,17 +249,23 @@ export default function FaceScanner({ userId, onScanComplete, onAlreadyRegistere
     <div className="space-y-4">
       {/* Messages d'erreur/succès */}
       {error && (
-        <div className={`border rounded-lg p-4 ${
-          error.includes('✅') 
+        <div className={`border rounded-lg p-4 flex items-start gap-3 ${
+          messageType === 'success' 
             ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
-            : error.includes('⚠️')
+            : messageType === 'warning'
             ? 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800'
             : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
         }`}>
+          {messageType === 'success' 
+            ? <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+            : messageType === 'warning'
+            ? <AlertTriangle className="h-5 w-5 text-yellow-500 flex-shrink-0 mt-0.5" />
+            : <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
+          }
           <p className={`text-sm whitespace-pre-line ${
-            error.includes('✅') 
+            messageType === 'success' 
               ? 'text-green-600 dark:text-green-400'
-              : error.includes('⚠️')
+              : messageType === 'warning'
               ? 'text-yellow-600 dark:text-yellow-400'
               : 'text-red-600 dark:text-red-400'
           }`}>{error}</p>
@@ -315,13 +327,13 @@ export default function FaceScanner({ userId, onScanComplete, onAlreadyRegistere
             : 'bg-[#ffc200] hover:bg-[#cc9b00] text-white'
         }`}
       >
-        {checkingExisting ? '🔍 Vérification...' : isScanning ? '⏳ Scan en cours...' : '📸 Enregistrer mon visage'}
+        {checkingExisting ? 'Vérification...' : isScanning ? 'Scan en cours...' : 'Enregistrer mon visage'}
       </button>
 
       {/* Instructions */}
       <div className="bg-[#fffefa] dark:bg-[#3d3200]/20 border border-[#e6af00] dark:border-[#cc9b00] rounded-lg p-4">
         <p className="text-sm text-[#3d3200] dark:text-[#ffc200]">
-          <strong>💡 Instructions:</strong>
+          <strong>Instructions:</strong>
         </p>
         <ul className="text-sm text-[#5c4d00] dark:text-[#e6af00] mt-2 space-y-1 list-disc list-inside">
           <li>Positionnez votre visage face à la caméra</li>

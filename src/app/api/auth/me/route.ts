@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
     // Vérifier et décoder le token JWT
     const decoded = jwt.verify(
       token, 
-      process.env.JWT_SECRET || 'vhd-church-app-chris-kasongo-jwt-secret-production-2025-qualis-super-secure-key'
+      process.env.JWT_SECRET || 'mychurchapp-chris-kasongo-jwt-secret-production-2025-qualis-super-secure-key'
     ) as any
 
     const userId = decoded.id || decoded.userId

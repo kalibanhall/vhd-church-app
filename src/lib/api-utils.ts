@@ -1,6 +1,6 @@
 /**
  * =============================================================================
- * MINISTÈRE DES VAILLANTS HOMMES DE DAVID - API UTILITIES
+ * MYCHURCHAPP - API UTILITIES
  * =============================================================================
  * 
  * Fonctions utilitaires pour les appels API avec authentification par cookies
